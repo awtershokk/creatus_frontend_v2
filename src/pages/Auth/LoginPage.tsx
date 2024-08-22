@@ -1,8 +1,10 @@
-import Header from "../../components /UI/Menu/Header.tsx";
+import LoginForm from '../../components /UI/Forms/LoginForm';
 
 const LoginPage = () => {
     return (
-       <Header/>
+        <>
+            <LoginForm/>
+        </>
     );
 };
 

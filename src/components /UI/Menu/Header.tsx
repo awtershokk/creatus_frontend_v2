@@ -3,6 +3,7 @@ import { FaUser, FaCog, FaChevronDown } from 'react-icons/fa';
 import { FiLogOut } from "react-icons/fi";
 
 const Header = () => {
+
     const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
     const [isSettingsDropdownOpen, setIsSettingsDropdownOpen] = useState(false);
     const [isUserModalOpen, setIsUserModalOpen] = useState(false);
