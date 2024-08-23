@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
+import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 
 const LoginForm = () => {
     const { login, error, status, user } = useAuth();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -19,18 +21,23 @@ const LoginForm = () => {
         }
     }, [user, navigate]);
 
+    const handleTogglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
+    };
+
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-100">
+        <div className="w-screen min-h-screen flex items-center justify-center bg-gray-100">
             <form
                 onSubmit={handleSubmit}
                 className="bg-white p-8 rounded-lg shadow-lg w-96"
+                autoComplete="off"
             >
                 <h2 className="text-2xl font-bold mb-6 text-center text-gray-900">Вход в систему SmartHeat</h2>
-                {error && (
-                    <p className="text-red-500 text-sm mb-4">
-                        {error}
-                    </p>
-                )}
+
+
+                <input type="text" name="hiddenUsername" className="hidden" autoComplete="username"/>
+                <input type="password" name="hiddenPassword" className="hidden" autoComplete="new-password"/>
+
                 <div className="mb-4">
                     <label
                         htmlFor="username"
@@ -44,26 +51,55 @@ const LoginForm = () => {
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
                         className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                        autoComplete="off"
+                        name="notUsername"
                     />
                 </div>
-                <div className="mb-6">
+                <div className="relative mb-6">
                     <label
                         htmlFor="password"
                         className="block text-sm font-medium text-gray-900"
                     >
                         Пароль
                     </label>
-                    <input
-                        type="password"
-                        id="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                    />
+
+                    <input type="password" name="hidden" className="hidden" autoComplete="off"/>
+                    <div className="relative">
+                        <input
+                            type={showPassword ? 'text' : 'password'}
+                            id="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm pr-10"
+                            autoComplete="new-password"
+                            name="notPassword"
+                        />
+                        {password && (
+                            <button
+                                type="button"
+                                onClick={handleTogglePasswordVisibility}
+                                className="absolute inset-y-0 right-3 flex items-center"
+                            >
+                                {showPassword ? (
+                                    <EyeIcon className="h-5 w-5 text-gray-500" aria-hidden="true"/>
+                                ) : (
+                                    <EyeSlashIcon className="h-5 w-5 text-gray-500" aria-hidden="true"/>
+                                )}
+                            </button>
+                        )}
+                    </div>
+                    {error && (
+                        <div className="flex justify-center mt-2">
+                            <p className="text-red-500 text-sm">
+                                {error}
+                            </p>
+                        </div>
+                    )}
                 </div>
+
                 <button
                     type="submit"
-                    className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    className="w-full bg-gray-800 text-white py-2 px-4 rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-300"
                 >
                     {status === 'loading' ? 'Вход...' : 'Вход'}
                 </button>
