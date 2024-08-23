@@ -1,11 +1,10 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import LoginPage from './pages/Auth/LoginPage';
-import AdminPage from './pages/AdminPage';
 import NoAccessPage from './pages/Error/NoAccesPage';
 import ProtectedRoute from './store/routes/protectedRoute';
 import { useAuth } from './hooks/useAuth';
-import LoadingScreen from './pages/Error/LoadingPage.tsx';
+import LoadingPage from './pages/Error/LoadingPage.tsx';
 
 const App = () => {
     const { refresh } = useAuth();
@@ -24,7 +23,7 @@ const App = () => {
     }, [refresh]);
 
     if (loading) {
-        return <LoadingScreen />;
+        return <LoadingPage />;
     }
 
     return (
