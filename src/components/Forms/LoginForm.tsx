@@ -1,15 +1,23 @@
-import { useState } from 'react';
-import { useAuth } from '../../../hooks/useAuth';
+import { useState, useEffect } from 'react';
+import { useAuth } from '../../hooks/useAuth';
+import { useNavigate } from 'react-router-dom';
 
 const LoginForm = () => {
-    const { login, error, status } = useAuth();
+    const { login, error, status, user } = useAuth();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const navigate = useNavigate();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         await login(username, password);
     };
+
+    useEffect(() => {
+        if (user) {
+            navigate('/admin');
+        }
+    }, [user, navigate]);
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-100">

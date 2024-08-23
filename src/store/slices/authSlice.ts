@@ -20,11 +20,13 @@ const initialState: AuthState = {
     error: null,
 };
 
+// Async thunks
 export const loginUser = createAsyncThunk(
     'auth/loginUser',
     async (credentials: { username: string; password: string }, { rejectWithValue }) => {
         try {
             const response = await login(credentials);
+            localStorage.setItem('token', response.data.accessToken);
             return response.data;
         } catch (error) {
             return rejectWithValue('Не удалось войти в систему.');
@@ -37,6 +39,7 @@ export const logoutUser = createAsyncThunk(
     async (_, { rejectWithValue }) => {
         try {
             await logout();
+            localStorage.removeItem('token');
         } catch (error) {
             return rejectWithValue('Не удалось выйти из системы.');
         }
@@ -48,6 +51,7 @@ export const refreshToken = createAsyncThunk(
     async (_, { rejectWithValue }) => {
         try {
             const response = await refresh();
+            localStorage.setItem('token', response.data.accessToken);
             return response.data;
         } catch (error) {
             return rejectWithValue('Не удалось обновить токен.');
