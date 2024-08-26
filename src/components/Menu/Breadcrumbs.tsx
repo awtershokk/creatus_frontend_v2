@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import * as Icons from 'react-icons/fa'; // Импортируем все иконки из библиотеки react-icons/fa
+import * as Icons from 'react-icons/fa';
 
 const Breadcrumbs = () => {
     const location = useLocation();
@@ -23,7 +23,7 @@ const Breadcrumbs = () => {
         const data = JSON.parse(localStorage.getItem(segment));
         return {
             label: data?.label || segment,
-            icon: data?.icon ? Icons[data.icon] : null, // Получаем иконку по её идентификатору
+            icon: data?.icon ? Icons[data.icon] : null,
         };
     };
 

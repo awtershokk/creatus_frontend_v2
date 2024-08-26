@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
-import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
-
+import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 const LoginForm = () => {
     const { login, error, status, user } = useAuth();
     const [username, setUsername] = useState('');
@@ -81,9 +80,9 @@ const LoginForm = () => {
                                 className="absolute inset-y-0 right-3 flex items-center"
                             >
                                 {showPassword ? (
-                                    <EyeIcon className="h-5 w-5 text-gray-500" aria-hidden="true"/>
+                                    <FaRegEye className="h-5 w-5 text-gray-500" aria-hidden="true"/>
                                 ) : (
-                                    <EyeSlashIcon className="h-5 w-5 text-gray-500" aria-hidden="true"/>
+                                    <FaRegEyeSlash className="h-5 w-5 text-gray-500" aria-hidden="true"/>
                                 )}
                             </button>
                         )}
