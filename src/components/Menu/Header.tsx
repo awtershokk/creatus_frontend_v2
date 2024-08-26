@@ -1,8 +1,14 @@
 import { useState, useEffect, useRef } from 'react';
 import { FaUser, FaCog, FaChevronDown } from 'react-icons/fa';
 import { FiLogOut } from "react-icons/fi";
+import { useAuth } from '../../hooks/useAuth';
+import {useSelector} from "react-redux";
+import {RootState} from "../../store/store";
+import {getRole} from "../../utils/getRole.ts";
 
 const Header = () => {
+    const { logout } = useAuth();
+    const user = useSelector((state: RootState) => state.auth.user);
 
     const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
     const [isSettingsDropdownOpen, setIsSettingsDropdownOpen] = useState(false);
@@ -24,6 +30,10 @@ const Header = () => {
         setIsUserDropdownOpen(false);
         setIsUserModalOpen(false);
         setActiveSection('settings');
+    };
+
+    const handleLogout = async () => {
+        await logout();
     };
 
     useEffect(() => {
@@ -80,7 +90,6 @@ const Header = () => {
                                     <FaCog className="mr-2 text-lg"/> Режим настройки
                                 </li>
                             </ul>
-
                         )}
                     </div>
                     <div
@@ -102,11 +111,11 @@ const Header = () => {
                                 ref={userModalRef}
                                 className="absolute right-0 mt-2 w-64 bg-gray-800 text-white shadow-lg z-10 p-4 rounded transition-opacity duration-300"
                             >
-                                <p className="text-lg font-bold">Имя пользователя</p>
-                                <p>Логин</p>
-                                <p>Роль</p>
+                                <p className="text-lg font-bold">{user.fullName}</p>
+                                <p>{user.username }</p>
+                                <p>{getRole(user.roleId)}</p>
                                 <hr className="border-gray-600 my-2" />
-                                <p className="text-red-600 cursor-pointer flex items-center">
+                                <p className="text-red-600 cursor-pointer flex items-center" onClick={handleLogout}>
                                     <FiLogOut className="mr-1" /> Выйти
                                 </p>
                             </div>

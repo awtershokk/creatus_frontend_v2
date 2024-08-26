@@ -15,7 +15,7 @@ const LoginForm = () => {
 
     useEffect(() => {
         if (user) {
-            navigate('/admin');
+            navigate('/test');
         }
     }, [user, navigate]);
 

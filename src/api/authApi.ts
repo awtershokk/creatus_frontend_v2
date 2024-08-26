@@ -1,10 +1,4 @@
-import axios from 'axios';
-import API_URL from '../api/api';
-
-const api = axios.create({
-    baseURL: API_URL,
-    withCredentials: true,
-});
+import api from './api';
 
 api.interceptors.request.use(
     (config) => {

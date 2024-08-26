@@ -5,7 +5,7 @@ import NoAccessPage from './pages/Error/NoAccesPage';
 import ProtectedRoute from './store/routes/protectedRoute';
 import { useAuth } from './hooks/useAuth';
 import LoadingPage from './pages/Error/LoadingPage.tsx';
-
+import DefaultLayout from "./layouts/DefaultLayout.tsx";
 const App = () => {
     const { refresh } = useAuth();
     const [loading, setLoading] = useState(true);
@@ -31,7 +31,8 @@ const App = () => {
             <Routes>
                 <Route path="/" element={<LoginPage />} />
                 <Route path="/no-access" element={<NoAccessPage />} />
-                <Route element={<ProtectedRoute allowedRoles={[2, 3]} />}>
+                <Route element={<ProtectedRoute allowedRoles={[1, 2, 3]} />}>
+                    <Route path="/test" element={<DefaultLayout />} />
                 </Route>
             </Routes>
         </Router>
