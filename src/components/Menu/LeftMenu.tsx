@@ -13,8 +13,6 @@ const LeftMenu: React.FC = () => {
     const [hasUpdates, setHasUpdates] = useState(false);
     const [isSwinging, setIsSwinging] = useState(false);
 
-
-
     const buildingId = 1;
 
     useEffect(() => {
@@ -56,7 +54,6 @@ const LeftMenu: React.FC = () => {
             setTimeout(() => setIsSwinging(false), 1000);
         }, 2000);
 
-
         return () => clearInterval(intervalId);
     }, []);
 
@@ -73,10 +70,10 @@ const LeftMenu: React.FC = () => {
                                 to="/building/updates"
                                 className="flex items-center p-2 rounded-lg hover:bg-gray-700 whitespace-nowrap"
                             >
-                                <FaCogs className="mr-2"/>
+                                <FaCogs className="mr-2" />
                                 Версия ПО
                                 <FaBell
-                                    className={`ml-2 text-green-500 ${isSwinging ? 'animate-swing' : ''}`}
+                                    className={`ml-2 text-green-500 ${isSwinging ? 'animate-swingTop' : ''}`}
                                     title="Есть обновления"
                                 />
                             </Link>

@@ -7,17 +7,17 @@ export default {
   theme: {
     extend: {
       keyframes: {
-        swing: {
-          '0%': { transform: 'rotate(0deg)' },
-          '20%': { transform: 'rotate(-10deg)' },
-          '40%': { transform: 'rotate(10deg)' },
-          '60%': { transform: 'rotate(-10deg)' },
-          '80%': { transform: 'rotate(10deg)' },
-          '100%': { transform: 'rotate(0deg)' },
+        swingTop: {
+          '0%': { transform: 'rotate(0deg)', transformOrigin: 'top center' },
+          '20%': { transform: 'rotate(-10deg)', transformOrigin: 'top center' },
+          '40%': { transform: 'rotate(10deg)', transformOrigin: 'top center' },
+          '60%': { transform: 'rotate(-10deg)', transformOrigin: 'top center' },
+          '80%': { transform: 'rotate(10deg)', transformOrigin: 'top center' },
+          '100%': { transform: 'rotate(0deg)', transformOrigin: 'top center' },
         },
       },
       animation: {
-        swing: 'swing 1s ease-in-out',
+        swingTop: 'swingTop 1s ease-in-out infinite',
       },
     },
   },
