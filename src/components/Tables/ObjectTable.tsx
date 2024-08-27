@@ -19,7 +19,7 @@ const ObjectTable = ({ title, data, ButtonComponent }: ObjectTableProps) => {
                         {data.map((item) => (
                             <div key={item.id} className="flex border-t border-gray-300">
                                 <div className="w-1/2 p-2 text-black font-bold">{item.title}</div>
-                                <div className="border-l border-gray-300 h-6 mx-2"></div>
+                                <div className="border-l border-gray-300 h-auto mx-2"></div>
                                 <div className="w-1/2 p-2 text-black">{item.value}</div>
                             </div>
                         ))}

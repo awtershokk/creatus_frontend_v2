@@ -11,6 +11,9 @@ const LeftMenu: React.FC = () => {
     const [sections, setSections] = useState<any[]>([]);
     const [thermalCircuits, setThermalCircuits] = useState<any[]>([]);
     const [hasUpdates, setHasUpdates] = useState(false);
+    const [isSwinging, setIsSwinging] = useState(false);
+
+
 
     const buildingId = 1;
 
@@ -46,6 +49,17 @@ const LeftMenu: React.FC = () => {
     const toggleSections = () => setIsSectionsOpen(!isSectionsOpen);
     const toggleThermalCircuits = () => setIsThermalCircuitsOpen(!isThermalCircuitsOpen);
 
+    useEffect(() => {
+        const intervalId = setInterval(() => {
+            setIsSwinging(true);
+
+            setTimeout(() => setIsSwinging(false), 1000);
+        }, 2000);
+
+
+        return () => clearInterval(intervalId);
+    }, []);
+
     return (
         <div className="flex flex-nowrap h-full w-auto bg-gray-800 text-white z-10">
             <div className="flex flex-col flex-grow p-4">
@@ -61,9 +75,10 @@ const LeftMenu: React.FC = () => {
                             >
                                 <FaCogs className="mr-2"/>
                                 Версия ПО
-                                {hasUpdates && (
-                                    <FaBell className="ml-2 text-green-500" title="Есть обновления"/>
-                                )}
+                                <FaBell
+                                    className={`ml-2 text-green-500 ${isSwinging ? 'animate-swing' : ''}`}
+                                    title="Есть обновления"
+                                />
                             </Link>
                         </li>
 

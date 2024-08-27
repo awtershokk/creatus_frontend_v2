@@ -11,6 +11,7 @@ import { fetchSections } from '../../api/sectionsApi';
 import { fetchThermalCircuits} from "../../api/thermalCircuitsApi.ts";
 import { ResponsiblePerson } from '../../models/ResponsiblePerson';
 import Link from "../../components/Text/Link"
+import IconButton from "../../components/Buttons/IconButton.tsx";
 
 const BuildingPage = () => {
     const [building, setBuilding] = useState<Array<{ id: number, title: string, value: string | number }>>([]);
@@ -95,8 +96,14 @@ const BuildingPage = () => {
                 </div>
 
             </div>
-            <div className="mt-4">
-                <Label text="Ответственные лица"/>
+            <div className="mt-6 mb-4">
+                <div className="mt-4 flex items-center justify-between">
+                    <div className="flex items-center space-x-1">
+                        <Label text="Ответственные лица"/>
+                        <IconButton/>
+                    </div>
+                </div>
+
                 <ItemTable
                     data={responsiblePersons}
                     headers={headers}
