@@ -1,13 +1,14 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+
 
 interface ChildElementsTableProps {
     infoData: { id: number; title: string; value: string; value2: string }[];
     tableTitle: string;
     ButtonComponent: () => JSX.Element;
+    LinkComponent: (props: { to: string; text: string; className?: string }) => JSX.Element;
 }
 
-const ChildElementsTable: React.FC<ChildElementsTableProps> = ({ infoData, tableTitle, ButtonComponent }) => {
+const ChildElementsTable: React.FC<ChildElementsTableProps> = ({ infoData, tableTitle, ButtonComponent, LinkComponent }) => {
     return (
         <div className="flex mt-2 z-10">
             <div className="w-[500px]">
@@ -24,9 +25,8 @@ const ChildElementsTable: React.FC<ChildElementsTableProps> = ({ infoData, table
                                 <div className="w-1/2 p-2 text-black font-bold">{item.title}</div>
                                 <div className="border-l border-gray-300 h-auto mx-2"></div>
                                 <div className="w-1/2 p-2 flex justify-between">
-                                    <Link to={''} className="text-black underline">
-                                        {item.value}
-                                    </Link>
+
+                                    <LinkComponent to={item.to} text={item.value} className="text-gray-500 underline" />
                                     <button
                                         className="text-red-600 underline"
                                         onClick={() => {/*  */}}
@@ -42,5 +42,6 @@ const ChildElementsTable: React.FC<ChildElementsTableProps> = ({ infoData, table
         </div>
     );
 };
+
 
 export default ChildElementsTable;

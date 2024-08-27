@@ -1,6 +1,6 @@
 import { FaPlus } from 'react-icons/fa';
 
-const EditButton = ({ onClick }) => {
+const AddButton = ({ onClick }) => {
     return (
         <button
             onClick={onClick}
@@ -12,4 +12,4 @@ const EditButton = ({ onClick }) => {
     );
 };
 
-export default EditButton;
+export default AddButton;
