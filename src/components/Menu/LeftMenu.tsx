@@ -85,7 +85,7 @@ const LeftMenu: React.FC = () => {
                                 {Array.isArray(sections) && sections.map((section) => (
                                     <li key={section.id}>
                                         <Link
-                                            to={`/building/sections/${section.id}`}
+                                            to={`/building/section/${section.id}`}
                                             className="flex items-center p-2 pl-8 rounded-lg hover:bg-gray-700 whitespace-nowrap"
                                         >
                                             <FaBars className="mr-2"/>
@@ -114,7 +114,7 @@ const LeftMenu: React.FC = () => {
                                 {Array.isArray(thermalCircuits) && thermalCircuits.map((circuit) => (
                                     <li key={circuit.id}>
                                         <Link
-                                            to={`/building/thermal-circuits/${circuit.id}`}
+                                            to={`/building/thermalCircuit/${circuit.id}`}
                                             className="flex items-center p-2 pl-8 rounded-lg hover:bg-gray-700 whitespace-nowrap"
                                         >
                                             <FaThermometerHalf className="mr-2"/>

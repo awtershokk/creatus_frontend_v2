@@ -7,16 +7,7 @@ const Breadcrumbs = () => {
     const pathnames = location.pathname.split('/').filter(x => x);
 
     const createBreadcrumbPath = (pathnames) => {
-        const result = [];
-        for (let i = 0; i < pathnames.length; i++) {
-            const value = pathnames[i];
-            if (!isNaN(value) && i > 0) {
-                result[result.length - 1] = `${result[result.length - 1]}/${value}`;
-            } else {
-                result.push(value);
-            }
-        }
-        return result;
+        return pathnames.filter(value => isNaN(value));
     };
 
     const getBreadcrumbData = (segment) => {
