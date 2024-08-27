@@ -4,13 +4,13 @@ import Breadcrumbs from "../components/Menu/Breadcrumbs.tsx";
 
 const DefaultLayout = ({ children }) => {
     return (
-        <div className="flex flex-col h-screen">
+        <div className="flex flex-col h-screen w-screen overflow-hidden">
             <Header />
-            <div className="flex flex-grow">
+            <div className="flex flex-grow overflow-hidden">
                 <LeftMenu className="w-64" />
-                <div className="flex flex-col flex-grow">
+                <div className="flex flex-col flex-grow overflow-hidden">
                     <Breadcrumbs className="w-full" />
-                    <div className="flex-grow p-4">
+                    <div className="flex-grow p-3 overflow-auto">
                         {children}
                     </div>
                 </div>
@@ -20,3 +20,4 @@ const DefaultLayout = ({ children }) => {
 };
 
 export default DefaultLayout;
+

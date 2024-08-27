@@ -18,7 +18,7 @@ const LeftMenu: React.FC = () => {
         const loadSections = async () => {
             try {
                 const data = await fetchSections(buildingId);
-                setSections(data.data);
+                setSections(data);
             } catch (error) {
                 console.error('Ошибка при загрузке секций:', error);
             }
@@ -27,7 +27,7 @@ const LeftMenu: React.FC = () => {
         const loadThermalCircuits = async () => {
             try {
                 const data = await fetchThermalCircuits(buildingId);
-                setThermalCircuits(data.data);
+                setThermalCircuits(data);
             } catch (error) {
                 console.error('Ошибка при загрузке тепловых контуров:', error);
             }
@@ -47,7 +47,7 @@ const LeftMenu: React.FC = () => {
     const toggleThermalCircuits = () => setIsThermalCircuitsOpen(!isThermalCircuitsOpen);
 
     return (
-        <div className="flex flex-col h-full w-auto bg-gray-800 text-white">
+        <div className="flex flex-nowrap h-full w-auto bg-gray-800 text-white z-10">
             <div className="flex flex-col flex-grow p-4">
                 <div className="mb-6">
                     <h1 className="text-xl font-bold">SmartHeat</h1>
@@ -57,7 +57,7 @@ const LeftMenu: React.FC = () => {
                         <li>
                             <Link
                                 to="/building/updates"
-                                className="flex items-center p-2 rounded-lg hover:bg-gray-700"
+                                className="flex items-center p-2 rounded-lg hover:bg-gray-700 whitespace-nowrap"
                             >
                                 <FaCogs className="mr-2"/>
                                 Версия ПО
@@ -69,7 +69,7 @@ const LeftMenu: React.FC = () => {
 
                         <li>
                             <button
-                                className="flex items-center w-full p-2 rounded-lg hover:bg-gray-700 text-left relative"
+                                className="flex items-center w-full p-2 rounded-lg hover:bg-gray-700 text-left relative whitespace-nowrap"
                                 onClick={toggleSections}
                             >
                                 <FaBars className="mr-2"/>
@@ -86,7 +86,7 @@ const LeftMenu: React.FC = () => {
                                     <li key={section.id}>
                                         <Link
                                             to={`/building/sections/${section.id}`}
-                                            className="flex items-center p-2 pl-8 rounded-lg hover:bg-gray-700"
+                                            className="flex items-center p-2 pl-8 rounded-lg hover:bg-gray-700 whitespace-nowrap"
                                         >
                                             <FaBars className="mr-2"/>
                                             {section.label}
@@ -98,7 +98,7 @@ const LeftMenu: React.FC = () => {
 
                         <li>
                             <button
-                                className="flex items-center w-full p-2 rounded-lg hover:bg-gray-700 text-left relative"
+                                className="flex items-center w-full p-2 rounded-lg hover:bg-gray-700 text-left relative whitespace-nowrap"
                                 onClick={toggleThermalCircuits}
                             >
                                 <FaThermometerHalf className="mr-2"/>
@@ -115,7 +115,7 @@ const LeftMenu: React.FC = () => {
                                     <li key={circuit.id}>
                                         <Link
                                             to={`/building/thermal-circuits/${circuit.id}`}
-                                            className="flex items-center p-2 pl-8 rounded-lg hover:bg-gray-700"
+                                            className="flex items-center p-2 pl-8 rounded-lg hover:bg-gray-700 whitespace-nowrap"
                                         >
                                             <FaThermometerHalf className="mr-2"/>
                                             {circuit.label}
@@ -127,7 +127,7 @@ const LeftMenu: React.FC = () => {
 
                         <li>
                             <button
-                                className="flex items-center w-full p-2 rounded-lg hover:bg-gray-700 text-left relative"
+                                className="flex items-center w-full p-2 rounded-lg hover:bg-gray-700 text-left relative whitespace-nowrap"
                                 onClick={toggleDevices}
                             >
                                 <FaTools className="mr-2"/>
@@ -143,7 +143,7 @@ const LeftMenu: React.FC = () => {
                                 <li>
                                     <Link
                                         to="/building/devices/sensors"
-                                        className="flex items-center p-2 pl-8 rounded-lg hover:bg-gray-700"
+                                        className="flex items-center p-2 pl-8 rounded-lg hover:bg-gray-700 whitespace-nowrap"
                                     >
                                         <FaBug className="mr-2"/>
                                         Датчики
@@ -152,7 +152,7 @@ const LeftMenu: React.FC = () => {
                                 <li>
                                     <Link
                                         to="/building/devices/controllers"
-                                        className="flex items-center p-2 pl-8 rounded-lg hover:bg-gray-700"
+                                        className="flex items-center p-2 pl-8 rounded-lg hover:bg-gray-700 whitespace-nowrap"
                                     >
                                         <FaMicrochip className="mr-2"/>
                                         Контроллеры
@@ -164,7 +164,7 @@ const LeftMenu: React.FC = () => {
                         <li>
                             <Link
                                 to="/building/incidents"
-                                className="flex items-center p-2 rounded-lg hover:bg-gray-700"
+                                className="flex items-center p-2 rounded-lg hover:bg-gray-700 whitespace-nowrap"
                             >
                                 <FaExclamationTriangle className="mr-2"/>
                                 Инциденты
@@ -174,7 +174,7 @@ const LeftMenu: React.FC = () => {
                         <li>
                             <Link
                                 to="/building/users"
-                                className="flex items-center p-2 rounded-lg hover:bg-gray-700"
+                                className="flex items-center p-2 rounded-lg hover:bg-gray-700 whitespace-nowrap"
                             >
                                 <FaUser className="mr-2"/>
                                 Пользователи
