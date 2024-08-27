@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import DefaultLayout from "../../layouts/DefaultLayout.tsx";
 import Label from "../../components/Text/Label.tsx";
 import EditButton from "../../components/Buttons/EditButton.tsx";
+import AddButton from "../../components/Buttons/AddButton.tsx";
 import ObjectTable from "../../components/Tables/ObjectTable.tsx";
 import ChildElementsTable from "../../components/Tables/ChildElementsTable.tsx";
 import { fetchBuilding } from '../../api/buildingApi';
@@ -41,11 +42,11 @@ const BuildingPage = () => {
                         ButtonComponent={EditButton}
                     />
                 </div>
-                <div className="w-1/2 flex justify-end">
+                <div className="w-1/2 flex justify-end mt-8">
                     <ChildElementsTable
                         infoData={listTableData}
                         tableTitle="Секции"
-                        buttonLabel="Добавить секцию"
+                        ButtonComponent={AddButton}
                     />
                 </div>
             </div>
