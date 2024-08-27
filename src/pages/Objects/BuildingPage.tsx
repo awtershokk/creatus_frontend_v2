@@ -7,22 +7,17 @@ import ObjectTable from "../../components/Tables/ObjectTable.tsx";
 import ChildElementsTable from "../../components/Tables/ChildElementsTable.tsx";
 import ItemTable from '../../components/Tables/ItemTable.tsx';
 import { fetchBuilding, fetchResponsiblePersons } from '../../api/buildingApi';
+import { fetchSections } from '../../api/sectionsApi';
+import { fetchThermalCircuits} from "../../api/thermalCircuitsApi.ts";
 import { ResponsiblePerson } from '../../models/ResponsiblePerson';
+import Link from "../../components/Text/Link"
 
 const BuildingPage = () => {
     const [building, setBuilding] = useState<Array<{ id: number, title: string, value: string | number }>>([]);
     const [responsiblePersons, setResponsiblePersons] = useState<ResponsiblePerson[]>([]); // State for responsible persons
+    const [sections, setSections] = useState<Array<{ id: number, title: string, value: string, value2: string }>>([]);
+    const [thermalCircuits, setThermalCircuits] = useState<Array<{ id: number, title: string, value: string, value2: string }>>([]);
     const buildingId = 1;
-
-    const listTableData = [
-        { id: 1, title: 'Секция 1', value: 'Свойства', value2: 'Удалить' },
-        { id: 2, title: 'Секция 2', value: 'Свойства', value2: 'Удалить' },
-    ];
-
-    const listTableData2 = [
-        { id: 1, title: 'Тепловой контур 1', value: 'Свойства', value2: 'Удалить' },
-        { id: 2, title: 'Тепловой контур 2', value: 'Свойства', value2: 'Удалить' },
-    ];
 
     useEffect(() => {
         const getData = async () => {
@@ -35,8 +30,28 @@ const BuildingPage = () => {
                 const responsiblePersonsData = await fetchResponsiblePersons(buildingId);
                 setResponsiblePersons(responsiblePersonsData);
 
+                const sectionsData = await fetchSections(buildingId);
+                const formattedSections = sectionsData.map(section => ({
+                    id: section.id,
+                    title: section.label,
+                    value: 'Свойства',
+                    value2: 'Удалить',
+                    to: `section/${section.id}`
+                }));
+                setSections(formattedSections);
+
+                const thermalcircuitsData = await fetchThermalCircuits(buildingId);
+                const formattedThermalCircuits = thermalcircuitsData.map(thermalCircuit => ({
+                    id: thermalCircuit.id,
+                    title: thermalCircuit.label,
+                    value: 'Свойства',
+                    value2: 'Удалить',
+                    to: `thermalCircuit/${thermalCircuit.id}`
+                }));
+                setThermalCircuits(formattedThermalCircuits);
+
             } catch (error) {
-                console.error('Error fetching building data:', error);
+                console.error('Ошибка получения данных:', error);
             }
         };
 
@@ -64,15 +79,17 @@ const BuildingPage = () => {
                 </div>
                 <div className="w-full flex flex-col items-end mt-8 mr-8">
                     <ChildElementsTable
-                        infoData={listTableData}
+                        infoData={sections}
                         tableTitle="Секции"
                         ButtonComponent={AddButton}
+                        LinkComponent={Link}
                     />
                     <div className='mt-3'>
                         <ChildElementsTable
-                            infoData={listTableData2}
+                            infoData={thermalCircuits}
                             tableTitle="Тепловые контуры"
                             ButtonComponent={AddButton}
+                            LinkComponent={Link}
                         />
                     </div>
                 </div>
