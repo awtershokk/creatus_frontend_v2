@@ -19,7 +19,7 @@ const RoomPage = () => {
                 const roomData = await fetchRoom(roomId);
                 setRoom(roomData);
                 const labelItem = roomData.find(item => item.title === 'Наименование');
-                localStorage.setItem('room', JSON.stringify({ label: labelItem?.value, icon: 'FaDoorClosed' }));
+                localStorage.setItem('room', JSON.stringify({ label: labelItem?.value, icon: 'FaDoorClosed', id: labelItem?.id }));
 
             } catch (error) {
                 console.error('Ошибка получения данных:', error);

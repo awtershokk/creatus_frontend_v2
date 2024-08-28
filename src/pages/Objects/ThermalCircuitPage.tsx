@@ -21,7 +21,7 @@ const ThermalCircuitPage = () => {
                 const thermalCircuitData = await fetchThermalCircuit(thermalCircuitId);
                 setThermalCircuit(thermalCircuitData);
                 const labelItem = thermalCircuitData.find(item => item.title === 'Наименование');
-                localStorage.setItem('thermalCircuit', JSON.stringify({ label: labelItem?.value, icon: 'FaThermometerHalf' }));
+                localStorage.setItem('thermalCircuit', JSON.stringify({ label: labelItem?.value, icon: 'FaThermometerHalf', id: labelItem?.id }));
 
                 const roomsData = await fetchRoomsByThermalCircuit(thermalCircuitId);
                 const formattedRooms = roomsData.map(room => ({

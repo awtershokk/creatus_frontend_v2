@@ -21,7 +21,7 @@ const SectionPage = () => {
                 const sectionData = await fetchSection(sectionId);
                 setSection(sectionData);
                 const labelItem = sectionData.find(item => item.title === 'Наименование');
-                localStorage.setItem('section', JSON.stringify({ label: labelItem?.value, icon: 'FaBars' }));
+                localStorage.setItem('section', JSON.stringify({ label: labelItem?.value, icon: 'FaBars', id: labelItem?.id }));
 
                 const roomsData = await fetchRoomsBySection(sectionId);
                 const formattedRooms = roomsData.map(room => ({
