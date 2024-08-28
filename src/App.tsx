@@ -8,6 +8,7 @@ import LoadingPage from './pages/Error/LoadingPage.tsx';
 import BuildingPage from "./pages/Objects/BuildingPage.tsx";
 import SectionPage from "./pages/Objects/SectionPage.tsx";
 import ThermalCircuitPage from "./pages/Objects/ThermalCircuitPage.tsx";
+import UpdatePage from "./pages/Update/UpdatePage.tsx";
 const App = () => {
     const { refresh } = useAuth();
     const [loading, setLoading] = useState(true);
@@ -35,6 +36,7 @@ const App = () => {
                 <Route path="/no-access" element={<NoAccessPage />} />
                 <Route element={<ProtectedRoute allowedRoles={[2, 3]} />}>
                     <Route path="/building" element={<BuildingPage />} />
+                    <Route path="/building/updates" element={<UpdatePage/>}/>
                     <Route path="/building/section/:sectionId" element={<SectionPage />} />
                     <Route path="/building/thermalCircuit/:thermalCircuitId" element={<ThermalCircuitPage />} />
                 </Route>

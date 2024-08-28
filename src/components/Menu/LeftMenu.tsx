@@ -35,7 +35,12 @@ const LeftMenu: React.FC = () => {
         };
 
         const checkForUpdates = () => {
-            setHasUpdates(true);
+            const currentVersionId = localStorage.getItem('currentVersionId');
+            const latestVersionId = localStorage.getItem('latestVersionId');
+
+            if (currentVersionId && latestVersionId) {
+                setHasUpdates(parseInt(currentVersionId, 10) < parseInt(latestVersionId, 10));
+            }
         };
 
         loadSections();
@@ -72,10 +77,12 @@ const LeftMenu: React.FC = () => {
                             >
                                 <FaCogs className="mr-2" />
                                 Версия ПО
-                                <FaBell
-                                    className={`ml-2 text-green-500 ${isSwinging ? 'animate-swingTop' : ''}`}
-                                    title="Есть обновления"
-                                />
+                                {hasUpdates && (
+                                    <FaBell
+                                        className={`ml-2 text-green-500 ${isSwinging ? 'animate-swingTop' : ''}`}
+                                        title="Есть обновления"
+                                    />
+                                )}
                             </Link>
                         </li>
 
