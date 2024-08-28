@@ -26,7 +26,7 @@ const ChildElementsTable: React.FC<ChildElementsTableProps> = ({ infoData, table
                                 <div className="border-l border-gray-300 h-auto mx-2"></div>
                                 <div className="w-1/2 p-2 flex justify-between">
 
-                                    <LinkComponent to={item.to} text={item.value} className="text-blue-900 underline" />
+                                    <LinkComponent to={item.to} text={item.value} className="text-gray-800 underline" />
                                     <button
                                         className="text-red-600 underline"
                                         onClick={() => {/*  */}}

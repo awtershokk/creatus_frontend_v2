@@ -43,6 +43,7 @@ const LeftMenu: React.FC = () => {
             }
         };
 
+
         loadSections();
         loadThermalCircuits();
         checkForUpdates();

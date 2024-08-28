@@ -36,12 +36,12 @@ const Breadcrumbs = () => {
                                 )}
                                 {isLast ? (
                                     <span className="text-gray-300 flex items-center inline-flex">
-                                        {Icon && <Icon className="mr-2" />}
+                                        {Icon && <Icon className="mr-1" />}
                                         {label}
                                     </span>
                                 ) : (
                                     <Link to={to} className="text-white hover:underline flex items-center inline-flex">
-                                        {Icon && <Icon className="mr-2" />}
+                                        {Icon && <Icon className="mr-1" />}
                                         {label}
                                     </Link>
                                 )}

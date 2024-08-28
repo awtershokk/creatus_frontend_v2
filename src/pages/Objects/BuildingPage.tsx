@@ -15,7 +15,7 @@ import IconButton from "../../components/Buttons/IconButton.tsx";
 
 const BuildingPage = () => {
     const [building, setBuilding] = useState<Array<{ id: number, title: string, value: string | number }>>([]);
-    const [responsiblePersons, setResponsiblePersons] = useState<ResponsiblePerson[]>([]); // State for responsible persons
+    const [responsiblePersons, setResponsiblePersons] = useState<ResponsiblePerson[]>([]);
     const [sections, setSections] = useState<Array<{ id: number, title: string, value: string, value2: string }>>([]);
     const [thermalCircuits, setThermalCircuits] = useState<Array<{ id: number, title: string, value: string, value2: string }>>([]);
     const buildingId = 1;
@@ -35,8 +35,8 @@ const BuildingPage = () => {
                 const formattedSections = sectionsData.map(section => ({
                     id: section.id,
                     title: section.label,
-                    value: 'Свойства',
-                    value2: 'Удалить',
+                    properties: 'Свойства',
+                    delete: 'Удалить',
                     to: `section/${section.id}`
                 }));
                 setSections(formattedSections);
