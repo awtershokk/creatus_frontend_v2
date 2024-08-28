@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import DefaultLayout from "../../layouts/DefaultLayout.tsx";
 import UpdateButton from "../../components/Buttons/UpdateButton.tsx";
+import Label from "../../components/Text/Label.tsx";
 
 
 interface Update {
@@ -75,7 +76,6 @@ const UpdatePage: React.FC = () => {
 
         localStorage.setItem('updates', JSON.stringify({ label: "Версия ПО", icon: 'FaDownload' }));
 
-        // Проверка обновлений
         const currentVersionId = localStorage.getItem('currentVersionId');
         const latestVersionId = localStorage.getItem('latestVersionId');
 
@@ -90,27 +90,26 @@ const UpdatePage: React.FC = () => {
     return (
         <DefaultLayout>
             <div className="max-w-3xl">
-                <h1 className="text-2xl font-semibold mb-4 text-gray-700">История обновлений приложения</h1>
+               <Label text='История обновлений'/>
 
-                <div className="mb-6">
-                    <h2 className="text-xl font-semibold text-gray-700">Текущая версия</h2>
-                    <p className="text-lg text-gray-500">{`Версия ${currentVersion.version} от ${currentVersion.date}`}</p>
-
+                <div className="mb-6 mt-4">
+                    <h2 className="text-xl font-semibold text-black">Текущая версия</h2>
+                    <p className="text-lg text-black">{`Версия ${currentVersion.version} от ${currentVersion.date}`}</p>
 
                     {hasUpdates && (
-                        <div className="mt-4">
+                        <div className="mt-1">
                             <UpdateButton label={`Обновить до версии ${latestVersionForProp}`} onClick={() => {
                             }}/>
                         </div>
                     )}
                 </div>
 
-                <h2 className="text-xl font-semibold mb-4 text-gray-700">История версий</h2>
+                <h2 className="text-xl font-semibold mb-2 text-black">История версий</h2>
                 <div className="space-y-2">
                     {reversedUpdates.map((update) => (
                         <div key={update.version} className="border rounded-md border-black">
                             <button
-                                className="w-full text-left px-4 py-2 flex justify-between items-center text-gray-600"
+                                className="w-full text-left px-4 py-2 flex justify-between items-center text-black"
                                 onClick={() => toggleExpand(update.version)}
                             >
                                 <span>{`Версия ${update.version} от ${update.date}`}</span>
@@ -121,7 +120,7 @@ const UpdatePage: React.FC = () => {
                                     expanded === update.version && !isClosing ? 'max-h-[500px]' : 'max-h-0'
                                 }`}
                             >
-                                <div className="px-4 py-2 border-t border-black bg-gray-200 text-black">
+                                <div className="px-4 py-2 border-t border-black text-black bg-gray-100">
                                     <p>{update.description}</p>
                                     <ul className="list-disc pl-6 mt-2">
                                         {update.changes.map((change, index) => (
