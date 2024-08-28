@@ -8,10 +8,12 @@ import ChildElementsTable from "../../components/Tables/ChildElementsTable.tsx";
 import Link from "../../components/Text/Link"
 import {useParams} from "react-router-dom";
 import {fetchThermalCircuit} from "../../api/thermalCircuitsApi.ts";
+import {fetchRoomsBySection, fetchRoomsByThermalCircuit} from "../../api/roomApi.ts";
 
 const ThermalCircuitPage = () => {
     const { thermalCircuitId } = useParams();
     const [thermalCircuit, setThermalCircuit] = useState<Array<{ id: number, title: string, value: string | number }>>([]);
+    const [rooms, setRooms] = useState<Array<{ id: number, title: string, value: string, value2: string }>>([]);
 
     useEffect(() => {
         const getData = async () => {
@@ -20,6 +22,16 @@ const ThermalCircuitPage = () => {
                 setThermalCircuit(thermalCircuitData);
                 const labelItem = thermalCircuitData.find(item => item.title === 'Наименование');
                 localStorage.setItem('thermalCircuit', JSON.stringify({ label: labelItem?.value, icon: 'FaThermometerHalf' }));
+
+                const roomsData = await fetchRoomsByThermalCircuit(thermalCircuitId);
+                const formattedRooms = roomsData.map(room => ({
+                    id: room.id,
+                    title: room.label,
+                    properties: 'Свойства',
+                    delete: 'Удалить',
+                    to: `room/${room.id}`
+                }));
+                setRooms(formattedRooms);
 
             } catch (error) {
                 console.error('Ошибка получения данных:', error);
@@ -40,14 +52,14 @@ const ThermalCircuitPage = () => {
                         ButtonComponent={EditButton}
                     />
                 </div>
-                {/*<div className="w-full flex flex-col items-end mt-8 mr-8">*/}
-                {/*    <ChildElementsTable*/}
-                {/*        infoData={sections}*/}
-                {/*        tableTitle="Секции"*/}
-                {/*        ButtonComponent={AddButton}*/}
-                {/*        LinkComponent={Link}*/}
-                {/*    />*/}
-                {/*</div>*/}
+                <div className="w-full flex flex-col items-end mt-8 mr-8">
+                    <ChildElementsTable
+                        infoData={rooms}
+                        tableTitle="Помещения"
+                        ButtonComponent={AddButton}
+                        LinkComponent={Link}
+                    />
+                </div>
             </div>
         </DefaultLayout>
     );

@@ -72,10 +72,10 @@ const LeftMenu: React.FC = () => {
                             >
                                 <FaCogs className="mr-2" />
                                 Версия ПО
-                                <FaBell
-                                    className={`ml-2 text-green-500 ${isSwinging ? 'animate-swingTop' : ''}`}
-                                    title="Есть обновления"
-                                />
+                                {/*<FaBell*/}
+                                {/*    className={`ml-2 text-green-500 ${isSwinging ? 'animate-swingTop' : ''}`}*/}
+                                {/*    title="Есть обновления"*/}
+                                {/*/>*/}
                             </Link>
                         </li>
 

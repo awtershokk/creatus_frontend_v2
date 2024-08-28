@@ -8,6 +8,7 @@ import LoadingPage from './pages/Error/LoadingPage.tsx';
 import BuildingPage from "./pages/Objects/BuildingPage.tsx";
 import SectionPage from "./pages/Objects/SectionPage.tsx";
 import ThermalCircuitPage from "./pages/Objects/ThermalCircuitPage.tsx";
+import RoomPage from "./pages/Objects/RoomPage.tsx";
 const App = () => {
     const { refresh } = useAuth();
     const [loading, setLoading] = useState(true);
@@ -37,6 +38,8 @@ const App = () => {
                     <Route path="/building" element={<BuildingPage />} />
                     <Route path="/building/section/:sectionId" element={<SectionPage />} />
                     <Route path="/building/thermalCircuit/:thermalCircuitId" element={<ThermalCircuitPage />} />
+                    <Route path="/building/section/:sectionId/room/:roomId" element={<RoomPage />} />
+                    <Route path="/building/thermalCircuit/:thermalCircuitId/room/:roomId" element={<RoomPage />} />
                 </Route>
             </Routes>
         </Router>
