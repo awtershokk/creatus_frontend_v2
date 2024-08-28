@@ -2,7 +2,7 @@ import React from 'react';
 
 
 interface ChildElementsTableProps {
-    infoData: { id: number; title: string; value: string; value2: string }[];
+    infoData: { id: number; title: string; properties: string; delete: string }[];
     tableTitle: string;
     ButtonComponent: () => JSX.Element;
     LinkComponent: (props: { to: string; text: string; className?: string }) => JSX.Element;
@@ -26,12 +26,12 @@ const ChildElementsTable: React.FC<ChildElementsTableProps> = ({ infoData, table
                                 <div className="border-l border-gray-300 h-auto mx-2"></div>
                                 <div className="w-1/2 p-2 flex justify-between">
 
-                                    <LinkComponent to={item.to} text={item.value} className="text-gray-800 underline" />
+                                    <LinkComponent to={item.to} text={item.properties} className="text-gray-800 underline" />
                                     <button
                                         className="text-red-600 underline"
                                         onClick={() => {/*  */}}
                                     >
-                                        {item.value2}
+                                        {item.delete}
                                     </button>
                                 </div>
                             </div>

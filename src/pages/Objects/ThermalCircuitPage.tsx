@@ -8,7 +8,7 @@ import ChildElementsTable from "../../components/Tables/ChildElementsTable.tsx";
 import Link from "../../components/Text/Link"
 import {useParams} from "react-router-dom";
 import {fetchThermalCircuit} from "../../api/thermalCircuitsApi.ts";
-import {fetchRoomsBySection, fetchRoomsByThermalCircuit} from "../../api/roomApi.ts";
+import {fetchRoomsByThermalCircuit} from "../../api/roomApi.ts";
 
 const ThermalCircuitPage = () => {
     const { thermalCircuitId } = useParams();

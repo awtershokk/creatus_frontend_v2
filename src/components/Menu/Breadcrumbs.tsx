@@ -4,7 +4,9 @@ import * as Icons from 'react-icons/fa';
 
 const Breadcrumbs = () => {
     const location = useLocation();
+
     const pathnames = location.pathname.split('/').filter(x => x);
+    console.log("Pathnames Array:", pathnames);
 
     const createBreadcrumbPath = (pathnames) => {
         return pathnames.filter(value => isNaN(value));
@@ -15,6 +17,7 @@ const Breadcrumbs = () => {
         return {
             label: data?.label || segment,
             icon: data?.icon ? Icons[data.icon] : null,
+            id: data?.id || null
         };
     };
 
@@ -26,13 +29,19 @@ const Breadcrumbs = () => {
             <div className="container mx-auto px-4 py-2.5 mt-[72px]">
                 <nav className="text-left text-lg leading-6 whitespace-nowrap -z-10 flex items-center">
                     {breadcrumbPath.map((value, index) => {
-                        const to = `/${breadcrumbPath.slice(0, index + 1).join('/')}`;
+                        const { label, icon: Icon, id } = getBreadcrumbData(value);
+
+
+                        const to = id
+                            ? `/${breadcrumbPath.slice(0, index + 1).join('/')}/${id}`
+                            : `/${breadcrumbPath.slice(0, index + 1).join('/')}`;
+
                         const isLast = index === breadcrumbPath.length - 1;
-                        const { label, icon: Icon } = getBreadcrumbData(value);
+
                         return (
                             <React.Fragment key={to}>
                                 {index > 0 && (
-                                    <span className="text-gray-300 mx-2 ">/</span>
+                                    <span className="text-gray-300 mx-2">/</span>
                                 )}
                                 {isLast ? (
                                     <span className="text-gray-300 flex items-center inline-flex">
