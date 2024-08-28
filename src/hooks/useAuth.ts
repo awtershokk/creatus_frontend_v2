@@ -1,6 +1,15 @@
+
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState, AppDispatch } from '../store/store.ts';
 import { loginUser, logoutUser, refreshToken } from '../store/slices/authSlice';
+import {jwtDecode} from 'jwt-decode';
+
+const isTokenNearExpiration = (token: string) => {
+    const decoded: any = jwtDecode(token);
+    const currentTime = Date.now() / 1000;
+    const expirationTime = decoded.exp;
+    return expirationTime - currentTime < 300;
+};
 
 export const useAuth = () => {
     const dispatch = useDispatch<AppDispatch>();
@@ -17,7 +26,9 @@ export const useAuth = () => {
     };
 
     const refresh = async () => {
-        await dispatch(refreshToken());
+        if (user && isTokenNearExpiration(user.token)) {
+            await dispatch(refreshToken());
+        }
     };
 
     return {

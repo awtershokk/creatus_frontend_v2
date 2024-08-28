@@ -1,9 +1,11 @@
+
 import { useState, useEffect } from 'react';
 import { useAuth } from '../../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
+
 const LoginForm = () => {
-    const { login, error, status, user } = useAuth();
+    const { login, error, status, user, refresh } = useAuth();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
@@ -20,6 +22,13 @@ const LoginForm = () => {
         }
     }, [user, navigate]);
 
+    useEffect(() => {
+        const interval = setInterval(() => {
+            refresh();
+        }, 5 * 60 * 1000); // Проверяем токен каждые 5 минут
+        return () => clearInterval(interval);
+    }, [user, refresh]);
+
     const handleTogglePasswordVisibility = () => {
         setShowPassword(!showPassword);
     };
@@ -32,7 +41,6 @@ const LoginForm = () => {
                 autoComplete="off"
             >
                 <h2 className="text-2xl font-bold mb-6 text-center text-gray-900">Вход в систему SmartHeat</h2>
-
 
                 <input type="text" name="hiddenUsername" className="hidden" autoComplete="username"/>
                 <input type="password" name="hiddenPassword" className="hidden" autoComplete="new-password"/>

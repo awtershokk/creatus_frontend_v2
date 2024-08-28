@@ -45,8 +45,8 @@ const BuildingPage = () => {
                 const formattedThermalCircuits = thermalcircuitsData.map(thermalCircuit => ({
                     id: thermalCircuit.id,
                     title: thermalCircuit.label,
-                    value: 'Свойства',
-                    value2: 'Удалить',
+                    properties: 'Свойства',
+                    delete : 'Удалить',
                     to: `thermalCircuit/${thermalCircuit.id}`
                 }));
                 setThermalCircuits(formattedThermalCircuits);
