@@ -25,7 +25,7 @@ const LoginForm = () => {
     useEffect(() => {
         const interval = setInterval(() => {
             refresh();
-        }, 5 * 60 * 1000); // Проверяем токен каждые 5 минут
+        }, 5 * 60 * 1000);
         return () => clearInterval(interval);
     }, [user, refresh]);
 

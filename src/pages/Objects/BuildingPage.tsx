@@ -10,7 +10,7 @@ import { fetchBuilding, fetchResponsiblePersons } from '../../api/buildingApi';
 import { fetchSections } from '../../api/sectionApi.ts';
 import { fetchThermalCircuits} from "../../api/thermalCircuitApi.ts";
 import { ResponsiblePerson } from '../../models/ResponsiblePerson';
-import Link from "../../components/Text/Link"
+import BlueLink from "../../components/Text/BlueLink.tsx"
 import MiniAddButton from "../../components/Buttons/MiniAddButton.tsx";
 
 const BuildingPage = () => {
@@ -83,14 +83,14 @@ const BuildingPage = () => {
                         infoData={sections}
                         tableTitle="Секции"
                         ButtonComponent={AddButton}
-                        LinkComponent={Link}
+                        LinkComponent={BlueLink}
                     />
                     <div className='mt-3'>
                         <ChildElementsTable
                             infoData={thermalCircuits}
                             tableTitle="Тепловые контуры"
                             ButtonComponent={AddButton}
-                            LinkComponent={Link}
+                            LinkComponent={BlueLink}
                         />
                     </div>
                 </div>

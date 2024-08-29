@@ -62,7 +62,7 @@ const ItemTable = ({ headers, data, sorting = true, sortableColumns = [] }: Item
 
     return (
         <div>
-            <table className="table-auto w-auto min-w-[500px] border-collapse border border-gray-200 mt-2 mb-2">
+            <table className="table-auto w-auto border-collapse border border-gray-200 mt-2 mb-2">
                 <thead className="bg-gray-800 text-white">
                 <tr>
                     {Object.keys(headers).map((header, index) => (

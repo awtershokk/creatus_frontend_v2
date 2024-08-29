@@ -162,7 +162,7 @@ const LeftMenu: React.FC = () => {
                             >
                                 <li>
                                     <Link
-                                        to="/building/devices/sensors"
+                                        to="/building/devices/"
                                         className="flex items-center p-2 pl-8 rounded-lg hover:bg-gray-700 whitespace-nowrap"
                                     >
                                         <FaBug className="mr-2"/>

@@ -1,4 +1,4 @@
-import Link from "../components/Text/Link.tsx";
+import BlueLink from "../components/Text/BlueLink.tsx";
 
 export interface MeasuringPoint {
     id: number;
@@ -28,7 +28,7 @@ export const transformMeasuringPointData = (measuringPoint: MeasuringPoint) => {
     return [
         { id: 1, title: 'Наименование', value: measuringPoint.label },
         { id: 2, title: 'Место установки', value: (
-                <Link
+                <BlueLink
                     to={`/building/thermalCircuit/${measuringPoint.room.thermalCircuit.id}/room/${measuringPoint.room.id}`}
                     text={measuringPoint.room.label}
                 />

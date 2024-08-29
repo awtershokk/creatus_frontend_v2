@@ -5,7 +5,7 @@ import EditButton from "../../components/Buttons/EditButton.tsx";
 import AddButton from "../../components/Buttons/AddButton.tsx";
 import ObjectTable from "../../components/Tables/ObjectTable.tsx";
 import ChildElementsTable from "../../components/Tables/ChildElementsTable.tsx";
-import Link from "../../components/Text/Link"
+import BlueLink from "../../components/Text/BlueLink.tsx"
 import {useParams} from "react-router-dom";
 import {fetchMeasuringPoint} from "../../api/measuringPointApi.ts";
 
@@ -19,7 +19,7 @@ const MeasuringPointPage = () => {
                 const measuringPointData = await fetchMeasuringPoint(measuringPointId);
                 setMeasuringPoint(measuringPointData);
                 const labelItem = measuringPointData.find(item => item.title === 'Наименование');
-                localStorage.setItem('measuringPoint', JSON.stringify({ label: labelItem?.value, icon: 'FaDoorClosed', id: labelItem?.id }));
+                localStorage.setItem('measuringPoint', JSON.stringify({ label: labelItem?.value, icon: 'FaMapMarkerAlt', id: labelItem?.id }));
             } catch (error) {
                 console.error('Ошибка получения данных:', error);
             }
@@ -44,7 +44,7 @@ const MeasuringPointPage = () => {
                 {/*        infoData={measuringPoints}*/}
                 {/*        tableTitle="Точки измеерения"*/}
                 {/*        ButtonComponent={AddButton}*/}
-                {/*        LinkComponent={Link}*/}
+                {/*        LinkComponent={BlueLink}*/}
                 {/*    />*/}
                 {/*</div>*/}
             </div>

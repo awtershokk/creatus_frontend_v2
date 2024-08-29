@@ -5,7 +5,7 @@ import EditButton from "../../components/Buttons/EditButton.tsx";
 import AddButton from "../../components/Buttons/AddButton.tsx";
 import ObjectTable from "../../components/Tables/ObjectTable.tsx";
 import ChildElementsTable from "../../components/Tables/ChildElementsTable.tsx";
-import Link from "../../components/Text/Link"
+import BlueLink from "../../components/Text/BlueLink.tsx"
 import {useParams} from "react-router-dom";
 import {fetchRoom} from "../../api/roomApi.ts";
 import {fetchMeasuringPoints} from "../../api/measuringPointApi.ts";
@@ -59,7 +59,7 @@ const RoomPage = () => {
                         infoData={measuringPoints}
                         tableTitle="Точки измеерения"
                         ButtonComponent={AddButton}
-                        LinkComponent={Link}
+                        LinkComponent={BlueLink}
                     />
                 </div>
             </div>

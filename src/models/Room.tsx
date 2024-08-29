@@ -1,4 +1,4 @@
-import Link from "../components/Text/Link.tsx";
+import BlueLink from "../components/Text/BlueLink.tsx";
 
 export interface Room {
     id: number;
@@ -29,10 +29,10 @@ export const transformRoomData = (room: Room) => {
     return [
         { id: 1, title: 'Наименование', value: room.label },
         { id: 2, title: 'Секция', value: (
-                <Link to={`/building/section/${room.section.id}`} text={room.section.label} />
+                <BlueLink to={`/building/section/${room.section.id}`} text={room.section.label} />
 )},
     { id: 3, title: 'Тепловой контур', value: (
-            <Link to={`/building/thermalCircuit/${room.section.id}`} text={room.thermalCircuit.label} />
+            <BlueLink to={`/building/thermalCircuit/${room.section.id}`} text={room.thermalCircuit.label} />
     )},
     { id: 4, title: 'Этаж', value: room.floor },
     { id: 5, title: 'Ориентация окон', value: room.windowOrientation.label },

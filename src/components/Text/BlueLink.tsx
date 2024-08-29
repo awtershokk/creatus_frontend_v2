@@ -6,7 +6,7 @@ type LinkProps = {
     className?: string;
 };
 
-const Link = ({ to, text, className }: LinkProps) => {
+const BlueLink = ({ to, text, className }: LinkProps) => {
     return (
         <RouterLink to={to} className={`${className} text-blue-500 hover:underline`}>
             {text}
@@ -14,4 +14,4 @@ const Link = ({ to, text, className }: LinkProps) => {
     );
 };
 
-export default Link;
+export default BlueLink;
