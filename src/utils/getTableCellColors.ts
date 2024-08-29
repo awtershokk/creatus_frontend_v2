@@ -35,6 +35,15 @@ export const applyCellColor = (value: any, columnName: string): React.CSSPropert
                 cellStyle.backgroundColor = 'rgba(255, 255, 0, 0.3)';
             }
         }
+    } else if (columnName === 'criticality') {
+        const criticalityStatus = value;
+        if (criticalityStatus === 'Высокая') {
+            cellStyle.backgroundColor = 'rgb(234,54,54)';
+        } else if (criticalityStatus === 'Средняя') {
+            cellStyle.backgroundColor = 'rgba(215,6,53,0.68)';
+        } else if (criticalityStatus === 'Предупреждение') {
+            cellStyle.backgroundColor = 'rgb(255,240,50)';
+        }
     }
 
     return cellStyle;

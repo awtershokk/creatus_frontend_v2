@@ -68,7 +68,7 @@ const ItemTable = ({ headers, data, sorting = true, sortableColumns = [] }: Item
                     {Object.keys(headers).map((header, index) => (
                         <th
                             key={index}
-                            className={`p-1.5 border border-gray-300 cursor-pointer text-left ${
+                            className={`p-1.5 border border-gray-300 text-left ${
                                 sortableColumns.includes(header) ? '' : 'cursor-default'
                             }`}
                             onClick={() => handleSort(header)}
