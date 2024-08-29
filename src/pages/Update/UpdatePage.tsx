@@ -74,7 +74,7 @@ const UpdatePage: React.FC = () => {
         localStorage.setItem('currentVersionId', currentVersion.id.toString());
         localStorage.setItem('latestVersionId', latestUpdate.id.toString());
 
-        localStorage.setItem('updates', JSON.stringify({ label: "Версия ПО", icon: 'FaDownload' }));
+        localStorage.setItem('updates', JSON.stringify({ label: "Версия ПО", icon: 'FaCogs' }));
 
         const currentVersionId = localStorage.getItem('currentVersionId');
         const latestVersionId = localStorage.getItem('latestVersionId');
