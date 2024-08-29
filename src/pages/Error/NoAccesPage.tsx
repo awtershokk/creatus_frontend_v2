@@ -1,4 +1,4 @@
-import Link from "../../components/Text/Link";
+import BlueLink from "../../components/Text/BlueLink.tsx";
 
 const NoAccessPage = () => {
     return (
@@ -6,7 +6,7 @@ const NoAccessPage = () => {
             <div className="bg-white p-6 rounded shadow-md w-80 text-center">
                 <h2 className="text-2xl font-bold  text-black">Нет доступа</h2>
                 <p className="text-black">У вас нет прав на просмотр данной страницы.</p>
-                <Link to="/dashboard/" text="Вернуться на главную." />
+                <BlueLink to="/dashboard/" text="Вернуться на главную." />
             </div>
         </div>
     );

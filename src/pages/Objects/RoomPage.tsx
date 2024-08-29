@@ -5,13 +5,16 @@ import EditButton from "../../components/Buttons/EditButton.tsx";
 import AddButton from "../../components/Buttons/AddButton.tsx";
 import ObjectTable from "../../components/Tables/ObjectTable.tsx";
 import ChildElementsTable from "../../components/Tables/ChildElementsTable.tsx";
-import Link from "../../components/Text/Link"
+import BlueLink from "../../components/Text/BlueLink.tsx"
 import {useParams} from "react-router-dom";
 import {fetchRoom} from "../../api/roomApi.ts";
+import {fetchMeasuringPoints} from "../../api/measuringPointApi.ts";
 
 const RoomPage = () => {
     const { roomId } = useParams();
     const [room, setRoom] = useState<Array<{ id: number, title: string, value: string | number }>>([]);
+    const [measuringPoints, setMeasuringPoints] = useState<Array<{ id: number, title: string, value: string, value2: string }>>([]);
+
 
     useEffect(() => {
         const getData = async () => {
@@ -19,7 +22,18 @@ const RoomPage = () => {
                 const roomData = await fetchRoom(roomId);
                 setRoom(roomData);
                 const labelItem = roomData.find(item => item.title === 'Наименование');
-                localStorage.setItem('room', JSON.stringify({ label: labelItem?.value, icon: 'FaDoorClosed', id: labelItem?.id }));
+                localStorage.setItem('room', JSON.stringify({ label: labelItem?.value, icon: 'FaDoorClosed', id: parseInt(roomId) }));
+
+                const measuringPointsData = await fetchMeasuringPoints(roomId);
+                const formattedMeasuringPoints = measuringPointsData.map(measuringPoint => ({
+                    id: measuringPoint.id,
+                    title: measuringPoint.label,
+                    properties: 'Свойства',
+                    delete: 'Удалить',
+                    to: `measuringPoint/${measuringPoint.id}`
+                }));
+                setMeasuringPoints(formattedMeasuringPoints);
+
 
             } catch (error) {
                 console.error('Ошибка получения данных:', error);
@@ -40,14 +54,14 @@ const RoomPage = () => {
                         ButtonComponent={EditButton}
                     />
                 </div>
-                {/*<div className="w-full flex flex-col items-end mt-8 mr-8">*/}
-                {/*    <ChildElementsTable*/}
-                {/*        infoData={rooms}*/}
-                {/*        tableTitle="Помещения"*/}
-                {/*        ButtonComponent={AddButton}*/}
-                {/*        LinkComponent={Link}*/}
-                {/*    />*/}
-                {/*</div>*/}
+                <div className="w-full flex flex-col items-end mt-8 mr-8">
+                    <ChildElementsTable
+                        infoData={measuringPoints}
+                        tableTitle="Точки измеерения"
+                        ButtonComponent={AddButton}
+                        LinkComponent={BlueLink}
+                    />
+                </div>
             </div>
         </DefaultLayout>
     );

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FaUser, FaTools, FaChevronDown, FaBug, FaCogs, FaExclamationTriangle, FaMicrochip, FaBars, FaThermometerHalf, FaBell } from 'react-icons/fa';
-import { fetchSections } from '../../api/sectionsApi';
-import { fetchThermalCircuits } from '../../api/thermalCircuitsApi';
+import { fetchSections } from '../../api/sectionApi.ts';
+import { fetchThermalCircuits } from '../../api/thermalCircuitApi.ts';
 
 const LeftMenu: React.FC = () => {
     const [isDevicesOpen, setIsDevicesOpen] = useState(false);
@@ -78,12 +78,12 @@ const LeftMenu: React.FC = () => {
                             >
                                 <FaCogs className="mr-2" />
                                 Версия ПО
-                                {hasUpdates && (
-                                    <FaBell
-                                        className={`ml-2 text-green-500 ${isSwinging ? 'animate-swingTop' : ''}`}
-                                        title="Есть обновления"
-                                    />
-                                )}
+                                {/*{hasUpdates && (*/}
+                                {/*    <FaBell*/}
+                                {/*        className={`ml-2 text-green-500 ${isSwinging ? 'animate-swingTop' : ''}`}*/}
+                                {/*        title="Есть обновления"*/}
+                                {/*    />*/}
+                                {/*)}  */}
                             </Link>
                         </li>
 
@@ -162,7 +162,7 @@ const LeftMenu: React.FC = () => {
                             >
                                 <li>
                                     <Link
-                                        to="/building/devices/sensors"
+                                        to="/building/devices/"
                                         className="flex items-center p-2 pl-8 rounded-lg hover:bg-gray-700 whitespace-nowrap"
                                     >
                                         <FaBug className="mr-2"/>

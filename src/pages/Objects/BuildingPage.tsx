@@ -7,11 +7,11 @@ import ObjectTable from "../../components/Tables/ObjectTable.tsx";
 import ChildElementsTable from "../../components/Tables/ChildElementsTable.tsx";
 import ItemTable from '../../components/Tables/ItemTable.tsx';
 import { fetchBuilding, fetchResponsiblePersons } from '../../api/buildingApi';
-import { fetchSections } from '../../api/sectionsApi';
-import { fetchThermalCircuits} from "../../api/thermalCircuitsApi.ts";
+import { fetchSections } from '../../api/sectionApi.ts';
+import { fetchThermalCircuits} from "../../api/thermalCircuitApi.ts";
 import { ResponsiblePerson } from '../../models/ResponsiblePerson';
-import Link from "../../components/Text/Link"
-import IconButton from "../../components/Buttons/IconButton.tsx";
+import BlueLink from "../../components/Text/BlueLink.tsx"
+import MiniAddButton from "../../components/Buttons/MiniAddButton.tsx";
 
 const BuildingPage = () => {
     const [building, setBuilding] = useState<Array<{ id: number, title: string, value: string | number }>>([]);
@@ -83,14 +83,14 @@ const BuildingPage = () => {
                         infoData={sections}
                         tableTitle="Секции"
                         ButtonComponent={AddButton}
-                        LinkComponent={Link}
+                        LinkComponent={BlueLink}
                     />
                     <div className='mt-3'>
                         <ChildElementsTable
                             infoData={thermalCircuits}
                             tableTitle="Тепловые контуры"
                             ButtonComponent={AddButton}
-                            LinkComponent={Link}
+                            LinkComponent={BlueLink}
                         />
                     </div>
                 </div>
@@ -98,9 +98,9 @@ const BuildingPage = () => {
             </div>
             <div className="mt-6 mb-4">
                 <div className="mt-4 flex items-center justify-between">
-                    <div className="flex items-center space-x-1">
+                    <div className="flex items-center ">
                         <Label text="Ответственные лица"/>
-                        <IconButton/>
+                        <MiniAddButton/>
                     </div>
                 </div>
 
