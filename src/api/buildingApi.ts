@@ -12,6 +12,15 @@ export const fetchBuilding = async (buildingId: number) => {
     }
 };
 
+export const updateBuilding = async (buildingId: number, updatedBuilding: Building): Promise<Building> => {
+    try {
+        const response = await api.put(`/building/${buildingId}`, updatedBuilding);
+        return response.data.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
 export const fetchResponsiblePersons = async (buildingId: number): Promise<ResponsiblePerson[]> => {
     try {
         const response = await api.get(`/building/allResponsiblePerson/${buildingId}`);

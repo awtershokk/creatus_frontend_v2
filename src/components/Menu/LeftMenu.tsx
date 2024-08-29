@@ -171,7 +171,7 @@ const LeftMenu: React.FC = () => {
                                 </li>
                                 <li>
                                     <Link
-                                        to="/building/devices/controllers"
+                                        to="/building/controllers"
                                         className="flex items-center p-2 pl-8 rounded-lg hover:bg-gray-700 whitespace-nowrap"
                                     >
                                         <FaMicrochip className="mr-2"/>
