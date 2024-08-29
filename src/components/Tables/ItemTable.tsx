@@ -8,9 +8,20 @@ interface ItemTableProps {
     data: Array<Record<string, any>>;
     sorting?: boolean;
     sortableColumns?: string[];
+    headerStyles?: string;
+    rowStyles?: string;
+    cellStyles?: string;
 }
 
-const ItemTable = ({ headers, data, sorting = true, sortableColumns = [] }: ItemTableProps) => {
+const ItemTable = ({
+                       headers,
+                       data,
+                       sorting = true,
+                       sortableColumns = [],
+                       headerStyles = 'bg-gray-800 text-white',
+                       rowStyles = 'border-b border-gray-200 text-black',
+                       cellStyles = 'p-1.5 border border-gray-300 whitespace-nowrap'
+                   }: ItemTableProps) => {
     const [sortedData, setSortedData] = useState(data);
     const [sortConfig, setSortConfig] = useState<{ key: string; direction: 'ascending' | 'descending' }>({
         key: 'date',
@@ -63,13 +74,13 @@ const ItemTable = ({ headers, data, sorting = true, sortableColumns = [] }: Item
     return (
         <div>
             <table className="table-auto w-auto border-collapse border border-gray-200 mt-2 mb-2">
-                <thead className="bg-gray-800 text-white">
+                <thead className={headerStyles}>
                 <tr>
                     {Object.keys(headers).map((header, index) => (
                         <th
                             key={index}
                             className={`p-1.5 border border-gray-300 text-left ${
-                                sortableColumns.includes(header) ? '' : 'cursor-default'
+                                sortableColumns.includes(header) ? 'cursor-pointer' : 'cursor-default'
                             }`}
                             onClick={() => handleSort(header)}
                         >
@@ -80,11 +91,11 @@ const ItemTable = ({ headers, data, sorting = true, sortableColumns = [] }: Item
                 </thead>
                 <tbody>
                 {sortedData.map((item, rowIndex) => (
-                    <tr key={rowIndex} className="border-b border-gray-200 text-black">
+                    <tr key={rowIndex} className={rowStyles}>
                         {Object.entries(item).map(([columnName, value]) => (
                             <td
                                 key={columnName}
-                                className="p-1.5 border border-gray-300 whitespace-nowrap"
+                                className={cellStyles}
                                 style={applyCellColor(value, columnName)}
                             >
                                 {value}

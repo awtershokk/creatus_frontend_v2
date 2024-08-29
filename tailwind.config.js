@@ -7,6 +7,10 @@ export default {
   theme: {
     extend: {
       keyframes: {
+        blink: {
+          '0%': { opacity: '1' },
+          '100%': { opacity: '0.2' },
+        },
         swingTop: {
           '0%': { transform: 'rotate(0deg)', transformOrigin: 'top center' },
           '20%': { transform: 'rotate(-10deg)', transformOrigin: 'top center' },
@@ -17,6 +21,7 @@ export default {
         },
       },
       animation: {
+        blink: 'blink 1s infinite alternate',
         swingTop: 'swingTop 1s ease-in-out infinite',
       },
     },
