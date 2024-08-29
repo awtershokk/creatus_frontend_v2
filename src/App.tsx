@@ -10,6 +10,7 @@ import SectionPage from "./pages/Objects/SectionPage.tsx";
 import ThermalCircuitPage from "./pages/Objects/ThermalCircuitPage.tsx";
 import UpdatePage from "./pages/Update/UpdatePage.tsx";
 import RoomPage from "./pages/Objects/RoomPage.tsx";
+import MeasuringPointPage from "./pages/Objects/MeasuringPointPage.tsx";
 const App = () => {
     const { refresh } = useAuth();
     const [loading, setLoading] = useState(true);
@@ -42,6 +43,8 @@ const App = () => {
                     <Route path="/building/thermalCircuit/:thermalCircuitId" element={<ThermalCircuitPage />} />
                     <Route path="/building/section/:sectionId/room/:roomId" element={<RoomPage />} />
                     <Route path="/building/thermalCircuit/:thermalCircuitId/room/:roomId" element={<RoomPage />} />
+                    <Route path="/building/section/:sectionId/room/:roomId/measuringPoint/:measuringPointId" element={<MeasuringPointPage />} />
+                    <Route path="/building/thermalCircuit/:thermalCircuitId/room/:roomId/measuringPoint/:measuringPointId" element={<MeasuringPointPage />} />
                 </Route>
             </Routes>
         </Router>

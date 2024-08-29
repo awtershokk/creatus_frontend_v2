@@ -7,8 +7,8 @@ import ObjectTable from "../../components/Tables/ObjectTable.tsx";
 import ChildElementsTable from "../../components/Tables/ChildElementsTable.tsx";
 import ItemTable from '../../components/Tables/ItemTable.tsx';
 import { fetchBuilding, fetchResponsiblePersons } from '../../api/buildingApi';
-import { fetchSections } from '../../api/sectionsApi';
-import { fetchThermalCircuits} from "../../api/thermalCircuitsApi.ts";
+import { fetchSections } from '../../api/sectionApi.ts';
+import { fetchThermalCircuits} from "../../api/thermalCircuitApi.ts";
 import { ResponsiblePerson } from '../../models/ResponsiblePerson';
 import Link from "../../components/Text/Link"
 import IconButton from "../../components/Buttons/IconButton.tsx";

@@ -13,7 +13,7 @@ const ProtectedRoute = ({ allowedRoles }: ProtectedRouteProps) => {
 
     useEffect(() => {
 
-        const timer = setTimeout(() => setIsLoading(false), 20);
+        const timer = setTimeout(() => setIsLoading(false), 100);
         return () => clearTimeout(timer);
     }, []);
 

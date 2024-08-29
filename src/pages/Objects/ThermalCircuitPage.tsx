@@ -7,7 +7,7 @@ import ObjectTable from "../../components/Tables/ObjectTable.tsx";
 import ChildElementsTable from "../../components/Tables/ChildElementsTable.tsx";
 import Link from "../../components/Text/Link"
 import {useParams} from "react-router-dom";
-import {fetchThermalCircuit} from "../../api/thermalCircuitsApi.ts";
+import {fetchThermalCircuit} from "../../api/thermalCircuitApi.ts";
 import {fetchRoomsByThermalCircuit} from "../../api/roomApi.ts";
 
 const ThermalCircuitPage = () => {

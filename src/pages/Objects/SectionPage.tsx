@@ -5,7 +5,7 @@ import EditButton from "../../components/Buttons/EditButton.tsx";
 import AddButton from "../../components/Buttons/AddButton.tsx";
 import ObjectTable from "../../components/Tables/ObjectTable.tsx";
 import ChildElementsTable from "../../components/Tables/ChildElementsTable.tsx";
-import {fetchSection} from '../../api/sectionsApi';
+import {fetchSection} from '../../api/sectionApi.ts';
 import Link from "../../components/Text/Link"
 import {useParams} from "react-router-dom";
 import {fetchRoomsBySection} from "../../api/roomApi.ts";
