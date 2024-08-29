@@ -9,7 +9,7 @@ import Link from "../../components/Text/Link"
 import {useParams} from "react-router-dom";
 import {fetchMeasuringPoint} from "../../api/measuringPointApi.ts";
 
-const RoomPage = () => {
+const MeasuringPointPage = () => {
     const { measuringPointId } = useParams();
     const [measuringPoint, setMeasuringPoint] = useState<Array<{ id: number, title: string, value: string | number }>>([]);
 
@@ -52,4 +52,4 @@ const RoomPage = () => {
     );
 };
 
-export default RoomPage;
+export default MeasuringPointPage;

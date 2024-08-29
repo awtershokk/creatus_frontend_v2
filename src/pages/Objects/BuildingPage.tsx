@@ -11,7 +11,7 @@ import { fetchSections } from '../../api/sectionApi.ts';
 import { fetchThermalCircuits} from "../../api/thermalCircuitApi.ts";
 import { ResponsiblePerson } from '../../models/ResponsiblePerson';
 import Link from "../../components/Text/Link"
-import IconButton from "../../components/Buttons/IconButton.tsx";
+import MiniAddButton from "../../components/Buttons/MiniAddButton.tsx";
 
 const BuildingPage = () => {
     const [building, setBuilding] = useState<Array<{ id: number, title: string, value: string | number }>>([]);
@@ -98,9 +98,9 @@ const BuildingPage = () => {
             </div>
             <div className="mt-6 mb-4">
                 <div className="mt-4 flex items-center justify-between">
-                    <div className="flex items-center space-x-1">
+                    <div className="flex items-center ">
                         <Label text="Ответственные лица"/>
-                        <IconButton/>
+                        <MiniAddButton/>
                     </div>
                 </div>
 
