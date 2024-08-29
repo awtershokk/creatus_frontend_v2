@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { FaEdit, FaRegTrashAlt } from "react-icons/fa";
+import {getRole} from "../utils/getRole.ts";
 
 export interface User {
     id: number;
@@ -21,7 +22,7 @@ export const transformUserData = (
     return {
         username: user.username,
         fullName: user.fullName,
-        role: user.role.label,
+        role: getRole(user.role.id),
         edit: (
             <Link to="#" onClick={() => handleEditUserClick(user)} className="flex items-center justify-center">
                 <FaEdit/>

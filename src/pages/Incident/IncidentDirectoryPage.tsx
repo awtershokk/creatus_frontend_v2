@@ -1,4 +1,3 @@
-import React from 'react';
 import ItemTable from "../../components/Tables/ItemTable.tsx";
 import DefaultLayout from "../../layouts/DefaultLayout.tsx";
 import Label from "../../components/Text/Label.tsx";
@@ -11,7 +10,7 @@ interface TableData {
     criticality: string;
 }
 
-const IncidentDirectoryPage: React.FC = () => {
+const IncidentDirectoryPage = () => {
     localStorage.setItem('directory', JSON.stringify({ label: 'Справочник', icon: 'FaBook' }));
 
 

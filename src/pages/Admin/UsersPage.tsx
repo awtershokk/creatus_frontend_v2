@@ -26,8 +26,8 @@ const UsersPage = () => {
     }, []);
 
     const headers = {
-        'Имя': 'fullName',
         'Логин': 'username',
+        'Имя': 'fullName',
         'Роль': 'role',
         ' ': 'edit',
         '  ': 'delete'

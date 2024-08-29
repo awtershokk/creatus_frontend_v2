@@ -30,10 +30,10 @@ export const transformDeviceData = (
         model: device.model === null ? 'Не указана' : device.model,
         sernom: device.topic,
         room: device.roomLabel === null ? 'Нет' : (
-            <BlueLink to={`/building/sections/${device.sectionId}/rooms/${device.roomId}`} text={device.roomLabel}/>
+            <BlueLink to={`/building/section/${device.sectionId}/room/${device.roomId}`} text={device.roomLabel}/>
         ),
         measuringPoint: device.measuringPointLabel === null ? 'Нет' : (
-            <BlueLink to={`/building/sections/${device.sectionId}/rooms/${device.roomId}/measure/${device.measuringPointId}`} text={device.measuringPointLabel}/>
+            <BlueLink to={`/building/section/${device.sectionId}/room/${device.roomId}/measuringPoint/${device.measuringPointId}`} text={device.measuringPointLabel}/>
         ),
         battery: device.battery === null ? 'Неизвестно' : (`${device.battery}%`),
         linkquality: device.linkquality === null ? 'Неизвестно' : (`${device.linkquality}%`),

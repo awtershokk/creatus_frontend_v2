@@ -3,7 +3,7 @@ import { FaCheckCircle, FaExclamationTriangle } from 'react-icons/fa';
 import DefaultLayout from "../../layouts/DefaultLayout.tsx";
 import ItemTable from '../../components/Tables/ItemTable';
 import Label from "../../components/Text/Label.tsx";
-import Link from "../../components/Text/Link.tsx";
+import BlueLink from "../../components/Text/BlueLink.tsx";
 
 interface Incident {
     id: number;
@@ -58,7 +58,7 @@ const IncidentPage: React.FC = () => {
             time: '13:30',
             type: 'Т.1',
             description: 'Температура точки измерения выше верхней границы на 10',
-            link: '/building/sections/1/rooms/7/measure/8',
+            link: '/building/section/1/room/7/measuringPoint/8',
             object: 'У двери (Кабинет 7)',
             criticality: 'Средняя',
             status: 'Устранен',
@@ -87,10 +87,10 @@ const IncidentPage: React.FC = () => {
     const incidentsDataForTable = incidents.map((incident) => ({
         dateI: incident.dateI,
         time: incident.time,
-        type: <Link to={"/building/incidents/directory"} text={incident.type}/>,
+        type: <BlueLink to={"/building/incidents/directory"} text={incident.type}/>,
         description: incident.description,
         object: (
-            <Link to={incident.link} text={incident.object}/>
+            <BlueLink to={incident.link} text={incident.object}/>
         ),
         status: (
             <a
@@ -100,7 +100,6 @@ const IncidentPage: React.FC = () => {
                 }`}
                 onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
                     e.preventDefault();
-                    //toggleStatusModal(incident);
                 }}
             >
                 {incident.status === 'Активный' ? (
@@ -121,7 +120,6 @@ const IncidentPage: React.FC = () => {
                 className="underline text-blue-600"
                 onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
                     e.preventDefault();
-                    //showDetails(incident);
                 }}
             >
                 Подробности
