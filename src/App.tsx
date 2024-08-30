@@ -15,6 +15,7 @@ import IncidentDirectoryPage from "./pages/Incident/IncidentDirectoryPage.tsx";
 import MeasuringPointPage from "./pages/Objects/MeasuringPointPage.tsx";
 import UsersPage from "./pages/Admin/UsersPage.tsx";
 import DevicePage from "./pages/Objects/DevicePage.tsx";
+import ControllerPage from "./pages/Objects/ControllerPage.tsx";
 const App = () => {
     const { refresh } = useAuth();
     const [loading, setLoading] = useState(true);
@@ -45,6 +46,7 @@ const App = () => {
                     <Route path="/building/updates" element={<UpdatePage/>}/>
                     <Route path="/building/users" element={<UsersPage/>}/>
                     <Route path="/building/devices" element={<DevicePage/>}/>
+                    <Route path="/building/controllers" element={<ControllerPage/>}/>
                     <Route path="/building/section/:sectionId" element={<SectionPage />} />
                     <Route path="/building/thermalCircuit/:thermalCircuitId" element={<ThermalCircuitPage />} />
                     <Route path="/building/section/:sectionId/room/:roomId" element={<RoomPage />} />
