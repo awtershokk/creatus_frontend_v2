@@ -1,5 +1,5 @@
-import React from 'react';
-import {FaTimes} from "react-icons/fa";
+import React, { useEffect, useState } from 'react';
+import { FaTimes } from "react-icons/fa";
 
 interface ModalTemplateProps {
     headerTitle: string;
@@ -18,25 +18,41 @@ const ModalTemplate: React.FC<ModalTemplateProps> = ({
                                                          children,
                                                          loading,
                                                      }) => {
+    const [showModal, setShowModal] = useState(false);
+
+    useEffect(() => {
+        // Плавное появление модального окна
+        setShowModal(true);
+    }, []);
+
+    const handleClose = () => {
+        // Плавное исчезновение модального окна
+        setShowModal(false);
+        // Подождём завершения анимации, прежде чем окончательно закрыть модалку
+        setTimeout(onClose, 300);  // 300ms соответствует времени transition
+    };
+
     return (
-        <div className="fixed inset-0 flex items-center justify-center z-50">
-            <div className="absolute inset-0 bg-black opacity-50" onClick={onClose}></div>
-            <div className="relative bg-white p-6 rounded-lg shadow-lg w-full max-w-lg z-10">
-                <div className="flex justify-between items-center mb-4">
-                    <h2 className="text-xl font-semibold text-gray-900">{headerTitle}</h2>
-                    <button
-                        onClick={onClose}
-                        className="text-gray-500 hover:text-gray-700"
-                    >
-                        <FaTimes size={20} />
-                    </button>
+        <div className={`fixed inset-0 flex items-center justify-center z-50 transition-opacity duration-300 ${showModal ? 'opacity-100' : 'opacity-0'}`}>
+            <div className="absolute inset-0 bg-black opacity-50" onClick={handleClose}></div>
+            <div className={`relative bg-white rounded-lg shadow-lg w-full max-w-lg z-10 transform transition-transform duration-300 ${showModal ? 'scale-100' : 'scale-95'}`}>
+                <div className="bg-gray-800 px-6 py-4 rounded-t-lg w-full">
+                    <div className="flex justify-between items-center">
+                        <h2 className="text-xl font-semibold text-white">{headerTitle}</h2>
+                        <button
+                            onClick={handleClose}
+                            className="text-gray-500 hover:text-gray-400"
+                        >
+                            <FaTimes size={20} />
+                        </button>
+                    </div>
                 </div>
-                <div className="space-y-4">
+                <div className="p-6 space-y-2">
                     {children}
                 </div>
-                <div className="mt-6 flex justify-end space-x-4">
+                <div className=" flex justify-end space-x-4 p-6">
                     <button
-                        onClick={onClose}
+                        onClick={handleClose}
                         className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition"
                     >
                         Отмена
