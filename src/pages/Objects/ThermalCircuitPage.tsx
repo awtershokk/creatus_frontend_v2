@@ -5,21 +5,23 @@ import EditButton from "../../components/Buttons/EditButton.tsx";
 import AddButton from "../../components/Buttons/AddButton.tsx";
 import ObjectTable from "../../components/Tables/ObjectTable.tsx";
 import ChildElementsTable from "../../components/Tables/ChildElementsTable.tsx";
-import BlueLink from "../../components/Text/BlueLink.tsx"
-import {useParams} from "react-router-dom";
-import {fetchThermalCircuit} from "../../api/thermalCircuitApi.ts";
-import {fetchRoomsByThermalCircuit} from "../../api/roomApi.ts";
+import BlueLink from "../../components/Text/BlueLink.tsx";
+import { useParams } from "react-router-dom";
+import { fetchThermalCircuit } from "../../api/thermalCircuitApi.ts";
+import { fetchRoomsByThermalCircuit } from "../../api/roomApi.ts";
 import ItemTable from "../../components/Tables/ItemTable.tsx";
-import {fetchMeasurementsThermalCircuit} from "../../api/measurementsApi.ts";
-import {Measurement} from "../../models/Measurements.ts";
+import { fetchMeasurementsThermalCircuit } from "../../api/measurementsApi.ts";
+import { Measurement } from "../../models/Measurements.ts";
 import TableContainer from "../../layouts/TableContainer.tsx";
+import MeasurementsFilters from '../../components/Filters/MeasurementsFilters.tsx';
 
 const ThermalCircuitPage = () => {
     const { thermalCircuitId } = useParams();
     const [thermalCircuit, setThermalCircuit] = useState<Array<{ id: number, title: string, value: string | number }>>([]);
     const [rooms, setRooms] = useState<Array<{ id: number, title: string, value: string, value2: string }>>([]);
-
     const [measurements, setMeasurements] = useState<Measurement[]>([]);
+    const [filteredMeasurements, setFilteredMeasurements] = useState<Measurement[]>([]);
+    const [dateRange, setDateRange] = useState<{ start: Date | null; end: Date | null }>({ start: null, end: null });
 
     useEffect(() => {
         const getData = async () => {
@@ -35,15 +37,13 @@ const ThermalCircuitPage = () => {
                     title: room.label,
                     properties: 'Свойства',
                     delete: 'Удалить',
-                    to: `room/${room.id}`
+                    to: `/room/${room.id}`
                 }));
                 setRooms(formattedRooms);
 
-                const measurements = await fetchMeasurementsThermalCircuit(thermalCircuitId);
-                console.log('Измерения:', measurements)
-                setMeasurements(measurements);
-
-
+                const measurementsData = await fetchMeasurementsThermalCircuit(thermalCircuitId);
+                setMeasurements(measurementsData);
+                setFilteredMeasurements(measurementsData);
             } catch (error) {
                 console.error('Ошибка получения данных:', error);
             }
@@ -51,6 +51,32 @@ const ThermalCircuitPage = () => {
 
         getData();
     }, [thermalCircuitId]);
+
+    const handleFilterChange = (filters: { dateRange?: { start: Date | null; end: Date | null } }) => {
+        let filtered = [...measurements];
+
+        if (filters.dateRange?.start || filters.dateRange?.end) {
+            filtered = filtered.filter((measurement) => {
+                const [day, month, year] = measurement.date.split('.').map(Number);
+                const measurementDate = new Date(year, month - 1, day);
+
+                const startDate = filters.dateRange?.start ? new Date(filters.dateRange.start) : null;
+                const endDate = filters.dateRange?.end ? new Date(filters.dateRange.end) : null;
+
+                if (startDate) {
+                    startDate.setHours(0, 0, 0, 0);
+                }
+
+                if (endDate) {
+                    endDate.setHours(23, 59, 59, 999);
+                }
+
+                return (!startDate || measurementDate >= startDate) && (!endDate || measurementDate <= endDate);
+            });
+        }
+
+        setFilteredMeasurements(filtered);
+    };
 
     const headers = {
         'Дата': 'date',
@@ -83,16 +109,20 @@ const ThermalCircuitPage = () => {
             </div>
             <div className="mt-6 mb-4">
                 <div className="mt-4 flex items-center justify-between">
-                    <div className="flex items-center ">
+                    <div className="flex items-center">
                         <Label text="Рассчитанные значения"/>
                     </div>
                 </div>
-                <TableContainer>
-                <ItemTable
-                    data={measurements}
-                    headers={headers}
-                    sorting={true}
+                <MeasurementsFilters
+                    dateRange={dateRange}
+                    onFilterChange={handleFilterChange}
                 />
+                <TableContainer>
+                    <ItemTable
+                        data={filteredMeasurements}
+                        headers={headers}
+                        sorting={true}
+                    />
                 </TableContainer>
             </div>
         </DefaultLayout>
