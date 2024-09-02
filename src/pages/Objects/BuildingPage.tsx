@@ -12,7 +12,7 @@ import { fetchThermalCircuits } from "../../api/thermalCircuitApi.ts";
 import { ResponsiblePerson } from '../../models/ResponsiblePerson';
 import BlueLink from "../../components/Text/BlueLink.tsx"
 import MiniAddButton from "../../components/Buttons/MiniAddButton.tsx";
-import BuildingEditModal from '../../components/Modal/Edit/EditBuildingModal';
+
 
 const BuildingPage = () => {
     const [building, setBuilding] = useState<Array<{ id: number, title: string, value: string | number }>>([]);
@@ -20,9 +20,6 @@ const BuildingPage = () => {
     const [responsiblePersons, setResponsiblePersons] = useState<ResponsiblePerson[]>([]);
     const [sections, setSections] = useState<Array<{ id: number, title: string, value: string, value2: string }>>([]);
     const [thermalCircuits, setThermalCircuits] = useState<Array<{ id: number, title: string, value: string, value2: string }>>([]);
-
-    const [isEditBuildingModalOpen, setIsEditBuildingModalOpen] = useState(false);
-    const [selectedBuilding, setSelectedBuilding] = useState<any>(null);
 
     const buildingId = 1;
 
@@ -73,25 +70,26 @@ const BuildingPage = () => {
         'E-mail': 'email'
     };
 
-    const handleEditButtonClick = (buildingItem: any) => {
-        setSelectedBuilding(buildingItem);
-        setIsEditBuildingModalOpen(true);
-    };
-
-    const handleEditBuildingModalClose = () => {
-        setIsEditBuildingModalOpen(false);
-        setSelectedBuilding(null);
-    };
-
-    const handleUpdateBuilding = async (updatedBuilding: any) => {
+    const handleUpdateBuilding = async (updatedBuildingItem: { id: number, title: string, value: string }) => {
         try {
+            const updatedBuilding = {
+                ...building.find(item => item.id === updatedBuildingItem.id),
+                value: updatedBuildingItem.value,
+            };
+
             await updateBuilding(buildingId, updatedBuilding);
-            await getData()
-            handleEditBuildingModalClose();
+
+
+            setBuilding(prevBuilding =>
+                prevBuilding.map(item =>
+                    item.id === updatedBuildingItem.id ? { ...item, value: updatedBuildingItem.value } : item
+                )
+            );
         } catch (error) {
             console.error('Ошибка обновления здания:', error);
         }
     };
+
 
     useEffect(() => {
         console.log('Building state updated:', building);
@@ -106,7 +104,7 @@ const BuildingPage = () => {
                     <ObjectTable
                         title="Свойства здания"
                         data={building}
-                        ButtonComponent={() => <EditButton onClick={() => handleEditButtonClick(building)} />}
+                        onUpdate={handleUpdateBuilding}
                     />
                 </div>
                 <div className="w-full flex flex-col items-end mt-8 mr-8">
@@ -140,17 +138,6 @@ const BuildingPage = () => {
                     sorting={false}
                 />
             </div>
-
-            {isEditBuildingModalOpen && selectedBuilding && (
-                <BuildingEditModal
-                    building={selectedBuilding}
-                    buildingId={buildingId}
-                    onClose={handleEditBuildingModalClose}
-                    onUpdate={handleUpdateBuilding}
-                    headerTitle="Редактировать здание"
-                    buttonLabel="Сохранить"
-                />
-            )}
         </DefaultLayout>
     );
 };

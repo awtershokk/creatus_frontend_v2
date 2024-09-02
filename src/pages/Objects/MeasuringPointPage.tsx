@@ -37,6 +37,7 @@ const MeasuringPointPage = () => {
                         title="Свойства точки измерения"
                         data={measuringPoint}
                         ButtonComponent={EditButton}
+                        nonEditableFields={['Место установки']}
                     />
                 </div>
                 {/*<div className="w-full flex flex-col items-end mt-8 mr-8">*/}
