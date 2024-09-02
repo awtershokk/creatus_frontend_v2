@@ -40,7 +40,6 @@ const ThermalCircuitPage = () => {
                 setRooms(formattedRooms);
 
                 const measurements = await fetchMeasurementsThermalCircuit(thermalCircuitId);
-                console.log('Измерения:', measurements)
                 setMeasurements(measurements);
 
 

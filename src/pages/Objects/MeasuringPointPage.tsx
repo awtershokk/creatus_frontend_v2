@@ -8,10 +8,16 @@ import ChildElementsTable from "../../components/Tables/ChildElementsTable.tsx";
 import BlueLink from "../../components/Text/BlueLink.tsx"
 import {useParams} from "react-router-dom";
 import {fetchMeasuringPoint} from "../../api/measuringPointApi.ts";
+import {Measurement} from "../../models/Measurements.ts";
+import {fetchMeasurementsMeasuringPoint, fetchMeasurementsThermalCircuit} from "../../api/measurementsApi.ts";
+import TableContainer from "../../layouts/TableContainer.tsx";
+import ItemTable from "../../components/Tables/ItemTable.tsx";
 
 const MeasuringPointPage = () => {
     const { measuringPointId } = useParams();
     const [measuringPoint, setMeasuringPoint] = useState<Array<{ id: number, title: string, value: string | number }>>([]);
+
+    const [measurements, setMeasurements] = useState<Measurement[]>([]);
 
     useEffect(() => {
         const getData = async () => {
@@ -23,10 +29,27 @@ const MeasuringPointPage = () => {
             } catch (error) {
                 console.error('Ошибка получения данных:', error);
             }
+
+            const measurements = await fetchMeasurementsMeasuringPoint(measuringPointId);
+            setMeasurements(measurements);
+
+
         };
 
         getData();
     }, [measuringPointId]);
+
+    const headers = {
+        'Дата': 'date',
+        'Время': 'time',
+        'Измеренная t°': 'measured_temperature',
+        'Калиброванная t°': 'calculated_humidity',
+        'Измеренная h': 'measured_humidity',
+        'Калиброванная h': 'calculated_humidity',
+        'Измеренная h': 'measured_humidity',
+        'Отклонение t°': 'deviation_temperature',
+        'Отклонение h': 'deviation_humidity',
+    };
 
     return (
         <DefaultLayout>
@@ -48,6 +71,20 @@ const MeasuringPointPage = () => {
                 {/*        LinkComponent={BlueLink}*/}
                 {/*    />*/}
                 {/*</div>*/}
+            </div>
+            <div className="mt-6 mb-4">
+                <div className="mt-4 flex items-center justify-between">
+                    <div className="flex items-center ">
+                        <Label text="Рассчитанные значения"/>
+                    </div>
+                </div>
+                <TableContainer>
+                    <ItemTable
+                        data={measurements}
+                        headers={headers}
+                        sorting={true}
+                    />
+                </TableContainer>
             </div>
         </DefaultLayout>
     );

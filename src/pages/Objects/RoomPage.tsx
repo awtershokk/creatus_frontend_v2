@@ -9,12 +9,17 @@ import BlueLink from "../../components/Text/BlueLink.tsx"
 import {useParams} from "react-router-dom";
 import {fetchRoom} from "../../api/roomApi.ts";
 import {fetchMeasuringPoints} from "../../api/measuringPointApi.ts";
+import {Measurement} from "../../models/Measurements.ts";
+import {fetchMeasurementsThermalCircuit} from "../../api/measurementsApi.ts";
+import TableContainer from "../../layouts/TableContainer.tsx";
+import ItemTable from "../../components/Tables/ItemTable.tsx";
 
 const RoomPage = () => {
     const { roomId } = useParams();
     const [room, setRoom] = useState<Array<{ id: number, title: string, value: string | number }>>([]);
     const [measuringPoints, setMeasuringPoints] = useState<Array<{ id: number, title: string, value: string, value2: string }>>([]);
 
+    const [measurements, setMeasurements] = useState<Measurement[]>([]);
 
     useEffect(() => {
         const getData = async () => {
@@ -34,6 +39,10 @@ const RoomPage = () => {
                 }));
                 setMeasuringPoints(formattedMeasuringPoints);
 
+                const measurements = await fetchMeasurementsThermalCircuit(roomId);
+                setMeasurements(measurements);
+
+
 
             } catch (error) {
                 console.error('Ошибка получения данных:', error);
@@ -42,6 +51,16 @@ const RoomPage = () => {
 
         getData();
     }, [roomId]);
+
+    const headers = {
+        'Дата': 'date',
+        'Время': 'time',
+        'Температура': 'calculated_temperature',
+        'Влажность': 'calculated_humidity',
+        'Отклонение t°': 'deviation_temperature',
+        'Отклонение h': 'deviation_humidity',
+    };
+
 
     return (
         <DefaultLayout>
@@ -63,6 +82,20 @@ const RoomPage = () => {
                         LinkComponent={BlueLink}
                     />
                 </div>
+            </div>
+            <div className="mt-6 mb-4">
+                <div className="mt-4 flex items-center justify-between">
+                    <div className="flex items-center ">
+                        <Label text="Рассчитанные значения"/>
+                    </div>
+                </div>
+                <TableContainer>
+                    <ItemTable
+                        data={measurements}
+                        headers={headers}
+                        sorting={true}
+                    />
+                </TableContainer>
             </div>
         </DefaultLayout>
     );
