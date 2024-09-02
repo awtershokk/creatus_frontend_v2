@@ -13,6 +13,7 @@ import {Measurement} from "../../models/Measurements.ts";
 import {fetchMeasurementsThermalCircuit} from "../../api/measurementsApi.ts";
 import TableContainer from "../../layouts/TableContainer.tsx";
 import ItemTable from "../../components/Tables/ItemTable.tsx";
+import DownloadButton from "../../components/Buttons/DownloadButton.tsx";
 
 const RoomPage = () => {
     const { roomId } = useParams();

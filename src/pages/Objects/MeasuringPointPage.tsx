@@ -2,14 +2,11 @@ import { useEffect, useState } from 'react';
 import DefaultLayout from "../../layouts/DefaultLayout.tsx";
 import Label from "../../components/Text/Label.tsx";
 import EditButton from "../../components/Buttons/EditButton.tsx";
-import AddButton from "../../components/Buttons/AddButton.tsx";
 import ObjectTable from "../../components/Tables/ObjectTable.tsx";
-import ChildElementsTable from "../../components/Tables/ChildElementsTable.tsx";
-import BlueLink from "../../components/Text/BlueLink.tsx"
 import {useParams} from "react-router-dom";
 import {fetchMeasuringPoint} from "../../api/measuringPointApi.ts";
 import {Measurement} from "../../models/Measurements.ts";
-import {fetchMeasurementsMeasuringPoint, fetchMeasurementsThermalCircuit} from "../../api/measurementsApi.ts";
+import {fetchMeasurementsMeasuringPoint} from "../../api/measurementsApi.ts";
 import TableContainer from "../../layouts/TableContainer.tsx";
 import ItemTable from "../../components/Tables/ItemTable.tsx";
 

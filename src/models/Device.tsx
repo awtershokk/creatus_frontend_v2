@@ -49,3 +49,11 @@ export const transformDeviceData = (
         ),
     };
 };
+
+export const transformDeviceDataForSettingMode = (device: Device): {} => {
+    return {
+        label: device.label,
+        model: device.model === null ? 'Не указана' : device.model,
+        sernom: device.topic,
+    };
+};
