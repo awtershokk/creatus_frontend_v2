@@ -162,7 +162,7 @@ const IncidentFilters: React.FC<IncidentFiltersProps> = ({ onFilterChange }) => 
 
     return (
         <div>
-            <div className="flex flex-wrap space-x-4 mt-3 mb-4">
+            <div className="flex flex-wrap space-x-4 mt-3">
                 {/* Фильтр по дате */}
                 <div className="relative" ref={dateRef}>
                     <button

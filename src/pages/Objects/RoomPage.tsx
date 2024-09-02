@@ -52,6 +52,7 @@ const RoomPage = () => {
                         title="Свойства помещения"
                         data={room}
                         ButtonComponent={EditButton}
+                        nonEditableFields={['Секция', 'Тепловой контур']}
                     />
                 </div>
                 <div className="w-full flex flex-col items-end mt-8 mr-8">

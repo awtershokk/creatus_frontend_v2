@@ -21,15 +21,12 @@ const ModalTemplate: React.FC<ModalTemplateProps> = ({
     const [showModal, setShowModal] = useState(false);
 
     useEffect(() => {
-        // Плавное появление модального окна
         setShowModal(true);
     }, []);
 
     const handleClose = () => {
-        // Плавное исчезновение модального окна
         setShowModal(false);
-        // Подождём завершения анимации, прежде чем окончательно закрыть модалку
-        setTimeout(onClose, 300);  // 300ms соответствует времени transition
+        setTimeout(onClose, 300);
     };
 
     return (
@@ -47,10 +44,10 @@ const ModalTemplate: React.FC<ModalTemplateProps> = ({
                         </button>
                     </div>
                 </div>
-                <div className="p-6 space-y-2">
+                <div className="p-6 space-y-2 max-h-[60vh] overflow-y-auto">
                     {children}
                 </div>
-                <div className=" flex justify-end space-x-4 p-6">
+                <div className="flex justify-end space-x-4 p-6  ">
                     <button
                         onClick={handleClose}
                         className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition"

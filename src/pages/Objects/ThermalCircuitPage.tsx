@@ -9,11 +9,17 @@ import BlueLink from "../../components/Text/BlueLink.tsx"
 import {useParams} from "react-router-dom";
 import {fetchThermalCircuit} from "../../api/thermalCircuitApi.ts";
 import {fetchRoomsByThermalCircuit} from "../../api/roomApi.ts";
+import ItemTable from "../../components/Tables/ItemTable.tsx";
+import {fetchMeasurementsThermalCircuit} from "../../api/measurementsApi.ts";
+import {Measurement} from "../../models/Measurements.ts";
+import TableContainer from "../../layouts/TableContainer.tsx";
 
 const ThermalCircuitPage = () => {
     const { thermalCircuitId } = useParams();
     const [thermalCircuit, setThermalCircuit] = useState<Array<{ id: number, title: string, value: string | number }>>([]);
     const [rooms, setRooms] = useState<Array<{ id: number, title: string, value: string, value2: string }>>([]);
+
+    const [measurements, setMeasurements] = useState<Measurement[]>([]);
 
     useEffect(() => {
         const getData = async () => {
@@ -33,6 +39,11 @@ const ThermalCircuitPage = () => {
                 }));
                 setRooms(formattedRooms);
 
+                const measurements = await fetchMeasurementsThermalCircuit(thermalCircuitId);
+                console.log('Измерения:', measurements)
+                setMeasurements(measurements);
+
+
             } catch (error) {
                 console.error('Ошибка получения данных:', error);
             }
@@ -40,6 +51,15 @@ const ThermalCircuitPage = () => {
 
         getData();
     }, [thermalCircuitId]);
+
+    const headers = {
+        'Дата': 'date',
+        'Время': 'time',
+        'Температура': 'calculated_temperature',
+        'Влажность': 'calculated_humidity',
+        'Отклонение t°': 'deviation_temperature',
+        'Отклонение h': 'deviation_humidity',
+    };
 
     return (
         <DefaultLayout>
@@ -60,6 +80,20 @@ const ThermalCircuitPage = () => {
                         LinkComponent={BlueLink}
                     />
                 </div>
+            </div>
+            <div className="mt-6 mb-4">
+                <div className="mt-4 flex items-center justify-between">
+                    <div className="flex items-center ">
+                        <Label text="Рассчитанные значения"/>
+                    </div>
+                </div>
+                <TableContainer>
+                <ItemTable
+                    data={measurements}
+                    headers={headers}
+                    sorting={true}
+                />
+                </TableContainer>
             </div>
         </DefaultLayout>
     );
