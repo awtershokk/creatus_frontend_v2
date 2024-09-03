@@ -22,6 +22,8 @@ const ThermalCircuitPage = () => {
     const [measurements, setMeasurements] = useState<Measurement[]>([]);
     const [filteredMeasurements, setFilteredMeasurements] = useState<Measurement[]>([]);
     const [dateRange, setDateRange] = useState<{ start: Date | null; end: Date | null }>({ start: null, end: null });
+    const [timeRange, setTimeRange] = useState<{ start: Date | null; end: Date | null }>({ start: null, end: null });
+    const [temperatureDeviation, setTemperatureDeviation] = useState<{ min: number | null; max: number | null }>({ min: null, max: null });
 
     useEffect(() => {
         const getData = async () => {
@@ -52,9 +54,14 @@ const ThermalCircuitPage = () => {
         getData();
     }, [thermalCircuitId]);
 
-    const handleFilterChange = (filters: { dateRange?: { start: Date | null; end: Date | null } }) => {
+    const handleFilterChange = (filters: {
+        dateRange?: { start: Date | null; end: Date | null },
+        timeRange?: { start: Date | null; end: Date | null },
+        temperatureDeviation?: { min: number | null; max: number | null }
+    }) => {
         let filtered = [...measurements];
 
+        // Фильтрация по дате
         if (filters.dateRange?.start || filters.dateRange?.end) {
             filtered = filtered.filter((measurement) => {
                 const [day, month, year] = measurement.date.split('.').map(Number);
@@ -72,6 +79,39 @@ const ThermalCircuitPage = () => {
                 }
 
                 return (!startDate || measurementDate >= startDate) && (!endDate || measurementDate <= endDate);
+            });
+        }
+
+        // Фильтрация по времени
+        if (filters.timeRange?.start || filters.timeRange?.end) {
+            filtered = filtered.filter((measurement) => {
+                const [hours, minutes] = measurement.time.split(':').map(Number);
+                const measurementTime = new Date();
+                measurementTime.setHours(hours, minutes, 0, 0);
+
+                const startTime = filters.timeRange?.start ? new Date(filters.timeRange.start) : null;
+                const endTime = filters.timeRange?.end ? new Date(filters.timeRange.end) : null;
+
+                if (startTime) {
+                    startTime.setSeconds(0, 0);
+                }
+
+                if (endTime) {
+                    endTime.setSeconds(59, 999);
+                }
+
+                return (!startTime || measurementTime >= startTime) && (!endTime || measurementTime <= endTime);
+            });
+        }
+
+        // Фильтрация по отклонению температуры
+        if (filters.temperatureDeviation?.min !== null || filters.temperatureDeviation?.max !== null) {
+            filtered = filtered.filter((measurement) => {
+                const deviation = measurement.deviation_temperature;
+                const minDeviation = filters.temperatureDeviation?.min !== null ? filters.temperatureDeviation.min : -Infinity;
+                const maxDeviation = filters.temperatureDeviation?.max !== null ? filters.temperatureDeviation.max : Infinity;
+
+                return deviation >= minDeviation && deviation <= maxDeviation;
             });
         }
 
@@ -115,6 +155,8 @@ const ThermalCircuitPage = () => {
                 </div>
                 <MeasurementsFilters
                     dateRange={dateRange}
+                    timeRange={timeRange}
+                    temperatureDeviation={temperatureDeviation}
                     onFilterChange={handleFilterChange}
                 />
                 <TableContainer>
