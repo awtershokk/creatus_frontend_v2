@@ -1,54 +1,36 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import ItemTable from './ItemTable';
+import {Device} from "../../models/Device.tsx";
+import {fetchDevicesSetiingMode} from "../../api/deviceApi.ts";
 
-interface DeviceInfo {
-    id: string;
-    label: string;
-    model: string;
-    sernom: string;
-}
 
-const SettingsModeTable: React.FC = () => {
-    const [devicesInfo, setDevicesInfo] = useState<DeviceInfo[]>([]);
+const SettingsModeTable = () => {
+    const [devices, setDevices] = useState<Device[]>([]);
 
     useEffect(() => {
-        const fetchDevices = async () => {
+        const getData = async () => {
             try {
-                const response = await fetch('http://localhost:5001/api/device');
-                console.log('Успешная отправка запроса на получение девайсов...');
-                if (!response.ok) {
-                    throw new Error('Ошибка при получении данных с сервера');
-                }
-                const data = await response.json();
+                const devicesData = await fetchDevicesSetiingMode();
+                setDevices(devicesData);
 
-                const selectedData = data.data.map((item: any) => ({
-                    id: item.id,
-                    label: item.label,
-                    model: item.vendor,
-                    sernom: item.topic,
-                }));
-                setDevicesInfo(selectedData);
-            } catch (error: any) {
-                console.error(error.message);
+            } catch (error) {
+                console.error('Ошибка получения данных:', error);
             }
         };
 
-        const interval = setInterval(fetchDevices, 1000);
-
-        return () => clearInterval(interval);
+        getData();
     }, []);
+
     const headers = {
-        '№': 'id',
         'Наименование': 'label',
         'Модель': 'model',
-        'Серийный номер': 'sernom',
-
+        'Сер. номер': 'sernom',
     };
     return (
         <div className="w-full mx-auto">
             <ItemTable
                 headers={headers}
-                data={devicesInfo}
+                data={devices}
                 tableTitle="Устройства"
                 buttonLabel="Добавить"
 

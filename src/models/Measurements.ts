@@ -16,10 +16,10 @@ export const transformMeasurementData = (
     return {
         date: date || 'Неверная дата',
         time: time || 'Неверное время',
-        calculated_temperature: data.temperature ?? 'Ошибка',
-        calculated_humidity: data.humidity ?? 'Ошибка',
-        deviation_temperature: data.temperatureDeviation ?? 'Ошибка',
-        deviation_humidity: data.humidityDeviation ?? 'Ошибка'
+        calculated_temperature: data.temperature ?? 'Нет данных',
+        calculated_humidity: data.humidity ?? 'Нет данных',
+        deviation_temperature: data.temperatureDeviation ?? 'Нет данных',
+        deviation_humidity: data.humidityDeviation ?? 'Нет данных'
     };
 };
 
