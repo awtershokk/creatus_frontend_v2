@@ -47,6 +47,12 @@ const ThermalCircuitPage = () => {
                 const measurementsData = await fetchMeasurementsThermalCircuit(thermalCircuitId);
                 setMeasurements(measurementsData);
                 setFilteredMeasurements(measurementsData);
+
+                const measurements = await fetchMeasurementsThermalCircuit(thermalCircuitId);
+                setMeasurements(measurements);
+
+
+
             } catch (error) {
                 console.error('Ошибка получения данных:', error);
             }
