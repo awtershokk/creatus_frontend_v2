@@ -354,7 +354,7 @@ const MeasurementsFilters: React.FC<MeasurementsFiltersProps> = ({ onFilterChang
             </div>
 
 
-            <div className="flex space-x-2 mt-4 mb-1 items-center">
+            <div className="flex space-x-2 mt-4 mb-2 items-center">
                 {dateRange.start && (
                     <div className="flex items-center bg-gray-300 text-black text-xs px-2 py-1 rounded-full">
                         {formatDateRange()} <FaTimesCircle className="ml-1 text-xs cursor-pointer"
