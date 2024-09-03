@@ -24,6 +24,7 @@ const ThermalCircuitPage = () => {
     const [dateRange, setDateRange] = useState<{ start: Date | null; end: Date | null }>({ start: null, end: null });
     const [timeRange, setTimeRange] = useState<{ start: Date | null; end: Date | null }>({ start: null, end: null });
     const [temperatureDeviation, setTemperatureDeviation] = useState<{ min: number | null; max: number | null }>({ min: null, max: null });
+    const [humidityDeviation, setHumidityDeviation] = useState<{ min: number | null; max: number | null }>({ min: null, max: null });
 
     useEffect(() => {
         const getData = async () => {
@@ -57,7 +58,8 @@ const ThermalCircuitPage = () => {
     const handleFilterChange = (filters: {
         dateRange?: { start: Date | null; end: Date | null },
         timeRange?: { start: Date | null; end: Date | null },
-        temperatureDeviation?: { min: number | null; max: number | null }
+        temperatureDeviation?: { min: number | null; max: number | null },
+        humidityDeviation?: { min: number | null; max: number | null }
     }) => {
         let filtered = [...measurements];
 
@@ -115,6 +117,17 @@ const ThermalCircuitPage = () => {
             });
         }
 
+        // Фильтрация по отклонению влажности
+        if (filters.humidityDeviation?.min !== null || filters.humidityDeviation?.max !== null) {
+            filtered = filtered.filter((measurement) => {
+                const deviation = measurement.deviation_humidity;
+                const minDeviation = filters.humidityDeviation?.min !== null ? filters.humidityDeviation.min : -Infinity;
+                const maxDeviation = filters.humidityDeviation?.max !== null ? filters.humidityDeviation.max : Infinity;
+
+                return deviation >= minDeviation && deviation <= maxDeviation;
+            });
+        }
+
         setFilteredMeasurements(filtered);
     };
 
@@ -157,6 +170,7 @@ const ThermalCircuitPage = () => {
                     dateRange={dateRange}
                     timeRange={timeRange}
                     temperatureDeviation={temperatureDeviation}
+                    humidityDeviation={humidityDeviation}
                     onFilterChange={handleFilterChange}
                 />
                 <TableContainer>

@@ -9,7 +9,8 @@ interface MeasurementsFiltersProps {
     onFilterChange: (filters: {
         dateRange?: { start: Date | null; end: Date | null },
         timeRange?: { start: Date | null; end: Date | null },
-        temperatureDeviation?: { min: number | null; max: number | null }
+        temperatureDeviation?: { min: number | null; max: number | null },
+        humidityDeviation?: { min: number | null; max: number | null }
     }) => void;
 }
 
@@ -17,18 +18,22 @@ const MeasurementsFilters: React.FC<MeasurementsFiltersProps> = ({ onFilterChang
     const [isDateOpen, setIsDateOpen] = useState(false);
     const [isTimeOpen, setIsTimeOpen] = useState(false);
     const [isTempOpen, setIsTempOpen] = useState(false);
+    const [isHumidityOpen, setIsHumidityOpen] = useState(false);
 
     const [dateRange, setDateRange] = useState<{ start: Date | null; end: Date | null }>({ start: null, end: null });
     const [timeRange, setTimeRange] = useState<{ start: Date | null; end: Date | null }>({ start: null, end: null });
     const [temperatureDeviation, setTemperatureDeviation] = useState<{ min: number | null; max: number | null }>({ min: null, max: null });
+    const [humidityDeviation, setHumidityDeviation] = useState<{ min: number | null; max: number | null }>({ min: null, max: null }); // Новый стейт для фильтра влажности
 
     const [showDateTooltip, setShowDateTooltip] = useState(false);
     const [showTimeTooltip, setShowTimeTooltip] = useState(false);
     const [showTempTooltip, setShowTempTooltip] = useState(false);
+    const [showHumidityTooltip, setShowHumidityTooltip] = useState(false);
 
     const dateRef = useRef<HTMLDivElement>(null);
     const timeRef = useRef<HTMLDivElement>(null);
     const tempRef = useRef<HTMLDivElement>(null);
+    const humidityRef = useRef<HTMLDivElement>(null);
 
     const toggleDateFilter = () => {
         setIsDateOpen(!isDateOpen);
@@ -36,6 +41,7 @@ const MeasurementsFilters: React.FC<MeasurementsFiltersProps> = ({ onFilterChang
             setShowTimeTooltip(false);
             setShowDateTooltip(false);
             setShowTempTooltip(false);
+            setShowHumidityTooltip(false);
         }
     };
 
@@ -45,6 +51,7 @@ const MeasurementsFilters: React.FC<MeasurementsFiltersProps> = ({ onFilterChang
             setShowDateTooltip(false);
             setShowTimeTooltip(false);
             setShowTempTooltip(false);
+            setShowHumidityTooltip(false);
         }
     };
 
@@ -54,36 +61,54 @@ const MeasurementsFilters: React.FC<MeasurementsFiltersProps> = ({ onFilterChang
             setShowDateTooltip(false);
             setShowTimeTooltip(false);
             setShowTempTooltip(false);
+            setShowHumidityTooltip(false);
+        }
+    };
+
+    const toggleHumidityFilter = () => {
+        setIsHumidityOpen(!isHumidityOpen);
+        if (!isHumidityOpen) {
+            setShowDateTooltip(false);
+            setShowTimeTooltip(false);
+            setShowTempTooltip(false);
+            setShowHumidityTooltip(false);
         }
     };
 
     const handleDateChange = (dates: [Date | null, Date | null]) => {
         const [start, end] = dates;
         setDateRange({ start, end });
-        onFilterChange({ dateRange: { start, end }, timeRange, temperatureDeviation });
+        onFilterChange({ dateRange: { start, end }, timeRange, temperatureDeviation, humidityDeviation });
     };
 
     const handleTimeStartChange = (start: Date | null) => {
         setTimeRange(prev => ({ ...prev, start }));
-        onFilterChange({ dateRange, timeRange: { start, end: timeRange.end }, temperatureDeviation });
+        onFilterChange({ dateRange, timeRange: { start, end: timeRange.end }, temperatureDeviation, humidityDeviation });
     };
 
     const handleTimeEndChange = (end: Date | null) => {
         setTimeRange(prev => ({ ...prev, end }));
-        onFilterChange({ dateRange, timeRange: { start: timeRange.start, end }, temperatureDeviation });
+        onFilterChange({ dateRange, timeRange: { start: timeRange.start, end }, temperatureDeviation, humidityDeviation });
     };
 
     const handleTempChange = (field: 'min' | 'max', value: string) => {
         const parsedValue = value === '' ? null : parseFloat(value);
         setTemperatureDeviation(prev => ({ ...prev, [field]: parsedValue }));
-        onFilterChange({ dateRange, timeRange, temperatureDeviation: { ...temperatureDeviation, [field]: parsedValue } });
+        onFilterChange({ dateRange, timeRange, temperatureDeviation: { ...temperatureDeviation, [field]: parsedValue }, humidityDeviation });
+    };
+
+    const handleHumidityChange = (field: 'min' | 'max', value: string) => {
+        const parsedValue = value === '' ? null : parseFloat(value);
+        setHumidityDeviation(prev => ({ ...prev, [field]: parsedValue }));
+        onFilterChange({ dateRange, timeRange, temperatureDeviation, humidityDeviation: { ...humidityDeviation, [field]: parsedValue } });
     };
 
     const handleResetAllFilters = () => {
         setDateRange({ start: null, end: null });
         setTimeRange({ start: null, end: null });
         setTemperatureDeviation({ min: null, max: null });
-        onFilterChange({ dateRange: { start: null, end: null }, timeRange: { start: null, end: null }, temperatureDeviation: { min: null, max: null } });
+        setHumidityDeviation({ min: null, max: null }); // Сброс фильтра влажности
+        onFilterChange({ dateRange: { start: null, end: null }, timeRange: { start: null, end: null }, temperatureDeviation: { min: null, max: null }, humidityDeviation: { min: null, max: null } });
     };
 
     const formatDateRange = () => {
@@ -114,6 +139,17 @@ const MeasurementsFilters: React.FC<MeasurementsFiltersProps> = ({ onFilterChang
         return 'Выберите диапазон температуры';
     };
 
+    const formatHumidityDeviation = () => {
+        if (humidityDeviation.min !== null && humidityDeviation.max !== null) {
+            return `${humidityDeviation.min}% - ${humidityDeviation.max}%`;
+        } else if (humidityDeviation.min !== null) {
+            return `> ${humidityDeviation.min}%`;
+        } else if (humidityDeviation.max !== null) {
+            return `< ${humidityDeviation.max}%`;
+        }
+        return 'Выберите диапазон влажности';
+    };
+
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             if (dateRef.current && !dateRef.current.contains(event.target as Node)) {
@@ -124,6 +160,9 @@ const MeasurementsFilters: React.FC<MeasurementsFiltersProps> = ({ onFilterChang
             }
             if (tempRef.current && !tempRef.current.contains(event.target as Node)) {
                 setIsTempOpen(false);
+            }
+            if (humidityRef.current && !humidityRef.current.contains(event.target as Node)) {
+                setIsHumidityOpen(false);
             }
         };
 
@@ -259,9 +298,51 @@ const MeasurementsFilters: React.FC<MeasurementsFiltersProps> = ({ onFilterChang
                         </div>
                     )}
                 </div>
+
+                {/* Фильтр по отклонению влажности */}
+                <div className="relative" ref={humidityRef}>
+                    <button
+                        onClick={toggleHumidityFilter}
+                        className="flex items-center text-black px-4 py-1 rounded-full border border-black"
+                    >
+                        {"Отклонение влажности"} {isHumidityOpen ? <FaChevronUp className="ml-1" /> : <FaChevronDown className="ml-1" />}
+                    </button>
+
+                    {isHumidityOpen && (
+                        <div className="absolute z-10 bg-white p-4 mt-2 shadow-md rounded">
+                            <Tooltip
+                                message="Введите минимальное и максимальное отклонение влажности в процентах."
+                                isVisible={showHumidityTooltip}
+                                toggleVisibility={() => setShowHumidityTooltip(!showHumidityTooltip)}
+                            />
+                            <div className="flex flex-col space-y-2">
+                                <div className="text-black">
+                                    <label className="block text-sm">Минимальное отклонение</label>
+                                    <input
+                                        type="number"
+                                        value={humidityDeviation.min !== null ? humidityDeviation.min : ''}
+                                        onChange={(e) => handleHumidityChange('min', e.target.value)}
+                                        placeholder="Напр. 30"
+                                        className="bg-white pl-2 text-black border border-black rounded w-full"
+                                    />
+                                </div>
+                                <div className="text-black">
+                                    <label className="block text-sm">Максимальное отклонение</label>
+                                    <input
+                                        type="number"
+                                        value={humidityDeviation.max !== null ? humidityDeviation.max : ''}
+                                        onChange={(e) => handleHumidityChange('max', e.target.value)}
+                                        placeholder="Напр. 70"
+                                        className="bg-white pl-2 text-black border border-black rounded w-full"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                </div>
             </div>
 
-            {/* Selected Filters Summary */}
+
             <div className="flex space-x-2 mt-4 mb-1 items-center">
                 {dateRange.start && (
                     <div className="flex items-center bg-gray-300 text-black text-xs px-2 py-1 rounded-full">
@@ -281,7 +362,13 @@ const MeasurementsFilters: React.FC<MeasurementsFiltersProps> = ({ onFilterChang
                     </div>
                 )}
 
-                {(dateRange.start || timeRange.start || timeRange.end || temperatureDeviation.min !== null || temperatureDeviation.max !== null) && (
+                {(humidityDeviation.min !== null || humidityDeviation.max !== null) && ( // Отображение фильтра по влажности
+                    <div className="flex items-center bg-gray-300 text-black text-xs px-2 py-1 rounded-full">
+                        {formatHumidityDeviation()} <FaTimesCircle className="ml-1 text-xs cursor-pointer" onClick={handleResetAllFilters} />
+                    </div>
+                )}
+
+                {(dateRange.start || timeRange.start || timeRange.end || temperatureDeviation.min !== null || temperatureDeviation.max !== null || humidityDeviation.min !== null || humidityDeviation.max !== null) && (
                     <button
                         onClick={handleResetAllFilters}
                         className="px-2 py-1 bg-gray-300 text-black text-xs rounded-full"
