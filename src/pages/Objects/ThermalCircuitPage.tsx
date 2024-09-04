@@ -14,6 +14,7 @@ import { fetchMeasurementsThermalCircuit } from "../../api/measurementsApi.ts";
 import { Measurement } from "../../models/Measurements.ts";
 import TableContainer from "../../layouts/TableContainer.tsx";
 import MeasurementsFilters from '../../components/Filters/MeasurementsFilters.tsx';
+import DownloadButton from "../../components/Buttons/DownloadButton.tsx";
 
 const ThermalCircuitPage = () => {
     const { thermalCircuitId } = useParams();
@@ -172,6 +173,7 @@ const ThermalCircuitPage = () => {
                         <Label text="Рассчитанные значения"/>
                     </div>
                 </div>
+                <DownloadButton/>
                 <MeasurementsFilters
                     dateRange={dateRange}
                     timeRange={timeRange}
@@ -179,6 +181,8 @@ const ThermalCircuitPage = () => {
                     humidityDeviation={humidityDeviation}
                     onFilterChange={handleFilterChange}
                 />
+
+
                 <TableContainer>
                     <ItemTable
                         data={filteredMeasurements}

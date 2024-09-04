@@ -72,14 +72,14 @@ const ItemTable = ({
     };
 
     return (
-        <div>
-            <table className="table-auto w-auto border-collapse border border-gray-200 mt-2 mb-2">
+        <div className="overflow-auto max-w-full max-h-[500px] border border-gray-300 rounded-lg shadow-md">
+            <table className="table-auto w-full border-collapse">
                 <thead className={headerStyles}>
                 <tr>
                     {Object.keys(headers).map((header, index) => (
                         <th
                             key={index}
-                            className={`p-1.5 border border-gray-300 text-left ${
+                            className={`p-2 border border-gray-300 text-left ${
                                 sortableColumns.includes(header) ? 'cursor-pointer' : 'cursor-default'
                             }`}
                             onClick={() => handleSort(header)}

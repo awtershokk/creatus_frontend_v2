@@ -4,6 +4,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { FaChevronDown, FaChevronUp, FaTimesCircle } from 'react-icons/fa';
 import { ru } from 'date-fns/locale';
 import Tooltip from "../Buttons/Tooltip.tsx";
+import Label from "../Text/Label.tsx";
 
 interface MeasurementsFiltersProps {
     onFilterChange: (filters: {
@@ -174,14 +175,19 @@ const MeasurementsFilters: React.FC<MeasurementsFiltersProps> = ({ onFilterChang
 
     return (
         <div>
+            <div className="flex items-center">
+                <Label text="Фильтры"/>
+            </div>
             <div className="flex flex-wrap space-x-4 mt-3">
+
                 {/* Фильтр по дате */}
                 <div className="relative" ref={dateRef}>
                     <button
                         onClick={toggleDateFilter}
                         className="flex items-center text-black px-4 py-1 rounded-full border border-black"
                     >
-                        {"Период дат"} {isDateOpen ? <FaChevronUp className="ml-1" /> : <FaChevronDown className="ml-1" />}
+                        {"Период дат"} {isDateOpen ? <FaChevronUp className="ml-1"/> :
+                        <FaChevronDown className="ml-1"/>}
                     </button>
                     {isDateOpen && (
                         <div className="absolute z-10 bg-white p-4 mt-2 shadow-md rounded">
@@ -211,7 +217,8 @@ const MeasurementsFilters: React.FC<MeasurementsFiltersProps> = ({ onFilterChang
                         onClick={toggleTimeFilter}
                         className="flex items-center text-black px-4 py-1 rounded-full border border-black"
                     >
-                        {"Период времени"} {isTimeOpen ? <FaChevronUp className="ml-1" /> : <FaChevronDown className="ml-1" />}
+                        {"Период времени"} {isTimeOpen ? <FaChevronUp className="ml-1"/> :
+                        <FaChevronDown className="ml-1"/>}
                     </button>
 
                     {isTimeOpen && (
@@ -263,7 +270,8 @@ const MeasurementsFilters: React.FC<MeasurementsFiltersProps> = ({ onFilterChang
                         onClick={toggleTempFilter}
                         className="flex items-center text-black px-4 py-1 rounded-full border border-black"
                     >
-                        {"Отклонение температуры"} {isTempOpen ? <FaChevronUp className="ml-1" /> : <FaChevronDown className="ml-1" />}
+                        {"Отклонение температуры"} {isTempOpen ? <FaChevronUp className="ml-1"/> :
+                        <FaChevronDown className="ml-1"/>}
                     </button>
 
                     {isTempOpen && (
@@ -273,6 +281,7 @@ const MeasurementsFilters: React.FC<MeasurementsFiltersProps> = ({ onFilterChang
                                 isVisible={showTempTooltip}
                                 toggleVisibility={() => setShowTempTooltip(!showTempTooltip)}
                             />
+                            <div className="mb-2"></div>
                             <div className="flex flex-col space-y-2">
                                 <div className="text-black">
                                     <label className="block text-sm">Минимальное отклонение</label>
@@ -305,7 +314,8 @@ const MeasurementsFilters: React.FC<MeasurementsFiltersProps> = ({ onFilterChang
                         onClick={toggleHumidityFilter}
                         className="flex items-center text-black px-4 py-1 rounded-full border border-black"
                     >
-                        {"Отклонение влажности"} {isHumidityOpen ? <FaChevronUp className="ml-1" /> : <FaChevronDown className="ml-1" />}
+                        {"Отклонение влажности"} {isHumidityOpen ? <FaChevronUp className="ml-1"/> :
+                        <FaChevronDown className="ml-1"/>}
                     </button>
 
                     {isHumidityOpen && (
@@ -315,6 +325,7 @@ const MeasurementsFilters: React.FC<MeasurementsFiltersProps> = ({ onFilterChang
                                 isVisible={showHumidityTooltip}
                                 toggleVisibility={() => setShowHumidityTooltip(!showHumidityTooltip)}
                             />
+                            <div className="mb-2"></div>
                             <div className="flex flex-col space-y-2">
                                 <div className="text-black">
                                     <label className="block text-sm">Минимальное отклонение</label>
@@ -343,28 +354,32 @@ const MeasurementsFilters: React.FC<MeasurementsFiltersProps> = ({ onFilterChang
             </div>
 
 
-            <div className="flex space-x-2 mt-4 mb-1 items-center">
+            <div className="flex space-x-2 mt-4 mb-2 items-center">
                 {dateRange.start && (
                     <div className="flex items-center bg-gray-300 text-black text-xs px-2 py-1 rounded-full">
-                        {formatDateRange()} <FaTimesCircle className="ml-1 text-xs cursor-pointer" onClick={handleResetAllFilters} />
+                        {formatDateRange()} <FaTimesCircle className="ml-1 text-xs cursor-pointer"
+                                                           onClick={handleResetAllFilters}/>
                     </div>
                 )}
 
                 {(timeRange.start || timeRange.end) && (
                     <div className="flex items-center bg-gray-300 text-black text-xs px-2 py-1 rounded-full">
-                        {formatTimeRange()} <FaTimesCircle className="ml-1 text-xs cursor-pointer" onClick={handleResetAllFilters} />
+                        {formatTimeRange()} <FaTimesCircle className="ml-1 text-xs cursor-pointer"
+                                                           onClick={handleResetAllFilters}/>
                     </div>
                 )}
 
                 {(temperatureDeviation.min !== null || temperatureDeviation.max !== null) && (
                     <div className="flex items-center bg-gray-300 text-black text-xs px-2 py-1 rounded-full">
-                        {formatTemperatureDeviation()} <FaTimesCircle className="ml-1 text-xs cursor-pointer" onClick={handleResetAllFilters} />
+                        {formatTemperatureDeviation()} <FaTimesCircle className="ml-1 text-xs cursor-pointer"
+                                                                      onClick={handleResetAllFilters}/>
                     </div>
                 )}
 
                 {(humidityDeviation.min !== null || humidityDeviation.max !== null) && ( // Отображение фильтра по влажности
                     <div className="flex items-center bg-gray-300 text-black text-xs px-2 py-1 rounded-full">
-                        {formatHumidityDeviation()} <FaTimesCircle className="ml-1 text-xs cursor-pointer" onClick={handleResetAllFilters} />
+                        {formatHumidityDeviation()} <FaTimesCircle className="ml-1 text-xs cursor-pointer"
+                                                                   onClick={handleResetAllFilters}/>
                     </div>
                 )}
 
