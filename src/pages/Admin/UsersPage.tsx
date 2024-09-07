@@ -53,7 +53,7 @@ const UsersPage = () => {
                 <ItemTable
                     data={users}
                     headers={headers}
-                    sorting={false}
+
                 />
             </div>
         </DefaultLayout>

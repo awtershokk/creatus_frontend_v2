@@ -192,7 +192,6 @@ const ThermalCircuitPage = () => {
                     <ItemTable
                         data={filteredMeasurements}
                         headers={headers}
-                        sorting={true}
                     />
                 </TableContainer>
             </div>

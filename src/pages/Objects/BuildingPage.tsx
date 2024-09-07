@@ -135,7 +135,7 @@ const BuildingPage = () => {
                 <ItemTable
                     data={responsiblePersons}
                     headers={headers}
-                    sorting={false}
+
                 />
             </div>
         </DefaultLayout>

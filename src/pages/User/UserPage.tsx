@@ -324,7 +324,6 @@ const UserPage: React.FC = () => {
                                     <ItemTable
                                         headers={headers}
                                         data={filteredRecordings}
-                                        sorting={false}
                                     />
                                 </TableContainer>
                             </div>

@@ -38,7 +38,7 @@ const IncidentDirectoryPage = () => {
                     <ItemTable
                         headers={headers}
                         data={tableData}
-                        sorting={false}
+
                     />
         </DefaultLayout>
 
