@@ -175,11 +175,11 @@ const MeasurementsFilters: React.FC<MeasurementsFiltersProps> = ({ onFilterChang
 
     return (
         <div>
-            <div className="flex items-center">
-                <Label text="Фильтры"/>
-            </div>
-            <div className="flex flex-wrap space-x-4 mt-3">
 
+            <div className="flex flex-wrap space-x-4 mt-3">
+                <div className="mr-0.5">
+                    <Label text="Фильтры:"/>
+                </div>
                 {/* Фильтр по дате */}
                 <div className="relative" ref={dateRef}>
                     <button

@@ -1,67 +1,28 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { FaUser, FaCog, FaChevronDown, FaRegWindowClose } from 'react-icons/fa';
+import { FaUser, FaCog, FaChevronDown } from 'react-icons/fa';
 import { FiLogOut } from "react-icons/fi";
 import { useAuth } from '../../hooks/useAuth';
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import { getRole } from "../../utils/getRole";
-import SettingsModeTable from "../Tables/SettingsModeTable";
 
-const Header = () => {
+interface UserHeaderProps {
+    officeName: string;
+    currentCircuitLabel: string;
+    onPrevClick: () => void;
+    onNextClick: () => void;
+}
+
+const UserHeader: React.FC<UserHeaderProps> = ({ officeName, currentCircuitLabel, onPrevClick, onNextClick }) => {
     const { logout } = useAuth();
     const user = useSelector((state: RootState) => state.auth.user);
 
-    const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
     const [isSettingsDropdownOpen, setIsSettingsDropdownOpen] = useState(false);
     const [isUserModalOpen, setIsUserModalOpen] = useState(false);
-    const [settingsMode, setSettingsMode] = useState(false);
-    const [sections, setSections] = useState([]);
-    const [thermals, setThermals] = useState([]);
     const [activeSection, setActiveSection] = useState<'user' | 'settings' | ''>('');
     const userRef = useRef<HTMLDivElement>(null);
     const settingsRef = useRef<HTMLDivElement>(null);
     const userModalRef = useRef<HTMLDivElement>(null);
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const sectionsResponse = await fetch('http://localhost:5001/api/section/1');
-                const sectionsData = await sectionsResponse.json();
-                setSections(sectionsData.data);
-
-                const thermalsResponse = await fetch('http://localhost:5001/api/thermalCircuit/1');
-                const thermalsData = await thermalsResponse.json();
-                setThermals(thermalsData.data);
-            } catch (error) {
-                console.error('Ошибка при получении данных', error);
-            }
-        };
-        fetchData();
-    }, []);
-
-    useEffect(() => {
-        const sendSettingsModeRequest = async () => {
-            const apiUrl = settingsMode
-                ? 'http://localhost:5001/api/device/permitJoin/true'
-                : 'http://localhost:5001/api/device/permitJoin/false';
-
-            try {
-                const response = await fetch(apiUrl, { method: 'POST' });
-
-                if (response.ok) {
-                    console.log(`Запрос успешно отправлен к ${apiUrl}`);
-                } else {
-                    console.error(`Ошибка при отправке запроса к ${apiUrl}: ${response.status} ${response.statusText}`);
-                }
-            } catch (error) {
-                console.error('Ошибка при отправке запроса:', error);
-            }
-        };
-
-        if (settingsMode) {
-            sendSettingsModeRequest();
-        }
-    }, [settingsMode]);
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -72,7 +33,6 @@ const Header = () => {
                 settingsRef.current &&
                 !settingsRef.current.contains(event.target as Node)
             ) {
-                setIsUserDropdownOpen(false);
                 setIsSettingsDropdownOpen(false);
                 setIsUserModalOpen(false);
                 setActiveSection('');
@@ -87,14 +47,12 @@ const Header = () => {
 
     const handleUserClick = () => {
         setIsUserModalOpen(!isUserModalOpen);
-        setIsUserDropdownOpen(false);
         setIsSettingsDropdownOpen(false);
         setActiveSection('user');
     };
 
     const handleSettingsClick = () => {
         setIsSettingsDropdownOpen(!isSettingsDropdownOpen);
-        setIsUserDropdownOpen(false);
         setIsUserModalOpen(false);
         setActiveSection('settings');
     };
@@ -103,17 +61,28 @@ const Header = () => {
         await logout();
     };
 
-    const handleSettingsModeToggle = () => {
-        setSettingsMode(!settingsMode);
-    };
-
     return (
         <header className="bg-gray-800 text-white w-full fixed top-0 left-0 z-50">
             <nav className="flex justify-between items-center py-3 px-6">
-                <div className="flex items-center">
-                    <a href="/building" className="text-xl text-white">SmartHeat</a>
+
+                <div className="flex items-center space-x-4">
+                    <a href="/user" className="text-xl text-white">SmartHeat</a>
+                    <button className="head p-2" onClick={onPrevClick}>←</button>
+
                 </div>
-                <div className="flex items-center">
+
+                <div className="flex items-center justify-center space-x-8">
+                    <div className="head_building">
+                        <p className="text-xl">{officeName}</p>
+                    </div>
+                    <div className="head_thermal_circuit">
+                        <p className="text-xl">{currentCircuitLabel}</p>
+                    </div>
+                </div>
+
+                <div className="flex items-center space-x-4">
+                    <button className="head p-2" onClick={onNextClick}>→</button>
+
                     <div
                         ref={settingsRef}
                         className="relative"
@@ -126,28 +95,22 @@ const Header = () => {
                             <FaCog className="mr-1 text-xl text-white"/>
                             <span
                                 className={`ml-0.5 transition-transform duration-300 ${isSettingsDropdownOpen ? 'rotate-180' : ''}`}>
-                                <FaChevronDown className="text-xs"/>
-                            </span>
+                        <FaChevronDown className="text-xs"/>
+                    </span>
                         </div>
                         {isSettingsDropdownOpen && (
                             <ul
                                 className={`absolute right-0 mt-2 w-60 bg-gray-800 text-white shadow-lg z-10 transition-opacity duration-300 transform ${isSettingsDropdownOpen ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2 pointer-events-none'}`}
                             >
-                                <li className="px-6 py-3 hover:bg-gray-700 flex items-center cursor-pointer"
-                                    onClick={handleSettingsModeToggle}>
-                                    <FaCog className="mr-2 text-lg"/> Режим настройки
-                                </li>
-                                <li className="px-6 py-3 hover:bg-gray-700 flex items-center cursor-pointer">
-                                    <a href="/user" className="flex items-center">
-                                        <FaUser className="mr-2 text-lg"/> Режим пользователя
-                                    </a>
+                                <li className="px-6 py-3 hover:bg-gray-700 flex items-center cursor-pointer whitespace-nowrap">
+                                    <FaUser className="mr-2 text-lg flex-shrink-0"/> Режим администратора
                                 </li>
                             </ul>
                         )}
                     </div>
                     <div
                         ref={userRef}
-                        className="relative ml-auto"
+                        className="relative"
                         onClick={handleUserClick}
                         onMouseEnter={() => setActiveSection('user')}
                         onMouseLeave={() => !isUserModalOpen && setActiveSection('')}
@@ -157,8 +120,8 @@ const Header = () => {
                             <FaUser className="text-xl text-white"/>
                             <span
                                 className={`ml-0.5 transition-transform duration-300 ${isUserModalOpen ? 'rotate-180' : ''}`}>
-                                <FaChevronDown className="text-xs"/>
-                            </span>
+                        <FaChevronDown className="text-xs"/>
+                    </span>
                         </div>
                         {isUserModalOpen && (
                             <div
@@ -177,25 +140,9 @@ const Header = () => {
                     </div>
                 </div>
             </nav>
-
-            {settingsMode && (
-                <div className="overlay fixed inset-0 flex items-center justify-center bg-black bg-opacity-75 z-50">
-                    <div className="relative p-6  rounded">
-                        <div className="flex items-center justify-between mb-4">
-                            <h4 className="text-white animate-blink">Поиск устройств...</h4>
-                            <button
-                                className="flex items-center text-white rounded px-3 py-3 hover:bg-gray-500"
-                                onClick={handleSettingsModeToggle}
-                            >
-                                <FaRegWindowClose className="w-5 h-5"/>
-                            </button>
-                        </div>
-                        <SettingsModeTable />
-                    </div>
-                </div>
-            )}
         </header>
+
     );
 };
 
-export default Header;
+export default UserHeader;

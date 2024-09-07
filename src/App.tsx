@@ -16,6 +16,7 @@ import MeasuringPointPage from "./pages/Objects/MeasuringPointPage.tsx";
 import UsersPage from "./pages/Admin/UsersPage.tsx";
 import DevicePage from "./pages/Objects/DevicePage.tsx";
 import ControllerPage from "./pages/Objects/ControllerPage.tsx";
+import UserPage from "./pages/User/UserPage.tsx";
 const App = () => {
     const { refresh } = useAuth();
     const [loading, setLoading] = useState(true);
@@ -42,6 +43,7 @@ const App = () => {
                 <Route path="/" element={<LoginPage />} />
                 <Route path="/no-access" element={<NoAccessPage />} />
                 <Route element={<ProtectedRoute allowedRoles={[2, 3]} />}>
+                    <Route path="user" element={<UserPage/>}/>
                     <Route path="/building" element={<BuildingPage />} />
                     <Route path="/building/updates" element={<UpdatePage/>}/>
                     <Route path="/building/users" element={<UsersPage/>}/>

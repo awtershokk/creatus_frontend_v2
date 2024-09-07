@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {FaCheck, FaPencilAlt} from "react-icons/fa";
+import { FaCheck, FaPencilAlt } from "react-icons/fa";
 
 interface ObjectTableProps {
     title: string;
@@ -34,9 +34,9 @@ const ObjectTable = ({ title, data, onUpdate, nonEditableFields = [] }: ObjectTa
                         {data.map((item) => {
                             const isEditable = !nonEditableFields.includes(item.title);
                             return (
-                                <div key={item.id} className="flex border-t border-gray-300 items-center">
-                                    <div className="w-1/2 p-2 text-black font-bold">{item.title}</div>
-                                    <div className="border-l border-gray-300 h-auto mx-2"></div>
+                                <div key={item.id} className="flex items-center border-t border-gray-300">
+                                    <div className="w-1/2 p-2 text-black font-bold border-r border-gray-300">{item.title}</div>
+                                    <div className="w-1 px-2 border-r border-gray-300"></div> {/* полоса*/}
                                     <div className="w-1/2 p-2 text-black flex items-center">
                                         {editState[item.id] ? (
                                             <input
