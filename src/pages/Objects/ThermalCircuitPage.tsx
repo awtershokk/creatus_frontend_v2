@@ -22,6 +22,8 @@ const ThermalCircuitPage = () => {
     const [rooms, setRooms] = useState<Array<{ id: number, title: string, value: string, value2: string }>>([]);
     const [measurements, setMeasurements] = useState<Measurement[]>([]);
     const [filteredMeasurements, setFilteredMeasurements] = useState<Measurement[]>([]);
+    const [totalMeasurements, setTotalMeasurements] = useState<number>(0);
+    const [displayedMeasurements, setDisplayedMeasurements] = useState<number>(0);
     const [dateRange, setDateRange] = useState<{ start: Date | null; end: Date | null }>({ start: null, end: null });
     const [timeRange, setTimeRange] = useState<{ start: Date | null; end: Date | null }>({ start: null, end: null });
     const [temperatureDeviation, setTemperatureDeviation] = useState<{ min: number | null; max: number | null }>({ min: null, max: null });
@@ -41,7 +43,7 @@ const ThermalCircuitPage = () => {
                     title: room.label,
                     properties: 'Свойства',
                     delete: 'Удалить',
-                    to: `/room/${room.id}`
+                    to: `room/${room.id}`
                 }));
                 setRooms(formattedRooms);
 
@@ -49,10 +51,8 @@ const ThermalCircuitPage = () => {
                 setMeasurements(measurementsData);
                 setFilteredMeasurements(measurementsData);
 
-                const measurements = await fetchMeasurementsThermalCircuit(thermalCircuitId);
-                setMeasurements(measurements);
-
-
+                setTotalMeasurements(measurementsData.length);
+                setDisplayedMeasurements(measurementsData.length);
 
             } catch (error) {
                 console.error('Ошибка получения данных:', error);
@@ -61,6 +61,10 @@ const ThermalCircuitPage = () => {
 
         getData();
     }, [thermalCircuitId]);
+
+    useEffect(() => {
+        setDisplayedMeasurements(filteredMeasurements.length);
+    }, [filteredMeasurements]);
 
     const handleFilterChange = (filters: {
         dateRange?: { start: Date | null; end: Date | null },
@@ -171,6 +175,9 @@ const ThermalCircuitPage = () => {
                 <div className="mt-4 flex items-center justify-between">
                     <div className="flex items-center">
                         <Label text="Рассчитанные значения"/>
+                        <div className="ml-4 mt-1 text-sm text-gray-600">
+                            Всего значений: {totalMeasurements}, Отображаемых значений: {displayedMeasurements}
+                        </div>
                     </div>
                 </div>
                 <DownloadButton/>
@@ -181,8 +188,6 @@ const ThermalCircuitPage = () => {
                     humidityDeviation={humidityDeviation}
                     onFilterChange={handleFilterChange}
                 />
-
-
                 <TableContainer>
                     <ItemTable
                         data={filteredMeasurements}

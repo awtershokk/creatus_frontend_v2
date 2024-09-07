@@ -40,6 +40,7 @@ const ItemTable = ({
         if (sortConfig.key === key && sortConfig.direction === 'ascending') {
             direction = 'descending';
         }
+        console.log(`Sorting by: ${key}, direction: ${direction}`);  // Отладка
         setSortConfig({ key, direction });
 
         const sorted = [...data].sort((a, b) => {

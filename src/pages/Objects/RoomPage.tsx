@@ -5,22 +5,29 @@ import EditButton from "../../components/Buttons/EditButton.tsx";
 import AddButton from "../../components/Buttons/AddButton.tsx";
 import ObjectTable from "../../components/Tables/ObjectTable.tsx";
 import ChildElementsTable from "../../components/Tables/ChildElementsTable.tsx";
-import BlueLink from "../../components/Text/BlueLink.tsx"
-import {useParams} from "react-router-dom";
-import {fetchRoom} from "../../api/roomApi.ts";
-import {fetchMeasuringPoints} from "../../api/measuringPointApi.ts";
-import {Measurement} from "../../models/Measurements.ts";
-import {fetchMeasurementsThermalCircuit} from "../../api/measurementsApi.ts";
+import BlueLink from "../../components/Text/BlueLink.tsx";
+import { useParams } from "react-router-dom";
+import { fetchRoom } from "../../api/roomApi.ts";
+import { fetchMeasuringPoints } from "../../api/measuringPointApi.ts";
+import { fetchMeasurementsThermalCircuit } from "../../api/measurementsApi.ts";
+import { Measurement } from "../../models/Measurements.ts";
 import TableContainer from "../../layouts/TableContainer.tsx";
 import ItemTable from "../../components/Tables/ItemTable.tsx";
+import MeasurementsFilters from '../../components/Filters/MeasurementsFilters.tsx';
 import DownloadButton from "../../components/Buttons/DownloadButton.tsx";
 
 const RoomPage = () => {
     const { roomId } = useParams();
     const [room, setRoom] = useState<Array<{ id: number, title: string, value: string | number }>>([]);
     const [measuringPoints, setMeasuringPoints] = useState<Array<{ id: number, title: string, value: string, value2: string }>>([]);
-
     const [measurements, setMeasurements] = useState<Measurement[]>([]);
+    const [filteredMeasurements, setFilteredMeasurements] = useState<Measurement[]>([]);
+    const [dateRange, setDateRange] = useState<{ start: Date | null; end: Date | null }>({ start: null, end: null });
+    const [timeRange, setTimeRange] = useState<{ start: Date | null; end: Date | null }>({ start: null, end: null });
+    const [temperatureDeviation, setTemperatureDeviation] = useState<{ min: number | null; max: number | null }>({ min: null, max: null });
+    const [humidityDeviation, setHumidityDeviation] = useState<{ min: number | null; max: number | null }>({ min: null, max: null });
+    const [totalMeasurements, setTotalMeasurements] = useState<number>(0);
+    const [displayedMeasurements, setDisplayedMeasurements] = useState<number>(0);
 
     useEffect(() => {
         const getData = async () => {
@@ -40,10 +47,11 @@ const RoomPage = () => {
                 }));
                 setMeasuringPoints(formattedMeasuringPoints);
 
-                const measurements = await fetchMeasurementsThermalCircuit(roomId);
-                setMeasurements(measurements);
-
-
+                const measurementsData = await fetchMeasurementsThermalCircuit(roomId);
+                setMeasurements(measurementsData);
+                setFilteredMeasurements(measurementsData);
+                setTotalMeasurements(measurementsData.length);
+                setDisplayedMeasurements(measurementsData.length);
 
             } catch (error) {
                 console.error('Ошибка получения данных:', error);
@@ -53,6 +61,83 @@ const RoomPage = () => {
         getData();
     }, [roomId]);
 
+    const handleFilterChange = (filters: {
+        dateRange?: { start: Date | null; end: Date | null },
+        timeRange?: { start: Date | null; end: Date | null },
+        temperatureDeviation?: { min: number | null; max: number | null },
+        humidityDeviation?: { min: number | null; max: number | null }
+    }) => {
+        let filtered = [...measurements];
+
+        // Фильтрация по дате
+        if (filters.dateRange?.start || filters.dateRange?.end) {
+            filtered = filtered.filter((measurement) => {
+                const [day, month, year] = measurement.date.split('.').map(Number);
+                const measurementDate = new Date(year, month - 1, day);
+
+                const startDate = filters.dateRange?.start ? new Date(filters.dateRange.start) : null;
+                const endDate = filters.dateRange?.end ? new Date(filters.dateRange.end) : null;
+
+                if (startDate) {
+                    startDate.setHours(0, 0, 0, 0);
+                }
+
+                if (endDate) {
+                    endDate.setHours(23, 59, 59, 999);
+                }
+
+                return (!startDate || measurementDate >= startDate) && (!endDate || measurementDate <= endDate);
+            });
+        }
+
+        // Фильтрация по времени
+        if (filters.timeRange?.start || filters.timeRange?.end) {
+            filtered = filtered.filter((measurement) => {
+                const [hours, minutes] = measurement.time.split(':').map(Number);
+                const measurementTime = new Date();
+                measurementTime.setHours(hours, minutes, 0, 0);
+
+                const startTime = filters.timeRange?.start ? new Date(filters.timeRange.start) : null;
+                const endTime = filters.timeRange?.end ? new Date(filters.timeRange.end) : null;
+
+                if (startTime) {
+                    startTime.setSeconds(0, 0);
+                }
+
+                if (endTime) {
+                    endTime.setSeconds(59, 999);
+                }
+
+                return (!startTime || measurementTime >= startTime) && (!endTime || measurementTime <= endTime);
+            });
+        }
+
+        // Фильтрация по отклонению температуры
+        if (filters.temperatureDeviation?.min !== null || filters.temperatureDeviation?.max !== null) {
+            filtered = filtered.filter((measurement) => {
+                const deviation = measurement.deviation_temperature;
+                const minDeviation = filters.temperatureDeviation?.min !== null ? filters.temperatureDeviation.min : -Infinity;
+                const maxDeviation = filters.temperatureDeviation?.max !== null ? filters.temperatureDeviation.max : Infinity;
+
+                return deviation >= minDeviation && deviation <= maxDeviation;
+            });
+        }
+
+        // Фильтрация по отклонению влажности
+        if (filters.humidityDeviation?.min !== null || filters.humidityDeviation?.max !== null) {
+            filtered = filtered.filter((measurement) => {
+                const deviation = measurement.deviation_humidity;
+                const minDeviation = filters.humidityDeviation?.min !== null ? filters.humidityDeviation.min : -Infinity;
+                const maxDeviation = filters.humidityDeviation?.max !== null ? filters.humidityDeviation.max : Infinity;
+
+                return deviation >= minDeviation && deviation <= maxDeviation;
+            });
+        }
+
+        setFilteredMeasurements(filtered);
+        setDisplayedMeasurements(filtered.length);
+    };
+
     const headers = {
         'Дата': 'date',
         'Время': 'time',
@@ -61,7 +146,6 @@ const RoomPage = () => {
         'Отклонение t°': 'deviation_temperature',
         'Отклонение h': 'deviation_humidity',
     };
-
 
     return (
         <DefaultLayout>
@@ -78,7 +162,7 @@ const RoomPage = () => {
                 <div className="w-full flex flex-col items-end mt-8 mr-8">
                     <ChildElementsTable
                         infoData={measuringPoints}
-                        tableTitle="Точки измеерения"
+                        tableTitle="Точки измерения"
                         ButtonComponent={AddButton}
                         LinkComponent={BlueLink}
                     />
@@ -86,13 +170,23 @@ const RoomPage = () => {
             </div>
             <div className="mt-6 mb-4">
                 <div className="mt-4 flex items-center justify-between">
-                    <div className="flex items-center ">
+                    <div className="flex items-center">
                         <Label text="Рассчитанные значения"/>
+                        <div className="ml-4 mt-1 text-sm text-gray-600">
+                            Всего значений: {totalMeasurements}, Отображаемых значений: {displayedMeasurements}
+                        </div>
                     </div>
                 </div>
+                <MeasurementsFilters
+                    dateRange={dateRange}
+                    timeRange={timeRange}
+                    temperatureDeviation={temperatureDeviation}
+                    humidityDeviation={humidityDeviation}
+                    onFilterChange={handleFilterChange}
+                />
                 <TableContainer>
                     <ItemTable
-                        data={measurements}
+                        data={filteredMeasurements}
                         headers={headers}
                         sorting={true}
                     />
