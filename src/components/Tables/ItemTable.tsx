@@ -72,8 +72,8 @@ const ItemTable = ({
     };
 
     return (
-        <div className="overflow-auto max-w-full max-h-[500px] border border-gray-300 rounded-lg shadow-md">
-            <table className="table-auto w-full border-collapse">
+        <div className="overflow-auto">
+            <table className="table-auto  border-collapse">
                 <thead className={headerStyles}>
                 <tr>
                     {Object.keys(headers).map((header, index) => (
