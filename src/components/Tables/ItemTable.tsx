@@ -6,6 +6,7 @@ import { TiArrowSortedUp, TiArrowSortedDown } from 'react-icons/ti';
 interface ItemTableProps {
     headers: Record<string, string>;
     data: Array<Record<string, any>>;
+    nonSortableColumns?: string[];
     headerStyles?: string;
     rowStyles?: string;
     cellStyles?: string;
@@ -14,6 +15,7 @@ interface ItemTableProps {
 const ItemTable = ({
                        headers,
                        data,
+                       nonSortableColumns = [],
                        headerStyles = 'bg-gray-800 text-white',
                        rowStyles = 'border-b border-gray-200 text-black',
                        cellStyles = 'p-1.5 border border-gray-300 whitespace-nowrap'
@@ -68,6 +70,10 @@ const ItemTable = ({
     };
 
     const getSortIcon = (header: string) => {
+        if (nonSortableColumns.includes(header)) {
+            return null;
+        }
+
         if (['Дата', 'Время', 'Температура', 'Влажность', 'Отклонение t°', 'Отклонение h'].includes(header)) {
             if (sortConfig.key === headers[header]) {
                 return sortConfig.direction === 'ascending' ? (
@@ -90,7 +96,11 @@ const ItemTable = ({
                         <th
                             key={index}
                             className="p-2 border border-gray-300 text-left cursor-pointer"
-                            onClick={() => ['Дата', 'Время', 'Температура', 'Влажность', 'Отклонение t°', 'Отклонение h'].includes(header) && handleSort(headers[header])}
+                            onClick={() =>
+                                !nonSortableColumns.includes(header) &&
+                                ['Дата', 'Время', 'Температура', 'Влажность', 'Отклонение t°', 'Отклонение h'].includes(header) &&
+                                handleSort(headers[header])
+                            }
                         >
                             {header} {getSortIcon(header)}
                         </th>
