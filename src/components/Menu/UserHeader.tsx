@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { FaUser, FaCog, FaChevronDown } from 'react-icons/fa';
+import { FaUser, FaCog, FaChevronDown, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { FiLogOut } from "react-icons/fi";
 import { useAuth } from '../../hooks/useAuth';
 import { useSelector } from "react-redux";
@@ -63,25 +63,15 @@ const UserHeader: React.FC<UserHeaderProps> = ({ officeName, currentCircuitLabel
 
     return (
         <header className="bg-gray-800 text-white w-full fixed top-0 left-0 z-50">
-            <nav className="flex justify-between items-center py-3 px-6">
-
+            {/* Main Header */}
+            <nav className="flex justify-between items-center py-3 px-6 border-b border-gray-700">
                 <div className="flex items-center space-x-4">
                     <a href="/user" className="text-xl text-white">SmartHeat</a>
-                    <button className="head p-2" onClick={onPrevClick}>←</button>
 
-                </div>
-
-                <div className="flex items-center justify-center space-x-8">
-                    <div className="head_building">
-                        <p className="text-xl">{officeName}</p>
-                    </div>
-                    <div className="head_thermal_circuit">
-                        <p className="text-xl">{currentCircuitLabel}</p>
-                    </div>
                 </div>
 
                 <div className="flex items-center space-x-4">
-                    <button className="head p-2" onClick={onNextClick}>→</button>
+
 
                     <div
                         ref={settingsRef}
@@ -95,8 +85,8 @@ const UserHeader: React.FC<UserHeaderProps> = ({ officeName, currentCircuitLabel
                             <FaCog className="mr-1 text-xl text-white"/>
                             <span
                                 className={`ml-0.5 transition-transform duration-300 ${isSettingsDropdownOpen ? 'rotate-180' : ''}`}>
-                        <FaChevronDown className="text-xs"/>
-                    </span>
+                                <FaChevronDown className="text-xs"/>
+                            </span>
                         </div>
                         {isSettingsDropdownOpen && (
                             <ul
@@ -120,8 +110,8 @@ const UserHeader: React.FC<UserHeaderProps> = ({ officeName, currentCircuitLabel
                             <FaUser className="text-xl text-white"/>
                             <span
                                 className={`ml-0.5 transition-transform duration-300 ${isUserModalOpen ? 'rotate-180' : ''}`}>
-                        <FaChevronDown className="text-xs"/>
-                    </span>
+                                <FaChevronDown className="text-xs"/>
+                            </span>
                         </div>
                         {isUserModalOpen && (
                             <div
@@ -140,8 +130,21 @@ const UserHeader: React.FC<UserHeaderProps> = ({ officeName, currentCircuitLabel
                     </div>
                 </div>
             </nav>
-        </header>
 
+            {/* Secondary Header */}
+            <div className="bg-gray-900 text-white py-2 px-6 border-b border-gray-700 flex items-center justify-between">
+                <button className="p-2" onClick={onPrevClick}>
+                    <FaChevronLeft className="text-xl"/>
+                </button>
+                <div className="flex text-center">
+                    <p className="text-lg mr-5">{officeName}</p>
+                    <p className="text-lg">{currentCircuitLabel}</p>
+                </div>
+                <button className="p-2" onClick={onNextClick}>
+                    <FaChevronRight className="text-xl"/>
+                </button>
+            </div>
+        </header>
     );
 };
 

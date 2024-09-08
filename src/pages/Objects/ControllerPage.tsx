@@ -43,7 +43,7 @@ const ControllerPage = () => {
             <ItemTable
     data={controllers}
     headers={headers}
-    sorting={false}
+
     />
     </div>
     </DefaultLayout>

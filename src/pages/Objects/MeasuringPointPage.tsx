@@ -79,7 +79,6 @@ const MeasuringPointPage = () => {
                     <ItemTable
                         data={measurements}
                         headers={headers}
-                        sorting={true}
                     />
                 </TableContainer>
             </div>

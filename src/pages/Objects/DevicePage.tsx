@@ -55,7 +55,6 @@ const DevicePage = () => {
                 <ItemTable
                     data={devices}
                     headers={headers}
-                    sorting={false}
                 />
             </div>
         </DefaultLayout>

@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useCallback, useMemo } from 'react';
+
 import UserHeader from "../../components/Menu/UserHeader.tsx";
 import ObjectTable from "../../components/Tables/ObjectTable.tsx";
 import TabsButton from "../../components/Buttons/TabsButton.tsx";
@@ -10,6 +11,7 @@ import {Measurement} from "../../models/Measurements.ts";
 import DownloadButton from "../../components/Buttons/DownloadButton.tsx";
 import MeasurementsFilters from "../../components/Filters/MeasurementsFilters.tsx";
 import GraphPage from "../../components/Graph/GraphPage.tsx";
+import Label from "../../components/Text/Label.tsx";
 interface MeasuringPoint {
     deviceActive: boolean | null;
     measuringPointLabel: string;
@@ -52,6 +54,9 @@ const UserPage: React.FC = () => {
     const [roomDataFields, setRoomDataFields] = useState<{ id: number; title: string; value: string }[]>([]);
 
     const [recordings, setRecordings] = useState<Array<Record<string, any>>>([]);
+    const [totalRecordings, setTotalRecordings] = useState<number>(0);
+
+
 
     const [filteredRecordings, setFilteredRecordings] = useState<Measurement[]>([]);
     const [dateRange, setDateRange] = useState<{ start: Date | null; end: Date | null }>({ start: null, end: null });
@@ -206,7 +211,8 @@ const UserPage: React.FC = () => {
                 }));
 
                 setRecordings(selectedData);
-                setFilteredRecordings(selectedData)
+                setFilteredRecordings(selectedData);
+                setTotalRecordings(selectedData.length); // Устанавливаем общее количество записей
             } catch (error) {
                 console.error('Нет доступных значений', error);
             }
@@ -216,6 +222,7 @@ const UserPage: React.FC = () => {
             fetchRecordings();
         }
     }, [selectedRoomId]);
+
 
     const handleNextClick = useCallback(() => {
         setCurrentCircuitIndex(prevIndex => (prevIndex < info.length - 1 ? prevIndex + 1 : 0));
@@ -272,7 +279,7 @@ const UserPage: React.FC = () => {
                 onNextClick={handleNextClick}
             />
 
-            <div className="w-10 h-10 m-2.5"></div>
+            <div className="w-10 h-24 m-2.5"></div>
 
             <CircuitDisplay
                 sections={currentCircuit?.S || []}
@@ -296,7 +303,17 @@ const UserPage: React.FC = () => {
                         {tabIndex === 1 && (
                             <div>
                                 <DownloadButton/>
-                                <MeasurementsFilters
+                                <div className="mt-4 flex items-center justify-between">
+                                    <div className="flex items-center">
+                                        <Label text="Рассчитанные значения"/>
+                                        <div className="ml-4 mt-1 text-sm text-gray-600">
+                                            Всего значений: {totalRecordings}, Отображаемых
+                                            значений: {filteredRecordings.length}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                    <MeasurementsFilters
                                     dateRange={dateRange}
                                     timeRange={timeRange}
                                     temperatureDeviation={temperatureDeviation}
@@ -307,7 +324,6 @@ const UserPage: React.FC = () => {
                                     <ItemTable
                                         headers={headers}
                                         data={filteredRecordings}
-                                        sorting={false}
                                     />
                                 </TableContainer>
                             </div>
