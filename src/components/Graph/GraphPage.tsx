@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import Chart from 'chart.js/auto';
 import zoomPlugin from 'chartjs-plugin-zoom';
 import moment from 'moment';
+import GraphFilter from "../Filters/GraphFilter.tsx";
+import Label from "../Text/Label.tsx";
 
 Chart.register(zoomPlugin);
 
@@ -15,6 +17,10 @@ function GraphPage({ selectedRoomId }) {
     const [humidityLimits, setHumidityLimits] = useState({ min: 1, max: 100 });
     const [labels, setLabels] = useState([]);
     const [timeRange, setTimeRange] = useState('day');
+
+    const [filters, setFilters] = useState({
+        dateRange: { start: null, end: null }
+    });
 
     const calculateYScale = (data, limits) => {
         const minValue = Math.min(...data);
@@ -118,65 +124,75 @@ function GraphPage({ selectedRoomId }) {
                 let temperatureData = [];
                 let humidityData = [];
 
-                switch (timeRange) {
-                    case 'day':
-                        filteredRecordings = recordings.filter(record =>
-                            moment(record.createdAt).isSame(moment(), 'day')
-                        );
-                        newLabels = filteredRecordings.map(record => moment(record.createdAt).format("HH:mm"));
-                        temperatureData = filteredRecordings.map(record => record.temperature);
-                        humidityData = filteredRecordings.map(record => record.humidity);
-                        break;
-                    case 'week':
-                        filteredRecordings = recordings.filter(record =>
-                            moment(record.createdAt).isAfter(moment().subtract(1, 'weeks'))
-                        );
-                        // Используем формат с датой и временем для отображения всех измерений в течение недели
-                        newLabels = filteredRecordings.map(record => moment(record.createdAt).format("DD.MM.YYYY HH:mm"));
-                        temperatureData = filteredRecordings.map(record => record.temperature);
-                        humidityData = filteredRecordings.map(record => record.humidity);
-                        break;
-                    case 'month':
-                        const dailyData = {};
+                if (filters.dateRange.start) {
+                    // Фильтрация по дате
+                    const startDate = moment(filters.dateRange.start).startOf('day');
+                    const endDate = moment(filters.dateRange.end || filters.dateRange.start).endOf('day');
 
-                        recordings.forEach(record => {
-                            const day = moment(record.createdAt).format("DD.MM.YYYY");
+                    filteredRecordings = recordings.filter(record =>
+                        moment(record.createdAt).isBetween(startDate, endDate, 'minute', '[]')
+                    );
+                    newLabels = filteredRecordings.map(record => moment(record.createdAt).format("DD.MM.YYYY HH:mm"));
+                    temperatureData = filteredRecordings.map(record => record.temperature);
+                    humidityData = filteredRecordings.map(record => record.humidity);
+                } else {
+                    // Фильтрация по времени (день, неделя, месяц)
+                    switch (timeRange) {
+                        case 'day':
+                            filteredRecordings = recordings.filter(record =>
+                                moment(record.createdAt).isSame(moment(), 'day')
+                            );
+                            newLabels = filteredRecordings.map(record => moment(record.createdAt).format("HH:mm"));
+                            temperatureData = filteredRecordings.map(record => record.temperature);
+                            humidityData = filteredRecordings.map(record => record.humidity);
+                            break;
+                        case 'week':
+                            filteredRecordings = recordings.filter(record =>
+                                moment(record.createdAt).isAfter(moment().subtract(1, 'weeks'))
+                            );
+                            newLabels = filteredRecordings.map(record => moment(record.createdAt).format("DD.MM.YYYY HH:mm"));
+                            temperatureData = filteredRecordings.map(record => record.temperature);
+                            humidityData = filteredRecordings.map(record => record.humidity);
+                            break;
+                        case 'month':
+                            const dailyData = {};
 
-                            if (!dailyData[day]) {
-                                dailyData[day] = { temperatureSum: 0, humiditySum: 0, count: 0 };
-                            }
+                            recordings.forEach(record => {
+                                const day = moment(record.createdAt).format("DD.MM.YYYY");
 
-                            dailyData[day].temperatureSum += record.temperature;
-                            dailyData[day].humiditySum += record.humidity;
-                            dailyData[day].count += 1;
-                        });
+                                if (!dailyData[day]) {
+                                    dailyData[day] = { temperatureSum: 0, humiditySum: 0, count: 0 };
+                                }
 
-                        newLabels = Object.keys(dailyData);
-                        temperatureData = newLabels.map(day => dailyData[day].temperatureSum / dailyData[day].count);
-                        humidityData = newLabels.map(day => dailyData[day].humiditySum / dailyData[day].count);
-                        break;
-                    default:
-                        filteredRecordings = recordings;
-                        newLabels = filteredRecordings.map(record => moment(record.createdAt).format("DD.MM.YYYY HH:mm"));
-                        temperatureData = filteredRecordings.map(record => record.temperature);
-                        humidityData = filteredRecordings.map(record => record.humidity);
-                        break;
+                                dailyData[day].temperatureSum += record.temperature;
+                                dailyData[day].humiditySum += record.humidity;
+                                dailyData[day].count += 1;
+                            });
+
+                            newLabels = Object.keys(dailyData);
+                            temperatureData = newLabels.map(day => dailyData[day].temperatureSum / dailyData[day].count);
+                            humidityData = newLabels.map(day => dailyData[day].humiditySum / dailyData[day].count);
+                            break;
+                        default:
+                            filteredRecordings = recordings;
+                            newLabels = filteredRecordings.map(record => moment(record.createdAt).format("DD.MM.YYYY HH:mm"));
+                            temperatureData = filteredRecordings.map(record => record.temperature);
+                            humidityData = filteredRecordings.map(record => record.humidity);
+                            break;
+                    }
                 }
-
-                console.log('Temperature Data:', temperatureData);
-                console.log('Humidity Data:', humidityData);
 
                 setLabels(newLabels);
                 setTemperatureData(temperatureData);
                 setHumidityData(humidityData);
             } catch (error) {
-                console.error('Нет доступных значений', error);
+                console.error('Ошибка при получении данных', error);
             }
         };
 
         fetchRoomData();
         fetchRecordings();
-    }, [selectedRoomId, timeRange]);
+    }, [selectedRoomId, timeRange, filters.dateRange]);
 
     const createChart = () => {
         if (!chartRef.current) return;
@@ -265,11 +281,11 @@ function GraphPage({ selectedRoomId }) {
 
     const handleTimeRangeClick = (range) => {
         setTimeRange(range);
+
     };
 
     return (
         <div>
-            {/* Temperature and Humidity Tabs */}
             <div className="tabs inline-flex border-b border-gray-700 mb-4 justify-center">
                 <button
                     className={`tab py-2 px-4 text-sm font-medium border-b-2 ${
@@ -288,9 +304,11 @@ function GraphPage({ selectedRoomId }) {
                     Влажность
                 </button>
             </div>
-            <div></div>
-            {/* Time Range Tabs */}
-            <div className="tabs inline-flex border-b border-gray-700 mb-4 ">
+
+            <div className="mb-2">
+                <Label text="Период"/>
+            </div>
+            <div className="tabs inline-flex border-b border-gray-700 mb-4">
                 <button
                     className={`tab py-2 px-4 text-sm font-medium border-b-2 ${
                         timeRange === 'day' ? 'border-gray-800 text-gray-700' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'
@@ -316,13 +334,14 @@ function GraphPage({ selectedRoomId }) {
                     Месяц
                 </button>
             </div>
-
+            <div className="mb-2">
+                <Label text="Фильтры"/>
+            </div>
+            <GraphFilter onFilterChange={setFilters}/>
             <div className="w-screen h-auto">
                 <canvas ref={chartRef}/>
             </div>
         </div>
-
-
     );
 }
 

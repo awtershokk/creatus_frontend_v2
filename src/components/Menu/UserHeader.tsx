@@ -93,7 +93,9 @@ const UserHeader: React.FC<UserHeaderProps> = ({ officeName, currentCircuitLabel
                                 className={`absolute right-0 mt-2 w-60 bg-gray-800 text-white shadow-lg z-10 transition-opacity duration-300 transform ${isSettingsDropdownOpen ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2 pointer-events-none'}`}
                             >
                                 <li className="px-6 py-3 hover:bg-gray-700 flex items-center cursor-pointer whitespace-nowrap">
-                                    <FaUser className="mr-2 text-lg flex-shrink-0"/> Режим администратора
+                                    <a href="/building" className="flex items-center">
+                                        <FaUser className="mr-2 text-lg"/> Режим администратора
+                                    </a>
                                 </li>
                             </ul>
                         )}

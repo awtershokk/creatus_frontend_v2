@@ -4,19 +4,17 @@ import "react-datepicker/dist/react-datepicker.css";
 import { FaChevronDown, FaChevronUp, FaTimesCircle } from 'react-icons/fa';
 import { ru } from 'date-fns/locale';
 import Tooltip from "../Buttons/Tooltip.tsx";
-import Label from "../Text/Label.tsx";
 
-interface MeasurementsFiltersProps {
+
+interface GraphFilterProps {
     onFilterChange: (filters: {
         dateRange?: { start: Date | null; end: Date | null },
     }) => void;
 }
 
-const GraphFilter: React.FC<MeasurementsFiltersProps> = ({ onFilterChange }) => {
+const GraphFilter: React.FC<GraphFilterProps> = ({ onFilterChange }) => {
     const [isDateOpen, setIsDateOpen] = useState(false);
-
     const [dateRange, setDateRange] = useState<{ start: Date | null; end: Date | null }>({ start: null, end: null });
-
     const [showDateTooltip, setShowDateTooltip] = useState(false);
 
     const dateRef = useRef<HTMLDivElement>(null);
@@ -64,21 +62,20 @@ const GraphFilter: React.FC<MeasurementsFiltersProps> = ({ onFilterChange }) => 
     return (
         <div>
             <div className="flex flex-wrap space-x-4 mt-3">
-                <div className="mr-0.5">
-                    <Label text="Фильтры:"/>
-                </div>
-                {/* Фильтр по дате */}
+
+
                 <div className="relative" ref={dateRef}>
                     <button
                         onClick={toggleDateFilter}
                         className="flex items-center text-black px-4 py-1 rounded-full border border-black"
                     >
-                        {"Период дат"} {isDateOpen ? <FaChevronUp className="ml-1"/> : <FaChevronDown className="ml-1"/>}
+                        {"Дата"} {isDateOpen ? <FaChevronUp className="ml-1"/> :
+                        <FaChevronDown className="ml-1"/>}
                     </button>
                     {isDateOpen && (
                         <div className="absolute z-10 bg-white p-4 mt-2 shadow-md rounded">
                             <Tooltip
-                                message="Выберите диапазон дат в который хотите посмотреть значения."
+                                message="Выберите диапазон дат или конкретную дату в которые хотите посмотреть значения."
                                 isVisible={showDateTooltip}
                                 toggleVisibility={() => setShowDateTooltip(!showDateTooltip)}
                             />
@@ -106,7 +103,7 @@ const GraphFilter: React.FC<MeasurementsFiltersProps> = ({ onFilterChange }) => 
                     </div>
                 )}
 
-                {dateRange.start && (
+                {(dateRange.start || dateRange.end) && (
                     <button
                         onClick={handleResetAllFilters}
                         className="px-2 py-1 bg-gray-300 text-black text-xs rounded-full"

@@ -26,7 +26,11 @@ export const transformControllerData = (
         ),
         ecl_type: controller.eclType.label,
         settings: (
-            <BlueLink to={`/building/controller/${controller.id}/options`} text={'Параметры'}/>
+            <BlueLink to={`/building/controllers/${controller.id}/options`} text={'Параметры'}/>
         ),
+        schedule: (
+            <BlueLink to={`/building/controllers/${controller.id}/schedule`} text={'Расписание'}/>
+        ),
+
     };
 };
