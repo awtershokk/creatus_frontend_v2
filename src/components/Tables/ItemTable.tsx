@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import moment from 'moment';
 import { applyCellColor } from '../../utils/getTableCellColors';
 import { TiArrowSortedUp, TiArrowSortedDown } from 'react-icons/ti';
+import { FaArrowsAltV } from 'react-icons/fa';
 
 interface ItemTableProps {
     headers: Record<string, string>;
@@ -82,7 +83,7 @@ const ItemTable = ({
                     <TiArrowSortedDown className="inline" />
                 );
             }
-            return <TiArrowSortedUp className="inline text-gray-400" />;
+            return <FaArrowsAltV className="inline text-gray-400" />;
         }
         return null;
     };
