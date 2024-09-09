@@ -177,6 +177,7 @@ const RoomPage = () => {
                         </div>
                     </div>
                 </div>
+                <DownloadButton/>
                 <MeasurementsFilters
                     dateRange={dateRange}
                     timeRange={timeRange}

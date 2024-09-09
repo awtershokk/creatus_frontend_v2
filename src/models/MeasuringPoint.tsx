@@ -11,6 +11,11 @@ export interface MeasuringPoint {
             label: string;
         };
     };
+    "device": {
+        topic: string
+        id: number
+        label: string
+    }
     height: number;
     temperatureMinimum: number;
     temperatureMaximum: number;

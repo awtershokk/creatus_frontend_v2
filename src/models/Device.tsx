@@ -1,6 +1,7 @@
 import { FaEdit, FaRegTrashAlt } from "react-icons/fa";
 import BlueLink from "../components/Text/BlueLink.tsx";
 import {Link} from "react-router-dom";
+import {Section} from "./Section.ts";
 
 export interface Device {
     id: number;
@@ -56,4 +57,13 @@ export const transformDeviceDataForSettingMode = (device: Device): {} => {
         model: device.model === null ? 'Не указана' : device.model,
         sernom: device.topic,
     };
+};
+
+export const transformDeviceDataForMP = (device: Device): {} => {
+    return [
+        { id: 1, title: 'Наименование', value: device.label },
+        { id: 2, title: 'Модель', value: device.model === null ? 'Не указана' : device.model},
+        { id: 3, title: 'Статус', value: device.active ? <span style={{ color: 'green' }}>Онлайн</span> : <span style={{ color: 'red' }}>Оффлайн</span> },
+        { id: 3, title: 'Серийный номер', value: device.topic },
+    ];
 };

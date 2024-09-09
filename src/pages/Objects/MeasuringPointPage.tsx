@@ -21,6 +21,7 @@ const MeasuringPointPage = () => {
             try {
                 const measuringPointData = await fetchMeasuringPoint(measuringPointId);
                 setMeasuringPoint(measuringPointData);
+                console.log(measuringPoint)
                 const labelItem = measuringPointData.find(item => item.title === 'Наименование');
                 localStorage.setItem('measuringPoint', JSON.stringify({ label: labelItem?.value, icon: 'FaMapMarkerAlt', id: labelItem?.id }));
             } catch (error) {

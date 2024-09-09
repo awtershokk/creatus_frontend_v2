@@ -39,3 +39,34 @@ export const fetchResponsiblePersons = async (buildingId: number): Promise<Respo
         throw error;
     }
 };
+
+export const fetchListEnergyClasses = async () => {
+    try {
+        const response = await api.get(`/building/list/energyClasses`);
+        const data = response.data;
+        return data;
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const fetchListTimezones = async () => {
+    try {
+        const response = await api.get(`building/list/timezones`);
+        const data = response.data;
+        return data;
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const fetchListHwsConnectionDiagrams = async () => {
+    try {
+        const response = await api.get(`building/list/hwsConnectionDiagrams`);
+        const data = response.data;
+        return data;
+    } catch (error) {
+        throw error;
+    }
+};
+

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import ItemTable from './ItemTable';
 import {Device} from "../../models/Device.tsx";
-import {fetchDevicesSetiingMode} from "../../api/deviceApi.ts";
+import {fetchDevicesSetiingsMode} from "../../api/deviceApi.ts";
 
 
 const SettingsModeTable = () => {
@@ -10,7 +10,7 @@ const SettingsModeTable = () => {
     useEffect(() => {
         const getData = async () => {
             try {
-                const devicesData = await fetchDevicesSetiingMode();
+                const devicesData = await fetchDevicesSetiingsMode();
                 setDevices(devicesData);
 
             } catch (error) {
@@ -32,8 +32,6 @@ const SettingsModeTable = () => {
                 headers={headers}
                 data={devices}
                 tableTitle="Устройства"
-                buttonLabel="Добавить"
-
                 rowStyles="border-b"
                 cellStyles="p-2 border text-white"
             />

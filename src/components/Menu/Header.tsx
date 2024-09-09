@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import { getRole } from "../../utils/getRole";
 import SettingsModeTable from "../Tables/SettingsModeTable";
+import {Link} from "react-router-dom";
 
 const Header = () => {
     const { logout } = useAuth();
@@ -111,7 +112,8 @@ const Header = () => {
         <header className="bg-gray-800 text-white w-full fixed top-0 left-0 z-50">
             <nav className="flex justify-between items-center py-3 px-6">
                 <div className="flex items-center">
-                    <a href="/building" className="text-xl text-white">SmartHeat</a>
+                    {/*<a href="/building" className="text-xl text-white">SmartHeat</a>*/}
+                    <Link className="text-xl text-white" to='/building'>SmartHeat </Link>
                 </div>
                 <div className="flex items-center">
                     <div

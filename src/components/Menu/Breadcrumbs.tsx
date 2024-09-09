@@ -36,7 +36,7 @@ const Breadcrumbs = () => {
     return (
         <div>
             <div className="absolute h-[50px] inset-0 bg-gray-700 w-screen mt-[68px] -z-20"></div>
-            <div className="container mx-auto px-4 py-2.5 mt-[72px]">
+            <div className="container px-4 py-2.5 mt-[72px]">
                 <nav className="text-left text-lg leading-6 whitespace-nowrap -z-10 flex items-center">
                     {breadcrumbPath.map((breadcrumb, index) => {
                         const isLast = index === breadcrumbPath.length - 1;
