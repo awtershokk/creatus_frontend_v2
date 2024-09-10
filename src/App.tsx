@@ -18,6 +18,7 @@ import DevicePage from "./pages/Objects/DevicePage.tsx";
 import ControllerPage from "./pages/Contoller/ControllerPage.tsx";
 import ControllerOptionsPage from "./pages/Contoller/ControllerOptionsPage.tsx";
 import UserPage from "./pages/User/UserPage.tsx";
+import ControllerSchedulePage from "./pages/Contoller/ControllerSchedulePage.tsx";
 const App = () => {
     const { refresh } = useAuth();
     const [loading, setLoading] = useState(true);
@@ -50,7 +51,8 @@ const App = () => {
                     <Route path="/building/users" element={<UsersPage/>}/>
                     <Route path="/building/devices" element={<DevicePage/>}/>
                     <Route path="/building/controllers" element={<ControllerPage/>}/>
-                    <Route path="/building/controller/:controllerId/options" element={<ControllerOptionsPage/>}/>
+                    <Route path="/building/controllers/:controllerId/options" element={<ControllerOptionsPage/>}/>
+                    <Route path='/building/controllers/:controllerId/schedule' element={<ControllerSchedulePage/>}/>
                     <Route path="/building/section/:sectionId" element={<SectionPage />} />
                     <Route path="/building/thermalCircuit/:thermalCircuitId" element={<ThermalCircuitPage />} />
                     <Route path="/building/section/:sectionId/room/:roomId" element={<RoomPage />} />
