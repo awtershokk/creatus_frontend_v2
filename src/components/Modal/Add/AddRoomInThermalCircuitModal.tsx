@@ -168,7 +168,7 @@ const AddRoomInThermalCircuitModal: React.FC<AddRoomInThermalCircuitProps> = ({ 
                         onChange={handleChange}
                         className={`w-full p-2 border ${errors.windowOrientation ? 'border-red-500' : 'border-gray-300'} rounded-md text-black focus:outline-none focus:ring-2 focus:ring-gray-400 bg-white`}
                     >
-                        <option value="" disabled>Выберите ориентацию окон</option>
+                        <option value="">Выберите ориентацию окон</option>
                         {windowOptions.map(option => (
                             <option key={option.id} value={option.value}>
                                 {option.label}

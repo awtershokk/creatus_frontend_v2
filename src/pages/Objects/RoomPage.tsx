@@ -15,6 +15,8 @@ import TableContainer from "../../layouts/TableContainer.tsx";
 import ItemTable from "../../components/Tables/ItemTable.tsx";
 import MeasurementsFilters from '../../components/Filters/MeasurementsFilters.tsx';
 import DownloadButton from "../../components/Buttons/DownloadButton.tsx";
+import AddMeasurePointModal from "../../components/Modal/Add/AddMeasurePointModal.tsx";
+
 
 const RoomPage = () => {
     const { roomId } = useParams();
@@ -29,6 +31,7 @@ const RoomPage = () => {
     const [totalMeasurements, setTotalMeasurements] = useState<number>(0);
     const [displayedMeasurements, setDisplayedMeasurements] = useState<number>(0);
 
+    const [isAddMeasurePointModal, setAddMeasurePointModal] = useState(false);
     useEffect(() => {
         const getData = async () => {
             try {
@@ -137,7 +140,13 @@ const RoomPage = () => {
         setFilteredMeasurements(filtered);
         setDisplayedMeasurements(filtered.length);
     };
+    const handleAddMeasurePointModal = () => {
+        setAddMeasurePointModal(true);
+    };
 
+    const handleAddMeasurePointModalClose = () => {
+        setAddMeasurePointModal(false);
+    };
     const headers = {
         'Дата': 'date',
         'Время': 'time',
@@ -163,7 +172,7 @@ const RoomPage = () => {
                     <ChildElementsTable
                         infoData={measuringPoints}
                         tableTitle="Точки измерения"
-                        ButtonComponent={AddButton}
+                        ButtonComponent={() => <AddButton onClick={handleAddMeasurePointModal} />}
                         LinkComponent={BlueLink}
                     />
                 </div>
@@ -191,6 +200,14 @@ const RoomPage = () => {
                         headers={headers}
                     />
                 </TableContainer>
+                {isAddMeasurePointModal && (
+                    <AddMeasurePointModal
+                        onClose={handleAddMeasurePointModalClose}
+                        onSubmit={() => {
+                        }}
+                        roomId={roomId}
+                    />
+                )}
             </div>
         </DefaultLayout>
     );
