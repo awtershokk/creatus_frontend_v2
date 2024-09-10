@@ -108,7 +108,7 @@ const AddUserModal: React.FC<AddUserModalProps> = ({ onClose, onSubmit }) => {
 
     return (
         <ModalTemplate
-            headerTitle="Добавить Пользователя"
+            headerTitle="Добавление пользователя"
             buttonLabel="Добавить"
             onClose={onClose}
             onSubmit={handleSubmit}

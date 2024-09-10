@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import {FaStar, FaFolder, FaTimes, FaSearch, FaSpinner} from 'react-icons/fa';
 import { FiChevronDown, FiChevronUp } from 'react-icons/fi';
 import { Tooltip, OverlayTrigger } from 'react-bootstrap';
+import { MODBUS_API_URL } from "../../../api/modbusApi.js";
 
 
 const ControllerOptionTable = () => {
@@ -71,23 +72,23 @@ const ControllerOptionTable = () => {
         const groupingFlag = groupParameters ? '1' : '0';
         switch (activeTab) {
             case 'settings':
-                return `http://localhost:7001/api/ecl/parameter/all/1/2/${groupingFlag}`;
+                return `/ecl/parameter/all/1/2/${groupingFlag}`;
             case 'favorites':
-                return `http://localhost:7001/api/ecl/parameter/all/1/1/${groupingFlag}`;
+                return `/ecl/parameter/all/1/1/${groupingFlag}`;
             case 'inputs':
-                return `http://localhost:7001/api/ecl/parameter/all/1/3/${groupingFlag}`;
+                return `/ecl/parameter/all/1/3/${groupingFlag}`;
             case 'outputs':
-                return `http://localhost:7001/api/ecl/parameter/all/1/4/${groupingFlag}`;
+                return `/ecl/parameter/all/1/4/${groupingFlag}`;
             case 'control':
-                return `http://localhost:7001/api/ecl/parameter/all/1/5/${groupingFlag}`;
+                return `/ecl/parameter/all/1/5/${groupingFlag}`;
             case 'accidents':
-                return `http://localhost:7001/api/ecl/parameter/all/1/6/${groupingFlag}`;
+                return `/ecl/parameter/all/1/6/${groupingFlag}`;
             case 'values':
-                return `http://localhost:7001/api/ecl/parameter/all/1/7/${groupingFlag}`;
+                return `/ecl/parameter/all/1/7/${groupingFlag}`;
             case 'input_node':
-                return `http://localhost:7001/api/ecl/parameter/all/1/8/${groupingFlag}`;
+                return `/ecl/parameter/all/1/8/${groupingFlag}`;
             default:
-                return `http://localhost:7001/api/ecl/parameter/all/1/0/${groupingFlag}`;
+                return `/ecl/parameter/all/1/0/${groupingFlag}`;
         }
     };
 
@@ -96,7 +97,8 @@ const ControllerOptionTable = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch(apiUrl);
+                const response = await fetch(`${MODBUS_API_URL}/${apiUrl}`);
+                console.log(response)
                 const result = await response.json();
                 if (response.ok) {
                     const transformedData = transformApiData(result.data);

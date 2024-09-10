@@ -1,7 +1,6 @@
 import { FaEdit, FaRegTrashAlt } from "react-icons/fa";
 import BlueLink from "../components/Text/BlueLink.tsx";
 import {Link} from "react-router-dom";
-import {Section} from "./Section.ts";
 
 export interface Device {
     id: number;
@@ -23,7 +22,9 @@ export interface Device {
 export const transformDeviceData = (
     device: Device,
     handleEditDeviceClick: (item: Device) => void,
-    handleDeleteDeviceClick: (item: Device) => void
+    handleDeleteDeviceClick: (item: Device) => void,
+    handleUnbindDeviceClick: (deviceId: number, deviceLabel: string, measuringPointLabel: string) => void,
+    handleBindDeviceClick: (deviceId: number, deviceLabel: string) => void
 ): {} => {
     return {
         label: device.label,
@@ -31,16 +32,29 @@ export const transformDeviceData = (
         model: device.model === null ? 'Не указана' : device.model,
         sernom: device.topic,
         room: device.roomLabel === null ? 'Нет' : (
-            <BlueLink to={`/building/section/${device.sectionId}/room/${device.roomId}`} text={device.roomLabel}/>
+            <BlueLink to={`/building/section/${device.sectionId}/room/${device.roomId}`} text={device.roomLabel} />
         ),
         measuringPoint: device.measuringPointLabel === null ? 'Нет' : (
-            <BlueLink to={`/building/section/${device.sectionId}/room/${device.roomId}/measuringPoint/${device.measuringPointId}`} text={device.measuringPointLabel}/>
+            <BlueLink to={`/building/section/${device.sectionId}/room/${device.roomId}/measuringPoint/${device.measuringPointId}`} text={device.measuringPointLabel} />
         ),
         battery: device.battery === null ? 'Неизвестно' : (`${device.battery}%`),
         linkquality: device.linkquality === null ? 'Неизвестно' : (`${device.linkquality}%`),
+        connect: device.measuringPointLabel === null ? (
+            <BlueLink to="#"
+                      text="Привязать"
+                      onClick={() => handleBindDeviceClick(device.id, device.label)}
+            />
+        ) : (
+            <>
+                <BlueLink to="#"
+                          text="Отвязать"
+                          onClick={() => handleUnbindDeviceClick(device.id, device.label, device.measuringPointLabel || 'Нет')}
+                />
+            </>
+        ),
         edit: (
             <Link to="#" onClick={() => handleEditDeviceClick(device)} className="flex items-center justify-center">
-                <FaEdit/>
+                <FaEdit />
             </Link>
         ),
         delete: (
@@ -50,6 +64,7 @@ export const transformDeviceData = (
         ),
     };
 };
+
 
 export const transformDeviceDataForSettingMode = (device: Device): {} => {
     return {

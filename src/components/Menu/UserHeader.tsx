@@ -5,6 +5,7 @@ import { useAuth } from '../../hooks/useAuth';
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import { getRole } from "../../utils/getRole";
+import {Link} from "react-router-dom";
 
 interface UserHeaderProps {
     officeName: string;
@@ -64,7 +65,7 @@ const UserHeader: React.FC<UserHeaderProps> = ({ officeName, currentCircuitLabel
     return (
         <header className="bg-gray-800 text-white w-full fixed top-0 left-0 z-50">
             {/* Main Header */}
-            <nav className="flex justify-between items-center py-3 px-6 border-b border-gray-700">
+            <nav className="flex justify-between items-center py-3 px-6 ">
                 <div className="flex items-center space-x-4">
                     <a href="/user" className="text-xl text-white">SmartHeat</a>
 
@@ -93,9 +94,9 @@ const UserHeader: React.FC<UserHeaderProps> = ({ officeName, currentCircuitLabel
                                 className={`absolute right-0 mt-2 w-60 bg-gray-800 text-white shadow-lg z-10 transition-opacity duration-300 transform ${isSettingsDropdownOpen ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2 pointer-events-none'}`}
                             >
                                 <li className="px-6 py-3 hover:bg-gray-700 flex items-center cursor-pointer whitespace-nowrap">
-                                    <a href="/building" className="flex items-center">
+                                    <Link className="flex items-center" to='/building'>
                                         <FaUser className="mr-2 text-lg"/> Режим администратора
-                                    </a>
+                                    </Link>
                                 </li>
                             </ul>
                         )}

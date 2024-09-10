@@ -17,7 +17,7 @@ const DeleteDeviceModal: React.FC<DeleteDeviceModalProps> = ({ label, onClose })
             console.log('Удален датчик:', label );
             onClose();
         } catch (error) {
-            console.error('Ошибка при добавлении пользователя:', error);
+            console.error('Ошибка при удалении датчика:', error);
         } finally {
             setLoading(false);
         }
@@ -30,7 +30,7 @@ const DeleteDeviceModal: React.FC<DeleteDeviceModalProps> = ({ label, onClose })
             onSubmit={handleSubmit}
             loading={loading}
         >
-            <p className="text-black ">Вы действительно хотите удалить датчик "{label}"?</p>
+            <p className="text-black">Вы действительно хотите удалить датчик <b>{label}</b>?</p>
         </ModalTemplate>
     );
 };
