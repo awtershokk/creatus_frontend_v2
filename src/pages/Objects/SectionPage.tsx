@@ -9,11 +9,13 @@ import {fetchSection} from '../../api/sectionApi.ts';
 import BlueLink from "../../components/Text/BlueLink.tsx"
 import {useParams} from "react-router-dom";
 import {fetchRoomsBySection} from "../../api/roomApi.ts";
+import AddRoomInSectionModal from "../../components/Modal/Add/AddRoomInSectionModal.tsx";
 
 const SectionPage = () => {
     const { sectionId } = useParams();
     const [section, setSection] = useState<Array<{ id: number, title: string, value: string | number }>>([]);
     const [rooms, setRooms] = useState<Array<{ id: number, title: string, value: string, value2: string }>>([]);
+    const [isAddRoomInSectionModal, setIsAddRoomInSectionModal] = useState(false);
 
     useEffect(() => {
         const getData = async () => {
@@ -40,7 +42,13 @@ const SectionPage = () => {
 
         getData();
     }, [sectionId]);
+    const handleAddRoomInSectionModalOpen = () => {
+        setIsAddRoomInSectionModal(true);
+    };
 
+    const handleAddRoomInSectionModalClose = () => {
+        setIsAddRoomInSectionModal(false);
+    };
     return (
         <DefaultLayout>
             <div className="flex justify-between">
@@ -56,10 +64,17 @@ const SectionPage = () => {
                     <ChildElementsTable
                         infoData={rooms}
                         tableTitle="Помещения"
-                        ButtonComponent={AddButton}
+                        ButtonComponent={() => <AddButton onClick={handleAddRoomInSectionModalOpen} />}
                         LinkComponent={BlueLink}
                     />
                 </div>
+                {isAddRoomInSectionModal && (
+                    <AddRoomInSectionModal
+                        onClose={handleAddRoomInSectionModalClose}
+                        onSubmit={() => {
+                        }}
+                    />
+                )}
             </div>
         </DefaultLayout>
     );
