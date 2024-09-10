@@ -7,10 +7,12 @@ import { fetchDevices } from "../../api/deviceApi.ts";
 import DeleteDeviceModal from "../../components/Modal/Delete/DeleteDeviceModal.tsx";
 import UnbindDeviceModal from "../../components/Modal/Bind/UnbindDeviceModal.tsx";
 import BindDeviceModal from "../../components/Modal/Bind/BindDeviceModal.tsx";
+import EditDeviceModal from "../../components/Modal/Edit/EditDeviceModal.tsx";
 
 const DevicePage = () => {
     const [devices, setDevices] = useState<Device[]>([]);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [isUnbindModalOpen, setIsUnbindModalOpen] = useState(false);
     const [isBindModalOpen, setIsBindModalOpen] = useState(false);
     const [selectedDevice, setSelectedDevice] = useState<Device | null>(null);
@@ -43,8 +45,20 @@ const DevicePage = () => {
     };
 
     const handleEditDeviceClick = (item: Device) => {
-        console.log('Edit device:', item);
+        setSelectedDevice(item);
+        setIsEditModalOpen(true);
     };
+    const handleCloseEditModal = () => {
+        setIsEditModalOpen(false);
+        setSelectedDevice(null);
+    };
+    const handleSaveDevice = (updatedDevice: Device) => {
+        setDevices(prevDevices =>
+            prevDevices.map(device => device.id === updatedDevice.id ? updatedDevice : device)
+        );
+        handleCloseEditModal();
+    };
+
 
     const handleDeleteDeviceClick = (item: Device) => {
         setSelectedDevice(item);
@@ -112,6 +126,7 @@ const DevicePage = () => {
                 <ItemTable
                     data={devices}
                     headers={headers}
+                    onEditClick={handleEditDeviceClick}
                     onDeleteClick={handleDeleteDeviceClick}
                 />
             </div>
@@ -133,7 +148,13 @@ const DevicePage = () => {
                     onSuccess={handleConfirmUnbind}
                 />
             )}
-
+            {isEditModalOpen && selectedDevice && (
+                <EditDeviceModal
+                    device={selectedDevice}
+                    onClose={handleCloseEditModal}
+                    onSave={handleSaveDevice}
+                />
+            )}
             {isBindModalOpen && selectedDevice && (
                 <BindDeviceModal
                     deviceId={selectedDevice.id}
