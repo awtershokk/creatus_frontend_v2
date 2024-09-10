@@ -12,7 +12,7 @@ import DownloadButton from "../../components/Buttons/DownloadButton.tsx";
 import MeasurementsFilters from "../../components/Filters/MeasurementsFilters.tsx";
 import GraphPage from "../../components/Graph/GraphPage.tsx";
 import Label from "../../components/Text/Label.tsx";
-import EditButton from "../../components/Buttons/EditButton.tsx";
+
 interface MeasuringPoint {
     deviceActive: boolean | null;
     measuringPointLabel: string;

@@ -1,12 +1,16 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import DefaultLayout from "../../layouts/DefaultLayout.tsx";
 import Label from "../../components/Text/Label.tsx";
 import ItemTable from '../../components/Tables/ItemTable.tsx';
-import {Device} from "../../models/Device.tsx";
-import {fetchDevices} from "../../api/deviceApi.ts";
+import { Device } from "../../models/Device.tsx";
+import { fetchDevices } from "../../api/deviceApi.ts";
+import DeleteDeviceModal from "../../components/Modal/Delete/DeleteDeviceModal.tsx";
 
 const DevicePage = () => {
     const [devices, setDevices] = useState<Device[]>([]);
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const [selectedDevice, setSelectedDevice] = useState<Device | null>(null);
+
     localStorage.setItem('devices', JSON.stringify({ label: 'Датчики', icon: 'FaBug' }));
 
     useEffect(() => {
@@ -14,7 +18,6 @@ const DevicePage = () => {
             try {
                 const devicesData = await fetchDevices(handleEditDeviceClick, handleDeleteDeviceClick);
                 setDevices(devicesData);
-
             } catch (error) {
                 console.error('Ошибка получения данных:', error);
             }
@@ -41,7 +44,20 @@ const DevicePage = () => {
     };
 
     const handleDeleteDeviceClick = (item: Device) => {
-        console.log('Delete device:', item);
+        setSelectedDevice(item);
+        setIsDeleteModalOpen(true);
+    };
+
+    const handleCloseDeleteModal = () => {
+        setIsDeleteModalOpen(false);
+        setSelectedDevice(null);
+    };
+
+    const handleConfirmDelete = async () => {
+        if (selectedDevice) {
+            setDevices(prevDevices => prevDevices.filter(device => device.id !== selectedDevice.id));
+            handleCloseDeleteModal();
+        }
     };
 
     return (
@@ -55,8 +71,18 @@ const DevicePage = () => {
                 <ItemTable
                     data={devices}
                     headers={headers}
+                    onDeleteClick={handleDeleteDeviceClick}
                 />
             </div>
+
+            {isDeleteModalOpen && selectedDevice && (
+                <DeleteDeviceModal
+                    label={selectedDevice.label}
+                    onClose={handleCloseDeleteModal}
+                    onSubmit={handleConfirmDelete}
+
+                />
+            )}
         </DefaultLayout>
     );
 };

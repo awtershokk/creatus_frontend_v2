@@ -10,19 +10,20 @@ import { fetchBuilding, fetchResponsiblePersons, updateBuilding } from '../../ap
 import { fetchSections } from '../../api/sectionApi.ts';
 import { fetchThermalCircuits } from "../../api/thermalCircuitApi.ts";
 import { ResponsiblePerson } from '../../models/ResponsiblePerson';
-import BlueLink from "../../components/Text/BlueLink.tsx"
+import BlueLink from "../../components/Text/BlueLink.tsx";
 import MiniAddButton from "../../components/Buttons/MiniAddButton.tsx";
 import BuildingEditModal from '../../components/Modal/Edit/EditBuildingModal';
+import AddResponsiblePersonModal from "../../components/Modal/Add/AddResponsiblePersonModal.tsx";
 
 const BuildingPage = () => {
     const [building, setBuilding] = useState<Array<{ id: number, title: string, value: string | number }>>([]);
-
     const [responsiblePersons, setResponsiblePersons] = useState<ResponsiblePerson[]>([]);
     const [sections, setSections] = useState<Array<{ id: number, title: string, value: string, value2: string }>>([]);
     const [thermalCircuits, setThermalCircuits] = useState<Array<{ id: number, title: string, value: string, value2: string }>>([]);
 
     const [isEditBuildingModalOpen, setIsEditBuildingModalOpen] = useState(false);
     const [selectedBuilding, setSelectedBuilding] = useState<any>(null);
+    const [isAddResponsiblePersonModalOpen, setIsAddResponsiblePersonModalOpen] = useState(false);
 
     const buildingId = 1;
 
@@ -74,13 +75,9 @@ const BuildingPage = () => {
     };
 
     const handleEditButtonClick = (buildingItem: any) => {
-        console.log('Selected building in page:', buildingItem);
         setSelectedBuilding(buildingItem);
-        console.log('item', buildingItem)
         setIsEditBuildingModalOpen(true);
     };
-
-
 
     const handleEditBuildingModalClose = () => {
         setIsEditBuildingModalOpen(false);
@@ -90,17 +87,25 @@ const BuildingPage = () => {
     const handleUpdateBuilding = async (updatedBuilding: any) => {
         try {
             await updateBuilding(buildingId, updatedBuilding);
-            await getData()
+            await getData();
             handleEditBuildingModalClose();
         } catch (error) {
             console.error('Ошибка обновления здания:', error);
         }
     };
 
+    const handleAddResponsiblePersonClick = () => {
+        setIsAddResponsiblePersonModalOpen(true);
+    };
+
+    const handleAddResponsiblePersonModalClose = () => {
+        setIsAddResponsiblePersonModalOpen(false);
+
+    };
+
     useEffect(() => {
         console.log('Building state updated:', building);
     }, [building]);
-
 
     return (
         <DefaultLayout>
@@ -134,7 +139,7 @@ const BuildingPage = () => {
                 <div className="mt-4 flex items-center justify-between">
                     <div className="flex items-center ">
                         <Label text="Ответственные лица"/>
-                        <MiniAddButton/>
+                        <MiniAddButton onClick={handleAddResponsiblePersonClick}/>
                     </div>
                 </div>
 
@@ -153,6 +158,15 @@ const BuildingPage = () => {
                     headerTitle="Редактировать здание"
                     buttonLabel="Сохранить"
                 />
+            )}
+
+            {isAddResponsiblePersonModalOpen && (
+                <AddResponsiblePersonModal
+                    onClose={handleAddResponsiblePersonModalClose}
+                    onSubmit={() => {
+                    }}
+                />
+
             )}
         </DefaultLayout>
     );
