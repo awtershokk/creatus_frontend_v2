@@ -15,6 +15,8 @@ import { Measurement } from "../../models/Measurements.ts";
 import TableContainer from "../../layouts/TableContainer.tsx";
 import MeasurementsFilters from '../../components/Filters/MeasurementsFilters.tsx';
 import DownloadButton from "../../components/Buttons/DownloadButton.tsx";
+import AddRoomInThermalCircuitModal from "../../components/Modal/Add/AddRoomInThermalCircuitModal.tsx";
+
 
 const ThermalCircuitPage = () => {
     const { thermalCircuitId } = useParams();
@@ -28,6 +30,7 @@ const ThermalCircuitPage = () => {
     const [timeRange, setTimeRange] = useState<{ start: Date | null; end: Date | null }>({ start: null, end: null });
     const [temperatureDeviation, setTemperatureDeviation] = useState<{ min: number | null; max: number | null }>({ min: null, max: null });
     const [humidityDeviation, setHumidityDeviation] = useState<{ min: number | null; max: number | null }>({ min: null, max: null });
+    const [isAddRoomInThermalCircuitModal, setIsAddRoomInThermalCircuitModal] = useState(false);
 
     useEffect(() => {
         const getData = async () => {
@@ -65,7 +68,13 @@ const ThermalCircuitPage = () => {
     useEffect(() => {
         setDisplayedMeasurements(filteredMeasurements.length);
     }, [filteredMeasurements]);
+    const handleAddRoomInThermalCircuitModalOpen = () => {
+        setIsAddRoomInThermalCircuitModal(true);
+    };
 
+    const handleAddRoomInThermalCircuitModalClose = () => {
+        setIsAddRoomInThermalCircuitModal(false);
+    };
     const handleFilterChange = (filters: {
         dateRange?: { start: Date | null; end: Date | null },
         timeRange?: { start: Date | null; end: Date | null },
@@ -166,7 +175,7 @@ const ThermalCircuitPage = () => {
                     <ChildElementsTable
                         infoData={rooms}
                         tableTitle="Помещения"
-                        ButtonComponent={AddButton}
+                        ButtonComponent={() => <AddButton onClick={handleAddRoomInThermalCircuitModalOpen} />}
                         LinkComponent={BlueLink}
                     />
                 </div>
@@ -195,6 +204,13 @@ const ThermalCircuitPage = () => {
                     />
                 </TableContainer>
             </div>
+            {isAddRoomInThermalCircuitModal && (
+                <AddRoomInThermalCircuitModal
+                    onClose={handleAddRoomInThermalCircuitModalClose}
+                    onSubmit={() => {
+                    }}
+                />
+            )}
         </DefaultLayout>
     );
 };
