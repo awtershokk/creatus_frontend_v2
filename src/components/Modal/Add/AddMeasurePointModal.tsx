@@ -15,8 +15,8 @@ const AddMeasurePointModal: React.FC<AddMeasurePointModalProps> = ({ onClose, on
         tempMax: '',
         humidityMin: '',
         humidityMax: '',
-        tempIncluded: false,
-        humidityIncluded: false,
+        tempIncluded: '',
+        humidityIncluded: '',
         tempLocationCoeff: '',
         tempHeightCoeff: '',
         tempCalibCoeff: '',
@@ -178,6 +178,39 @@ const AddMeasurePointModal: React.FC<AddMeasurePointModalProps> = ({ onClose, on
                     {errors.humidityMax && <p className="text-red-500 text-sm">{errors.humidityMax}</p>}
                 </div>
 
+                <div>
+                    <label htmlFor="tempIncluded" className="block text-sm font-medium text-gray-700">
+                        Температура включена в расчет
+                    </label>
+                    <select
+                        id="tempIncluded"
+                        name="tempIncluded"
+                        value={formData.tempIncluded}
+                        onChange={handleChange}
+                        className={`w-full p-2 border ${errors.tempIncluded ? 'border-red-500' : 'border-gray-300'} rounded-md text-black focus:outline-none focus:ring-2 focus:ring-gray-400 bg-white`}
+                    >
+                        <option value="true">Да</option>
+                        <option value="false">Нет</option>
+                    </select>
+                    {errors.tempIncluded && <p className="text-red-500 text-sm">{errors.tempIncluded}</p>}
+                </div>
+
+                <div>
+                    <label htmlFor="humidityIncluded" className="block text-sm font-medium text-gray-700">
+                        Влажность включена в расчет
+                    </label>
+                    <select
+                        id="humidityIncluded"
+                        name="humidityIncluded"
+                        value={formData.humidityIncluded}
+                        onChange={handleChange}
+                        className={`w-full p-2 border ${errors.humidityIncluded ? 'border-red-500' : 'border-gray-300'} rounded-md text-black focus:outline-none focus:ring-2 focus:ring-gray-400 bg-white`}
+                    >
+                        <option value="true">Да</option>
+                        <option value="false">Нет</option>
+                    </select>
+                    {errors.humidityIncluded && <p className="text-red-500 text-sm">{errors.humidityIncluded}</p>}
+                </div>
                 <div>
                     <label htmlFor="tempLocationCoeff" className="block text-sm font-medium text-gray-700">
                         Коэффициент расположения
