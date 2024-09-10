@@ -15,6 +15,7 @@ import MiniAddButton from "../../components/Buttons/MiniAddButton.tsx";
 import BuildingEditModal from '../../components/Modal/Edit/EditBuildingModal';
 import AddResponsiblePersonModal from "../../components/Modal/Add/AddResponsiblePersonModal.tsx";
 import AddSectionModal from "../../components/Modal/Add/AddSectionModal";
+import AddThermalCircuitModal from "../../components/Modal/Add/AddThermalModal";
 
 const BuildingPage = () => {
     const [building, setBuilding] = useState<Array<{ id: number, title: string, value: string | number }>>([]);
@@ -26,6 +27,7 @@ const BuildingPage = () => {
     const [selectedBuilding, setSelectedBuilding] = useState<any>(null);
     const [isAddResponsiblePersonModalOpen, setIsAddResponsiblePersonModalOpen] = useState(false);
     const [isAddSectionModalOpen, setIsAddSectionModalOpen] = useState(false);
+    const [isAddThermalCircuitModalOpen, setIsAddThermalCircuitModalOpen] = useState(false);  // New state for thermal circuit modal
 
     const buildingId = 1;
 
@@ -112,7 +114,13 @@ const BuildingPage = () => {
         setIsAddSectionModalOpen(false);
     };
 
+    const handleAddThermalCircuitClick = () => {
+        setIsAddThermalCircuitModalOpen(true);
+    };
 
+    const handleAddThermalCircuitModalClose = () => {
+        setIsAddThermalCircuitModalOpen(false);
+    };
 
     useEffect(() => {
         console.log('Building state updated:', building);
@@ -140,7 +148,7 @@ const BuildingPage = () => {
                         <ChildElementsTable
                             infoData={thermalCircuits}
                             tableTitle="Тепловые контуры"
-                            ButtonComponent={AddButton}
+                            ButtonComponent={() => <AddButton onClick={handleAddThermalCircuitClick} />} // Button to trigger AddThermalCircuitModal
                             LinkComponent={BlueLink}
                         />
                     </div>
@@ -182,6 +190,15 @@ const BuildingPage = () => {
                 <AddSectionModal
                     onClose={handleAddSectionModalClose}
                     onSubmit={() => {
+                    }}
+                />
+            )}
+
+            {isAddThermalCircuitModalOpen && (
+                <AddThermalCircuitModal
+                    onClose={handleAddThermalCircuitModalClose}
+                    onSubmit={() => {
+
                     }}
                 />
             )}
