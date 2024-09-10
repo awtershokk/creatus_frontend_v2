@@ -1,5 +1,5 @@
 import api from './api';
-import {ThermalCircuit, transformThermalCircuitData} from "../models/ThermalCircuit.ts";
+import { ThermalCircuit, transformThermalCircuitData } from '../models/ThermalCircuit';
 
 export const fetchThermalCircuits = async (buildingId: number) => {
     try {
@@ -19,3 +19,38 @@ export const fetchThermalCircuit = async (thermalCircuitId: number) => {
         throw error;
     }
 };
+
+export const addThermalCircuit = async (data: {
+    label: string;
+    heatingLoad: number;
+    wiringDiagram: string;
+    square: number;
+    volume: number;
+    connectionDiagram: string;
+}) => {
+    try {
+        const response = await api.post('/thermalCircuit/1', data);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const fetchWiringDiagrams = async () => {
+    try {
+        const response = await api.get('/thermalCircuit/list/wiringDiagrams');
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const fetchConnectionDiagrams = async () => {
+    try {
+        const response = await api.get('/thermalCircuit/list/connectionDiagrams');
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+

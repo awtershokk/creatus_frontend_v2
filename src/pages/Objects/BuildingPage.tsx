@@ -15,7 +15,7 @@ import MiniAddButton from "../../components/Buttons/MiniAddButton.tsx";
 import BuildingEditModal from '../../components/Modal/Edit/EditBuildingModal';
 import AddResponsiblePersonModal from "../../components/Modal/Add/AddResponsiblePersonModal.tsx";
 import AddSectionModal from "../../components/Modal/Add/AddSectionModal";
-import AddThermalCircuitModal from "../../components/Modal/Add/AddThermalModal";
+import AddThermalCircuitModal from "../../components/Modal/Add/AddThermalCircuitModal.tsx";
 
 const BuildingPage = () => {
     const [building, setBuilding] = useState<Array<{ id: number, title: string, value: string | number }>>([]);
@@ -27,46 +27,48 @@ const BuildingPage = () => {
     const [selectedBuilding, setSelectedBuilding] = useState<any>(null);
     const [isAddResponsiblePersonModalOpen, setIsAddResponsiblePersonModalOpen] = useState(false);
     const [isAddSectionModalOpen, setIsAddSectionModalOpen] = useState(false);
-    const [isAddThermalCircuitModalOpen, setIsAddThermalCircuitModalOpen] = useState(false);  // New state for thermal circuit modal
+    const [isAddThermalCircuitModalOpen, setIsAddThermalCircuitModalOpen] = useState(false);
 
     const buildingId = 1;
 
+    const getData = async () => {
+        try {
+            const buildingData = await fetchBuilding(buildingId);
+            setBuilding(buildingData);
+
+            const labelItem = buildingData.find(item => item.title === 'Наименование');
+            localStorage.setItem('building', JSON.stringify({ label: labelItem?.value, icon: 'FaRegBuilding' }));
+
+            const responsiblePersonsData = await fetchResponsiblePersons(buildingId);
+            setResponsiblePersons(responsiblePersonsData);
+
+            const sectionsData = await fetchSections(buildingId);
+            const formattedSections = sectionsData.map(section => ({
+                id: section.id,
+                title: section.label,
+                properties: 'Свойства',
+                delete: 'Удалить',
+                to: `section/${section.id}`
+            }));
+            setSections(formattedSections);
+
+            const thermalcircuitsData = await fetchThermalCircuits(buildingId);
+            const formattedThermalCircuits = thermalcircuitsData.map(thermalCircuit => ({
+                id: thermalCircuit.id,
+                title: thermalCircuit.label,
+                properties: 'Свойства',
+                delete: 'Удалить',
+                to: `thermalCircuit/${thermalCircuit.id}`
+            }));
+            setThermalCircuits(formattedThermalCircuits);
+
+        } catch (error) {
+            console.error('Ошибка получения данных:', error);
+        }
+    };
+
+
     useEffect(() => {
-        const getData = async () => {
-            try {
-                const buildingData = await fetchBuilding(buildingId);
-                setBuilding(buildingData);
-                const labelItem = buildingData.find(item => item.title === 'Наименование');
-                localStorage.setItem('building', JSON.stringify({ label: labelItem?.value, icon: 'FaRegBuilding' }));
-
-                const responsiblePersonsData = await fetchResponsiblePersons(buildingId);
-                setResponsiblePersons(responsiblePersonsData);
-
-                const sectionsData = await fetchSections(buildingId);
-                const formattedSections = sectionsData.map(section => ({
-                    id: section.id,
-                    title: section.label,
-                    properties: 'Свойства',
-                    delete: 'Удалить',
-                    to: `section/${section.id}`
-                }));
-                setSections(formattedSections);
-
-                const thermalcircuitsData = await fetchThermalCircuits(buildingId);
-                const formattedThermalCircuits = thermalcircuitsData.map(thermalCircuit => ({
-                    id: thermalCircuit.id,
-                    title: thermalCircuit.label,
-                    properties: 'Свойства',
-                    delete: 'Удалить',
-                    to: `thermalCircuit/${thermalCircuit.id}`
-                }));
-                setThermalCircuits(formattedThermalCircuits);
-
-            } catch (error) {
-                console.error('Ошибка получения данных:', error);
-            }
-        };
-
         getData();
     }, [buildingId]);
 
@@ -122,6 +124,22 @@ const BuildingPage = () => {
         setIsAddThermalCircuitModalOpen(false);
     };
 
+    const handleAddSection = async (newSection: { label: string; area: number; volume: number }) => {
+        try {
+            await getData();
+        } catch (error) {
+            console.error('Ошибка при обновлении секций:', error);
+        }
+    };
+
+    const handleAddThermalCircuit = async (newThermalCircuit: { label: string, heatingLoad: number, wiringDiagram: string, square: number, volume: number, connectionDiagram: string }) => {
+        try {
+            await getData();
+        } catch (error) {
+            console.error('Ошибка при обновлении тепловых контуров:', error);
+        }
+    };
+
     useEffect(() => {
         console.log('Building state updated:', building);
     }, [building]);
@@ -141,14 +159,14 @@ const BuildingPage = () => {
                     <ChildElementsTable
                         infoData={sections}
                         tableTitle="Секции"
-                        ButtonComponent={() => <AddButton onClick={handleAddSectionClick} />} // Кнопка для добавления секции
+                        ButtonComponent={() => <AddButton onClick={handleAddSectionClick} />}
                         LinkComponent={BlueLink}
                     />
                     <div className='mt-3'>
                         <ChildElementsTable
                             infoData={thermalCircuits}
                             tableTitle="Тепловые контуры"
-                            ButtonComponent={() => <AddButton onClick={handleAddThermalCircuitClick} />} // Button to trigger AddThermalCircuitModal
+                            ButtonComponent={() => <AddButton onClick={handleAddThermalCircuitClick} />}
                             LinkComponent={BlueLink}
                         />
                     </div>
@@ -189,17 +207,14 @@ const BuildingPage = () => {
             {isAddSectionModalOpen && (
                 <AddSectionModal
                     onClose={handleAddSectionModalClose}
-                    onSubmit={() => {
-                    }}
+                    onSubmit={handleAddSection}
                 />
             )}
 
             {isAddThermalCircuitModalOpen && (
                 <AddThermalCircuitModal
                     onClose={handleAddThermalCircuitModalClose}
-                    onSubmit={() => {
-
-                    }}
+                    onSubmit={handleAddThermalCircuit}
                 />
             )}
         </DefaultLayout>

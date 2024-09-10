@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 import ModalTemplate from '../ModalTemplate';
+import { createSection } from '../../../api/sectionApi';
 
 interface AddSectionModalProps {
     onClose: () => void;
-    onSubmit: (section: { name: string; area: number; volume: number }) => void;
+    onSubmit: (section: { label: string; area: number; volume: number }) => void;
 }
 
 const AddSectionModal: React.FC<AddSectionModalProps> = ({ onClose, onSubmit }) => {
     const [formData, setFormData] = useState({
-        name: '',
+        label: '',
         area: '',
         volume: ''
     });
@@ -16,20 +17,19 @@ const AddSectionModal: React.FC<AddSectionModalProps> = ({ onClose, onSubmit }) 
     const [loading, setLoading] = useState(false);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
-        setFormData(prevData => ({ ...prevData, [name]: value }));
+        const { id, value } = e.target;
+        setFormData(prevData => ({ ...prevData, [id]: value }));
     };
 
     const handleSubmit = async () => {
         setLoading(true);
-        setErrors({}); // Clear previous errors
+        setErrors({});
 
-        const { name, area, volume } = formData;
+        const { label, area, volume } = formData;
         const newErrors: { [key: string]: string } = {};
 
-        // Validate form data
-        if (!name.trim()) {
-            newErrors.name = 'Название не может быть пустым.';
+        if (!label.trim()) {
+            newErrors.label = 'Название не может быть пустым.';
         }
 
         const areaNumber = parseFloat(area);
@@ -54,17 +54,16 @@ const AddSectionModal: React.FC<AddSectionModalProps> = ({ onClose, onSubmit }) 
         }
 
         try {
-
-            await new Promise(resolve => setTimeout(resolve, 100));
-
             const section = {
-                name,
+                label,
                 area: areaNumber,
                 volume: volumeNumber
             };
 
-            console.log('Добавлена секция:', section);
-            onSubmit(section);
+            const response = await createSection(section);
+            console.log('Добавлена секция:', response);
+
+            onSubmit(response);
             onClose();
         } catch (error) {
             console.error('Ошибка при добавлении секции:', error);
@@ -75,26 +74,26 @@ const AddSectionModal: React.FC<AddSectionModalProps> = ({ onClose, onSubmit }) 
 
     return (
         <ModalTemplate
-            headerTitle="Добавить секцию"
-            buttonLabel="Сохранить"
+            headerTitle="Создать секцию"
+            buttonLabel="Добавить"
             onClose={onClose}
             onSubmit={handleSubmit}
             loading={loading}
         >
             <div className="space-y-4">
                 <div>
-                    <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-                        Название
+                    <label htmlFor="label" className="block text-sm font-medium text-gray-700">
+                        Наименование
                     </label>
                     <input
-                        id="name"
-                        name="name"
+                        id="label"
                         type="text"
-                        value={formData.name}
+                        placeholder="Введите наименование"
+                        value={formData.label}
                         onChange={handleChange}
-                        className={`w-full p-2 border ${errors.name ? 'border-red-500' : 'border-gray-300'} rounded-md text-black focus:outline-none focus:ring-2 focus:ring-gray-400 bg-white`}
+                        className={`w-full p-2 border ${errors.label ? 'border-red-500' : 'border-gray-300'} rounded-md text-black focus:outline-none focus:ring-2 focus:ring-gray-400 bg-white`}
                     />
-                    {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
+                    {errors.label && <p className="text-red-500 text-sm">{errors.label}</p>}
                 </div>
                 <div>
                     <label htmlFor="area" className="block text-sm font-medium text-gray-700">
@@ -102,8 +101,8 @@ const AddSectionModal: React.FC<AddSectionModalProps> = ({ onClose, onSubmit }) 
                     </label>
                     <input
                         id="area"
-                        name="area"
                         type="number"
+                        placeholder="Введите площадь"
                         value={formData.area}
                         onChange={handleChange}
                         className={`w-full p-2 border ${errors.area ? 'border-red-500' : 'border-gray-300'} rounded-md text-black focus:outline-none focus:ring-2 focus:ring-gray-400 bg-white`}
@@ -116,8 +115,8 @@ const AddSectionModal: React.FC<AddSectionModalProps> = ({ onClose, onSubmit }) 
                     </label>
                     <input
                         id="volume"
-                        name="volume"
                         type="number"
+                        placeholder="Введите объем"
                         value={formData.volume}
                         onChange={handleChange}
                         className={`w-full p-2 border ${errors.volume ? 'border-red-500' : 'border-gray-300'} rounded-md text-black focus:outline-none focus:ring-2 focus:ring-gray-400 bg-white`}
