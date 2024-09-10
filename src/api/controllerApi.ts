@@ -10,3 +10,12 @@ export const fetchControllers = async () => {
         throw error;
     }
 };
+
+export const fetchControllerLabel = async (controllerId: number) => {
+    try {
+        const { data: { data: { label } } } = await axios.get(`http://localhost:7001/api/ecl/one/${controllerId}`);
+        return label;
+    } catch (error) {
+        throw error;
+    }
+}

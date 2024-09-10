@@ -44,15 +44,15 @@ const App = () => {
             <Routes>
                 <Route path="/" element={<LoginPage />} />
                 <Route path="/no-access" element={<NoAccessPage />} />
+                <Route path="user" element={<UserPage/>}/>
                 <Route element={<ProtectedRoute allowedRoles={[2, 3]} />}>
-                    <Route path="user" element={<UserPage/>}/>
                     <Route path="/building" element={<BuildingPage />} />
                     <Route path="/building/updates" element={<UpdatePage/>}/>
                     <Route path="/building/users" element={<UsersPage/>}/>
                     <Route path="/building/devices" element={<DevicePage/>}/>
                     <Route path="/building/controllers" element={<ControllerPage/>}/>
-                    <Route path="/building/controllers/:controllerId/options" element={<ControllerOptionsPage/>}/>
-                    <Route path='/building/controllers/:controllerId/schedule' element={<ControllerSchedulePage/>}/>
+                    <Route path="/building/controllers/options/:controllerId" element={<ControllerOptionsPage/>}/>
+                    <Route path='/building/controllers/schedule/:controllerId' element={<ControllerSchedulePage/>}/>
                     <Route path="/building/section/:sectionId" element={<SectionPage />} />
                     <Route path="/building/thermalCircuit/:thermalCircuitId" element={<ThermalCircuitPage />} />
                     <Route path="/building/section/:sectionId/room/:roomId" element={<RoomPage />} />
