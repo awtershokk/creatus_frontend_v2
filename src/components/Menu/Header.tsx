@@ -140,9 +140,10 @@ const Header = () => {
                                     <FaCog className="mr-2 text-lg"/> Режим настройки
                                 </li>
                                 <li className="px-6 py-3 hover:bg-gray-700 flex items-center cursor-pointer">
-                                    <a href="/user" className="flex items-center">
+                                    <Link className="flex items-center" to='/user'>
                                         <FaUser className="mr-2 text-lg"/> Режим пользователя
-                                    </a>
+                                    </Link>
+
                                 </li>
                             </ul>
                         )}
