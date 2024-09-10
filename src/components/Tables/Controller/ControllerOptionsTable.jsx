@@ -255,6 +255,8 @@ const ControllerOptionTable = () => {
             </Tooltip>
         );
 
+
+
         return (
             <React.Fragment key={rowIndex}>
                 <tr
@@ -266,7 +268,10 @@ const ControllerOptionTable = () => {
                             overlay={item.hint && !item.children.length ? renderTooltip : <span></span>}
                             delay={{ show: 250, hide: 400 }}
                         >
-                            <div className="flex items-center">
+                            {/* Инлайн-стиль для отступа слева на основе уровня вложенности */}
+                            <div
+                                className={`flex items-center pl-2 ml-${ level * 4}`} // Отступ слева для всех уровней, включая 0 уровень
+                            >
                                 {!item.children.length && (
                                     <div className="flex items-center mr-1">
                                         <FaStar
@@ -276,7 +281,7 @@ const ControllerOptionTable = () => {
                                         />
                                         <input
                                             type="checkbox"
-                                            className="ml-2 cursor-pointer z-10 "
+                                            className="ml-2 cursor-pointer z-10"
                                             checked={checkboxState[rowIndex] || false}
                                             onChange={() => handleCheckboxChange(rowIndex, item.id)}
                                             disabled={!checkboxState[rowIndex] && selectedCount >= 10}
@@ -285,16 +290,16 @@ const ControllerOptionTable = () => {
                                 )}
                                 {item.children.length > 0 && (
                                     <span className="mr-2">
-                                <FaFolder />
+                                <FaFolder/>
                             </span>
                                 )}
                                 <span className="single-line">{item.param}</span>
                                 {item.children.length > 0 && (
                                     <span
                                         onClick={() => handleToggleExpand(rowIndex)}
-                                        className="ml-2 cursor-pointer "
+                                        className="ml-2 cursor-pointer"
                                     >
-                                {expanded[rowIndex] ? <FiChevronUp /> : <FiChevronDown />}
+                                {expanded[rowIndex] ? <FiChevronUp/> : <FiChevronDown/>}
                             </span>
                                 )}
                             </div>
@@ -319,6 +324,7 @@ const ControllerOptionTable = () => {
                     )}
             </React.Fragment>
         );
+
 
     };
 
@@ -521,7 +527,7 @@ const ControllerOptionTable = () => {
                     </div>
 
 
-                    <div className="ecltable-container max-h-[445px] overflow-y-auto w-[700px] noscroll">
+                    <div className="ecltable-container max-h-[445px] overflow-y-auto w-[600px] noscroll">
                         <div className="params-table-container">
                             <table className="table table-bordered w-full">
                                 <thead>

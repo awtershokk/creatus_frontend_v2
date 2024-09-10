@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ModalTemplate from '../ModalTemplate';
 import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
 
@@ -7,20 +7,44 @@ interface AddUserModalProps {
     onSubmit: (user: { username: string; password: string; role: string }) => void;
 }
 
+interface Role {
+    id: string;
+    label: string;
+}
+
 const AddUserModal: React.FC<AddUserModalProps> = ({ onClose, onSubmit }) => {
     const [formData, setFormData] = useState({
         username: '',
         password: '',
         fullName: '',
-        role: 'public'
+        role: ''
     });
     const [loading, setLoading] = useState(false);
     const [passwordVisible, setPasswordVisible] = useState(false);
     const [errors, setErrors] = useState({
         username: '',
         password: '',
-        fullName: ''
+        fullName: '',
+        role: ''
     });
+    const [roles, setRoles] = useState<Role[]>([]);
+
+    useEffect(() => {
+        const fetchRoles = async () => {
+            try {
+                const response = await fetch('http://localhost:5001/api/user/list/roles');
+                if (!response.ok) {
+                    throw new Error('Ошибка при получении данных с сервера');
+                }
+                const data = await response.json();
+                setRoles(data);
+            } catch (error) {
+                console.error(error.message);
+            }
+        };
+
+        fetchRoles();
+    }, []);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
@@ -36,7 +60,7 @@ const AddUserModal: React.FC<AddUserModalProps> = ({ onClose, onSubmit }) => {
 
     const validate = () => {
         let isValid = true;
-        const newErrors = { username: '', password: '', fullName: '' };
+        const newErrors = { username: '', password: '', fullName: '', role: '' };
 
         if (!formData.username) {
             newErrors.username = 'Логин обязателен';
@@ -50,6 +74,11 @@ const AddUserModal: React.FC<AddUserModalProps> = ({ onClose, onSubmit }) => {
 
         if (!formData.fullName) {
             newErrors.fullName = 'Имя пользователя обязательно';
+            isValid = false;
+        }
+
+        if (!formData.role) {
+            newErrors.role = 'Выберите роль';
             isValid = false;
         }
 
@@ -146,12 +175,16 @@ const AddUserModal: React.FC<AddUserModalProps> = ({ onClose, onSubmit }) => {
                         name="role"
                         value={formData.role}
                         onChange={handleChange}
-                        className="w-full p-2 border border-gray-300 rounded-md text-black focus:outline-none focus:ring-2 focus:ring-gray-400 bg-white"
+                        className={`w-full p-2 border border-gray-300 rounded-md text-black focus:outline-none focus:ring-2 focus:ring-gray-400 bg-white ${errors.role ? 'border-red-500' : ''}`}
                     >
-                        <option value="root">Суперпользователь</option>
-                        <option value="admin">Админ</option>
-                        <option value="public">Пользователь</option>
+                        <option value="">Выберите роль</option>
+                        {roles.map(role => (
+                            <option key={role.id} value={role.id}>
+                                {role.label}
+                            </option>
+                        ))}
                     </select>
+                    {errors.role && <p className="text-red-500 text-sm">{errors.role}</p>}
                 </div>
             </div>
         </ModalTemplate>

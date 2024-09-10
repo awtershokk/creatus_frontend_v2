@@ -71,7 +71,7 @@ const UserHeader: React.FC<UserHeaderProps> = ({ officeName, currentCircuitLabel
 
                 </div>
 
-                <div className="flex items-center space-x-4">
+                <div className="flex items-center ">
 
 
                     <div
