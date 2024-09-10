@@ -16,7 +16,7 @@ import MeasuringPointPage from "./pages/Objects/MeasuringPointPage.tsx";
 import UsersPage from "./pages/Admin/UsersPage.tsx";
 import DevicePage from "./pages/Objects/DevicePage.tsx";
 import ControllerPage from "./pages/Contoller/ControllerPage.tsx";
-import ControllerOptionsPage from "./pages/Contoller/ControllerOptionsPage.tsx";
+import ControllerOptionsPage from "./pages/Contoller/ControllerOptionsPage.jsx";
 import UserPage from "./pages/User/UserPage.tsx";
 import ControllerSchedulePage from "./pages/Contoller/ControllerSchedulePage.tsx";
 const App = () => {

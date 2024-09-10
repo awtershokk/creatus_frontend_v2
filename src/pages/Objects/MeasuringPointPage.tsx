@@ -44,7 +44,6 @@ const MeasuringPointPage = () => {
         'Калиброванная t°': 'calculated_humidity',
         'Измеренная h': 'measured_humidity',
         'Калиброванная h': 'calculated_humidity',
-        'Измеренная h': 'measured_humidity',
         'Отклонение t°': 'deviation_temperature',
         'Отклонение h': 'deviation_humidity',
     };
