@@ -14,6 +14,7 @@ import BlueLink from "../../components/Text/BlueLink.tsx";
 import MiniAddButton from "../../components/Buttons/MiniAddButton.tsx";
 import BuildingEditModal from '../../components/Modal/Edit/EditBuildingModal';
 import AddResponsiblePersonModal from "../../components/Modal/Add/AddResponsiblePersonModal.tsx";
+import AddSectionModal from "../../components/Modal/Add/AddSectionModal";
 
 const BuildingPage = () => {
     const [building, setBuilding] = useState<Array<{ id: number, title: string, value: string | number }>>([]);
@@ -24,6 +25,7 @@ const BuildingPage = () => {
     const [isEditBuildingModalOpen, setIsEditBuildingModalOpen] = useState(false);
     const [selectedBuilding, setSelectedBuilding] = useState<any>(null);
     const [isAddResponsiblePersonModalOpen, setIsAddResponsiblePersonModalOpen] = useState(false);
+    const [isAddSectionModalOpen, setIsAddSectionModalOpen] = useState(false);
 
     const buildingId = 1;
 
@@ -100,8 +102,17 @@ const BuildingPage = () => {
 
     const handleAddResponsiblePersonModalClose = () => {
         setIsAddResponsiblePersonModalOpen(false);
-
     };
+
+    const handleAddSectionClick = () => {
+        setIsAddSectionModalOpen(true);
+    };
+
+    const handleAddSectionModalClose = () => {
+        setIsAddSectionModalOpen(false);
+    };
+
+
 
     useEffect(() => {
         console.log('Building state updated:', building);
@@ -122,7 +133,7 @@ const BuildingPage = () => {
                     <ChildElementsTable
                         infoData={sections}
                         tableTitle="Секции"
-                        ButtonComponent={AddButton}
+                        ButtonComponent={() => <AddButton onClick={handleAddSectionClick} />} // Кнопка для добавления секции
                         LinkComponent={BlueLink}
                     />
                     <div className='mt-3'>
@@ -163,10 +174,16 @@ const BuildingPage = () => {
             {isAddResponsiblePersonModalOpen && (
                 <AddResponsiblePersonModal
                     onClose={handleAddResponsiblePersonModalClose}
+                    onSubmit={() => {}}
+                />
+            )}
+
+            {isAddSectionModalOpen && (
+                <AddSectionModal
+                    onClose={handleAddSectionModalClose}
                     onSubmit={() => {
                     }}
                 />
-
             )}
         </DefaultLayout>
     );

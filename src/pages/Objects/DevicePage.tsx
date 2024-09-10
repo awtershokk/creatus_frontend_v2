@@ -5,10 +5,12 @@ import ItemTable from '../../components/Tables/ItemTable.tsx';
 import { Device } from "../../models/Device.tsx";
 import { fetchDevices } from "../../api/deviceApi.ts";
 import DeleteDeviceModal from "../../components/Modal/Delete/DeleteDeviceModal.tsx";
+import EditDeviceModal from "../../components/Modal/Edit/EditDeviceModal.tsx"; // Импортируем компонент модального окна для редактирования
 
 const DevicePage = () => {
     const [devices, setDevices] = useState<Device[]>([]);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false); // Состояние для модального окна редактирования
     const [selectedDevice, setSelectedDevice] = useState<Device | null>(null);
 
     localStorage.setItem('devices', JSON.stringify({ label: 'Датчики', icon: 'FaBug' }));
@@ -40,7 +42,8 @@ const DevicePage = () => {
     };
 
     const handleEditDeviceClick = (item: Device) => {
-        console.log('Edit device:', item);
+        setSelectedDevice(item);
+        setIsEditModalOpen(true);
     };
 
     const handleDeleteDeviceClick = (item: Device) => {
@@ -53,11 +56,23 @@ const DevicePage = () => {
         setSelectedDevice(null);
     };
 
+    const handleCloseEditModal = () => {
+        setIsEditModalOpen(false);
+        setSelectedDevice(null);
+    };
+
     const handleConfirmDelete = async () => {
         if (selectedDevice) {
             setDevices(prevDevices => prevDevices.filter(device => device.id !== selectedDevice.id));
             handleCloseDeleteModal();
         }
+    };
+
+    const handleSaveDevice = (updatedDevice: Device) => {
+        setDevices(prevDevices =>
+            prevDevices.map(device => device.id === updatedDevice.id ? updatedDevice : device)
+        );
+        handleCloseEditModal();
     };
 
     return (
@@ -71,6 +86,7 @@ const DevicePage = () => {
                 <ItemTable
                     data={devices}
                     headers={headers}
+                    onEditClick={handleEditDeviceClick}
                     onDeleteClick={handleDeleteDeviceClick}
                 />
             </div>
@@ -80,7 +96,14 @@ const DevicePage = () => {
                     label={selectedDevice.label}
                     onClose={handleCloseDeleteModal}
                     onSubmit={handleConfirmDelete}
+                />
+            )}
 
+            {isEditModalOpen && selectedDevice && (
+                <EditDeviceModal
+                    device={selectedDevice}
+                    onClose={handleCloseEditModal}
+                    onSave={handleSaveDevice}
                 />
             )}
         </DefaultLayout>

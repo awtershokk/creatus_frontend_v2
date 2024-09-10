@@ -30,7 +30,7 @@ const DeleteDeviceModal: React.FC<DeleteDeviceModalProps> = ({ label, onClose })
             onSubmit={handleSubmit}
             loading={loading}
         >
-            <p className="text-black">Вы действительно хотите удалить датчик "{label}"?</p>
+            <p className="text-black ">Вы действительно хотите удалить датчик "{label}"?</p>
         </ModalTemplate>
     );
 };

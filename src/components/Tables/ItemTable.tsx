@@ -17,8 +17,8 @@ const ItemTable = ({
                        headers,
                        data,
                        nonSortableColumns = [],
-                       headerStyles = 'bg-gray-800 text-white',
-                       rowStyles = 'border-b border-gray-200 text-black',
+                       headerStyles = 'bg-gray-800 text-white whitespace-nowrap',
+                       rowStyles = 'border-b border-gray-200 text-black ',
                        cellStyles = 'p-1.5 border border-gray-300 whitespace-nowrap'
                    }: ItemTableProps) => {
     const [tableData, setTableData] = useState(data);

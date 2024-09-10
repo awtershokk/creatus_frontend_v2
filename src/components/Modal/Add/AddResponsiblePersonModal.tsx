@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ModalTemplate from '../ModalTemplate.tsx';
 
 interface ResponsiblePerson {
@@ -7,6 +7,11 @@ interface ResponsiblePerson {
     name: string;
     phone: string;
     email: string;
+}
+
+interface Option {
+    label: string;
+    value: string;
 }
 
 interface AddResponsiblePersonModalProps {
@@ -24,6 +29,20 @@ const AddResponsiblePersonModal: React.FC<AddResponsiblePersonModalProps> = ({ o
     });
     const [loading, setLoading] = useState(false);
     const [errors, setErrors] = useState<{ [key: string]: string }>({});
+    const [responsibleTypes, setResponsibleTypes] = useState<Option[]>([]);
+
+    useEffect(() => {
+        fetch('http://localhost:5001/api/building/list/types')
+            .then(response => response.json())
+            .then(data => {
+                const options = data.map((item: any) => ({
+                    label: item.label,
+                    value: item.id
+                }));
+                setResponsibleTypes(options);
+            })
+            .catch(error => console.error('Ошибка при загрузке типов:', error));
+    }, []);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
@@ -39,21 +58,30 @@ const AddResponsiblePersonModal: React.FC<AddResponsiblePersonModalProps> = ({ o
         const phonePattern = /^\d{11}$/;
         const namePattern = /^[A-Za-zА-Яа-я\s]+$/;
 
-        if (!formData.email || !emailPattern.test(formData.email)) {
-            newErrors.email = 'Неверный формат email.';
+        if (!formData.position) {
+            newErrors.position = 'Должность обязательна.';
         }
 
-        if (!formData.phone || !phonePattern.test(formData.phone)) {
-            newErrors.phone = 'Телефон должен содержать 11 цифр.';
+        if (!formData.type) {
+            newErrors.type = 'Выберите тип.';
         }
 
         if (!formData.name || !namePattern.test(formData.name)) {
             newErrors.name = 'ФИО может содержать только буквы и пробелы.';
         }
 
+        if (!formData.phone || !phonePattern.test(formData.phone)) {
+            newErrors.phone = 'Телефон должен содержать 11 цифр.';
+        }
+
+        if (!formData.email || !emailPattern.test(formData.email)) {
+            newErrors.email = 'Неверный формат email.';
+        }
+
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
+
 
     const handleSubmit = async () => {
         if (!validateForm()) {
@@ -94,21 +122,29 @@ const AddResponsiblePersonModal: React.FC<AddResponsiblePersonModalProps> = ({ o
                         type="text"
                         value={formData.position}
                         onChange={handleChange}
-                        className="w-full p-2 border border-gray-300 rounded-md text-black focus:outline-none focus:ring-2 focus:ring-gray-400 bg-white"
+                        className={`w-full p-2 border ${errors.position ? 'border-red-500' : 'border-gray-300'} rounded-md text-black focus:outline-none focus:ring-2 focus:ring-gray-400 bg-white`}
                     />
+                    {errors.position && <p className="text-red-500 text-sm">{errors.position}</p>}
                 </div>
                 <div>
                     <label htmlFor="type" className="block text-sm font-medium text-gray-700">
                         Тип
                     </label>
-                    <input
+                    <select
                         id="type"
                         name="type"
-                        type="text"
                         value={formData.type}
                         onChange={handleChange}
-                        className="w-full p-2 border border-gray-300 rounded-md text-black focus:outline-none focus:ring-2 focus:ring-gray-400 bg-white"
-                    />
+                        className={`w-full p-2 border ${errors.type ? 'border-red-500' : 'border-gray-300'} rounded-md text-black focus:outline-none focus:ring-2 focus:ring-gray-400 bg-white`}
+                    >
+                        <option value="">Выберите тип</option>
+                        {responsibleTypes.map(option => (
+                            <option key={option.value} value={option.value}>
+                                {option.label}
+                            </option>
+                        ))}
+                    </select>
+                    {errors.type && <p className="text-red-500 text-sm">{errors.type}</p>}
                 </div>
                 <div>
                     <label htmlFor="name" className="block text-sm font-medium text-gray-700">
@@ -156,6 +192,7 @@ const AddResponsiblePersonModal: React.FC<AddResponsiblePersonModalProps> = ({ o
             </div>
         </ModalTemplate>
     );
+
 };
 
 export default AddResponsiblePersonModal;
