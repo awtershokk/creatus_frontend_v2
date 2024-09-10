@@ -5,18 +5,20 @@ import ItemTable from '../../components/Tables/ItemTable.tsx';
 import { Device } from "../../models/Device.tsx";
 import { fetchDevices } from "../../api/deviceApi.ts";
 import DeleteDeviceModal from "../../components/Modal/Delete/DeleteDeviceModal.tsx";
+import UnbindDeviceModal from "../../components/Modal/Bind/UnbindDeviceModal.tsx";
+import BindDeviceModal from "../../components/Modal/Bind/BindDeviceModal.tsx";
 
 const DevicePage = () => {
     const [devices, setDevices] = useState<Device[]>([]);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const [isUnbindModalOpen, setIsUnbindModalOpen] = useState(false);
+    const [isBindModalOpen, setIsBindModalOpen] = useState(false);
     const [selectedDevice, setSelectedDevice] = useState<Device | null>(null);
-
-    localStorage.setItem('devices', JSON.stringify({ label: 'Датчики', icon: 'FaBug' }));
 
     useEffect(() => {
         const getData = async () => {
             try {
-                const devicesData = await fetchDevices(handleEditDeviceClick, handleDeleteDeviceClick);
+                const devicesData = await fetchDevices(handleEditDeviceClick, handleDeleteDeviceClick, handleUnbindDeviceClick, handleBindDeviceClick);
                 setDevices(devicesData);
             } catch (error) {
                 console.error('Ошибка получения данных:', error);
@@ -35,6 +37,7 @@ const DevicePage = () => {
         'ТИ': 'measuringPoint',
         'Заряд': 'battery',
         'Качество сигнала': 'linkquality',
+        'Привязка к ТИ': 'connect',
         ' ': 'edit',
         '  ': 'delete'
     };
@@ -48,8 +51,28 @@ const DevicePage = () => {
         setIsDeleteModalOpen(true);
     };
 
+    const handleUnbindDeviceClick = (deviceId: number, deviceLabel: string, measuringPointLabel: string) => {
+        setSelectedDevice({ id: deviceId, label: deviceLabel, measuringPointLabel });
+        setIsUnbindModalOpen(true);
+    };
+
+    const handleBindDeviceClick = (deviceId: number, deviceLabel: string) => {
+        setSelectedDevice({ id: deviceId, label: deviceLabel, measuringPointLabel: 'Нет' });
+        setIsBindModalOpen(true);
+    };
+
     const handleCloseDeleteModal = () => {
         setIsDeleteModalOpen(false);
+        setSelectedDevice(null);
+    };
+
+    const handleCloseUnbindModal = () => {
+        setIsUnbindModalOpen(false);
+        setSelectedDevice(null);
+    };
+
+    const handleCloseBindModal = () => {
+        setIsBindModalOpen(false);
         setSelectedDevice(null);
     };
 
@@ -57,6 +80,24 @@ const DevicePage = () => {
         if (selectedDevice) {
             setDevices(prevDevices => prevDevices.filter(device => device.id !== selectedDevice.id));
             handleCloseDeleteModal();
+        }
+    };
+
+    const handleConfirmUnbind = async () => {
+        if (selectedDevice) {
+            console.log('Отвязываем устройство:', selectedDevice.label);
+            const updatedDevicesData = await fetchDevices(handleEditDeviceClick, handleDeleteDeviceClick, handleUnbindDeviceClick, handleBindDeviceClick);
+            setDevices(updatedDevicesData);
+            handleCloseUnbindModal();
+        }
+    };
+
+    const handleConfirmBind = async () => {
+        if (selectedDevice) {
+            console.log('Привязываем устройство:', selectedDevice.label);
+            const updatedDevicesData = await fetchDevices(handleEditDeviceClick, handleDeleteDeviceClick, handleUnbindDeviceClick, handleBindDeviceClick);
+            setDevices(updatedDevicesData);
+            handleCloseBindModal();
         }
     };
 
@@ -80,7 +121,26 @@ const DevicePage = () => {
                     label={selectedDevice.label}
                     onClose={handleCloseDeleteModal}
                     onSubmit={handleConfirmDelete}
+                />
+            )}
 
+            {isUnbindModalOpen && selectedDevice && (
+                <UnbindDeviceModal
+                    deviceId={selectedDevice.id}
+                    deviceLabel={selectedDevice.label}
+                    measuringPointLabel={selectedDevice.measuringPointLabel || 'Нет'}
+                    onClose={handleCloseUnbindModal}
+                    onSuccess={handleConfirmUnbind}
+                />
+            )}
+
+            {isBindModalOpen && selectedDevice && (
+                <BindDeviceModal
+                    deviceId={selectedDevice.id}
+                    deviceLabel={selectedDevice.label}
+                    measuringPointLabel={selectedDevice.measuringPointLabel || 'Нет'}
+                    onClose={handleCloseBindModal}
+                    onSuccess={handleConfirmBind}
                 />
             )}
         </DefaultLayout>

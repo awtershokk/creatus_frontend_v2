@@ -77,7 +77,7 @@ const AddResponsiblePersonModal: React.FC<AddResponsiblePersonModalProps> = ({ o
 
     return (
         <ModalTemplate
-            headerTitle="Добавить Ответственное Лицо"
+            headerTitle="Добавление ответсвенного лица"
             buttonLabel="Добавить"
             onClose={onClose}
             onSubmit={handleSubmit}
