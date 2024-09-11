@@ -3,10 +3,11 @@ import React from 'react';
 interface ObjectTableProps {
     title: string;
     data: { id: number; title: string; value: string }[];
-    ButtonComponent: () => JSX.Element;
+    ButtonComponent: ({ onClick }: { onClick: (id: number) => void }) => JSX.Element;
+    onRowClick: (id: number) => void;
 }
 
-const ObjectTable = ({ title, data, ButtonComponent }: ObjectTableProps) => {
+const ObjectTable = ({ title, data, ButtonComponent, onRowClick }: ObjectTableProps) => {
     return (
         <div className="flex mt-2 z-10">
             <div className="w-[550px]">
@@ -14,7 +15,7 @@ const ObjectTable = ({ title, data, ButtonComponent }: ObjectTableProps) => {
                     <div className="flex justify-between items-center bg-gray-200 border-b border-gray-300 p-2 text-black">
                         <span className="flex-1 text-lg font-bold">{title}</span>
                         <div>
-                            <ButtonComponent />
+                            <ButtonComponent onClick={(id) => onRowClick(id)} />
                         </div>
                     </div>
                     <div>

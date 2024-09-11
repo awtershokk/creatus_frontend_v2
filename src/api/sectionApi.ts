@@ -1,5 +1,6 @@
 import api from './api';
-import {Section, transformSectionData} from "../models/Section.ts";
+import { Section, transformSectionData } from "../models/Section.ts";
+
 
 export const fetchSections = async (buildingId: number) => {
     try {
@@ -23,6 +24,12 @@ export const fetchSection = async (sectionId: number) => {
 export const deleteSection = async (sectionId: number) => {
     try {
         await api.delete(`/section/1/${sectionId}`);
+
+export const createSection = async (section: { label: string, area: number, volume: number }) => {
+    try {
+        const response = await api.post(`/section/1`, section);
+        return response.data;
+
     } catch (error) {
         throw error;
     }

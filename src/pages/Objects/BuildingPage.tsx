@@ -18,6 +18,7 @@ import AddSectionModal from "../../components/Modal/Add/AddSectionModal";
 import AddThermalCircuitModal from "../../components/Modal/Add/AddThermalModal";
 import DeleteThermalCircuitModalManager from "../../components/Modal/Manager/DeleteThermalCircuitModalManager.tsx";
 import DeleteSectionModalManager from "../../components/Modal/Manager/DeleteSectionModalManager.tsx";
+import AddThermalCircuitModal from "../../components/Modal/Add/AddThermalCircuitModal.tsx";
 
 const BuildingPage = () => {
     const [building, setBuilding] = useState<Array<{ id: number, title: string, value: string | number }>>([]);
@@ -37,42 +38,44 @@ const BuildingPage = () => {
     const thermalCircuitsId = thermalCircuits.map(circuit => circuit.id);
     const sectionID = sections.map(section=> section.id);
 
+    const getData = async () => {
+        try {
+            const buildingData = await fetchBuilding(buildingId);
+            setBuilding(buildingData);
+
+            const labelItem = buildingData.find(item => item.title === 'Наименование');
+            localStorage.setItem('building', JSON.stringify({ label: labelItem?.value, icon: 'FaRegBuilding' }));
+
+            const responsiblePersonsData = await fetchResponsiblePersons(buildingId);
+            setResponsiblePersons(responsiblePersonsData);
+
+            const sectionsData = await fetchSections(buildingId);
+            const formattedSections = sectionsData.map(section => ({
+                id: section.id,
+                title: section.label,
+                properties: 'Свойства',
+                delete: 'Удалить',
+                to: `section/${section.id}`
+            }));
+            setSections(formattedSections);
+
+            const thermalcircuitsData = await fetchThermalCircuits(buildingId);
+            const formattedThermalCircuits = thermalcircuitsData.map(thermalCircuit => ({
+                id: thermalCircuit.id,
+                title: thermalCircuit.label,
+                properties: 'Свойства',
+                delete: 'Удалить',
+                to: `thermalCircuit/${thermalCircuit.id}`
+            }));
+            setThermalCircuits(formattedThermalCircuits);
+
+        } catch (error) {
+            console.error('Ошибка получения данных:', error);
+        }
+    };
+
+
     useEffect(() => {
-        const getData = async () => {
-            try {
-                const buildingData = await fetchBuilding(buildingId);
-                setBuilding(buildingData);
-                const labelItem = buildingData.find(item => item.title === 'Наименование');
-                localStorage.setItem('building', JSON.stringify({ label: labelItem?.value, icon: 'FaRegBuilding' }));
-
-                const responsiblePersonsData = await fetchResponsiblePersons(buildingId);
-                setResponsiblePersons(responsiblePersonsData);
-
-                const sectionsData = await fetchSections(buildingId);
-                const formattedSections = sectionsData.map(section => ({
-                    id: section.id,
-                    title: section.label,
-                    properties: 'Свойства',
-                    delete: 'Удалить',
-                    to: `section/${section.id}`
-                }));
-                setSections(formattedSections);
-
-                const thermalcircuitsData = await fetchThermalCircuits(buildingId);
-                const formattedThermalCircuits = thermalcircuitsData.map(thermalCircuit => ({
-                    id: thermalCircuit.id,
-                    title: thermalCircuit.label,
-                    properties: 'Свойства',
-                    delete: 'Удалить',
-                    to: `thermalCircuit/${thermalCircuit.id}`
-                }));
-                setThermalCircuits(formattedThermalCircuits);
-
-            } catch (error) {
-                console.error('Ошибка получения данных:', error);
-            }
-        };
-
         getData();
     }, [buildingId]);
 
@@ -138,6 +141,22 @@ const BuildingPage = () => {
     const handleModalClose = () => {
         setModalThermalCircuitId(null);
         setModalSectionId(null)
+    };
+
+    const handleAddSection = async (newSection: { label: string; area: number; volume: number }) => {
+        try {
+            await getData();
+        } catch (error) {
+            console.error('Ошибка при обновлении секций:', error);
+        }
+    };
+
+    const handleAddThermalCircuit = async (newThermalCircuit: { label: string, heatingLoad: number, wiringDiagram: string, square: number, volume: number, connectionDiagram: string }) => {
+        try {
+            await getData();
+        } catch (error) {
+            console.error('Ошибка при обновлении тепловых контуров:', error);
+        }
     };
 
     useEffect(() => {
@@ -209,17 +228,14 @@ const BuildingPage = () => {
             {isAddSectionModalOpen && (
                 <AddSectionModal
                     onClose={handleAddSectionModalClose}
-                    onSubmit={() => {
-                    }}
+                    onSubmit={handleAddSection}
                 />
             )}
 
             {isAddThermalCircuitModalOpen && (
                 <AddThermalCircuitModal
                     onClose={handleAddThermalCircuitModalClose}
-                    onSubmit={() => {
-
-                    }}
+                    onSubmit={handleAddThermalCircuit}
                 />
             )}
             {modalThermalCircuitId !== null && (

@@ -28,6 +28,7 @@ export const fetchMeasuringPoint = async (measuringPointId: number) => {
         throw error;
     }
 };
+
 export const deleteMeasuringPoint = async (measuringPointId: number) => {
     try {
         await api.delete(`/measuringPoint/${measuringPointId}`);
@@ -35,11 +36,36 @@ export const deleteMeasuringPoint = async (measuringPointId: number) => {
         throw error;
     }
 };
+
+
+export const createMeasuringPoint = async (roomId: number, data: any) => {
+
+    try {
+        const response = await api.post(`/measuringPoint/${roomId}`, {
+            label: data.measureName,
+            height: parseFloat(data.height),
+            temperatureMinimum: parseFloat(data.tempMin),
+            temperatureMaximum: parseFloat(data.tempMax),
+            humidityMinimum: parseFloat(data.humidityMin),
+            humidityMaximum: parseFloat(data.humidityMax),
+            temperatureActive: data.tempIncluded === true,
+            humidityActive: data.humidityIncluded === true,
+            temperatureLocation: parseFloat(data.tempLocationCoeff),
+            temperatureHeight: parseFloat(data.tempHeightCoeff),
+            temperatureCalibration: parseFloat(data.tempCalibCoeff),
+            humidityCalibration: parseFloat(data.humidityCalibCoeff)
+        });
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
+
 export const fetchDeviceId = async (measuringPointId: number) => {
     try {
-        const response = await api.get(`/measuringPoint/${measuringPointId}`);
-        const measuringPoint: MeasuringPoint = response.data.data;
-        return transformMeasuringPointData(measuringPoint);
+        const { data: { data: { device: {id} } } } = await api.get(`/measuringPoint/${measuringPointId}`);
+        return id;
     } catch (error) {
         throw error;
     }

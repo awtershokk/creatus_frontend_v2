@@ -21,32 +21,31 @@ const SectionPage = () => {
 
     const [modalRoomId , setModalRoomId] =useState<number | null>(null);
     const roomID = rooms.map(room=> room.id);
+    const getData = async () => {
+        try {
+            const sectionData = await fetchSection(sectionId);
+            setSection(sectionData);
+            const labelItem = sectionData.find(item => item.title === 'Наименование');
+            localStorage.setItem('section', JSON.stringify({ label: labelItem?.value, icon: 'FaBars', id: labelItem?.id }));
+
+            const roomsData = await fetchRoomsBySection(sectionId);
+            const formattedRooms = roomsData.map(room => ({
+                id: room.id,
+                title: room.label,
+                properties: 'Свойства',
+                delete: 'Удалить',
+                to: `room/${room.id}`
+            }));
+            setRooms(formattedRooms);
+        } catch (error) {
+            console.error('Ошибка получения данных:', error);
+        }
+    };
 
     useEffect(() => {
-        const getData = async () => {
-            try {
-                const sectionData = await fetchSection(sectionId);
-                setSection(sectionData);
-                const labelItem = sectionData.find(item => item.title === 'Наименование');
-                localStorage.setItem('section', JSON.stringify({ label: labelItem?.value, icon: 'FaBars', id: labelItem?.id }));
-
-                const roomsData = await fetchRoomsBySection(sectionId);
-                const formattedRooms = roomsData.map(room => ({
-                    id: room.id,
-                    title: room.label,
-                    properties: 'Свойства',
-                    delete: 'Удалить',
-                    to: `room/${room.id}`
-                }));
-                setRooms(formattedRooms);
-
-            } catch (error) {
-                console.error('Ошибка получения данных:', error);
-            }
-        };
-
         getData();
     }, [sectionId]);
+
     const handleAddRoomInSectionModalOpen = () => {
         setIsAddRoomInSectionModal(true);
     };
@@ -54,6 +53,7 @@ const SectionPage = () => {
     const handleAddRoomInSectionModalClose = () => {
         setIsAddRoomInSectionModal(false);
     };
+
     const handleDeleteRoomClick = () => {
         console.log(roomID)
         setModalRoomId(roomID);
@@ -61,6 +61,7 @@ const SectionPage = () => {
     const handleModalRoomClose = () => {
         setModalRoomId(null)
     };
+
 
     return (
         <DefaultLayout>
@@ -84,8 +85,11 @@ const SectionPage = () => {
                 </div>
                 {isAddRoomInSectionModal && (
                     <AddRoomInSectionModal
+                        sectionId={sectionId}
                         onClose={handleAddRoomInSectionModalClose}
                         onSubmit={() => {
+                            getData();
+                            handleAddRoomInSectionModalClose();
                         }}
                     />
                 )}
@@ -102,3 +106,4 @@ const SectionPage = () => {
 };
 
 export default SectionPage;
+

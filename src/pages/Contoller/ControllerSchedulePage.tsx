@@ -1,9 +1,11 @@
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import DefaultLayout from "../../layouts/DefaultLayout.tsx";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { ru } from "date-fns/locale";
 import SaveButton from "../../components/Buttons/SaveButton.tsx";
+import {fetchControllerLabel} from "../../api/controllerApi.ts";
+import {useParams} from "react-router-dom";
 
 const daysOfWeek = ["Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье"];
 
@@ -83,7 +85,9 @@ const ControllerSchedulePage = () => {
     const [selectedSystem, setSelectedSystem] = useState<string | null>(null);
     const [selectedDay, setSelectedDay] = useState<string | null>(null);
     const [schedule, setSchedule] = useState(initialSchedule);
-    const [hasChanges, setHasChanges] = useState(false); // Track changes
+    const [hasChanges, setHasChanges] = useState(false);
+    const {controllerId} = useParams()
+    const [label, setLabel] = useState<string | null>(null);
 
     const handleHotWaterClick = () => setSelectedSystem("hotWater");
     const handleHeatingSystemClick = () => setSelectedSystem("heatingSystem");
@@ -116,7 +120,21 @@ const ControllerSchedulePage = () => {
         }
     };
 
-    localStorage.setItem("schedule", JSON.stringify({ label: "Расписание", icon: "FaCalendarAlt" }));
+    useEffect(() => {
+        const getLabel = async () => {
+            try {
+                const result = await fetchControllerLabel(controllerId);
+                setLabel(result);
+            } catch (error) {
+                console.error("Ошибка получения лейбла:", error);
+            }
+        };
+
+        getLabel();
+
+    }, [controllerId]);
+
+    localStorage.setItem("schedule", JSON.stringify({ label: `Расписание «${label}»`, icon: "FaCalendarAlt" }));
 
     return (
         <DefaultLayout>

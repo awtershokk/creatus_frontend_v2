@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import ModalTemplate from '../ModalTemplate';
+import { createMeasuringPoint } from '../../../api/measuringPointApi';
 
 interface AddMeasurePointModalProps {
     onClose: () => void;
     onSubmit: (measurePoint: any) => void;
-    roomId: string;
+    roomId: number;
 }
 
-const AddMeasurePointModal: React.FC<AddMeasurePointModalProps> = ({ onClose, onSubmit, roomId}) => {
+const AddMeasuringPointModal: React.FC<AddMeasurePointModalProps> = ({ onClose, onSubmit, roomId }) => {
     const [formData, setFormData] = useState({
         measureName: '',
         height: '',
@@ -34,12 +35,8 @@ const AddMeasurePointModal: React.FC<AddMeasurePointModalProps> = ({ onClose, on
         setLoading(true);
         setErrors({});
 
-        const {
-            measureName, height, tempMin, tempMax,
-            humidityMin, humidityMax, tempLocationCoeff,
-            tempHeightCoeff, tempCalibCoeff, humidityCalibCoeff
-        } = formData;
         const newErrors: { [key: string]: string } = {};
+
 
         if (!measureName.trim()) newErrors.measureName = 'Название не может быть пустым.';
         if (!height.trim() || parseFloat(height) <= 0) newErrors.height = 'Высота должна быть больше нуля.';
@@ -59,17 +56,14 @@ const AddMeasurePointModal: React.FC<AddMeasurePointModalProps> = ({ onClose, on
         }
 
         try {
-            await new Promise(resolve => setTimeout(resolve, 100));
-
             const measurePoint = {
                 ...formData,
                 tempIncluded: formData.tempIncluded === 'true',
                 humidityIncluded: formData.humidityIncluded === 'true',
-                roomId,
             };
 
-            console.log('Добавлена точка измерения:', measurePoint);
-            onSubmit(measurePoint);
+            const result = await createMeasuringPoint(roomId, measurePoint);
+            onSubmit(result);
             onClose();
         } catch (error) {
             console.error('Ошибка при добавлении точки измерения:', error);
@@ -188,6 +182,7 @@ const AddMeasurePointModal: React.FC<AddMeasurePointModalProps> = ({ onClose, on
                         onChange={handleChange}
                         className={`w-full p-2 border ${errors.tempIncluded ? 'border-red-500' : 'border-gray-300'} rounded-md text-black focus:outline-none focus:ring-2 focus:ring-gray-400 bg-white`}
                     >
+                        <option value="" disabled>Выберите</option>
                         <option value="true">Да</option>
                         <option value="false">Нет</option>
                     </select>
@@ -205,6 +200,7 @@ const AddMeasurePointModal: React.FC<AddMeasurePointModalProps> = ({ onClose, on
                         onChange={handleChange}
                         className={`w-full p-2 border ${errors.humidityIncluded ? 'border-red-500' : 'border-gray-300'} rounded-md text-black focus:outline-none focus:ring-2 focus:ring-gray-400 bg-white`}
                     >
+                        <option value="" disabled>Выберите</option>
                         <option value="true">Да</option>
                         <option value="false">Нет</option>
                     </select>
@@ -272,4 +268,4 @@ const AddMeasurePointModal: React.FC<AddMeasurePointModalProps> = ({ onClose, on
     );
 };
 
-export default AddMeasurePointModal;
+export default AddMeasuringPointModal;

@@ -1,19 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import ModalTemplate from '../ModalTemplate';
+import { fetchWiringDiagrams, fetchConnectionDiagrams, addThermalCircuit } from '../../../api/thermalCircuitApi';
 
 interface AddItemModalProps {
     onClose: () => void;
-    onSubmit: (
-        label: string,
-        heatingLoad: number,
-        selectedWiringDiagram: string,
-        square: number,
-        volume: number,
-        selectedConnectionDiagram: string
-    ) => void;
+    onSubmit: (thermalCircuit: { label: string, heatingLoad: number, wiringDiagram: string, square: number, volume: number, connectionDiagram: string }) => void;
 }
 
-const AddThermalModal: React.FC<AddItemModalProps> = ({ onClose, onSubmit }) => {
+const AddThermalCircuitModal: React.FC<AddItemModalProps> = ({ onClose, onSubmit }) => {
     const [formData, setFormData] = useState({
         label: '',
         heatingLoad: '',
@@ -28,29 +22,9 @@ const AddThermalModal: React.FC<AddItemModalProps> = ({ onClose, onSubmit }) => 
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        fetchWiringDiagrams();
-        fetchConnectionDiagrams();
+        fetchWiringDiagrams().then(setWiringDiagramOptions).catch(console.error);
+        fetchConnectionDiagrams().then(setConnectionDiagramOptions).catch(console.error);
     }, []);
-
-    const fetchWiringDiagrams = async () => {
-        try {
-            const response = await fetch('http://localhost:5001/api/thermalCircuit/list/wiringDiagrams');
-            const data = await response.json();
-            setWiringDiagramOptions(data);
-        } catch (error) {
-            console.error('Error fetching wiring diagrams:', error);
-        }
-    };
-
-    const fetchConnectionDiagrams = async () => {
-        try {
-            const response = await fetch('http://localhost:5001/api/thermalCircuit/list/connectionDiagrams');
-            const data = await response.json();
-            setConnectionDiagramOptions(data);
-        } catch (error) {
-            console.error('Error fetching connection diagrams:', error);
-        }
-    };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
@@ -64,39 +38,16 @@ const AddThermalModal: React.FC<AddItemModalProps> = ({ onClose, onSubmit }) => 
         const { label, heatingLoad, wiringDiagram, square, volume, connectionDiagram } = formData;
         const newErrors: { [key: string]: string } = {};
 
-        if (!label.trim()) {
-            newErrors.label = 'Название не может быть пустым.';
-        }
-
         const heatingLoadValue = parseFloat(heatingLoad);
         const squareValue = parseFloat(square);
         const volumeValue = parseFloat(volume);
 
-        if (!heatingLoad.trim()) {
-            newErrors.heatingLoad = 'Нагрузка на отопление не может быть пустой.';
-        } else if (heatingLoadValue <= 0) {
-            newErrors.heatingLoad = 'Нагрузка на отопление должна быть больше нуля.';
-        }
-
-        if (!square.trim()) {
-            newErrors.square = 'Площадь не может быть пустой.';
-        } else if (squareValue <= 0) {
-            newErrors.square = 'Площадь должна быть больше нуля.';
-        }
-
-        if (!volume.trim()) {
-            newErrors.volume = 'Объем не может быть пустым.';
-        } else if (volumeValue <= 0) {
-            newErrors.volume = 'Объем должен быть больше нуля.';
-        }
-
-        if (!wiringDiagram) {
-            newErrors.wiringDiagram = 'Выберите схему разводки.';
-        }
-
-        if (!connectionDiagram) {
-            newErrors.connectionDiagram = 'Выберите схему присоединения СО.';
-        }
+        if (!label.trim()) newErrors.label = 'Название не может быть пустым.';
+        if (!heatingLoad.trim() || heatingLoadValue <= 0) newErrors.heatingLoad = 'Нагрузка должна быть больше нуля.';
+        if (!square.trim() || squareValue <= 0) newErrors.square = 'Площадь должна быть больше нуля.';
+        if (!volume.trim() || volumeValue <= 0) newErrors.volume = 'Объем должен быть больше нуля.';
+        if (!wiringDiagram) newErrors.wiringDiagram = 'Выберите схему разводки.';
+        if (!connectionDiagram) newErrors.connectionDiagram = 'Выберите схему присоединения СО.';
 
         if (Object.keys(newErrors).length > 0) {
             setErrors(newErrors);
@@ -105,21 +56,29 @@ const AddThermalModal: React.FC<AddItemModalProps> = ({ onClose, onSubmit }) => 
         }
 
         try {
-            await new Promise(resolve => setTimeout(resolve, 100));
-            console.log('Добавлен тепловой контур:', formData);
-            onSubmit(label, heatingLoadValue, wiringDiagram, squareValue, volumeValue, connectionDiagram);
+            const thermalCircuit = {
+                label,
+                heatingLoad: heatingLoadValue,
+                wiringDiagram,
+                square: squareValue,
+                volume: volumeValue,
+                connectionDiagram
+            };
+
+            const response = await addThermalCircuit(thermalCircuit);
+
+            onSubmit(response);
             onClose();
         } catch (error) {
-            console.error('Ошибка при сохранении:', error);
+            console.error('Ошибка при добавлении теплового контура:', error);
         } finally {
             setLoading(false);
         }
     };
-
     return (
         <ModalTemplate
-            headerTitle="Добавление теплового контура"
-            buttonLabel="Сохранить"
+            headerTitle="Создать тепловой контур"
+            buttonLabel="Добавить"
             onClose={onClose}
             onSubmit={handleSubmit}
             loading={loading}
@@ -168,7 +127,9 @@ const AddThermalModal: React.FC<AddItemModalProps> = ({ onClose, onSubmit }) => 
                         onChange={handleChange}
                         className={`w-full p-2 border ${errors.wiringDiagram ? 'border-red-500' : 'border-gray-300'} rounded-md text-black focus:outline-none focus:ring-2 focus:ring-gray-400 bg-white`}
                     >
-                        <option value="">Выберите схему</option>
+                        <option value="" disabled>
+                            Выберите схему разводки
+                        </option>
                         {wiringDiagramOptions.map(diagram => (
                             <option key={diagram.id} value={diagram.label}>
                                 {diagram.label}
@@ -221,7 +182,9 @@ const AddThermalModal: React.FC<AddItemModalProps> = ({ onClose, onSubmit }) => 
                         onChange={handleChange}
                         className={`w-full p-2 border ${errors.connectionDiagram ? 'border-red-500' : 'border-gray-300'} rounded-md text-black focus:outline-none focus:ring-2 focus:ring-gray-400 bg-white`}
                     >
-                        <option value="">Выберите схему</option>
+                        <option value="" disabled>
+                            Выберите схему присоединения СО
+                        </option>
                         {connectionDiagramOptions.map(diagram => (
                             <option key={diagram.id} value={diagram.label}>
                                 {diagram.label}
@@ -235,4 +198,4 @@ const AddThermalModal: React.FC<AddItemModalProps> = ({ onClose, onSubmit }) => 
     );
 };
 
-export default AddThermalModal;
+export default AddThermalCircuitModal;

@@ -65,6 +65,7 @@ const ThermalCircuitPage = () => {
             }
         };
 
+    useEffect(() => {
         getData();
     }, [thermalCircuitId]);
 
@@ -217,8 +218,11 @@ const ThermalCircuitPage = () => {
             </div>
             {isAddRoomInThermalCircuitModal && (
                 <AddRoomInThermalCircuitModal
+                    thermalCircuitId={thermalCircuitId}
                     onClose={handleAddRoomInThermalCircuitModalClose}
                     onSubmit={() => {
+                        getData();
+                        handleAddRoomInThermalCircuitModalClose();
                     }}
                 />
             )}

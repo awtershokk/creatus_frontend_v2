@@ -67,13 +67,10 @@ const UserHeader: React.FC<UserHeaderProps> = ({ officeName, currentCircuitLabel
             {/* Main Header */}
             <nav className="flex justify-between items-center py-3 px-6 ">
                 <div className="flex items-center space-x-4">
-                    <a href="/user" className="text-xl text-white">SmartHeat</a>
-
+                    <Link className="text-xl text-white" to='/user'>SmartHeat </Link>
                 </div>
 
                 <div className="flex items-center ">
-
-
                     <div
                         ref={settingsRef}
                         className="relative"

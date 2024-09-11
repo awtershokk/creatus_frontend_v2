@@ -1,99 +1,76 @@
 import React, { useState, useEffect } from 'react';
 import ModalTemplate from '../ModalTemplate';
+import { fetchThermalCircuitIdOptions, fetchWindowOptions, createRoom } from '../../../api/roomApi';
 
-interface AddRoomInSectionProps {
-    onClose: () => void;
-    onSubmit: (
-        roomName: string,
-        thermal: string,
-        floor: number,
-        windowOrientation: string,
-        area: number,
-        corner: boolean
-    ) => void;
-}
-
-const AddRoomInSectionModal: React.FC<AddRoomInSectionProps> = ({ onClose, onSubmit }) => {
+const AddRoomInSectionModal = ({ sectionId, onClose, onSubmit }) => {
     const [formData, setFormData] = useState({
         roomName: '',
-        thermal: '',
+        thermalCircuitId: '',
         floor: 0,
         windowOrientation: '',
         area: 0,
         corner: false
     });
-    const [thermalOptions, setThermalOptions] = useState([]);
+    const [thermalCircuitIdOptions, setThermalCircuitIdOptions] = useState([]);
     const [windowOptions, setWindowOptions] = useState([]);
-    const [errors, setErrors] = useState<{ [key: string]: string }>({});
+    const [errors, setErrors] = useState({});
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        fetchThermalOptions();
-        fetchWindowOptions();
+        fetchOptions();
     }, []);
 
-    const fetchThermalOptions = async () => {
+    const fetchOptions = async () => {
         try {
-            const response = await fetch('http://localhost:5001/api/thermalCircuit/1');
-            const data = await response.json();
-            setThermalOptions(data.data.map((thermal: any) => ({
-                label: thermal.label,
-                value: thermal.id
-            })));
+            const thermalCircuits = await fetchThermalCircuitIdOptions();
+            setThermalCircuitIdOptions(thermalCircuits);
+            const windows = await fetchWindowOptions();
+            setWindowOptions(windows);
         } catch (error) {
-            console.error('Ошибка при загрузке тепловых контуров:', error);
+            console.error('Error fetching dropdown options:', error);
         }
     };
 
-    const fetchWindowOptions = async () => {
-        try {
-            const response = await fetch('http://localhost:5001/api/room/list/windowOrientations');
-            const data = await response.json();
-            setWindowOptions(data.map((window: any) => ({
-                label: window.label,
-                value: window.id
-            })));
-        } catch (error) {
-            console.error('Ошибка при загрузке ориентаций окон:', error);
-        }
-    };
-
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormData(prevData => ({
+        setFormData((prevData) => ({
             ...prevData,
-            [name]: value
+            [name]: value,
         }));
     };
 
     const handleSave = async () => {
         setLoading(true);
         setErrors({});
+        const { roomName, thermalCircuitId, floor, windowOrientation, area, corner } = formData;
 
-        const { roomName, thermal, floor, windowOrientation, area, corner } = formData;
-        const newErrors: { [key: string]: string } = {};
-
-        if (!roomName.trim()) {
-            newErrors.roomName = 'Пожалуйста, введите название';
-        }
-
+        const newErrors = {};
+        if (!roomName.trim()) newErrors.roomName = 'Введите наименование';
+        if (!thermalCircuitId) newErrors.thermalCircuitId = 'Выберите тепловой контур';
         if (Object.keys(newErrors).length > 0) {
             setErrors(newErrors);
             setLoading(false);
             return;
         }
 
+        const requestData = {
+            label: roomName,
+            floor,
+            windowOrientation,
+            square: area,
+            angular: corner
+        };
+
         try {
-            await new Promise(resolve => setTimeout(resolve, 100));
-            onSubmit(roomName.trim(), thermal, parseFloat(floor.toString()), windowOrientation, parseFloat(area.toString()), corner);
-            console.log('Добавлена комната:', formData);
-            onClose();
+            await createRoom(parseInt(thermalCircuitId), parseInt(sectionId), requestData);
+            onSubmit();
         } catch (error) {
-            console.error('Ошибка при сохранении:', error);
+            console.error('Error saving room:', error);
         } finally {
             setLoading(false);
         }
     };
+
 
     return (
         <ModalTemplate
@@ -121,24 +98,24 @@ const AddRoomInSectionModal: React.FC<AddRoomInSectionProps> = ({ onClose, onSub
                 </div>
 
                 <div>
-                    <label htmlFor="thermal" className="block text-sm font-medium text-gray-700">
+                    <label htmlFor="thermalCircuitId" className="block text-sm font-medium text-gray-700">
                         Тепловой контур
                     </label>
                     <select
-                        id="thermal"
-                        name="thermal"
-                        value={formData.thermal}
+                        id="thermalCircuitId"
+                        name="thermalCircuitId"
+                        value={formData.thermalCircuitId}
                         onChange={handleChange}
-                        className={`w-full p-2 border ${errors.thermal ? 'border-red-500' : 'border-gray-300'} rounded-md text-black focus:outline-none focus:ring-2 focus:ring-gray-400 bg-white`}
+                        className={`w-full p-2 border ${errors.thermalCircuitId ? 'border-red-500' : 'border-gray-300'} rounded-md text-black focus:outline-none focus:ring-2 focus:ring-gray-400 bg-white`}
                     >
                         <option value="" disabled>Выберите тепловой контур</option>
-                        {thermalOptions.map(option => (
-                            <option key={option.id} value={option.value}>
+                        {thermalCircuitIdOptions.map(option => (
+                            <option key={option.value} value={option.value}>
                                 {option.label}
                             </option>
                         ))}
                     </select>
-                    {errors.thermal && <p className="text-red-500 text-sm">{errors.thermal}</p>}
+                    {errors.thermalCircuitId && <p className="text-red-500 text-sm">{errors.thermalCircuitId}</p>}
                 </div>
 
                 <div>
@@ -170,7 +147,7 @@ const AddRoomInSectionModal: React.FC<AddRoomInSectionProps> = ({ onClose, onSub
                     >
                         <option value="" disabled>Выберите ориентацию окон</option>
                         {windowOptions.map(option => (
-                            <option key={option.id} value={option.value}>
+                            <option key={option.value} value={option.label}>
                                 {option.label}
                             </option>
                         ))}
@@ -205,8 +182,9 @@ const AddRoomInSectionModal: React.FC<AddRoomInSectionProps> = ({ onClose, onSub
                         onChange={handleChange}
                         className={`w-full p-2 border ${errors.corner ? 'border-red-500' : 'border-gray-300'} rounded-md text-black focus:outline-none focus:ring-2 focus:ring-gray-400 bg-white`}
                     >
-                        <option value={false}>Нет</option>
-                        <option value={true}>Да</option>
+
+                        <option value="false">Нет</option>
+                        <option value="true">Да</option>
                     </select>
                     {errors.corner && <p className="text-red-500 text-sm">{errors.corner}</p>}
                 </div>

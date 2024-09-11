@@ -4,18 +4,25 @@ import Label from "../../components/Text/Label.tsx";
 import EditButton from "../../components/Buttons/EditButton.tsx";
 import ObjectTable from "../../components/Tables/ObjectTable.tsx";
 import { useParams } from "react-router-dom";
-import { fetchMeasuringPoint } from "../../api/measuringPointApi.ts";
+import {fetchDeviceId, fetchMeasuringPoint} from "../../api/measuringPointApi.ts";
 import { Measurement } from "../../models/Measurements.ts";
 import { fetchMeasurementsMeasuringPoint } from "../../api/measurementsApi.ts";
 import TableContainer from "../../layouts/TableContainer.tsx";
 import ItemTable from "../../components/Tables/ItemTable.tsx";
 import MeasurementsFilters from '../../components/Filters/MeasurementsFilters.tsx';
 import DownloadButton from "../../components/Buttons/DownloadButton.tsx";
+import ChildElementsTable from "../../components/Tables/ChildElementsTable.tsx";
+import AddButton from "../../components/Buttons/AddButton.tsx";
+import BlueLink from "../../components/Text/BlueLink.tsx";
+import {fetchDevice} from "../../api/deviceApi.ts";
+import {Device} from "../../models/Device.tsx";
+import DefaultButton from "../../components/Buttons/DefaultButton.tsx";
 
 const MeasuringPointPage = () => {
     const { measuringPointId } = useParams();
     const [measuringPoint, setMeasuringPoint] = useState<Array<{ id: number, title: string, value: string | number }>>([]);
     const [measurements, setMeasurements] = useState<Measurement[]>([]);
+    const [device, setDevice] = useState<Array<{ id: number, title: string, value: string | number }>>([]);
     const [filteredMeasurements, setFilteredMeasurements] = useState<Measurement[]>([]);
     const [totalMeasurements, setTotalMeasurements] = useState<number>(0);
     const [displayedMeasurements, setDisplayedMeasurements] = useState<number>(0);
@@ -26,6 +33,7 @@ const MeasuringPointPage = () => {
     const [temperatureDeviation, setTemperatureDeviation] = useState<{ min: number | null; max: number | null }>({ min: null, max: null });
     const [humidityDeviation, setHumidityDeviation] = useState<{ min: number | null; max: number | null }>({ min: null, max: null });
 
+    const [deviceId, setDeviceId] = useState<number>(null)
 
     useEffect(() => {
         const getData = async () => {
@@ -40,6 +48,13 @@ const MeasuringPointPage = () => {
                 setFilteredMeasurements(measurementsData);
                 setTotalMeasurements(measurementsData.length);
                 setDisplayedMeasurements(measurementsData.length);
+
+                const deviceId = await fetchDeviceId(measuringPointId);
+                setDeviceId(deviceId)
+                const deviceData = await fetchDevice(deviceId)
+                setDevice(deviceData);
+
+
             } catch (error) {
                 console.error('Ошибка получения данных:', error);
             }
@@ -149,6 +164,14 @@ const MeasuringPointPage = () => {
                         title="Свойства точки измерения"
                         data={measuringPoint}
                         ButtonComponent={EditButton}
+                        nonEditableFields={['Место установки']}
+                    />
+                </div>
+                <div className="w-full flex flex-col items-end mt-8 mr-8">
+                    <ObjectTable
+                        title="Информация о датчике"
+                        data={device}
+                        ButtonComponent={({ onClick }) => <DefaultButton onClick={onClick} deviceId={deviceId} />}
                         nonEditableFields={['Место установки']}
                     />
                 </div>
