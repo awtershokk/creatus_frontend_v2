@@ -10,6 +10,8 @@ import BlueLink from "../../components/Text/BlueLink.tsx"
 import {useParams} from "react-router-dom";
 import {fetchRoomsBySection} from "../../api/roomApi.ts";
 import AddRoomInSectionModal from "../../components/Modal/Add/AddRoomInSectionModal.tsx";
+import DeleteRoomModalManager from "../../components/Modal/Manager/DeleteRoomModalManager.tsx";
+
 
 const SectionPage = () => {
     const { sectionId } = useParams();
@@ -17,6 +19,8 @@ const SectionPage = () => {
     const [rooms, setRooms] = useState<Array<{ id: number, title: string, value: string, value2: string }>>([]);
     const [isAddRoomInSectionModal, setIsAddRoomInSectionModal] = useState(false);
 
+    const [modalRoomId , setModalRoomId] =useState<number | null>(null);
+    const roomID = rooms.map(room=> room.id);
     const getData = async () => {
         try {
             const sectionData = await fetchSection(sectionId);
@@ -50,6 +54,15 @@ const SectionPage = () => {
         setIsAddRoomInSectionModal(false);
     };
 
+    const handleDeleteRoomClick = () => {
+        console.log(roomID)
+        setModalRoomId(roomID);
+    };
+    const handleModalRoomClose = () => {
+        setModalRoomId(null)
+    };
+
+
     return (
         <DefaultLayout>
             <div className="flex justify-between">
@@ -67,6 +80,7 @@ const SectionPage = () => {
                         tableTitle="Помещения"
                         ButtonComponent={() => <AddButton onClick={handleAddRoomInSectionModalOpen} />}
                         LinkComponent={BlueLink}
+                        onDelete={handleDeleteRoomClick}
                     />
                 </div>
                 {isAddRoomInSectionModal && (
@@ -79,6 +93,13 @@ const SectionPage = () => {
                         }}
                     />
                 )}
+                {modalRoomId !== null && (
+                    <DeleteRoomModalManager
+                        RoomId={modalRoomId}
+                        onClose={handleModalRoomClose}
+                    />
+                )
+                }
             </div>
         </DefaultLayout>
     );

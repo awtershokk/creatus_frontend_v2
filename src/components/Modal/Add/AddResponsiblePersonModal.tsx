@@ -137,7 +137,7 @@ const AddResponsiblePersonModal: React.FC<AddResponsiblePersonModalProps> = ({ o
                         onChange={handleChange}
                         className={`w-full p-2 border ${errors.type ? 'border-red-500' : 'border-gray-300'} rounded-md text-black focus:outline-none focus:ring-2 focus:ring-gray-400 bg-white`}
                     >
-                        <option value="">Выберите тип</option>
+                        <option value="" disabled>Выберите тип</option>
                         {responsibleTypes.map(option => (
                             <option key={option.value} value={option.value}>
                                 {option.label}

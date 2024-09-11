@@ -15,6 +15,9 @@ import MiniAddButton from "../../components/Buttons/MiniAddButton.tsx";
 import BuildingEditModal from '../../components/Modal/Edit/EditBuildingModal';
 import AddResponsiblePersonModal from "../../components/Modal/Add/AddResponsiblePersonModal.tsx";
 import AddSectionModal from "../../components/Modal/Add/AddSectionModal";
+import AddThermalCircuitModal from "../../components/Modal/Add/AddThermalModal";
+import DeleteThermalCircuitModalManager from "../../components/Modal/Manager/DeleteThermalCircuitModalManager.tsx";
+import DeleteSectionModalManager from "../../components/Modal/Manager/DeleteSectionModalManager.tsx";
 import AddThermalCircuitModal from "../../components/Modal/Add/AddThermalCircuitModal.tsx";
 
 const BuildingPage = () => {
@@ -29,7 +32,11 @@ const BuildingPage = () => {
     const [isAddSectionModalOpen, setIsAddSectionModalOpen] = useState(false);
     const [isAddThermalCircuitModalOpen, setIsAddThermalCircuitModalOpen] = useState(false);
 
+    const [modalThermalCircuitId, setModalThermalCircuitId] = useState<number | null>(null);
+    const [modalSectionId , setModalSectionId] =useState<number | null>(null);
     const buildingId = 1;
+    const thermalCircuitsId = thermalCircuits.map(circuit => circuit.id);
+    const sectionID = sections.map(section=> section.id);
 
     const getData = async () => {
         try {
@@ -123,6 +130,18 @@ const BuildingPage = () => {
     const handleAddThermalCircuitModalClose = () => {
         setIsAddThermalCircuitModalOpen(false);
     };
+    const handleDeleteThermalCircuitClick = () => {
+        console.log(thermalCircuitsId)
+        setModalThermalCircuitId(thermalCircuitsId);
+    };
+    const handleDeleteSectionClick = () => {
+        console.log(sectionID)
+        setModalSectionId(sectionID);
+    };
+    const handleModalClose = () => {
+        setModalThermalCircuitId(null);
+        setModalSectionId(null)
+    };
 
     const handleAddSection = async (newSection: { label: string; area: number; volume: number }) => {
         try {
@@ -161,6 +180,7 @@ const BuildingPage = () => {
                         tableTitle="Секции"
                         ButtonComponent={() => <AddButton onClick={handleAddSectionClick} />}
                         LinkComponent={BlueLink}
+                        onDelete={handleDeleteSectionClick}
                     />
                     <div className='mt-3'>
                         <ChildElementsTable
@@ -168,6 +188,7 @@ const BuildingPage = () => {
                             tableTitle="Тепловые контуры"
                             ButtonComponent={() => <AddButton onClick={handleAddThermalCircuitClick} />}
                             LinkComponent={BlueLink}
+                            onDelete={handleDeleteThermalCircuitClick}
                         />
                     </div>
                 </div>
@@ -217,6 +238,19 @@ const BuildingPage = () => {
                     onSubmit={handleAddThermalCircuit}
                 />
             )}
+            {modalThermalCircuitId !== null && (
+                <DeleteThermalCircuitModalManager
+                    thermalCircuitId={modalThermalCircuitId}
+                    onClose={handleModalClose}
+                />
+            )}
+            {modalSectionId !== null && (
+                <DeleteSectionModalManager
+                    SectionId={modalSectionId}
+                    onClose={handleModalClose}
+                />
+            )
+            }
         </DefaultLayout>
     );
 };

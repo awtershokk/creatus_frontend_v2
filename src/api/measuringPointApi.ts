@@ -29,7 +29,17 @@ export const fetchMeasuringPoint = async (measuringPointId: number) => {
     }
 };
 
+export const deleteMeasuringPoint = async (measuringPointId: number) => {
+    try {
+        await api.delete(`/measuringPoint/${measuringPointId}`);
+    } catch (error) {
+        throw error;
+    }
+};
+
+
 export const createMeasuringPoint = async (roomId: number, data: any) => {
+
     try {
         const response = await api.post(`/measuringPoint/${roomId}`, {
             label: data.measureName,

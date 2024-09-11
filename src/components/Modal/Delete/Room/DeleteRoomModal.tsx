@@ -1,0 +1,44 @@
+import React, { useState } from 'react';
+import ModalTemplate from '../../ModalTemplate.tsx';
+
+interface DeleteRoomModalProps {
+    roomName: string;
+    onClose: () => void;
+    onDelete: () => Promise<void>;
+}
+
+const DeleteRoomModal: React.FC<DeleteRoomModalProps> = ({
+                                                                   roomName,
+                                                                   onClose,
+                                                                   onDelete,
+                                                               }) => {
+    const [loading, setLoading] = useState(false);
+
+    const handleDelete = async () => {
+        setLoading(true);
+        try {
+            await onDelete();
+            onClose();
+        } catch (error) {
+            console.error('Ошибка при удалении помещения:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    return (
+        <ModalTemplate
+            headerTitle="Подтвердите удаление"
+            buttonLabel="Удалить"
+            onClose={onClose}
+            onSubmit={handleDelete}
+            loading={loading}
+        >
+            <p className="text-black">
+                Вы уверены, что хотите удалить помещение <b>{roomName}</b>?
+            </p>
+        </ModalTemplate>
+    );
+};
+
+export default DeleteRoomModal;

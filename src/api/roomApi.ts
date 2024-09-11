@@ -29,6 +29,15 @@ export const fetchRoom = async (roomId: number) => {
     }
 };
 
+export const deleteRoom = async (roomId: number) => {
+    try {
+        await api.delete(`/room/${roomId}`);
+    } catch (error) {
+        throw error;
+    }
+};
+
+
 export const createRoom = async (thermalCircuitId: number, sectionId: number, requestData: any) => {
     try {
         const response = await api.post(`/room/${thermalCircuitId}/${sectionId}`, requestData);
@@ -77,4 +86,3 @@ export const fetchSectionOptions = async () => {
         throw error;
     }
 };
-

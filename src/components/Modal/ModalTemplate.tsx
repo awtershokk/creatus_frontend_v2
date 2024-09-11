@@ -3,7 +3,7 @@ import { FaTimes } from "react-icons/fa";
 
 interface ModalTemplateProps {
     headerTitle: string;
-    buttonLabel: string;
+    buttonLabel: string | null; // если нужно что бы не было кнопки передаем ''
     onClose: () => void;
     onSubmit: () => void;
     children: React.ReactNode;
@@ -47,20 +47,22 @@ const ModalTemplate: React.FC<ModalTemplateProps> = ({
                 <div className="p-6 space-y-2 max-h-[60vh] overflow-y-auto">
                     {children}
                 </div>
-                <div className="flex justify-end space-x-4 p-6  ">
+                <div className="flex justify-end space-x-4 p-6">
                     <button
                         onClick={handleClose}
                         className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition"
                     >
                         Отмена
                     </button>
-                    <button
-                        onClick={onSubmit}
-                        className="px-4 py-2 bg-gray-700 text-white rounded-md hover:bg-black transition"
-                        disabled={loading}
-                    >
-                        {loading ? 'Сохранение...' : buttonLabel}
-                    </button>
+                    {buttonLabel && (
+                        <button
+                            onClick={onSubmit}
+                            className="px-4 py-2 bg-gray-700 text-white rounded-md hover:bg-black transition"
+                            disabled={loading}
+                        >
+                            {loading ? 'Сохранение...' : buttonLabel}
+                        </button>
+                    )}
                 </div>
             </div>
         </div>

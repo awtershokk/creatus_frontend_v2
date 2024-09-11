@@ -16,7 +16,7 @@ import TableContainer from "../../layouts/TableContainer.tsx";
 import MeasurementsFilters from '../../components/Filters/MeasurementsFilters.tsx';
 import DownloadButton from "../../components/Buttons/DownloadButton.tsx";
 import AddRoomInThermalCircuitModal from "../../components/Modal/Add/AddRoomInThermalCircuitModal.tsx";
-
+import DeleteRoomModalManager from "../../components/Modal/Manager/DeleteRoomModalManager.tsx";
 
 const ThermalCircuitPage = () => {
     const { thermalCircuitId } = useParams();
@@ -32,6 +32,10 @@ const ThermalCircuitPage = () => {
     const [humidityDeviation, setHumidityDeviation] = useState<{ min: number | null; max: number | null }>({ min: null, max: null });
     const [isAddRoomInThermalCircuitModal, setIsAddRoomInThermalCircuitModal] = useState(false);
 
+    const [modalRoomId , setModalRoomId] =useState<number | null>(null);
+    const roomID = rooms.map(room=> room.id);
+
+    useEffect(() => {
         const getData = async () => {
             try {
                 const thermalCircuitData = await fetchThermalCircuit(thermalCircuitId);
@@ -74,6 +78,13 @@ const ThermalCircuitPage = () => {
 
     const handleAddRoomInThermalCircuitModalClose = () => {
         setIsAddRoomInThermalCircuitModal(false);
+    };
+    const handleDeleteRoomClick = () => {
+        console.log(roomID)
+        setModalRoomId(roomID);
+    };
+    const handleModalRoomClose = () => {
+        setModalRoomId(null)
     };
     const handleFilterChange = (filters: {
         dateRange?: { start: Date | null; end: Date | null },
@@ -177,6 +188,7 @@ const ThermalCircuitPage = () => {
                         tableTitle="Помещения"
                         ButtonComponent={() => <AddButton onClick={handleAddRoomInThermalCircuitModalOpen} />}
                         LinkComponent={BlueLink}
+                        onDelete={handleDeleteRoomClick}
                     />
                 </div>
             </div>
@@ -214,6 +226,13 @@ const ThermalCircuitPage = () => {
                     }}
                 />
             )}
+            {modalRoomId !== null && (
+                <DeleteRoomModalManager
+                    RoomId={modalRoomId}
+                    onClose={handleModalRoomClose}
+                />
+            )
+            }
         </DefaultLayout>
     );
 };
