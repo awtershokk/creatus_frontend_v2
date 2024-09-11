@@ -9,16 +9,14 @@ import BlueLink from "../../components/Text/BlueLink.tsx";
 import { useParams } from "react-router-dom";
 import { fetchRoom } from "../../api/roomApi.ts";
 import { fetchMeasuringPoints } from "../../api/measuringPointApi.ts";
-import {fetchMeasurementsRoom, fetchMeasurementsThermalCircuit} from "../../api/measurementsApi.ts";
+import { fetchMeasurementsRoom } from "../../api/measurementsApi.ts";
 import { Measurement } from "../../models/Measurements.ts";
 import TableContainer from "../../layouts/TableContainer.tsx";
 import ItemTable from "../../components/Tables/ItemTable.tsx";
 import MeasurementsFilters from '../../components/Filters/MeasurementsFilters.tsx';
 import DownloadButton from "../../components/Buttons/DownloadButton.tsx";
-import AddMeasurePointModal from "../../components/Modal/Add/AddMeasurePointModal.tsx";
-import DeleteMeasuringPointModal from "../../components/Modal/Delete/MeasuringPoint/DeleteMeasuringPointModal.tsx";
 import AddMeasuringPointModal from "../../components/Modal/Add/AddMeasuringPointModal.tsx";
-
+import DeleteMeasuringPointModal from "../../components/Modal/Delete/MeasuringPoint/DeleteMeasuringPointModal.tsx";
 
 const RoomPage = () => {
     const { roomId } = useParams();
@@ -32,13 +30,12 @@ const RoomPage = () => {
     const [humidityDeviation, setHumidityDeviation] = useState<{ min: number | null; max: number | null }>({ min: null, max: null });
     const [totalMeasurements, setTotalMeasurements] = useState<number>(0);
     const [displayedMeasurements, setDisplayedMeasurements] = useState<number>(0);
+    const [isAddMeasurePointModalOpen, setIsAddMeasurePointModalOpen] = useState(false);
+    const [isDeleteMeasurePointModalOpen, setIsDeleteMeasurePointModalOpen] = useState(false);
+    const [deleteMeasuringPointId, setDeleteMeasuringPointId] = useState<number | null>(null);
 
-    const [isAddMeasurePointModal, setAddMeasurePointModal] = useState(false);
-    const [isDeleteMeasurePointModal, setDeleteMeasurePointModal] = useState(false);
-
-    const measuringPointID = measuringPoints.map(measuringPoints=> measuringPoints.id);
     useEffect(() => {
-        const getData = async () => {
+        const fetchData = async () => {
             try {
                 const roomData = await fetchRoom(roomId);
                 setRoom(roomData);
@@ -46,12 +43,12 @@ const RoomPage = () => {
                 localStorage.setItem('room', JSON.stringify({ label: labelItem?.value, icon: 'FaDoorClosed', id: parseInt(roomId) }));
 
                 const measuringPointsData = await fetchMeasuringPoints(roomId);
-                const formattedMeasuringPoints = measuringPointsData.map(measuringPoint => ({
-                    id: measuringPoint.id,
-                    title: measuringPoint.label,
+                const formattedMeasuringPoints = measuringPointsData.map(point => ({
+                    id: point.id,
+                    title: point.label,
                     properties: 'Свойства',
                     delete: 'Удалить',
-                    to: `measuringPoint/${measuringPoint.id}`
+                    to: `measuringPoint/${point.id}`
                 }));
                 setMeasuringPoints(formattedMeasuringPoints);
 
@@ -65,9 +62,8 @@ const RoomPage = () => {
             }
         };
 
-        getData();
+        fetchData();
     }, [roomId]);
-
 
     const handleFilterChange = (filters: {
         dateRange?: { start: Date | null; end: Date | null },
@@ -79,65 +75,47 @@ const RoomPage = () => {
 
         // Фильтрация по дате
         if (filters.dateRange?.start || filters.dateRange?.end) {
-            filtered = filtered.filter((measurement) => {
+            filtered = filtered.filter(measurement => {
                 const [day, month, year] = measurement.date.split('.').map(Number);
                 const measurementDate = new Date(year, month - 1, day);
-
                 const startDate = filters.dateRange?.start ? new Date(filters.dateRange.start) : null;
                 const endDate = filters.dateRange?.end ? new Date(filters.dateRange.end) : null;
-
-                if (startDate) {
-                    startDate.setHours(0, 0, 0, 0);
-                }
-
-                if (endDate) {
-                    endDate.setHours(23, 59, 59, 999);
-                }
-
+                if (startDate) startDate.setHours(0, 0, 0, 0);
+                if (endDate) endDate.setHours(23, 59, 59, 999);
                 return (!startDate || measurementDate >= startDate) && (!endDate || measurementDate <= endDate);
             });
         }
 
         // Фильтрация по времени
         if (filters.timeRange?.start || filters.timeRange?.end) {
-            filtered = filtered.filter((measurement) => {
+            filtered = filtered.filter(measurement => {
                 const [hours, minutes] = measurement.time.split(':').map(Number);
                 const measurementTime = new Date();
                 measurementTime.setHours(hours, minutes, 0, 0);
-
                 const startTime = filters.timeRange?.start ? new Date(filters.timeRange.start) : null;
                 const endTime = filters.timeRange?.end ? new Date(filters.timeRange.end) : null;
-
-                if (startTime) {
-                    startTime.setSeconds(0, 0);
-                }
-
-                if (endTime) {
-                    endTime.setSeconds(59, 999);
-                }
-
+                if (startTime) startTime.setSeconds(0, 0);
+                if (endTime) endTime.setSeconds(59, 999);
                 return (!startTime || measurementTime >= startTime) && (!endTime || measurementTime <= endTime);
             });
         }
 
         // Фильтрация по отклонению температуры
         if (filters.temperatureDeviation?.min !== null || filters.temperatureDeviation?.max !== null) {
-            filtered = filtered.filter((measurement) => {
+            filtered = filtered.filter(measurement => {
                 const deviation = measurement.deviation_temperature;
-                const minDeviation = filters.temperatureDeviation?.min !== null ? filters.temperatureDeviation.min : -Infinity;
-                const maxDeviation = filters.temperatureDeviation?.max !== null ? filters.temperatureDeviation.max : Infinity;
-
+                const minDeviation = filters.temperatureDeviation?.min ?? -Infinity;
+                const maxDeviation = filters.temperatureDeviation?.max ?? Infinity;
                 return deviation >= minDeviation && deviation <= maxDeviation;
             });
         }
 
         // Фильтрация по отклонению влажности
         if (filters.humidityDeviation?.min !== null || filters.humidityDeviation?.max !== null) {
-            filtered = filtered.filter((measurement) => {
+            filtered = filtered.filter(measurement => {
                 const deviation = measurement.deviation_humidity;
-                const minDeviation = filters.humidityDeviation?.min !== null ? filters.humidityDeviation.min : -Infinity;
-                const maxDeviation = filters.humidityDeviation?.max !== null ? filters.humidityDeviation.max : Infinity;
-
+                const minDeviation = filters.humidityDeviation?.min ?? -Infinity;
+                const maxDeviation = filters.humidityDeviation?.max ?? Infinity;
                 return deviation >= minDeviation && deviation <= maxDeviation;
             });
         }
@@ -145,20 +123,18 @@ const RoomPage = () => {
         setFilteredMeasurements(filtered);
         setDisplayedMeasurements(filtered.length);
     };
-    const handleAddMeasurePointModal = () => {
-        setAddMeasurePointModal(true);
+
+    const openAddMeasurePointModal = () => setIsAddMeasurePointModalOpen(true);
+    const closeAddMeasurePointModal = () => setIsAddMeasurePointModalOpen(false);
+    const openDeleteMeasurePointModal = (id: number) => {
+        setDeleteMeasuringPointId(id);
+        setIsDeleteMeasurePointModalOpen(true);
+    };
+    const closeDeleteMeasurePointModal = () => {
+        setDeleteMeasuringPointId(null);
+        setIsDeleteMeasurePointModalOpen(false);
     };
 
-    const handleAddMeasurePointModalClose = () => {
-        setAddMeasurePointModal(false);
-    };
-    const handleDeleteMeasurePointModalOpen = () => {
-        setDeleteMeasurePointModal(true);
-    };
-
-    const handleDeleteMeasurePointModalClose = () => {
-        setDeleteMeasurePointModal(false);
-    };
     const headers = {
         'Дата': 'date',
         'Время': 'time',
@@ -172,7 +148,7 @@ const RoomPage = () => {
         <DefaultLayout>
             <div className="flex justify-between">
                 <div className="w-1/2">
-                    <Label text="Информация о помещении"/>
+                    <Label text="Информация о помещении" />
                     <ObjectTable
                         title="Свойства помещения"
                         data={room}
@@ -184,22 +160,22 @@ const RoomPage = () => {
                     <ChildElementsTable
                         infoData={measuringPoints}
                         tableTitle="Точки измерения"
-                        ButtonComponent={() => <AddButton onClick={handleAddMeasurePointModal} />}
+                        ButtonComponent={() => <AddButton onClick={openAddMeasurePointModal} />}
                         LinkComponent={BlueLink}
-                        onDelete={handleDeleteMeasurePointModalOpen}
+                        onDelete={openDeleteMeasurePointModal}
                     />
                 </div>
             </div>
             <div className="mt-6 mb-4">
                 <div className="mt-4 flex items-center justify-between">
                     <div className="flex items-center">
-                        <Label text="Рассчитанные значения"/>
+                        <Label text="Рассчитанные значения" />
                         <div className="ml-4 mt-1 text-sm text-gray-600">
                             Всего значений: {totalMeasurements}, Отображаемых значений: {displayedMeasurements}
                         </div>
                     </div>
                 </div>
-                <DownloadButton/>
+                <DownloadButton />
                 <MeasurementsFilters
                     dateRange={dateRange}
                     timeRange={timeRange}
@@ -213,27 +189,25 @@ const RoomPage = () => {
                         headers={headers}
                     />
                 </TableContainer>
-                {isAddMeasurePointModal && (
+                {isAddMeasurePointModalOpen && (
                     <AddMeasuringPointModal
-                        onClose={handleAddMeasurePointModalClose}
+                        onClose={closeAddMeasurePointModal}
                         onSubmit={() => {
-                            getData();
-                            handleAddMeasurePointModalClose();
+                            fetchData();
+                            closeAddMeasurePointModal();
                         }}
                         roomId={roomId}
                     />
                 )}
-                {isDeleteMeasurePointModal && (
+                {isDeleteMeasurePointModalOpen && deleteMeasuringPointId !== null && (
                     <DeleteMeasuringPointModal
-                       measuringPointID={measuringPointID}
-                       onClose={handleDeleteMeasurePointModalClose}
+                        measuringPointID={deleteMeasuringPointId}
+                        onClose={closeDeleteMeasurePointModal}
                     />
                 )}
-
             </div>
         </DefaultLayout>
     );
 };
-
 
 export default RoomPage;

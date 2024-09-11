@@ -32,10 +32,8 @@ const BuildingPage = () => {
     const [isAddThermalCircuitModalOpen, setIsAddThermalCircuitModalOpen] = useState(false);
 
     const [modalThermalCircuitId, setModalThermalCircuitId] = useState<number | null>(null);
-    const [modalSectionId , setModalSectionId] =useState<number | null>(null);
+    const [modalSectionId, setModalSectionId] = useState<number | null>(null);
     const buildingId = 1;
-    const thermalCircuitsId = thermalCircuits.map(circuit => circuit.id);
-    const sectionID = sections.map(section=> section.id);
 
     const getData = async () => {
         try {
@@ -72,7 +70,6 @@ const BuildingPage = () => {
             console.error('Ошибка получения данных:', error);
         }
     };
-
 
     useEffect(() => {
         getData();
@@ -129,17 +126,22 @@ const BuildingPage = () => {
     const handleAddThermalCircuitModalClose = () => {
         setIsAddThermalCircuitModalOpen(false);
     };
-    const handleDeleteThermalCircuitClick = () => {
-        console.log(thermalCircuitsId)
-        setModalThermalCircuitId(thermalCircuitsId);
+
+    // Удаление конкретной секции
+    const handleDeleteSectionClick = (sectionId: number) => {
+        console.log(sectionId);
+        setModalSectionId(sectionId);
     };
-    const handleDeleteSectionClick = () => {
-        console.log(sectionID)
-        setModalSectionId(sectionID);
+
+    // Удаление конкретного теплового контура
+    const handleDeleteThermalCircuitClick = (thermalCircuitId: number) => {
+        console.log(thermalCircuitId);
+        setModalThermalCircuitId(thermalCircuitId);
     };
+
     const handleModalClose = () => {
         setModalThermalCircuitId(null);
-        setModalSectionId(null)
+        setModalSectionId(null);
     };
 
     const handleAddSection = async (newSection: { label: string; area: number; volume: number }) => {
@@ -187,7 +189,7 @@ const BuildingPage = () => {
                             tableTitle="Тепловые контуры"
                             ButtonComponent={() => <AddButton onClick={handleAddThermalCircuitClick} />}
                             LinkComponent={BlueLink}
-                            onDelete={handleDeleteThermalCircuitClick}
+                            onDelete={handleDeleteThermalCircuitClick} // передаем ID конкретного теплового контура
                         />
                     </div>
                 </div>
@@ -237,19 +239,20 @@ const BuildingPage = () => {
                     onSubmit={handleAddThermalCircuit}
                 />
             )}
+
             {modalThermalCircuitId !== null && (
                 <DeleteThermalCircuitModalManager
                     thermalCircuitId={modalThermalCircuitId}
                     onClose={handleModalClose}
                 />
             )}
+
             {modalSectionId !== null && (
                 <DeleteSectionModalManager
                     SectionId={modalSectionId}
                     onClose={handleModalClose}
                 />
-            )
-            }
+            )}
         </DefaultLayout>
     );
 };

@@ -8,7 +8,7 @@ interface TooltipProps {
 
 const Tooltip: React.FC<TooltipProps> = ({ message }) => {
     const [isVisible, setIsVisible] = useState(false);
-    //отображение по наведению мыши
+
     const handleMouseEnter = () => {
         setIsVisible(true);
     };

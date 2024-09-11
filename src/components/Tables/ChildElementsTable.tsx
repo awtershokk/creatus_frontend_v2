@@ -1,12 +1,11 @@
 import React from 'react';
 
-
 interface ChildElementsTableProps {
     infoData: { id: number; title: string; properties: string; delete: string }[];
     tableTitle: string;
     ButtonComponent: () => JSX.Element;
     LinkComponent: (props: { to: string; text: string; className?: string }) => JSX.Element;
-    onDelete: () => void;
+    onDelete: (id: number) => void; // onDelete принимает id
 }
 
 const ChildElementsTable: React.FC<ChildElementsTableProps> = ({ infoData, tableTitle, ButtonComponent, LinkComponent, onDelete }) => {
@@ -30,7 +29,7 @@ const ChildElementsTable: React.FC<ChildElementsTableProps> = ({ infoData, table
                                     <LinkComponent to={item.to} text={item.properties} className="text-gray-800 underline" />
                                     <button
                                         className="text-red-600 underline"
-                                        onClick={onDelete}
+                                        onClick={() => onDelete(item.id)}
                                     >
                                         {item.delete}
                                     </button>
@@ -43,6 +42,5 @@ const ChildElementsTable: React.FC<ChildElementsTableProps> = ({ infoData, table
         </div>
     );
 };
-
 
 export default ChildElementsTable;

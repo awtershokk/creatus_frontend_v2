@@ -33,7 +33,6 @@ const ThermalCircuitPage = () => {
     const [isAddRoomInThermalCircuitModal, setIsAddRoomInThermalCircuitModal] = useState(false);
 
     const [modalRoomId , setModalRoomId] =useState<number | null>(null);
-    const roomID = rooms.map(room=> room.id);
 
         const getData = async () => {
             try {
@@ -83,9 +82,8 @@ const ThermalCircuitPage = () => {
     const handleAddRoomInThermalCircuitModalClose = () => {
         setIsAddRoomInThermalCircuitModal(false);
     };
-    const handleDeleteRoomClick = () => {
-        console.log(roomID)
-        setModalRoomId(roomID);
+    const handleDeleteRoomClick = (roomId: number) => {
+        setModalRoomId(roomId);
     };
     const handleModalRoomClose = () => {
         setModalRoomId(null)
