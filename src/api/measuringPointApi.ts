@@ -52,13 +52,12 @@ export const createMeasuringPoint = async (roomId: number, data: any) => {
 };
 
 
-// export const fetchDeviceId = async (measuringPointId: number) => {
-//     try {
-//         const response = await api.get(`/measuringPoint/${measuringPointId}`);
-//         const measuringPoint: MeasuringPoint = response.data.data;
-//         return transformMeasuringPointData(measuringPoint);
-//     } catch (error) {
-//         throw error;
-//     }
-// };
+export const fetchDeviceId = async (measuringPointId: number) => {
+    try {
+        const { data: { data: { device: {id} } } } = await api.get(`/measuringPoint/${measuringPointId}`);
+        return id;
+    } catch (error) {
+        throw error;
+    }
+};
 

@@ -36,8 +36,9 @@ export const fetchDevicesSetiingsMode = async (
 
 export const fetchDevice = async (deviceId: number) => {
     try {
-        const response = await api.get(`/section/1/${deviceId}`);
-        const device: Device = response.data.data;
+        const response = await api.get(`/device/${deviceId}`);
+        const device: Device = response.data.data[0];
+
         return transformDeviceDataForMP(device);
     } catch (error) {
         throw error;
