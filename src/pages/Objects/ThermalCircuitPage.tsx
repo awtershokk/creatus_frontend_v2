@@ -32,7 +32,6 @@ const ThermalCircuitPage = () => {
     const [humidityDeviation, setHumidityDeviation] = useState<{ min: number | null; max: number | null }>({ min: null, max: null });
     const [isAddRoomInThermalCircuitModal, setIsAddRoomInThermalCircuitModal] = useState(false);
 
-    useEffect(() => {
         const getData = async () => {
             try {
                 const thermalCircuitData = await fetchThermalCircuit(thermalCircuitId);
@@ -62,6 +61,7 @@ const ThermalCircuitPage = () => {
             }
         };
 
+    useEffect(() => {
         getData();
     }, [thermalCircuitId]);
 
@@ -206,8 +206,11 @@ const ThermalCircuitPage = () => {
             </div>
             {isAddRoomInThermalCircuitModal && (
                 <AddRoomInThermalCircuitModal
+                    thermalCircuitId={thermalCircuitId}
                     onClose={handleAddRoomInThermalCircuitModalClose}
                     onSubmit={() => {
+                        getData();
+                        handleAddRoomInThermalCircuitModalClose();
                     }}
                 />
             )}

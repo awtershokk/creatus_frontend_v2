@@ -9,13 +9,13 @@ import BlueLink from "../../components/Text/BlueLink.tsx";
 import { useParams } from "react-router-dom";
 import { fetchRoom } from "../../api/roomApi.ts";
 import { fetchMeasuringPoints } from "../../api/measuringPointApi.ts";
-import { fetchMeasurementsThermalCircuit } from "../../api/measurementsApi.ts";
+import {fetchMeasurementsRoom, fetchMeasurementsThermalCircuit} from "../../api/measurementsApi.ts";
 import { Measurement } from "../../models/Measurements.ts";
 import TableContainer from "../../layouts/TableContainer.tsx";
 import ItemTable from "../../components/Tables/ItemTable.tsx";
 import MeasurementsFilters from '../../components/Filters/MeasurementsFilters.tsx';
 import DownloadButton from "../../components/Buttons/DownloadButton.tsx";
-import AddMeasurePointModal from "../../components/Modal/Add/AddMeasurePointModal.tsx";
+import AddMeasuringPointModal from "../../components/Modal/Add/AddMeasuringPointModal.tsx";
 
 
 const RoomPage = () => {
@@ -32,7 +32,6 @@ const RoomPage = () => {
     const [displayedMeasurements, setDisplayedMeasurements] = useState<number>(0);
 
     const [isAddMeasurePointModal, setAddMeasurePointModal] = useState(false);
-    useEffect(() => {
         const getData = async () => {
             try {
                 const roomData = await fetchRoom(roomId);
@@ -50,7 +49,7 @@ const RoomPage = () => {
                 }));
                 setMeasuringPoints(formattedMeasuringPoints);
 
-                const measurementsData = await fetchMeasurementsThermalCircuit(roomId);
+                const measurementsData = await fetchMeasurementsRoom(roomId);
                 setMeasurements(measurementsData);
                 setFilteredMeasurements(measurementsData);
                 setTotalMeasurements(measurementsData.length);
@@ -61,6 +60,9 @@ const RoomPage = () => {
             }
         };
 
+
+
+    useEffect(() => {
         getData();
     }, [roomId]);
 
@@ -201,9 +203,11 @@ const RoomPage = () => {
                     />
                 </TableContainer>
                 {isAddMeasurePointModal && (
-                    <AddMeasurePointModal
+                    <AddMeasuringPointModal
                         onClose={handleAddMeasurePointModalClose}
                         onSubmit={() => {
+                            getData();
+                            handleAddMeasurePointModalClose();
                         }}
                         roomId={roomId}
                     />
