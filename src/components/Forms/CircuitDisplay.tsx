@@ -107,7 +107,10 @@ const CircuitDisplay: React.FC<CircuitDisplayProps> = ({ sections, selectedRoomI
                             <div className="flex flex-wrap gap-1.5">
                                 {floor.C.flatMap((circuit) =>
                                     circuit.R.map((room, roomIndex) => {
-                                        const { backgroundColor } = getRoomStyle(room.tempDev, room.measuringPoints);
+                                        const {
+                                            backgroundColor,
+                                            measuringPointIndicators
+                                        } = getRoomStyle(room.tempDev, room.measuringPoints);
 
                                         return (
                                             <div
@@ -115,7 +118,8 @@ const CircuitDisplay: React.FC<CircuitDisplayProps> = ({ sections, selectedRoomI
                                                 className={`inline-block w-44 h-22 m-1.5 p-1.5 text-left border-2 border-black box-border ${backgroundColor}`}
                                             >
                                                 <p className={`text-xs h-4 ${room.id === selectedRoomId ? 'font-bold' : ''}`}>
-                                                    <a href="#" className="no-underline text-black hover:text-blue-500" onClick={() => onRoomClick(room.id)}>
+                                                    <a href="#" className="no-underline text-black hover:text-blue-500"
+                                                       onClick={() => onRoomClick(room.id)}>
                                                         {room.label}
                                                     </a>
                                                 </p>
@@ -123,7 +127,7 @@ const CircuitDisplay: React.FC<CircuitDisplayProps> = ({ sections, selectedRoomI
                                                 <p className="text-black text-xs">T: {room.temp !== null ? room.temp : 'N/A'}°C</p>
                                                 <p className="text-black text-xs">H: {room.hum !== null ? room.hum : 'N/A'}%</p>
                                                 <p className="text-black text-xs">
-                                                   ТИ: {renderMeasuringPointIndicators(room.measuringPoints)}
+                                                    ТИ: {measuringPointIndicators}
                                                 </p>
                                             </div>
                                         );
