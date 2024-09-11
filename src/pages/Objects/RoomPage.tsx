@@ -60,17 +60,14 @@ const RoomPage = () => {
                 setFilteredMeasurements(measurementsData);
                 setTotalMeasurements(measurementsData.length);
                 setDisplayedMeasurements(measurementsData.length);
-
             } catch (error) {
                 console.error('Ошибка получения данных:', error);
             }
         };
 
-
-
-    useEffect(() => {
         getData();
     }, [roomId]);
+
 
     const handleFilterChange = (filters: {
         dateRange?: { start: Date | null; end: Date | null },
@@ -237,5 +234,6 @@ const RoomPage = () => {
         </DefaultLayout>
     );
 };
+
 
 export default RoomPage;

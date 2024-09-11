@@ -35,13 +35,16 @@ const ThermalCircuitPage = () => {
     const [modalRoomId , setModalRoomId] =useState<number | null>(null);
     const roomID = rooms.map(room=> room.id);
 
-    useEffect(() => {
         const getData = async () => {
             try {
                 const thermalCircuitData = await fetchThermalCircuit(thermalCircuitId);
                 setThermalCircuit(thermalCircuitData);
                 const labelItem = thermalCircuitData.find(item => item.title === 'Наименование');
-                localStorage.setItem('thermalCircuit', JSON.stringify({ label: labelItem?.value, icon: 'FaThermometerHalf', id: labelItem?.id }));
+                localStorage.setItem('thermalCircuit', JSON.stringify({
+                    label: labelItem?.value,
+                    icon: 'FaThermometerHalf',
+                    id: labelItem?.id
+                }));
 
                 const roomsData = await fetchRoomsByThermalCircuit(thermalCircuitId);
                 const formattedRooms = roomsData.map(room => ({
@@ -64,6 +67,7 @@ const ThermalCircuitPage = () => {
                 console.error('Ошибка получения данных:', error);
             }
         };
+
 
     useEffect(() => {
         getData();

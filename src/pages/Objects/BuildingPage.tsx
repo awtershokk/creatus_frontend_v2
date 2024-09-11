@@ -15,7 +15,6 @@ import MiniAddButton from "../../components/Buttons/MiniAddButton.tsx";
 import BuildingEditModal from '../../components/Modal/Edit/EditBuildingModal';
 import AddResponsiblePersonModal from "../../components/Modal/Add/AddResponsiblePersonModal.tsx";
 import AddSectionModal from "../../components/Modal/Add/AddSectionModal";
-import AddThermalCircuitModal from "../../components/Modal/Add/AddThermalModal";
 import DeleteThermalCircuitModalManager from "../../components/Modal/Manager/DeleteThermalCircuitModalManager.tsx";
 import DeleteSectionModalManager from "../../components/Modal/Manager/DeleteSectionModalManager.tsx";
 import AddThermalCircuitModal from "../../components/Modal/Add/AddThermalCircuitModal.tsx";

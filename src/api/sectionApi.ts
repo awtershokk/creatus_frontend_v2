@@ -24,7 +24,11 @@ export const fetchSection = async (sectionId: number) => {
 export const deleteSection = async (sectionId: number) => {
     try {
         await api.delete(`/section/1/${sectionId}`);
-
+    }
+    catch (error) {
+        throw error;
+    }
+};
 export const createSection = async (section: { label: string, area: number, volume: number }) => {
     try {
         const response = await api.post(`/section/1`, section);
