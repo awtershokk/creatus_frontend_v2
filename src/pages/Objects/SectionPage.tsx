@@ -20,7 +20,6 @@ const SectionPage = () => {
     const [isAddRoomInSectionModal, setIsAddRoomInSectionModal] = useState(false);
 
     const [modalRoomId , setModalRoomId] =useState<number | null>(null);
-    const roomID = rooms.map(room=> room.id);
     const getData = async () => {
         try {
             const sectionData = await fetchSection(sectionId);
@@ -54,9 +53,8 @@ const SectionPage = () => {
         setIsAddRoomInSectionModal(false);
     };
 
-    const handleDeleteRoomClick = () => {
-        console.log(roomID)
-        setModalRoomId(roomID);
+    const handleDeleteRoomClick = (roomId: number) => {
+        setModalRoomId(roomId);
     };
     const handleModalRoomClose = () => {
         setModalRoomId(null)
