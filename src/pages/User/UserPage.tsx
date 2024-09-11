@@ -263,12 +263,15 @@ const UserPage: React.FC = () => {
         if (tempDev !== null) {
             const deviation = parseFloat(tempDev.toString());
             if (!isNaN(deviation)) {
-                const intensity = Math.round(Math.abs(deviation) / 10 * 255);
+                const intensity = Math.round(Math.abs(deviation) / 10 * 500);
+                const roundedIntensity = Math.round(intensity / 100) * 100;
+
                 backgroundColor = deviation > 0
-                    ? `bg-red-${Math.min(500, 500 - intensity)}`
-                    : `bg-blue-${Math.min(500, 500 - intensity)}`;
+                    ? `bg-red-${Math.min(500, roundedIntensity)}`
+                    : `bg-blue-${Math.min(500, roundedIntensity)}`;
             }
         }
+
 
         return { backgroundColor, measuringPointIndicators };
     }, []);
