@@ -28,3 +28,10 @@ export const fetchRoom = async (roomId: number) => {
         throw error;
     }
 };
+export const deleteRoom = async (roomId: number) => {
+    try {
+        await api.delete(`/room/${roomId}`);
+    } catch (error) {
+        throw error;
+    }
+};

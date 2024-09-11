@@ -26,6 +26,7 @@ const MeasuringPointPage = () => {
     const [temperatureDeviation, setTemperatureDeviation] = useState<{ min: number | null; max: number | null }>({ min: null, max: null });
     const [humidityDeviation, setHumidityDeviation] = useState<{ min: number | null; max: number | null }>({ min: null, max: null });
 
+
     useEffect(() => {
         const getData = async () => {
             try {

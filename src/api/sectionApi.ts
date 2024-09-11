@@ -19,3 +19,11 @@ export const fetchSection = async (sectionId: number) => {
         throw error;
     }
 };
+
+export const deleteSection = async (sectionId: number) => {
+    try {
+        await api.delete(`/section/1/${sectionId}`);
+    } catch (error) {
+        throw error;
+    }
+};

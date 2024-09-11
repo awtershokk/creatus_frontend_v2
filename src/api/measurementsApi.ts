@@ -34,3 +34,5 @@ export const fetchMeasurementsMeasuringPoint = async (measuringPointId: number) 
     }
 };
 
+
+

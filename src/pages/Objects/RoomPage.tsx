@@ -16,6 +16,7 @@ import ItemTable from "../../components/Tables/ItemTable.tsx";
 import MeasurementsFilters from '../../components/Filters/MeasurementsFilters.tsx';
 import DownloadButton from "../../components/Buttons/DownloadButton.tsx";
 import AddMeasurePointModal from "../../components/Modal/Add/AddMeasurePointModal.tsx";
+import DeleteMeasuringPointModal from "../../components/Modal/Delete/MeasuringPoint/DeleteMeasuringPointModal.tsx";
 
 
 const RoomPage = () => {
@@ -32,6 +33,9 @@ const RoomPage = () => {
     const [displayedMeasurements, setDisplayedMeasurements] = useState<number>(0);
 
     const [isAddMeasurePointModal, setAddMeasurePointModal] = useState(false);
+    const [isDeleteMeasurePointModal, setDeleteMeasurePointModal] = useState(false);
+
+    const measuringPointID = measuringPoints.map(measuringPoints=> measuringPoints.id);
     useEffect(() => {
         const getData = async () => {
             try {
@@ -147,6 +151,13 @@ const RoomPage = () => {
     const handleAddMeasurePointModalClose = () => {
         setAddMeasurePointModal(false);
     };
+    const handleDeleteMeasurePointModalOpen = () => {
+        setDeleteMeasurePointModal(true);
+    };
+
+    const handleDeleteMeasurePointModalClose = () => {
+        setDeleteMeasurePointModal(false);
+    };
     const headers = {
         'Дата': 'date',
         'Время': 'time',
@@ -174,6 +185,7 @@ const RoomPage = () => {
                         tableTitle="Точки измерения"
                         ButtonComponent={() => <AddButton onClick={handleAddMeasurePointModal} />}
                         LinkComponent={BlueLink}
+                        onDelete={handleDeleteMeasurePointModalOpen}
                     />
                 </div>
             </div>
@@ -208,6 +220,13 @@ const RoomPage = () => {
                         roomId={roomId}
                     />
                 )}
+                {isDeleteMeasurePointModal && (
+                    <DeleteMeasuringPointModal
+                       measuringPointID={measuringPointID}
+                       onClose={handleDeleteMeasurePointModalClose}
+                    />
+                )}
+
             </div>
         </DefaultLayout>
     );

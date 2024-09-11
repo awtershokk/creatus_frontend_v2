@@ -41,7 +41,6 @@ const AddMeasurePointModal: React.FC<AddMeasurePointModalProps> = ({ onClose, on
         } = formData;
         const newErrors: { [key: string]: string } = {};
 
-        // Валидация данных формы
         if (!measureName.trim()) newErrors.measureName = 'Название не может быть пустым.';
         if (!height.trim() || parseFloat(height) <= 0) newErrors.height = 'Высота должна быть больше нуля.';
         if (!tempMin.trim() || isNaN(Number(tempMin))) newErrors.tempMin = 'Введите корректную минимальную температуру.';

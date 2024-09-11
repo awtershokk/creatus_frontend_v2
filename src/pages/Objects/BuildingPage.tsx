@@ -16,6 +16,8 @@ import BuildingEditModal from '../../components/Modal/Edit/EditBuildingModal';
 import AddResponsiblePersonModal from "../../components/Modal/Add/AddResponsiblePersonModal.tsx";
 import AddSectionModal from "../../components/Modal/Add/AddSectionModal";
 import AddThermalCircuitModal from "../../components/Modal/Add/AddThermalModal";
+import DeleteThermalCircuitModalManager from "../../components/Modal/Manager/DeleteThermalCircuitModalManager.tsx";
+import DeleteSectionModalManager from "../../components/Modal/Manager/DeleteSectionModalManager.tsx";
 
 const BuildingPage = () => {
     const [building, setBuilding] = useState<Array<{ id: number, title: string, value: string | number }>>([]);
@@ -27,9 +29,13 @@ const BuildingPage = () => {
     const [selectedBuilding, setSelectedBuilding] = useState<any>(null);
     const [isAddResponsiblePersonModalOpen, setIsAddResponsiblePersonModalOpen] = useState(false);
     const [isAddSectionModalOpen, setIsAddSectionModalOpen] = useState(false);
-    const [isAddThermalCircuitModalOpen, setIsAddThermalCircuitModalOpen] = useState(false);  // New state for thermal circuit modal
+    const [isAddThermalCircuitModalOpen, setIsAddThermalCircuitModalOpen] = useState(false);
 
+    const [modalThermalCircuitId, setModalThermalCircuitId] = useState<number | null>(null);
+    const [modalSectionId , setModalSectionId] =useState<number | null>(null);
     const buildingId = 1;
+    const thermalCircuitsId = thermalCircuits.map(circuit => circuit.id);
+    const sectionID = sections.map(section=> section.id);
 
     useEffect(() => {
         const getData = async () => {
@@ -121,6 +127,18 @@ const BuildingPage = () => {
     const handleAddThermalCircuitModalClose = () => {
         setIsAddThermalCircuitModalOpen(false);
     };
+    const handleDeleteThermalCircuitClick = () => {
+        console.log(thermalCircuitsId)
+        setModalThermalCircuitId(thermalCircuitsId);
+    };
+    const handleDeleteSectionClick = () => {
+        console.log(sectionID)
+        setModalSectionId(sectionID);
+    };
+    const handleModalClose = () => {
+        setModalThermalCircuitId(null);
+        setModalSectionId(null)
+    };
 
     useEffect(() => {
         console.log('Building state updated:', building);
@@ -141,15 +159,17 @@ const BuildingPage = () => {
                     <ChildElementsTable
                         infoData={sections}
                         tableTitle="Секции"
-                        ButtonComponent={() => <AddButton onClick={handleAddSectionClick} />} // Кнопка для добавления секции
+                        ButtonComponent={() => <AddButton onClick={handleAddSectionClick} />}
                         LinkComponent={BlueLink}
+                        onDelete={handleDeleteSectionClick}
                     />
                     <div className='mt-3'>
                         <ChildElementsTable
                             infoData={thermalCircuits}
                             tableTitle="Тепловые контуры"
-                            ButtonComponent={() => <AddButton onClick={handleAddThermalCircuitClick} />} // Button to trigger AddThermalCircuitModal
+                            ButtonComponent={() => <AddButton onClick={handleAddThermalCircuitClick} />}
                             LinkComponent={BlueLink}
+                            onDelete={handleDeleteThermalCircuitClick}
                         />
                     </div>
                 </div>
@@ -202,6 +222,19 @@ const BuildingPage = () => {
                     }}
                 />
             )}
+            {modalThermalCircuitId !== null && (
+                <DeleteThermalCircuitModalManager
+                    thermalCircuitId={modalThermalCircuitId}
+                    onClose={handleModalClose}
+                />
+            )}
+            {modalSectionId !== null && (
+                <DeleteSectionModalManager
+                    SectionId={modalSectionId}
+                    onClose={handleModalClose}
+                />
+            )
+            }
         </DefaultLayout>
     );
 };

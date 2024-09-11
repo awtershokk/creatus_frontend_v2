@@ -28,7 +28,13 @@ export const fetchMeasuringPoint = async (measuringPointId: number) => {
         throw error;
     }
 };
-
+export const deleteMeasuringPoint = async (measuringPointId: number) => {
+    try {
+        await api.delete(`/measuringPoint/${measuringPointId}`);
+    } catch (error) {
+        throw error;
+    }
+};
 export const fetchDeviceId = async (measuringPointId: number) => {
     try {
         const response = await api.get(`/measuringPoint/${measuringPointId}`);
