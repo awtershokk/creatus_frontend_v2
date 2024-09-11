@@ -246,7 +246,11 @@ const UserPage: React.FC = () => {
             unknown: 'bg-gray-500',
         };
 
-        const getStatusColor = (status: boolean | null) => status === true ? statusColors.online : status === false ? statusColors.offline : statusColors.unknown;
+        const getStatusColor = (status: boolean | null) => status === true
+            ? statusColors.online
+            : status === false
+                ? statusColors.offline
+                : statusColors.unknown;
 
         const measuringPointIndicators = measuringPoints.map((point, index) => (
             <div key={index} className="inline-flex justify-center items-center">
@@ -254,18 +258,21 @@ const UserPage: React.FC = () => {
             </div>
         ));
 
-        let backgroundColor = 'bg-white';
+        let backgroundColor = 'bg-gray-200'; // Default background color
 
         if (tempDev !== null) {
             const deviation = parseFloat(tempDev.toString());
             if (!isNaN(deviation)) {
                 const intensity = Math.round(Math.abs(deviation) / 10 * 255);
-                backgroundColor = deviation > 0 ? `bg-red-${Math.min(500, 255 - intensity)}` : `bg-blue-${Math.min(500, 255 - intensity)}`;
+                backgroundColor = deviation > 0
+                    ? `bg-red-${Math.min(500, 500 - intensity)}`
+                    : `bg-blue-${Math.min(500, 500 - intensity)}`;
             }
         }
 
         return { backgroundColor, measuringPointIndicators };
     }, []);
+
 
     const currentCircuit = useMemo(() => info[currentCircuitIndex], [info, currentCircuitIndex]);
     const officeName = "Офис ООО 'Кретус'";
