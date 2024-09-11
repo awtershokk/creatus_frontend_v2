@@ -23,7 +23,7 @@ export const fetchThermalCircuit = async (thermalCircuitId: number) => {
 
 export const deleteThermalCircuit = async (thermalCircuitId: number) => {
     try {
-        const response = await api.delete(`/thermalCircuit/${thermalCircuitId}`);
+        const response = await api.delete(`/thermalCircuit/1/${thermalCircuitId}`);
     }
     catch (error) {
         throw error;

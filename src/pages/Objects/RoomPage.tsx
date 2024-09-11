@@ -34,7 +34,6 @@ const RoomPage = () => {
     const [isDeleteMeasurePointModalOpen, setIsDeleteMeasurePointModalOpen] = useState(false);
     const [deleteMeasuringPointId, setDeleteMeasuringPointId] = useState<number | null>(null);
 
-    useEffect(() => {
         const fetchData = async () => {
             try {
                 const roomData = await fetchRoom(roomId);
@@ -62,6 +61,7 @@ const RoomPage = () => {
             }
         };
 
+    useEffect(() => {
         fetchData();
     }, [roomId]);
 

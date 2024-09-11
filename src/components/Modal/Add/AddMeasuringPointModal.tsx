@@ -36,18 +36,8 @@ const AddMeasuringPointModal: React.FC<AddMeasurePointModalProps> = ({ onClose, 
         setErrors({});
 
         const newErrors: { [key: string]: string } = {};
-
-
-        if (!measureName.trim()) newErrors.measureName = 'Название не может быть пустым.';
-        if (!height.trim() || parseFloat(height) <= 0) newErrors.height = 'Высота должна быть больше нуля.';
-        if (!tempMin.trim() || isNaN(Number(tempMin))) newErrors.tempMin = 'Введите корректную минимальную температуру.';
-        if (!tempMax.trim() || isNaN(Number(tempMax))) newErrors.tempMax = 'Введите корректную максимальную температуру.';
-        if (!humidityMin.trim() || isNaN(Number(humidityMin))) newErrors.humidityMin = 'Введите корректную минимальную влажность.';
-        if (!humidityMax.trim() || isNaN(Number(humidityMax))) newErrors.humidityMax = 'Введите корректную максимальную влажность.';
-        if (!tempLocationCoeff.trim() || isNaN(Number(tempLocationCoeff))) newErrors.tempLocationCoeff = 'Введите корректный коэффициент расположения.';
-        if (!tempHeightCoeff.trim() || isNaN(Number(tempHeightCoeff))) newErrors.tempHeightCoeff = 'Введите корректный коэффициент высоты.';
-        if (!tempCalibCoeff.trim() || isNaN(Number(tempCalibCoeff))) newErrors.tempCalibCoeff = 'Введите корректный коллибровочный коэффициент температуры.';
-        if (!humidityCalibCoeff.trim() || isNaN(Number(humidityCalibCoeff))) newErrors.humidityCalibCoeff = 'Введите корректный коллибровочный коэффициент высоты.';
+        if (!formData.measureName.trim()) newErrors.measureName = 'Название не может быть пустым.';
+        if (!formData.height.trim() || parseFloat(formData.height) <= 0) newErrors.height = 'Высота должна быть больше нуля.';
 
         if (Object.keys(newErrors).length > 0) {
             setErrors(newErrors);
