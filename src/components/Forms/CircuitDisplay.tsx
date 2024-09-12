@@ -127,7 +127,7 @@ const CircuitDisplay: React.FC<CircuitDisplayProps> = ({ sections, selectedRoomI
                                                 <p className="text-black text-xs">T: {room.temp !== null ? room.temp : 'N/A'}°C</p>
                                                 <p className="text-black text-xs">H: {room.hum !== null ? room.hum : 'N/A'}%</p>
                                                 <p className="text-black text-xs">
-                                                    ТИ: {measuringPointIndicators}
+                                                    ТИ: {renderMeasuringPointIndicators(room.measuringPoints)}
                                                 </p>
                                             </div>
                                         );
