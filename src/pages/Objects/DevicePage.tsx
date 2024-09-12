@@ -6,7 +6,7 @@ import { Device } from "../../models/Device.tsx";
 import { fetchDevices } from "../../api/deviceApi.ts";
 import DeleteDeviceModal from "../../components/Modal/Delete/DeleteDeviceModal.tsx";
 import UnbindDeviceModal from "../../components/Modal/Bind/UnbindDeviceModal.tsx";
-import BindDeviceModal from "../../components/Modal/Bind/BindDeviceModal.tsx";
+import BindMeasuringPointModal from "../../components/Modal/Bind/BindMeasuringPointModal.tsx";
 import EditDeviceModal from "../../components/Modal/Edit/EditDeviceModal.tsx";
 
 const DevicePage = () => {
@@ -156,7 +156,7 @@ const DevicePage = () => {
                 />
             )}
             {isBindModalOpen && selectedDevice && (
-                <BindDeviceModal
+                <BindMeasuringPointModal
                     deviceId={selectedDevice.id}
                     deviceLabel={selectedDevice.label}
                     measuringPointLabel={selectedDevice.measuringPointLabel || 'Нет'}

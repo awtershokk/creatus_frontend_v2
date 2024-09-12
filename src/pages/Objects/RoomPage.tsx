@@ -202,7 +202,10 @@ const RoomPage = () => {
                 {isDeleteMeasurePointModalOpen && deleteMeasuringPointId !== null && (
                     <DeleteMeasuringPointModal
                         measuringPointID={deleteMeasuringPointId}
-                        onClose={closeDeleteMeasurePointModal}
+                        onClose={() => {
+                            fetchData()
+                            closeDeleteMeasurePointModal()
+                        }}
                     />
                 )}
             </div>

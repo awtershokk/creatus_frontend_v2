@@ -237,7 +237,7 @@ const UserPage: React.FC = () => {
 
                 backgroundColor = deviation > 0
                     ? `bg-red-${Math.min(500, roundedIntensity)}`
-                    : `bg-blue-${Math.min(500, roundedIntensity)}`;
+                    : `bg-blue-${Math.min(500, roundedIntensity)}`
             }
         }
 
@@ -245,8 +245,6 @@ const UserPage: React.FC = () => {
     }, []);
 
     const currentCircuit = useMemo(() => info[currentCircuitIndex], [info, currentCircuitIndex]);
-
-
     const currentCircuitLabel = currentCircuit?.label || "No Circuit Available";
     const nonEditableFields = useMemo(() => roomDataFields.map(field => field.title), [roomDataFields]);
 
