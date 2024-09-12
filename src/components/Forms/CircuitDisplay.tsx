@@ -93,7 +93,7 @@ const CircuitDisplay: React.FC<CircuitDisplayProps> = ({ sections, selectedRoomI
             {sections.map((section, sectionIndex) => (
                 <div key={sectionIndex} className="inline-block text-left p-1.5 border-2 border-black bg-gray-400">
                     <div className="p-1 text-center">
-                        <p className="text-base text-white">
+                        <p className="text-base  text-white">
                             <b>{section.label}</b>
                         </p>
                     </div>

@@ -1,18 +1,19 @@
 import React, { useEffect, useState, useCallback, useMemo } from 'react';
-
 import UserHeader from "../../components/Menu/UserHeader.tsx";
 import ObjectTable from "../../components/Tables/ObjectTable.tsx";
 import TabsButton from "../../components/Buttons/TabsButton.tsx";
 import CircuitDisplay from "../../components/Forms/CircuitDisplay.tsx";
-import moment from 'moment';
 import ItemTable from "../../components/Tables/ItemTable.tsx";
 import TableContainer from "../../layouts/TableContainer.tsx";
-import {Measurement} from "../../models/Measurements.ts";
+import { Measurement } from "../../models/Measurements.ts";
 import DownloadButton from "../../components/Buttons/DownloadButton.tsx";
 import MeasurementsFilters from "../../components/Filters/MeasurementsFilters.tsx";
 import GraphPage from "../../components/Graph/GraphPage.tsx";
 import Label from "../../components/Text/Label.tsx";
-import api from "../../api/api.ts";
+
+import { fetchRoomUser } from "../../api/roomApi.ts";
+import { fetchMeasurementsRoom } from "../../api/measurementsApi.ts";
+import {fetchPublicInfo} from "../../api/buildingApi.ts";
 
 interface MeasuringPoint {
     deviceActive: boolean | null;
@@ -47,68 +48,51 @@ interface ThermalCircuit {
     S: Section[];
 }
 
-
 const UserPage: React.FC = () => {
     const [info, setInfo] = useState<ThermalCircuit[]>([]);
     const [currentCircuitIndex, setCurrentCircuitIndex] = useState(0);
+    const [officeName, setOfficeName] = useState()
     const [selectedRoomId, setSelectedRoomId] = useState<string | null>(null);
     const [tabIndex, setTabIndex] = useState(0);
-    const [roomDataFields, setRoomDataFields] = useState<{ id: number; title: string; value: string }[]>([]);
+    const [roomDataFields, setRoomDataFields] = useState([]);
 
     const [recordings, setRecordings] = useState<Array<Record<string, any>>>([]);
     const [totalRecordings, setTotalRecordings] = useState<number>(0);
-
-
-
     const [filteredRecordings, setFilteredRecordings] = useState<Measurement[]>([]);
     const [dateRange, setDateRange] = useState<{ start: Date | null; end: Date | null }>({ start: null, end: null });
     const [timeRange, setTimeRange] = useState<{ start: Date | null; end: Date | null }>({ start: null, end: null });
     const [temperatureDeviation, setTemperatureDeviation] = useState<{ min: number | null; max: number | null }>({ min: null, max: null });
     const [humidityDeviation, setHumidityDeviation] = useState<{ min: number | null; max: number | null }>({ min: null, max: null });
 
-    // Fetch circuits data
+
     useEffect(() => {
         const fetchInfo = async () => {
             try {
-                const response = await fetch('http://localhost:5001/api/public/5');
-                const data = await response.json();
-                setInfo(data.data.TC || []);
+                const data = await fetchPublicInfo(5);
+                setOfficeName(data.officeName);
+                setInfo(data.thermalCircuits);
             } catch (error) {
-                console.error('Error fetching data from the server', error);
+                console.error('Ошибка при получении данных:', error);
             }
         };
         fetchInfo();
     }, []);
 
-
     useEffect(() => {
         if (tabIndex === 0 && selectedRoomId) {
             const fetchRoomData = async () => {
                 try {
-                    const response = await fetch(`http://localhost:5001/api/room/${selectedRoomId}`);
-                    const data = await response.json();
-                    const room = data.data;
-
-                    setRoomDataFields([
-                        { id: 1, title: "Название", value: room.label },
-                        { id: 2, title: "Секция", value: room.section?.label || "N/A" },
-                        { id: 3, title: "Тепловой контур", value: room.thermalCircuit?.label || "N/A" },
-                        { id: 4, title: "Этаж", value: room.floor?.toString() || "N/A" },
-                        { id: 5, title: "Площадь", value: room.square !== null ? `${room.square} м²` : "N/A" },
-                        { id: 6, title: "Ориентация окон", value: room.windowOrientation?.label || "N/A" },
-                        { id: 7, title: "Угловое", value: room.angular !== null ? (room.angular ? "Да" : "Нет") : "N/A" },
-                        { id: 8, title: "Минимальная температура", value: room.temperatureMinimum !== null ? `${room.temperatureMinimum}°C` : "N/A" },
-                        { id: 9, title: "Максимальная температура", value: room.temperatureMaximum !== null ? `${room.temperatureMaximum}°C` : "N/A" },
-                        { id: 10, title: "Минимальная влажность", value: room.humidityMinimum !== null ? `${room.humidityMinimum}%` : "N/A" },
-                        { id: 11, title: "Максимальная влажность", value: room.humidityMaximum !== null ? `${room.humidityMaximum}%` : "N/A" },
-                    ]);
+                    const transformedRoomData = await fetchRoomUser(selectedRoomId);
+                    setRoomDataFields(transformedRoomData);
                 } catch (error) {
                     console.error('Ошибка при получении данных о комнате', error);
                 }
             };
+
             fetchRoomData();
         }
     }, [tabIndex, selectedRoomId]);
+
     const handleFilterChange = (filters: {
         dateRange?: { start: Date | null; end: Date | null },
         timeRange?: { start: Date | null; end: Date | null },
@@ -184,6 +168,7 @@ const UserPage: React.FC = () => {
 
         setFilteredRecordings(filtered);
     };
+
     const headers = {
         'Дата': 'date',
         'Время': 'time',
@@ -193,25 +178,10 @@ const UserPage: React.FC = () => {
         'Отклонение h': 'deviation_humidity',
     };
 
-
     useEffect(() => {
         const fetchRecordings = async () => {
             try {
-                const response = await fetch(`http://localhost:5001/api/room/all/Measurements/${selectedRoomId}`);
-                if (!response.ok) {
-                    throw new Error('Ошибка при получении данных с сервера');
-                }
-                const data = await response.json();
-
-                const selectedData = data.data.map((record: any) => ({
-                    date: moment(record.createdAt, "YYYY-MM-DD HH:mm:ss.SSS Z").format("DD.MM.YYYY"),
-                    time: moment(record.createdAt, "YYYY-MM-DD HH:mm:ss.SSS Z").format("HH:mm"),
-                    calculated_temperature: record.temperature,
-                    calculated_humidity: record.humidity,
-                    deviation_temperature: record.temperatureDeviation,
-                    deviation_humidity: record.humidityDeviation
-                }));
-
+                const selectedData = await fetchMeasurementsRoom(selectedRoomId);
                 setRecordings(selectedData);
                 setFilteredRecordings(selectedData);
                 setTotalRecordings(selectedData.length);
@@ -224,7 +194,6 @@ const UserPage: React.FC = () => {
             fetchRecordings();
         }
     }, [selectedRoomId]);
-
 
     const handleNextClick = useCallback(() => {
         setCurrentCircuitIndex(prevIndex => (prevIndex < info.length - 1 ? prevIndex + 1 : 0));
@@ -258,7 +227,7 @@ const UserPage: React.FC = () => {
             </div>
         ));
 
-        let backgroundColor = 'bg-gray-200'; // Default background color
+        let backgroundColor = 'bg-gray-200';
 
         if (tempDev !== null) {
             const deviation = parseFloat(tempDev.toString());
@@ -272,13 +241,12 @@ const UserPage: React.FC = () => {
             }
         }
 
-
         return { backgroundColor, measuringPointIndicators };
     }, []);
 
-
     const currentCircuit = useMemo(() => info[currentCircuitIndex], [info, currentCircuitIndex]);
-    const officeName = "Офис ООО 'Кретус'";
+
+
     const currentCircuitLabel = currentCircuit?.label || "No Circuit Available";
     const nonEditableFields = useMemo(() => roomDataFields.map(field => field.title), [roomDataFields]);
 
@@ -308,17 +276,16 @@ const UserPage: React.FC = () => {
                             <ObjectTable
                                 title="Информация о помещении"
                                 data={roomDataFields}
-
                                 ButtonComponent={'EditButton'}
                                 nonEditableFields={nonEditableFields}
                             />
                         )}
                         {tabIndex === 1 && (
                             <div>
-                                <DownloadButton/>
+                                <DownloadButton />
                                 <div className="mt-4 flex items-center justify-between">
                                     <div className="flex items-center">
-                                        <Label text="Рассчитанные значения"/>
+                                        <Label text="Рассчитанные значения" />
                                         <div className="ml-4 mt-1 text-sm text-gray-600">
                                             Всего значений: {totalRecordings}, Отображаемых
                                             значений: {filteredRecordings.length}
@@ -326,7 +293,7 @@ const UserPage: React.FC = () => {
                                     </div>
                                 </div>
 
-                                    <MeasurementsFilters
+                                <MeasurementsFilters
                                     dateRange={dateRange}
                                     timeRange={timeRange}
                                     temperatureDeviation={temperatureDeviation}
@@ -342,7 +309,7 @@ const UserPage: React.FC = () => {
                             </div>
                         )}
                         {tabIndex === 2 && (
-                            <GraphPage selectedRoomId={selectedRoomId}/>
+                            <GraphPage selectedRoomId={selectedRoomId} />
                         )}
                     </div>
                 </div>
