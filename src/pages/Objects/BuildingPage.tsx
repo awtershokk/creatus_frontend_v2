@@ -21,6 +21,7 @@ import AddThermalCircuitModal from "../../components/Modal/Add/AddThermalCircuit
 
 const BuildingPage = () => {
     const [building, setBuilding] = useState<Array<{ id: number, title: string, value: string | number }>>([]);
+
     const [responsiblePersons, setResponsiblePersons] = useState<ResponsiblePerson[]>([]);
     const [sections, setSections] = useState<Array<{ id: number, title: string, value: string, value2: string }>>([]);
     const [thermalCircuits, setThermalCircuits] = useState<Array<{ id: number, title: string, value: string, value2: string }>>([]);
@@ -39,7 +40,7 @@ const BuildingPage = () => {
         try {
             const buildingData = await fetchBuilding(buildingId);
             setBuilding(buildingData);
-
+            console.log(building)
             const labelItem = buildingData.find(item => item.title === 'Наименование');
             localStorage.setItem('building', JSON.stringify({ label: labelItem?.value, icon: 'FaRegBuilding' }));
 

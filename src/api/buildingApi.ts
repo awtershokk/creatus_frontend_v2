@@ -1,6 +1,7 @@
 import api from './api';
 import { Building, transformBuildingData } from '../models/Building';
 import {ResponsiblePerson} from "../models/ResponsiblePerson.ts";
+import {BuildingInfo, BuildingResponse} from "../models/Public.ts";
 
 export const fetchBuilding = async (buildingId: number) => {
     try {
@@ -66,6 +67,27 @@ export const fetchListHwsConnectionDiagrams = async () => {
         const data = response.data;
         return data;
     } catch (error) {
+        throw error;
+    }
+};
+
+
+
+export const fetchPublicInfo = async (id: number): Promise<BuildingInfo> => {
+    try {
+
+        const response = await api.get(`/public/${id}`);
+
+        const data: BuildingResponse = response.data;
+        const officeName = data.data.label;
+        const thermalCircuits = data.data.TC || [];
+
+        return {
+            officeName,
+            thermalCircuits
+        };
+    } catch (error) {
+        console.error('Ошибка при запросе данных:', error);
         throw error;
     }
 };

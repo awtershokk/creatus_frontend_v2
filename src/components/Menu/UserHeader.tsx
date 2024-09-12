@@ -132,14 +132,13 @@ const UserHeader: React.FC<UserHeaderProps> = ({ officeName, currentCircuitLabel
             </nav>
 
             {/* Вторая шапка */}
-            <div className="bg-gray-900 text-white py-2 px-6 border-b border-gray-700 flex items-center justify-between">
+            <div
+                className="bg-gray-900 text-white py-2 px-6 border-b border-gray-700 flex items-center justify-between">
                 <button className="p-2" onClick={onPrevClick}>
                     <FaChevronLeft className="text-xl"/>
                 </button>
-                <div className="flex text-center">
-                    <p className="text-lg mr-5">{officeName}</p>
-                    <p className="text-lg">{currentCircuitLabel}</p>
-                </div>
+                <p className="text-lg mr-5">{officeName}</p>
+                <p className="text-lg">{currentCircuitLabel}</p>
                 <button className="p-2" onClick={onNextClick}>
                     <FaChevronRight className="text-xl"/>
                 </button>
