@@ -258,7 +258,7 @@ const UserPage: React.FC = () => {
             </div>
         ));
 
-        let backgroundColor = 'bg-gray-200'; // Default background color
+        let backgroundColor = 'bg-gray-200';
 
         if (tempDev !== null) {
             const deviation = parseFloat(tempDev.toString());
@@ -268,17 +268,18 @@ const UserPage: React.FC = () => {
 
                 backgroundColor = deviation > 0
                     ? `bg-red-${Math.min(500, roundedIntensity)}`
-                    : `bg-blue-${Math.min(500, roundedIntensity)}`;
+                    : `bg-blue-${Math.min(500, roundedIntensity)}`
             }
         }
 
+        console.log(backgroundColor)
 
         return { backgroundColor, measuringPointIndicators };
     }, []);
 
 
     const currentCircuit = useMemo(() => info[currentCircuitIndex], [info, currentCircuitIndex]);
-    const officeName = "Офис ООО 'Кретус'";
+    const officeName = "Информация о здании";
     const currentCircuitLabel = currentCircuit?.label || "No Circuit Available";
     const nonEditableFields = useMemo(() => roomDataFields.map(field => field.title), [roomDataFields]);
 

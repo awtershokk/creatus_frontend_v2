@@ -17,6 +17,7 @@ import BlueLink from "../../components/Text/BlueLink.tsx";
 import {fetchDevice} from "../../api/deviceApi.ts";
 import {Device} from "../../models/Device.tsx";
 import DefaultButton from "../../components/Buttons/DefaultButton.tsx";
+import UnbindDeviceModal from "../../components/Modal/Bind/UnbindDeviceModal.tsx";
 
 const MeasuringPointPage = () => {
     const { measuringPointId } = useParams();
@@ -35,31 +36,37 @@ const MeasuringPointPage = () => {
 
     const [deviceId, setDeviceId] = useState<number>(null)
 
+    const [isUnbindModalOpen, setIsUnbindModalOpen] = useState(false);
+    const [modalProps, setModalProps] = useState<{ deviceId: any; deviceLabel: string; measuringPointLabel: string }>({
+        deviceId: null,
+        deviceLabel: '',
+        measuringPointLabel: '',
+    });
+
+    const getData = async () => {
+        try {
+            const measuringPointData = await fetchMeasuringPoint(measuringPointId);
+            setMeasuringPoint(measuringPointData);
+            const labelItem = measuringPointData.find(item => item.title === 'Наименование');
+            localStorage.setItem('measuringPoint', JSON.stringify({ label: labelItem?.value, icon: 'FaMapMarkerAlt', id: labelItem?.id }));
+
+            const measurementsData = await fetchMeasurementsMeasuringPoint(measuringPointId);
+            setMeasurements(measurementsData);
+            setFilteredMeasurements(measurementsData);
+            setTotalMeasurements(measurementsData.length);
+            setDisplayedMeasurements(measurementsData.length);
+
+            const deviceId = await fetchDeviceId(measuringPointId);
+            setDeviceId(deviceId)
+            const deviceData = await fetchDevice(deviceId)
+            setDevice(deviceData);
+
+        } catch (error) {
+            console.error('Ошибка получения данных:', error);
+        }
+    };
+
     useEffect(() => {
-        const getData = async () => {
-            try {
-                const measuringPointData = await fetchMeasuringPoint(measuringPointId);
-                setMeasuringPoint(measuringPointData);
-                const labelItem = measuringPointData.find(item => item.title === 'Наименование');
-                localStorage.setItem('measuringPoint', JSON.stringify({ label: labelItem?.value, icon: 'FaMapMarkerAlt', id: labelItem?.id }));
-
-                const measurementsData = await fetchMeasurementsMeasuringPoint(measuringPointId);
-                setMeasurements(measurementsData);
-                setFilteredMeasurements(measurementsData);
-                setTotalMeasurements(measurementsData.length);
-                setDisplayedMeasurements(measurementsData.length);
-
-                const deviceId = await fetchDeviceId(measuringPointId);
-                setDeviceId(deviceId)
-                const deviceData = await fetchDevice(deviceId)
-                setDevice(deviceData);
-
-
-            } catch (error) {
-                console.error('Ошибка получения данных:', error);
-            }
-        };
-
         getData();
     }, [measuringPointId]);
 
@@ -144,6 +151,34 @@ const MeasuringPointPage = () => {
         setFilteredMeasurements(filtered);
     };
 
+    const getLabelFromData = (data: Array<{ id: number, title: string, value: string | number }>, label: string) => {
+        const foundItem = data.find(item => item.title === label);
+        return foundItem ? foundItem.value : '';
+    };
+
+    const handleUnbindClick = () => {
+        const deviceLabel = getLabelFromData(device, 'Наименование');
+        const measuringPointLabel = getLabelFromData(measuringPoint, 'Наименование');
+
+        if (deviceId) {
+            setIsUnbindModalOpen(true);
+            setModalProps({
+                deviceId,
+                deviceLabel,
+                measuringPointLabel,
+            });
+        } else {
+            // В будущем тут будет другая модалка
+            console.log("Открыть другую модалку");
+        }
+    };
+
+
+    const handleCloseModal = () => {
+        setIsUnbindModalOpen(false);
+    };
+
+
     const headers = {
         'Дата': 'date',
         'Время': 'time',
@@ -167,14 +202,17 @@ const MeasuringPointPage = () => {
                         nonEditableFields={['Место установки']}
                     />
                 </div>
-                <div className="w-full flex flex-col items-end mt-8 mr-8">
-                    <ObjectTable
-                        title="Информация о датчике"
-                        data={device}
-                        ButtonComponent={({ onClick }) => <DefaultButton onClick={onClick} deviceId={deviceId} />}
-                        nonEditableFields={['Место установки']}
-                    />
-                </div>
+                {/*<div className="w-full flex flex-col items-end mt-8 mr-8">*/}
+                {/*    <ObjectTable*/}
+                {/*        title="Информация о датчике"*/}
+                {/*        data={device}*/}
+                {/*        ButtonComponent={() => (*/}
+                {/*            <DefaultButton onClick={handleUnbindClick} deviceId={deviceId} />*/}
+
+                {/*        )}*/}
+                {/*        nonEditableFields={['Место установки']}*/}
+                {/*    />*/}
+                {/*</div>*/}
             </div>
             <div className="mt-6 mb-4">
                 <div className="mt-4 flex items-center justify-between">
@@ -200,6 +238,22 @@ const MeasuringPointPage = () => {
                     />
                 </TableContainer>
             </div>
+            {isUnbindModalOpen && (
+                <UnbindDeviceModal
+                    deviceId={modalProps.deviceId}
+                    deviceLabel={modalProps.deviceLabel}
+                    measuringPointLabel={modalProps.measuringPointLabel}
+                    onClose={() => setIsUnbindModalOpen(false)}
+                    onSuccess={() => {
+                        setDevice([]);
+                        getData();
+                        setIsUnbindModalOpen(false);
+                    }}
+
+                />
+            )}
+
+
         </DefaultLayout>
     );
 };

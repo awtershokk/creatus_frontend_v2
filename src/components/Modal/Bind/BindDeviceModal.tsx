@@ -1,42 +1,43 @@
 import React, { useState, useEffect } from 'react';
 import ModalTemplate from '../ModalTemplate.tsx';
-import {bindDeviceFromMP} from '../../../api/deviceApi.ts';
-import {fetchMeasuringPointsWithoutDevice} from "../../../api/measuringPointApi.ts";
-
+import { bindDeviceFromMP } from '../../../api/deviceApi.ts';
+import { fetchDevicesWithoutMP } from '../../../api/deviceApi.ts'; // Используем существующую функцию
 
 interface BindDeviceModalProps {
-    deviceId: number;
-    deviceLabel: string;
     measuringPointId: number;
+    measuringPointLabel: string;
     onClose: () => void;
     onSuccess: () => void;
 }
 
-const BindDeviceModal: React.FC<BindDeviceModalProps> = ({ deviceId, deviceLabel, measuringPointId, onClose, onSuccess }) => {
+const BindDeviceModal: React.FC<BindDeviceModalProps> = ({ measuringPointId, measuringPointLabel, onClose, onSuccess }) => {
     const [loading, setLoading] = useState(false);
-    const [measuringPoints, setMeasuringPoints] = useState<any[]>([]);
-    const [selectedMeasuringPointId, setSelectedMeasuringPointId] = useState<number>(measuringPointId);
+    const [deviceOptions, setDeviceOptions] = useState<any[]>([]);
+    const [selectedDeviceId, setSelectedDeviceId] = useState<number | null>(null);
 
     useEffect(() => {
-        const fetchMeasuringPoints = async () => {
+        const fetchDevices = async () => {
             try {
-                const points = await fetchMeasuringPointsWithoutDevice();
-                setMeasuringPoints(points);
+                const devices = await fetchDevicesWithoutMP();
+                setDeviceOptions(devices);
             } catch (error) {
-                console.error('Ошибка при получении точек измерения:', error);
+                console.error('Ошибка при получении устройств без точки измерения:', error);
             }
         };
 
-        fetchMeasuringPoints();
+        fetchDevices();
     }, []);
 
     const handleSubmit = async () => {
+        if (selectedDeviceId === null) {
+            return;
+        }
         setLoading(true);
         try {
-            await bindDeviceFromMP(selectedMeasuringPointId, deviceId);
+            await bindDeviceFromMP(selectedDeviceId, measuringPointId);
             onSuccess();
         } catch (error) {
-            console.error(`Ошибка при привязке устройства ${deviceLabel}:`, error);
+            console.error('Ошибка при привязке устройства', error);
         } finally {
             setLoading(false);
             onClose();
@@ -45,24 +46,25 @@ const BindDeviceModal: React.FC<BindDeviceModalProps> = ({ deviceId, deviceLabel
 
     return (
         <ModalTemplate
-            headerTitle="Подтвердите привязку"
+            headerTitle="Подтвердите привязку устройства"
             buttonLabel="Привязать"
             onClose={onClose}
             onSubmit={handleSubmit}
             loading={loading}
         >
             <p className="text-black">
-                Привязка датчика <b>{deviceLabel}</b> к точке измерения?
+                Привязка устройства к точке измерения <b>{measuringPointLabel}</b>
             </p>
-            <p className="text-black">Выбор точки измерения:</p>
+            <p className="text-black">Выбор устройства:</p>
             <select
-                value={selectedMeasuringPointId}
-                onChange={(e) => setSelectedMeasuringPointId(Number(e.target.value))}
+                value={selectedDeviceId ?? ''}
+                onChange={(e) => setSelectedDeviceId(Number(e.target.value))}
                 className="w-full p-2 border border-gray-300 rounded-md text-black focus:outline-none focus:ring-2 focus:ring-gray-400 bg-white"
             >
-                {measuringPoints.map(point => (
-                    <option key={point.id} value={point.id}>
-                        {point.label} ({point.roomLabel})
+                <option value="">Выберите устройство...</option>
+                {deviceOptions.map(device => (
+                    <option key={device.id} value={device.id}>
+                        {device.label}
                     </option>
                 ))}
             </select>
