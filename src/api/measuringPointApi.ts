@@ -61,10 +61,9 @@ export const createMeasuringPoint = async (roomId: number, data: any) => {
     }
 };
 
-
 export const fetchDeviceId = async (measuringPointId: number) => {
     try {
-        const { data: { data: { device: {id} } } } = await api.get(`/measuringPoint/${measuringPointId}`);
+        const { data: { data: { device: {id, label} } } } = await api.get(`/measuringPoint/${measuringPointId}`);
         return id;
     } catch (error) {
         throw error;

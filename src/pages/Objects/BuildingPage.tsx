@@ -190,7 +190,7 @@ const BuildingPage = () => {
                             tableTitle="Тепловые контуры"
                             ButtonComponent={() => <AddButton onClick={handleAddThermalCircuitClick} />}
                             LinkComponent={BlueLink}
-                            onDelete={handleDeleteThermalCircuitClick} // передаем ID конкретного теплового контура
+                            onDelete={handleDeleteThermalCircuitClick}
                         />
                     </div>
                 </div>
@@ -244,14 +244,20 @@ const BuildingPage = () => {
             {modalThermalCircuitId !== null && (
                 <DeleteThermalCircuitModalManager
                     thermalCircuitId={modalThermalCircuitId}
-                    onClose={handleModalClose}
+                    onClose={() => {
+                        getData()
+                        handleModalClose()
+                    }}
                 />
             )}
 
             {modalSectionId !== null && (
                 <DeleteSectionModalManager
                     SectionId={modalSectionId}
-                    onClose={handleModalClose}
+                    onClose={() => {
+                        getData()
+                        handleModalClose()
+                    }}
                 />
             )}
         </DefaultLayout>

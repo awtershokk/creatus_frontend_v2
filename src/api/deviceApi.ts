@@ -6,6 +6,7 @@ import {
     transformDeviceDataForSettingMode
 } from "../models/Device";
 import {Section, transformSectionData} from "../models/Section.ts";
+import {ResponsiblePerson} from "../models/ResponsiblePerson.ts";
 
 export const fetchDevices = async (
     handleEditDeviceClick: (item: Device) => void = () => {},
@@ -40,6 +41,22 @@ export const fetchDevice = async (deviceId: number) => {
         const device: Device = response.data.data[0];
 
         return transformDeviceDataForMP(device);
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const fetchDevicesWithoutMP = async (): Promise<Device[]> => {
+    try {
+        const response = await api.get(`/device/without/MP`);
+        const data = response.data.data;
+
+        const transformedData: Device[] = data.map((item: any) => ({
+            id: item.id,
+            label: item.label
+        }));
+
+        return transformedData;
     } catch (error) {
         throw error;
     }
