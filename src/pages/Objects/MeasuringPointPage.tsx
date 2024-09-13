@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import DefaultLayout from "../../layouts/DefaultLayout.tsx";
 import Label from "../../components/Text/Label.tsx";
 import EditButton from "../../components/Buttons/EditButton.tsx";
@@ -18,10 +18,15 @@ import {fetchDevice} from "../../api/deviceApi.ts";
 import {Device} from "../../models/Device.tsx";
 import DefaultButton from "../../components/Buttons/DefaultButton.tsx";
 import UnbindDeviceModal from "../../components/Modal/Bind/UnbindDeviceModal.tsx";
+import LoadingSpinner from "../../components/Menu/LoadingSpinner.tsx";
 
 const MeasuringPointPage = () => {
-    const { measuringPointId } = useParams();
-    const [measuringPoint, setMeasuringPoint] = useState<Array<{ id: number, title: string, value: string | number }>>([]);
+    const {measuringPointId} = useParams();
+    const [measuringPoint, setMeasuringPoint] = useState<Array<{
+        id: number,
+        title: string,
+        value: string | number
+    }>>([]);
     const [measurements, setMeasurements] = useState<Measurement[]>([]);
     const [device, setDevice] = useState<Array<{ id: number, title: string, value: string | number }>>([]);
     const [filteredMeasurements, setFilteredMeasurements] = useState<Measurement[]>([]);
@@ -29,10 +34,16 @@ const MeasuringPointPage = () => {
     const [displayedMeasurements, setDisplayedMeasurements] = useState<number>(0);
 
     // Состояния для фильтров
-    const [dateRange, setDateRange] = useState<{ start: Date | null; end: Date | null }>({ start: null, end: null });
-    const [timeRange, setTimeRange] = useState<{ start: Date | null; end: Date | null }>({ start: null, end: null });
-    const [temperatureDeviation, setTemperatureDeviation] = useState<{ min: number | null; max: number | null }>({ min: null, max: null });
-    const [humidityDeviation, setHumidityDeviation] = useState<{ min: number | null; max: number | null }>({ min: null, max: null });
+    const [dateRange, setDateRange] = useState<{ start: Date | null; end: Date | null }>({start: null, end: null});
+    const [timeRange, setTimeRange] = useState<{ start: Date | null; end: Date | null }>({start: null, end: null});
+    const [temperatureDeviation, setTemperatureDeviation] = useState<{
+        min: number | null;
+        max: number | null
+    }>({min: null, max: null});
+    const [humidityDeviation, setHumidityDeviation] = useState<{ min: number | null; max: number | null }>({
+        min: null,
+        max: null
+    });
 
     const [deviceId, setDeviceId] = useState<number>(null)
 
@@ -43,12 +54,18 @@ const MeasuringPointPage = () => {
         measuringPointLabel: '',
     });
 
+    const [isLoading, setIsLoading] = useState(true);
+
     const getData = async () => {
         try {
             const measuringPointData = await fetchMeasuringPoint(measuringPointId);
             setMeasuringPoint(measuringPointData);
             const labelItem = measuringPointData.find(item => item.title === 'Наименование');
-            localStorage.setItem('measuringPoint', JSON.stringify({ label: labelItem?.value, icon: 'FaMapMarkerAlt', id: labelItem?.id }));
+            localStorage.setItem('measuringPoint', JSON.stringify({
+                label: labelItem?.value,
+                icon: 'FaMapMarkerAlt',
+                id: labelItem?.id
+            }));
 
             const measurementsData = await fetchMeasurementsMeasuringPoint(measuringPointId);
             setMeasurements(measurementsData);
@@ -56,10 +73,12 @@ const MeasuringPointPage = () => {
             setTotalMeasurements(measurementsData.length);
             setDisplayedMeasurements(measurementsData.length);
 
-            const deviceId = await fetchDeviceId(measuringPointId);
-            setDeviceId(deviceId)
-            const deviceData = await fetchDevice(deviceId)
-            setDevice(deviceData);
+            // const deviceId = await fetchDeviceId(measuringPointId);
+            // setDeviceId(deviceId)
+            // const deviceData = await fetchDevice(deviceId)
+            // setDevice(deviceData);
+
+            setIsLoading(false);
 
         } catch (error) {
             console.error('Ошибка получения данных:', error);
@@ -192,38 +211,42 @@ const MeasuringPointPage = () => {
 
     return (
         <DefaultLayout>
-            <div className="flex justify-between">
-                <div className="w-1/2">
-                    <Label text="Информация о точке измерения"/>
-                    <ObjectTable
-                        title="Свойства точки измерения"
-                        data={measuringPoint}
-                        ButtonComponent={EditButton}
-                        nonEditableFields={['Место установки']}
-                    />
-                </div>
-                {/*<div className="w-full flex flex-col items-end mt-8 mr-8">*/}
-                {/*    <ObjectTable*/}
-                {/*        title="Информация о датчике"*/}
-                {/*        data={device}*/}
-                {/*        ButtonComponent={() => (*/}
-                {/*            <DefaultButton onClick={handleUnbindClick} deviceId={deviceId} />*/}
+            {isLoading ? (
+                <LoadingSpinner/>
+            ) : (
+                <div className="flex justify-between">
+                    <div className="w-1/2">
+                        <Label text="Информация о точке измерения"/>
+                        <ObjectTable
+                            title="Свойства точки измерения"
+                            data={measuringPoint}
+                            ButtonComponent={EditButton}
+                            nonEditableFields={['Место установки']}
+                        />
+                    </div>
+                    {/*<div className="w-full flex flex-col items-end mt-8 mr-8">*/}
+                    {/*    <ObjectTable*/}
+                    {/*        title="Информация о датчике"*/}
+                    {/*        data={device}*/}
+                    {/*        ButtonComponent={() => (*/}
+                    {/*            <DefaultButton onClick={handleUnbindClick} deviceId={deviceId} />*/}
 
-                {/*        )}*/}
-                {/*        nonEditableFields={['Место установки']}*/}
-                {/*    />*/}
-                {/*</div>*/}
-            </div>
+                    {/*        )}*/}
+                    {/*        nonEditableFields={['Место установки']}*/}
+                    {/*    />*/}
+                    {/*</div>*/}
+                </div>
+            )}
             <div className="mt-6 mb-4">
                 <div className="mt-4 flex items-center justify-between">
-                    <div className="flex items-center ">
+                    <div className="flex items-center">
                         <Label text="Рассчитанные значения"/>
                         <div className="ml-4 mt-1 text-sm text-gray-600">
                             Всего значений: {totalMeasurements}, Отображаемых значений: {displayedMeasurements}
                         </div>
                     </div>
                 </div>
-                <DownloadButton />
+                <DownloadButton/>
                 <MeasurementsFilters
                     dateRange={dateRange}
                     timeRange={timeRange}
@@ -238,6 +261,7 @@ const MeasuringPointPage = () => {
                     />
                 </TableContainer>
             </div>
+
             {isUnbindModalOpen && (
                 <UnbindDeviceModal
                     deviceId={modalProps.deviceId}
@@ -249,13 +273,11 @@ const MeasuringPointPage = () => {
                         getData();
                         setIsUnbindModalOpen(false);
                     }}
-
                 />
-            )}
-
+            )} // Закрывающая скобка для условия isUnbindModalOpen
 
         </DefaultLayout>
     );
-};
+}
 
 export default MeasuringPointPage;

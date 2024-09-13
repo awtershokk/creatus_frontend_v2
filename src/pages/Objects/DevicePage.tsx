@@ -8,21 +8,27 @@ import DeleteDeviceModal from "../../components/Modal/Delete/DeleteDeviceModal.t
 import UnbindDeviceModal from "../../components/Modal/Bind/UnbindDeviceModal.tsx";
 import BindMeasuringPointModal from "../../components/Modal/Bind/BindMeasuringPointModal.tsx";
 import EditDeviceModal from "../../components/Modal/Edit/EditDeviceModal.tsx";
+import LoadingSpinner from "../../components/Menu/LoadingSpinner.tsx";
 
 const DevicePage = () => {
     const [devices, setDevices] = useState<Device[]>([]);
+    localStorage.setItem('devices', JSON.stringify({label: 'Датчики', icon: 'FaBug'}));
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [isUnbindModalOpen, setIsUnbindModalOpen] = useState(false);
     const [isBindModalOpen, setIsBindModalOpen] = useState(false);
     const [selectedDevice, setSelectedDevice] = useState<Device | null>(null);
 
+    const [isLoading, setIsLoading] = useState(true);
+
     useEffect(() => {
         const getData = async () => {
             try {
                 const devicesData = await fetchDevices(handleEditDeviceClick, handleDeleteDeviceClick, handleUnbindDeviceClick, handleBindDeviceClick);
                 setDevices(devicesData);
+                setIsLoading(false);
             } catch (error) {
+                setIsLoading(false);
                 console.error('Ошибка получения данных:', error);
             }
         };
@@ -66,12 +72,12 @@ const DevicePage = () => {
     };
 
     const handleUnbindDeviceClick = (deviceId: number, deviceLabel: string, measuringPointLabel: string) => {
-        setSelectedDevice({ id: deviceId, label: deviceLabel, measuringPointLabel });
+        setSelectedDevice({id: deviceId, label: deviceLabel, measuringPointLabel});
         setIsUnbindModalOpen(true);
     };
 
     const handleBindDeviceClick = (deviceId: number, deviceLabel: string) => {
-        setSelectedDevice({ id: deviceId, label: deviceLabel, measuringPointLabel: 'Нет' });
+        setSelectedDevice({id: deviceId, label: deviceLabel, measuringPointLabel: 'Нет'});
         setIsBindModalOpen(true);
     };
 
@@ -117,19 +123,23 @@ const DevicePage = () => {
 
     return (
         <DefaultLayout>
-            <div className="">
+            {isLoading ? (
+                <LoadingSpinner/>
+            ) : (
                 <div className="">
-                    <div className="flex items-center">
-                        <Label text="Датчики"/>
+                    <div className="">
+                        <div className="flex items-center mb-2">
+                            <Label text="Датчики"/>
+                        </div>
                     </div>
+                    <ItemTable
+                        data={devices}
+                        headers={headers}
+                        onEditClick={handleEditDeviceClick}
+                        onDeleteClick={handleDeleteDeviceClick}
+                    />
                 </div>
-                <ItemTable
-                    data={devices}
-                    headers={headers}
-                    onEditClick={handleEditDeviceClick}
-                    onDeleteClick={handleDeleteDeviceClick}
-                />
-            </div>
+            )}
 
             {isDeleteModalOpen && selectedDevice && (
                 <DeleteDeviceModal
@@ -148,6 +158,7 @@ const DevicePage = () => {
                     onSuccess={handleConfirmUnbind}
                 />
             )}
+
             {isEditModalOpen && selectedDevice && (
                 <EditDeviceModal
                     device={selectedDevice}
@@ -155,6 +166,7 @@ const DevicePage = () => {
                     onSave={handleSaveDevice}
                 />
             )}
+
             {isBindModalOpen && selectedDevice && (
                 <BindMeasuringPointModal
                     deviceId={selectedDevice.id}
@@ -166,6 +178,5 @@ const DevicePage = () => {
             )}
         </DefaultLayout>
     );
-};
-
+}
 export default DevicePage;

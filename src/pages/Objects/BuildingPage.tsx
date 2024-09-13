@@ -18,13 +18,19 @@ import AddSectionModal from "../../components/Modal/Add/AddSectionModal";
 import DeleteThermalCircuitModalManager from "../../components/Modal/Manager/DeleteThermalCircuitModalManager.tsx";
 import DeleteSectionModalManager from "../../components/Modal/Manager/DeleteSectionModalManager.tsx";
 import AddThermalCircuitModal from "../../components/Modal/Add/AddThermalCircuitModal.tsx";
+import LoadingSpinner from "../../components/Menu/LoadingSpinner.tsx";
 
 const BuildingPage = () => {
     const [building, setBuilding] = useState<Array<{ id: number, title: string, value: string | number }>>([]);
 
     const [responsiblePersons, setResponsiblePersons] = useState<ResponsiblePerson[]>([]);
     const [sections, setSections] = useState<Array<{ id: number, title: string, value: string, value2: string }>>([]);
-    const [thermalCircuits, setThermalCircuits] = useState<Array<{ id: number, title: string, value: string, value2: string }>>([]);
+    const [thermalCircuits, setThermalCircuits] = useState<Array<{
+        id: number,
+        title: string,
+        value: string,
+        value2: string
+    }>>([]);
 
     const [isEditBuildingModalOpen, setIsEditBuildingModalOpen] = useState(false);
     const [selectedBuilding, setSelectedBuilding] = useState<any>(null);
@@ -36,13 +42,14 @@ const BuildingPage = () => {
     const [modalSectionId, setModalSectionId] = useState<number | null>(null);
     const buildingId = 1;
 
+    const [isLoading, setIsLoading] = useState(true);
+
     const getData = async () => {
         try {
             const buildingData = await fetchBuilding(buildingId);
             setBuilding(buildingData);
-            console.log(building)
             const labelItem = buildingData.find(item => item.title === 'Наименование');
-            localStorage.setItem('building', JSON.stringify({ label: labelItem?.value, icon: 'FaRegBuilding' }));
+            localStorage.setItem('building', JSON.stringify({label: labelItem?.value, icon: 'FaRegBuilding'}));
 
             const responsiblePersonsData = await fetchResponsiblePersons(buildingId);
             setResponsiblePersons(responsiblePersonsData);
@@ -67,14 +74,18 @@ const BuildingPage = () => {
             }));
             setThermalCircuits(formattedThermalCircuits);
 
+            setIsLoading(false);
         } catch (error) {
             console.error('Ошибка получения данных:', error);
+            setIsLoading(false);
         }
     };
+
 
     useEffect(() => {
         getData();
     }, [buildingId]);
+
 
     const headers = {
         'Должность': 'position',
@@ -128,13 +139,11 @@ const BuildingPage = () => {
         setIsAddThermalCircuitModalOpen(false);
     };
 
-    // Удаление конкретной секции
     const handleDeleteSectionClick = (sectionId: number) => {
         console.log(sectionId);
         setModalSectionId(sectionId);
     };
 
-    // Удаление конкретного теплового контура
     const handleDeleteThermalCircuitClick = (thermalCircuitId: number) => {
         console.log(thermalCircuitId);
         setModalThermalCircuitId(thermalCircuitId);
@@ -153,7 +162,14 @@ const BuildingPage = () => {
         }
     };
 
-    const handleAddThermalCircuit = async (newThermalCircuit: { label: string, heatingLoad: number, wiringDiagram: string, square: number, volume: number, connectionDiagram: string }) => {
+    const handleAddThermalCircuit = async (newThermalCircuit: {
+        label: string,
+        heatingLoad: number,
+        wiringDiagram: string,
+        square: number,
+        volume: number,
+        connectionDiagram: string
+    }) => {
         try {
             await getData();
         } catch (error) {
@@ -167,101 +183,108 @@ const BuildingPage = () => {
 
     return (
         <DefaultLayout>
-            <div className="flex justify-between">
-                <div className="w-1/2">
-                    <Label text="Информация о здании"/>
-                    <ObjectTable
-                        title="Свойства здания"
-                        data={building}
-                        ButtonComponent={() => <EditButton onClick={() => handleEditButtonClick(building)} />}
-                    />
-                </div>
-                <div className="w-full flex flex-col items-end mt-8 mr-8">
-                    <ChildElementsTable
-                        infoData={sections}
-                        tableTitle="Секции"
-                        ButtonComponent={() => <AddButton onClick={handleAddSectionClick} />}
-                        LinkComponent={BlueLink}
-                        onDelete={handleDeleteSectionClick}
-                    />
-                    <div className='mt-3'>
-                        <ChildElementsTable
-                            infoData={thermalCircuits}
-                            tableTitle="Тепловые контуры"
-                            ButtonComponent={() => <AddButton onClick={handleAddThermalCircuitClick} />}
-                            LinkComponent={BlueLink}
-                            onDelete={handleDeleteThermalCircuitClick}
+            {isLoading ? (
+                <LoadingSpinner />
+            ) : (
+                <div>
+                    <div className="flex justify-between">
+                        <div className="w-1/2">
+                            <Label text="Информация о здании"/>
+                            <ObjectTable
+                                title="Свойства здания"
+                                data={building}
+                                ButtonComponent={() => <EditButton onClick={() => handleEditButtonClick(building)}/>}
+                            />
+                        </div>
+                        <div className="w-full flex flex-col items-end mt-8 mr-8">
+                            <ChildElementsTable
+                                infoData={sections}
+                                tableTitle="Секции"
+                                ButtonComponent={() => <AddButton onClick={handleAddSectionClick}/>}
+                                LinkComponent={BlueLink}
+                                onDelete={handleDeleteSectionClick}
+                            />
+                            <div className='mt-3'>
+                                <ChildElementsTable
+                                    infoData={thermalCircuits}
+                                    tableTitle="Тепловые контуры"
+                                    ButtonComponent={() => <AddButton onClick={handleAddThermalCircuitClick}/>}
+                                    LinkComponent={BlueLink}
+                                    onDelete={handleDeleteThermalCircuitClick}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                    <div className="mt-6 mb-4">
+                        <div className="mt-4 flex items-center justify-between">
+                            <div className="flex items-center ">
+                                <Label text="Ответственные лица"/>
+                                <MiniAddButton onClick={handleAddResponsiblePersonClick}/>
+                            </div>
+                        </div>
+
+                        <ItemTable
+                            data={responsiblePersons}
+                            headers={headers}
                         />
                     </div>
+
+                    {/* Модальные окна */}
+                    {isEditBuildingModalOpen && selectedBuilding && (
+                        <BuildingEditModal
+                            building={selectedBuilding}
+                            buildingId={buildingId}
+                            onClose={handleEditBuildingModalClose}
+                            onUpdate={handleUpdateBuilding}
+                            headerTitle="Редактировать здание"
+                            buttonLabel="Сохранить"
+                        />
+                    )}
+
+                    {isAddResponsiblePersonModalOpen && (
+                        <AddResponsiblePersonModal
+                            onClose={handleAddResponsiblePersonModalClose}
+                            onSubmit={() => {
+                            }}
+                        />
+                    )}
+
+                    {isAddSectionModalOpen && (
+                        <AddSectionModal
+                            onClose={handleAddSectionModalClose}
+                            onSubmit={handleAddSection}
+                        />
+                    )}
+
+                    {isAddThermalCircuitModalOpen && (
+                        <AddThermalCircuitModal
+                            onClose={handleAddThermalCircuitModalClose}
+                            onSubmit={handleAddThermalCircuit}
+                        />
+                    )}
+
+                    {modalThermalCircuitId !== null && (
+                        <DeleteThermalCircuitModalManager
+                            thermalCircuitId={modalThermalCircuitId}
+                            onClose={() => {
+                                getData()
+                                handleModalClose()
+                            }}
+                        />
+                    )}
+
+                    {modalSectionId !== null && (
+                        <DeleteSectionModalManager
+                            SectionId={modalSectionId}
+                            onClose={() => {
+                                getData()
+                                handleModalClose()
+                            }}
+                        />
+                    )}
                 </div>
-            </div>
-            <div className="mt-6 mb-4">
-                <div className="mt-4 flex items-center justify-between">
-                    <div className="flex items-center ">
-                        <Label text="Ответственные лица"/>
-                        <MiniAddButton onClick={handleAddResponsiblePersonClick}/>
-                    </div>
-                </div>
-
-                <ItemTable
-                    data={responsiblePersons}
-                    headers={headers}
-                />
-            </div>
-
-            {isEditBuildingModalOpen && selectedBuilding && (
-                <BuildingEditModal
-                    building={selectedBuilding}
-                    buildingId={buildingId}
-                    onClose={handleEditBuildingModalClose}
-                    onUpdate={handleUpdateBuilding}
-                    headerTitle="Редактировать здание"
-                    buttonLabel="Сохранить"
-                />
-            )}
-
-            {isAddResponsiblePersonModalOpen && (
-                <AddResponsiblePersonModal
-                    onClose={handleAddResponsiblePersonModalClose}
-                    onSubmit={() => {}}
-                />
-            )}
-
-            {isAddSectionModalOpen && (
-                <AddSectionModal
-                    onClose={handleAddSectionModalClose}
-                    onSubmit={handleAddSection}
-                />
-            )}
-
-            {isAddThermalCircuitModalOpen && (
-                <AddThermalCircuitModal
-                    onClose={handleAddThermalCircuitModalClose}
-                    onSubmit={handleAddThermalCircuit}
-                />
-            )}
-
-            {modalThermalCircuitId !== null && (
-                <DeleteThermalCircuitModalManager
-                    thermalCircuitId={modalThermalCircuitId}
-                    onClose={() => {
-                        getData()
-                        handleModalClose()
-                    }}
-                />
-            )}
-
-            {modalSectionId !== null && (
-                <DeleteSectionModalManager
-                    SectionId={modalSectionId}
-                    onClose={() => {
-                        getData()
-                        handleModalClose()
-                    }}
-                />
             )}
         </DefaultLayout>
     );
-};
-
+}
 export default BuildingPage;

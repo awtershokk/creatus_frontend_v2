@@ -526,7 +526,6 @@ const ControllerOptionTable = () => {
                         </label>
                     </div>
 
-
                     <div className="ecltable-container max-h-[445px] overflow-y-auto w-[600px] noscroll">
                         <div className="params-table-container">
                             <table className="table table-bordered w-full">
