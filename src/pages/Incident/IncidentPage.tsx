@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import { FaCheckCircle, FaExclamationTriangle } from 'react-icons/fa';
 import DefaultLayout from "../../layouts/DefaultLayout.tsx";
 import ItemTable from '../../components/Tables/ItemTable';
 import Label from "../../components/Text/Label.tsx";
 import BlueLink from "../../components/Text/BlueLink.tsx";
 import IncidentFilters from "../../components/Filters/IncidentFilter.tsx";
+import StatusChangeModal from "../../components/Modal/Edit/StatusChangeModal.tsx";
+import {useSelector} from "react-redux";
+import {RootState} from "../../store/store.ts";
 
 interface Incident {
     id: number;
@@ -21,6 +24,13 @@ interface Incident {
 
 const IncidentPage: React.FC = () => {
     localStorage.setItem('incidents', JSON.stringify({ label: 'Инциденты', icon: 'FaExclamationTriangle' }));
+
+    const user = useSelector((state: RootState) => state.auth.user);
+    const [selectedIncident, setSelectedIncident] = useState<Incident | null>(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [loading, setLoading] = useState(false);
+
+
 
     const [incidents, setIncidents] = useState<Incident[]>([
         {
@@ -84,10 +94,47 @@ const IncidentPage: React.FC = () => {
         },
 
     ]);
-
     const [filteredIncidents, setFilteredIncidents] = useState<Incident[]>(incidents);
 
-    // Обработчик изменения фильтров
+    useEffect(() => {
+        setFilteredIncidents(incidents);
+    }, [incidents]);
+
+    const openStatusModal = (incident: Incident) => {
+        setSelectedIncident(incident);
+        setIsModalOpen(true);
+    };
+
+    const closeStatusModal = () => {
+        setIsModalOpen(false);
+        setSelectedIncident(null);
+    };
+
+    const changeIncidentStatus = () => {
+        if (selectedIncident) {
+            setLoading(true);
+            setTimeout(() => {
+
+                const newStatus = selectedIncident.status === 'Активный' ? 'Устранен' : 'Активный';
+
+
+                const updatedIncidents = incidents.map((incident) =>
+                    incident.id === selectedIncident.id
+                        ? { ...incident, status: newStatus }
+                        : incident
+                );
+
+                console.log('Пользователь', user.fullName, 'поменял статус инцидента', selectedIncident.id, 'На', newStatus);
+                setIncidents(updatedIncidents);
+                setLoading(false);
+                closeStatusModal();
+            }, 100);
+        }
+    };
+
+
+
+
     const handleFilterChange = (filters: {
         dateRange?: { start: Date | null; end: Date | null };
         time?: string;
@@ -151,15 +198,16 @@ const IncidentPage: React.FC = () => {
                 }`}
                 onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
                     e.preventDefault();
+                    openStatusModal(incident);
                 }}
             >
                 {incident.status === 'Активный' ? (
                     <>
-                        <FaExclamationTriangle className="text-red-500 mr-1 inline"  /> {incident.status}
+                        <FaExclamationTriangle className="text-red-500 mr-1 inline"/> {incident.status}
                     </>
                 ) : (
                     <>
-                        <FaCheckCircle className="text-green-500 mr-1 inline" /> {incident.status}
+                        <FaCheckCircle className="text-green-500 mr-1 inline"/> {incident.status}
                     </>
                 )}
             </a>
@@ -198,6 +246,16 @@ const IncidentPage: React.FC = () => {
                     <ItemTable headers={headers} data={incidentsDataForTable}/>
                 </div>
             </div>
+            {isModalOpen && selectedIncident && (
+                <StatusChangeModal
+                    incidentId={selectedIncident.id}
+                    object={selectedIncident.object}
+                    currentStatus={selectedIncident.status}
+                    onClose={closeStatusModal}
+                    onSubmit={changeIncidentStatus}
+                    loading={loading}
+                />
+            )}
         </DefaultLayout>
     );
 };
