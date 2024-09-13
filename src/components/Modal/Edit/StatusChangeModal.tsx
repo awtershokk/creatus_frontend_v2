@@ -3,6 +3,7 @@ import ModalTemplate from '../ModalTemplate';
 
 interface StatusChangeModalProps {
     incidentId: number;
+    incidentDescription: string;
     object: string;
     currentStatus: string;
     onClose: () => void;
@@ -12,6 +13,7 @@ interface StatusChangeModalProps {
 
 const StatusChangeModal: React.FC<StatusChangeModalProps> = ({
                                                                  incidentId,
+                                                                 incidentDescription,
                                                                  object,
                                                                  currentStatus,
                                                                  onClose,
@@ -34,7 +36,7 @@ const StatusChangeModal: React.FC<StatusChangeModalProps> = ({
             loading={loading}
         >
             <p className="text-black">
-                Поменять статус у инцидента №{incidentId} на объекте <strong>{object}</strong> с{' '}
+                Поменять статус у инцидента <strong>{incidentDescription}</strong> на объекте <strong>{object}</strong> с{' '}
                 <strong className={currentStatusColor}>{currentStatus}</strong> на{' '}
                 <strong className={newStatusColor}>{newStatus}</strong>?
             </p>

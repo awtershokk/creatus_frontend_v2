@@ -249,6 +249,7 @@ const IncidentPage: React.FC = () => {
             {isModalOpen && selectedIncident && (
                 <StatusChangeModal
                     incidentId={selectedIncident.id}
+                    incidentDescription={selectedIncident.description}
                     object={selectedIncident.object}
                     currentStatus={selectedIncident.status}
                     onClose={closeStatusModal}
