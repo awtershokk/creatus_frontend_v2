@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import DefaultLayout from "../../layouts/DefaultLayout.tsx";
 import Label from "../../components/Text/Label.tsx";
 import EditButton from "../../components/Buttons/EditButton.tsx";
@@ -11,6 +11,7 @@ import {useParams} from "react-router-dom";
 import {fetchRoomsBySection} from "../../api/roomApi.ts";
 import AddRoomInSectionModal from "../../components/Modal/Add/AddRoomInSectionModal.tsx";
 import DeleteRoomModalManager from "../../components/Modal/Manager/DeleteRoomModalManager.tsx";
+import LoadingSpinner from "../../components/Menu/LoadingSpinner.tsx";
 
 
 const SectionPage = () => {
@@ -20,6 +21,8 @@ const SectionPage = () => {
     const [isAddRoomInSectionModal, setIsAddRoomInSectionModal] = useState(false);
 
     const [modalRoomId , setModalRoomId] =useState<number | null>(null);
+
+    const [isLoading, setIsLoading] = useState(true);
     const getData = async () => {
         try {
             const sectionData = await fetchSection(sectionId);
@@ -36,6 +39,8 @@ const SectionPage = () => {
                 to: `room/${room.id}`
             }));
             setRooms(formattedRooms);
+
+            setIsLoading(false);
         } catch (error) {
             console.error('Ошибка получения данных:', error);
         }
@@ -63,6 +68,9 @@ const SectionPage = () => {
 
     return (
         <DefaultLayout>
+            {isLoading ? (
+                <LoadingSpinner/>
+            ) : (
             <div className="flex justify-between">
                 <div className="w-1/2">
                     <Label text="Информация о секции"/>
@@ -102,6 +110,7 @@ const SectionPage = () => {
                 )
                 }
             </div>
+                )}
         </DefaultLayout>
     );
 };

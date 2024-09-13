@@ -17,6 +17,7 @@ import MeasurementsFilters from '../../components/Filters/MeasurementsFilters.ts
 import DownloadButton from "../../components/Buttons/DownloadButton.tsx";
 import AddMeasuringPointModal from "../../components/Modal/Add/AddMeasuringPointModal.tsx";
 import DeleteMeasuringPointModal from "../../components/Modal/Delete/MeasuringPoint/DeleteMeasuringPointModal.tsx";
+import LoadingSpinner from "../../components/Menu/LoadingSpinner.tsx";
 
 const RoomPage = () => {
     const { roomId } = useParams();
@@ -33,6 +34,8 @@ const RoomPage = () => {
     const [isAddMeasurePointModalOpen, setIsAddMeasurePointModalOpen] = useState(false);
     const [isDeleteMeasurePointModalOpen, setIsDeleteMeasurePointModalOpen] = useState(false);
     const [deleteMeasuringPointId, setDeleteMeasuringPointId] = useState<number | null>(null);
+
+    const [isLoading, setIsLoading] = useState(true);
 
         const fetchData = async () => {
             try {
@@ -56,7 +59,9 @@ const RoomPage = () => {
                 setFilteredMeasurements(measurementsData);
                 setTotalMeasurements(measurementsData.length);
                 setDisplayedMeasurements(measurementsData.length);
+                setIsLoading(false);
             } catch (error) {
+                setIsLoading(false);
                 console.error('Ошибка получения данных:', error);
             }
         };
@@ -146,69 +151,75 @@ const RoomPage = () => {
 
     return (
         <DefaultLayout>
-            <div className="flex justify-between">
-                <div className="w-1/2">
-                    <Label text="Информация о помещении" />
-                    <ObjectTable
-                        title="Свойства помещения"
-                        data={room}
-                        ButtonComponent={EditButton}
-                        nonEditableFields={['Секция', 'Тепловой контур']}
-                    />
-                </div>
-                <div className="w-full flex flex-col items-end mt-8 mr-8">
-                    <ChildElementsTable
-                        infoData={measuringPoints}
-                        tableTitle="Точки измерения"
-                        ButtonComponent={() => <AddButton onClick={openAddMeasurePointModal} />}
-                        LinkComponent={BlueLink}
-                        onDelete={openDeleteMeasurePointModal}
-                    />
-                </div>
-            </div>
-            <div className="mt-6 mb-4">
-                <div className="mt-4 flex items-center justify-between">
-                    <div className="flex items-center">
-                        <Label text="Рассчитанные значения" />
-                        <div className="ml-4 mt-1 text-sm text-gray-600">
-                            Всего значений: {totalMeasurements}, Отображаемых значений: {displayedMeasurements}
+            {isLoading ? (
+                <LoadingSpinner />
+            ) : (
+                <div>
+                    <div className="flex justify-between">
+                        <div className="w-1/2">
+                            <Label text="Информация о помещении" />
+                            <ObjectTable
+                                title="Свойства помещения"
+                                data={room}
+                                ButtonComponent={EditButton}
+                                nonEditableFields={['Секция', 'Тепловой контур']}
+                            />
+                        </div>
+                        <div className="w-full flex flex-col items-end mt-8 mr-8">
+                            <ChildElementsTable
+                                infoData={measuringPoints}
+                                tableTitle="Точки измерения"
+                                ButtonComponent={() => <AddButton onClick={openAddMeasurePointModal} />}
+                                LinkComponent={BlueLink}
+                                onDelete={openDeleteMeasurePointModal}
+                            />
                         </div>
                     </div>
+                    <div className="mt-6 mb-4">
+                        <div className="mt-4 flex items-center justify-between">
+                            <div className="flex items-center">
+                                <Label text="Рассчитанные значения" />
+                                <div className="ml-4 mt-1 text-sm text-gray-600">
+                                    Всего значений: {totalMeasurements}, Отображаемых значений: {displayedMeasurements}
+                                </div>
+                            </div>
+                        </div>
+                        <DownloadButton />
+                        <MeasurementsFilters
+                            dateRange={dateRange}
+                            timeRange={timeRange}
+                            temperatureDeviation={temperatureDeviation}
+                            humidityDeviation={humidityDeviation}
+                            onFilterChange={handleFilterChange}
+                        />
+                        <TableContainer>
+                            <ItemTable
+                                data={filteredMeasurements}
+                                headers={headers}
+                            />
+                        </TableContainer>
+                        {isAddMeasurePointModalOpen && (
+                            <AddMeasuringPointModal
+                                onClose={closeAddMeasurePointModal}
+                                onSubmit={() => {
+                                    fetchData();
+                                    closeAddMeasurePointModal();
+                                }}
+                                roomId={roomId}
+                            />
+                        )}
+                        {isDeleteMeasurePointModalOpen && deleteMeasuringPointId !== null && (
+                            <DeleteMeasuringPointModal
+                                measuringPointID={deleteMeasuringPointId}
+                                onClose={() => {
+                                    fetchData();
+                                    closeDeleteMeasurePointModal();
+                                }}
+                            />
+                        )}
+                    </div>
                 </div>
-                <DownloadButton />
-                <MeasurementsFilters
-                    dateRange={dateRange}
-                    timeRange={timeRange}
-                    temperatureDeviation={temperatureDeviation}
-                    humidityDeviation={humidityDeviation}
-                    onFilterChange={handleFilterChange}
-                />
-                <TableContainer>
-                    <ItemTable
-                        data={filteredMeasurements}
-                        headers={headers}
-                    />
-                </TableContainer>
-                {isAddMeasurePointModalOpen && (
-                    <AddMeasuringPointModal
-                        onClose={closeAddMeasurePointModal}
-                        onSubmit={() => {
-                            fetchData();
-                            closeAddMeasurePointModal();
-                        }}
-                        roomId={roomId}
-                    />
-                )}
-                {isDeleteMeasurePointModalOpen && deleteMeasuringPointId !== null && (
-                    <DeleteMeasuringPointModal
-                        measuringPointID={deleteMeasuringPointId}
-                        onClose={() => {
-                            fetchData()
-                            closeDeleteMeasurePointModal()
-                        }}
-                    />
-                )}
-            </div>
+            )}
         </DefaultLayout>
     );
 };

@@ -1,21 +1,26 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import DefaultLayout from "../../layouts/DefaultLayout.tsx";
 import Label from "../../components/Text/Label.tsx";
 import ItemTable from '../../components/Tables/ItemTable.tsx';
 import {Controller} from "../../models/Controller.tsx";
 import {fetchControllers} from "../../api/controllerApi.ts";
+import LoadingSpinner from "../../components/Menu/LoadingSpinner.tsx";
 
 const ControllerPage = () => {
     const [controllers, setContollers] = useState<Controller[]>([]);
     localStorage.setItem('controllers', JSON.stringify({ label: 'Контроллеры', icon: 'FaMicrochip' }));
+
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         const getData = async () => {
             try {
                 const controllersData = await fetchControllers();
                 setContollers(controllersData);
+                setIsLoading(false);
 
             } catch (error) {
+                setIsLoading(false);
                 console.error('Ошибка получения данных:', error);
             }
         };
@@ -35,6 +40,9 @@ const ControllerPage = () => {
 
     return (
         <DefaultLayout>
+            {isLoading ? (
+                <LoadingSpinner/>
+            ) : (
             <div className="">
         <div className="">
         <div className="flex items-center">
@@ -47,6 +55,7 @@ const ControllerPage = () => {
 
     />
     </div>
+                )}
     </DefaultLayout>
 );
 };

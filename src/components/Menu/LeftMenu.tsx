@@ -63,6 +63,9 @@ const LeftMenu: React.FC = () => {
         return () => clearInterval(intervalId);
     }, []);
 
+    const isVersionBlocked = false;
+    const isIncidentsBlocked = false;
+
     return (
         <div className="flex flex-nowrap h-full w-auto bg-gray-800 text-white z-10">
             <div className="flex flex-col flex-grow p-4">
@@ -72,19 +75,23 @@ const LeftMenu: React.FC = () => {
                 <nav className="flex-1 overflow-y-auto">
                     <ul className="space-y-2">
                         <li>
-                            <Link
-                                to="/building/updates"
-                                className="flex items-center p-2 rounded-lg hover:bg-gray-700 whitespace-nowrap"
-                            >
-                                <FaCogs className="mr-2" />
-                                Версия ПО
-                                {/*{hasUpdates && (*/}
-                                {/*    <FaBell*/}
-                                {/*        className={`ml-2 text-green-500 ${isSwinging ? 'animate-swingTop' : ''}`}*/}
-                                {/*        title="Есть обновления"*/}
-                                {/*    />*/}
-                                {/*)}  */}
-                            </Link>
+                            {isVersionBlocked ? (
+                                <button
+                                    className="flex items-center p-2 rounded-lg  text-gray-400 cursor-not-allowed"
+                                    disabled
+                                >
+                                    <FaCogs className="mr-2"/>
+                                    Версия ПО
+                                </button>
+                            ) : (
+                                <Link
+                                    to="/building/updates"
+                                    className="flex items-center p-2 rounded-lg hover:bg-gray-700 whitespace-nowrap"
+                                >
+                                    <FaCogs className="mr-2"/>
+                                    Версия ПО
+                                </Link>
+                            )}
                         </li>
 
                         <li>
@@ -182,13 +189,23 @@ const LeftMenu: React.FC = () => {
                         </li>
 
                         <li>
-                            <Link
-                                to="/building/incidents"
-                                className="flex items-center p-2 rounded-lg hover:bg-gray-700 whitespace-nowrap"
-                            >
-                                <FaExclamationTriangle className="mr-2"/>
-                                Инциденты
-                            </Link>
+                            {isIncidentsBlocked ? (
+                                <button
+                                    className="flex items-center p-2 rounded-lg text-gray-400 cursor-not-allowed"
+                                    disabled
+                                >
+                                    <FaExclamationTriangle className="mr-2"/>
+                                    Инциденты
+                                </button>
+                            ) : (
+                                <Link
+                                    to="/building/incidents"
+                                    className="flex items-center p-2 rounded-lg hover:bg-gray-700 whitespace-nowrap"
+                                >
+                                    <FaExclamationTriangle className="mr-2"/>
+                                    Инциденты
+                                </Link>
+                            )}
                         </li>
 
                         <li>
