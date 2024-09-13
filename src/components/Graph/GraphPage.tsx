@@ -59,11 +59,13 @@ function GraphPage({ selectedRoomId }) {
                         borderColor: (ctx) => {
                             const currentValue = ctx.p0.parsed.y;
                             const previousValue = ctx.p1.parsed.y;
-                            if ((currentValue > limits.max || currentValue < limits.min) ||
-                                (previousValue > limits.max || previousValue < limits.min)) {
+                            if ((currentValue > limits.max || previousValue > limits.max )){
                                 return 'red';
                             }
-                            return 'rgb(54, 162, 235)';
+                            if (currentValue < limits.min || previousValue < limits.min){
+                                return 'rgb(0,13,174)';
+                            }
+
                         },
                     },
                 },

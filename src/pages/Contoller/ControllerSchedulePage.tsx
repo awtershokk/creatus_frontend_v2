@@ -6,6 +6,7 @@ import { ru } from "date-fns/locale";
 import SaveButton from "../../components/Buttons/SaveButton.tsx";
 import {fetchControllerLabel} from "../../api/controllerApi.ts";
 import {useParams} from "react-router-dom";
+import Label from "../../components/Text/Label.tsx";
 
 const daysOfWeek = ["Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье"];
 
@@ -138,7 +139,13 @@ const ControllerSchedulePage = () => {
 
     return (
         <DefaultLayout>
-            <div className="tabs inline-flex space-x-2 border-gray-700 mb-4 justify-center">
+            <div className="mt-4 ml-1">
+                <Label text='Система:'/>
+            </div>
+            <div className="tabs inline-flex space-x-2 border-gray-700 mb-4 mt-2 justify-center">
+
+
+
                 <button
                     className={`tab py-2 px-1 text-sm font-medium border-b-2 ${selectedSystem === "hotWater" ? "border-gray-800 text-gray-700" : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700"}`}
                     onClick={handleHotWaterClick}
@@ -152,8 +159,10 @@ const ControllerSchedulePage = () => {
                     Система отопления
                 </button>
             </div>
-            <div></div>
-            <div className="tabs inline-flex space-x-2 mt-1 mb-2 justify-center">
+            <div className="ml-1">
+                <Label text='День недели:'/>
+            </div>
+            <div className="tabs inline-flex space-x-2 mt-2 mb-2 justify-center">
                 {daysOfWeek.map((day) => (
                     <button
                         key={day}
@@ -166,42 +175,48 @@ const ControllerSchedulePage = () => {
             </div>
 
             {selectedSystem && selectedDay && (
-                <div className="mt-4">
-                    <ul className="mb-4">
+                <div className="mt-4 p-4 bg-gray-100 rounded-lg shadow-md w-[427px]">
+                    <ul className="mb-4 space-y-4">
                         {schedule[selectedSystem][selectedDay].map((period, index) => (
-                            <li key={index} className="mb-2 text-black flex items-center">
-                                Комфортный период {index + 1}:
-                                <DatePicker
-                                    selected={period.start}
-                                    onChange={(date) => handleTimeChange(index, "start", date)}
-                                    showTimeSelect
-                                    showTimeSelectOnly
-                                    timeIntervals={15}
-                                    timeCaption="Время"
-                                    placeholderText="00:00"
-                                    dateFormat="HH:mm"
-                                    locale={ru}
-                                    className="bg-white pl-2 text-black border border-black rounded ml-2 w-[55px]"
-                                />
-                                -
-                                <DatePicker
-                                    selected={period.end}
-                                    onChange={(date) => handleTimeChange(index, "end", date)}
-                                    showTimeSelect
-                                    showTimeSelectOnly
-                                    timeIntervals={15}
-                                    timeCaption="Время"
-                                    placeholderText="00:00"
-                                    dateFormat="HH:mm"
-                                    locale={ru}
-                                    className="bg-white pl-2 text-black border border-black rounded w-[55px]"
-                                />
+                            <li key={index} className="text-gray-800 flex items-center">
+                    <span className="font-semibold text-lg">
+                        Комфортный период {index + 1}:
+                    </span>
+                                <div className="flex items-center space-x-2 ml-4">
+                                    <DatePicker
+                                        selected={period.start}
+                                        onChange={(date) => handleTimeChange(index, "start", date)}
+                                        showTimeSelect
+                                        showTimeSelectOnly
+                                        timeIntervals={15}
+                                        timeCaption="Время"
+                                        placeholderText="00:00"
+                                        dateFormat="HH:mm"
+                                        locale={ru}
+                                        className="bg-white pl-2 text-black border border-gray-300 rounded-lg w-[70px] shadow-sm focus:border-blue-500"
+                                    />
+                                    <span className="text-lg">-</span>
+                                    <DatePicker
+                                        selected={period.end}
+                                        onChange={(date) => handleTimeChange(index, "end", date)}
+                                        showTimeSelect
+                                        showTimeSelectOnly
+                                        timeIntervals={15}
+                                        timeCaption="Время"
+                                        placeholderText="00:00"
+                                        dateFormat="HH:mm"
+                                        locale={ru}
+                                        className="bg-white pl-2 text-black border border-gray-300 rounded-lg w-[70px] shadow-sm focus:border-blue-500"
+                                    />
+                                </div>
                             </li>
                         ))}
                     </ul>
-                    {hasChanges && (
-                       <SaveButton onClick={handleSaveClick}/>
-                    )}
+            {hasChanges && (
+                <div className="flex justify-end mr-2">
+                    <SaveButton onClick={handleSaveClick}/>
+                </div>
+            )}
                 </div>
             )}
         </DefaultLayout>
