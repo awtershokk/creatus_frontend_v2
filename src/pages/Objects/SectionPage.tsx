@@ -5,29 +5,34 @@ import EditButton from "../../components/Buttons/EditButton.tsx";
 import AddButton from "../../components/Buttons/AddButton.tsx";
 import ObjectTable from "../../components/Tables/ObjectTable.tsx";
 import ChildElementsTable from "../../components/Tables/ChildElementsTable.tsx";
-import {fetchSection} from '../../api/sectionApi.ts';
-import BlueLink from "../../components/Text/BlueLink.tsx"
-import {useParams} from "react-router-dom";
-import {fetchRoomsBySection} from "../../api/roomApi.ts";
+import { fetchSection } from '../../api/sectionApi.ts';
+import BlueLink from "../../components/Text/BlueLink.tsx";
+import { useParams } from "react-router-dom";
+import { fetchRoomsBySection } from "../../api/roomApi.ts";
 import AddRoomInSectionModal from "../../components/Modal/Add/AddRoomInSectionModal.tsx";
 import DeleteRoomModalManager from "../../components/Modal/Manager/DeleteRoomModalManager.tsx";
 import LoadingSpinner from "../../components/Menu/LoadingSpinner.tsx";
 
-
 const SectionPage = () => {
     const { sectionId } = useParams();
     const [section, setSection] = useState<Array<{ id: number, title: string, value: string | number }>>([]);
+    const [sectionData, setSectionData] = useState<any>(null);  // Данные секции
     const [rooms, setRooms] = useState<Array<{ id: number, title: string, value: string, value2: string }>>([]);
     const [isAddRoomInSectionModal, setIsAddRoomInSectionModal] = useState(false);
+    const [modalRoomId, setModalRoomId] = useState<number | null>(null);
+    const [isLoading, setIsLoading] = useState(true);
 
     const [modalRoomId , setModalRoomId] =useState<number | null>(null);
 
     const [isLoading, setIsLoading] = useState(true);
+  
     const getData = async () => {
         try {
-            const sectionData = await fetchSection(sectionId);
-            setSection(sectionData);
-            const labelItem = sectionData.find(item => item.title === 'Наименование');
+            const fetchedSectionData = await fetchSection(sectionId);
+            setSectionData(fetchedSectionData);
+            setSection(fetchedSectionData);
+
+            const labelItem = fetchedSectionData.find(item => item.title === 'Наименование');
             localStorage.setItem('section', JSON.stringify({ label: labelItem?.value, icon: 'FaBars', id: labelItem?.id }));
 
             const roomsData = await fetchRoomsBySection(sectionId);
@@ -39,10 +44,10 @@ const SectionPage = () => {
                 to: `room/${room.id}`
             }));
             setRooms(formattedRooms);
-
             setIsLoading(false);
         } catch (error) {
             console.error('Ошибка получения данных:', error);
+            setIsLoading(false);
         }
     };
 
@@ -61,10 +66,21 @@ const SectionPage = () => {
     const handleDeleteRoomClick = (roomId: number) => {
         setModalRoomId(roomId);
     };
+
     const handleModalRoomClose = () => {
-        setModalRoomId(null)
+        setModalRoomId(null);
     };
 
+
+    if (isLoading) {
+        return (
+            <DefaultLayout>
+                <div className="flex justify-center items-center h-screen">
+                    <p>Загрузка данных...</p>
+                </div>
+            </DefaultLayout>
+        );
+    }
 
     return (
         <DefaultLayout>
@@ -72,8 +88,8 @@ const SectionPage = () => {
                 <LoadingSpinner/>
             ) : (
             <div className="flex justify-between">
-                <div className="w-1/2">
-                    <Label text="Информация о секции"/>
+            <div className="w-1/2">
+                    <Label text="Информация о секции" />
                     <ObjectTable
                         title="Свойства секции"
                         data={section}
@@ -103,12 +119,11 @@ const SectionPage = () => {
                     <DeleteRoomModalManager
                         RoomId={modalRoomId}
                         onClose={() => {
-                            getData()
-                            handleModalRoomClose()
+                            getData();
+                            handleModalRoomClose();
                         }}
                     />
-                )
-                }
+                )}
             </div>
                 )}
         </DefaultLayout>
@@ -116,4 +131,3 @@ const SectionPage = () => {
 };
 
 export default SectionPage;
-
