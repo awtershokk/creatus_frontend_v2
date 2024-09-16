@@ -69,7 +69,7 @@ const LeftMenu: React.FC = () => {
                         </li>
                         <li>
                             <button
-                                className={`flex items-center ${isSectionsOpen ? 'w-[280px]' : 'w-[210px]'} p-2 rounded-lg hover:bg-gray-700 text-left transition-width duration-300`}
+                                className={`flex items-center ${isSectionsOpen || isThermalCircuitsOpen || isDevicesOpen ? 'w-[280px]' : 'w-[210px]'} p-2 rounded-lg hover:bg-gray-700 text-left transition-width duration-300`}
                                 onClick={toggleSections}
                             >
                                 <FaBars className="mr-2"/>
@@ -92,7 +92,7 @@ const LeftMenu: React.FC = () => {
 
                         <li>
                             <button
-                                className={`flex items-center ${isThermalCircuitsOpen ? 'w-[280px]' : 'w-[210px]'} p-2 rounded-lg hover:bg-gray-700 text-left transition-width duration-300`}
+                                className={`flex items-center ${isSectionsOpen || isThermalCircuitsOpen || isDevicesOpen ? 'w-[280px]' : 'w-[210px]'} p-2 rounded-lg hover:bg-gray-700 text-left transition-width duration-300`}
                                 onClick={toggleThermalCircuits}
                             >
                                 <FaThermometerHalf className="mr-2"/>
@@ -115,7 +115,7 @@ const LeftMenu: React.FC = () => {
 
                         <li>
                             <button
-                                className={`flex items-center ${isDevicesOpen ? 'w-[280px]' : 'w-[210px]'} p-2 rounded-lg hover:bg-gray-700 text-left transition-width duration-300`}
+                                className={`flex items-center ${isSectionsOpen || isThermalCircuitsOpen || isDevicesOpen ? 'w-[280px]' : 'w-[210px]'} p-2 rounded-lg hover:bg-gray-700 text-left transition-width duration-300`}
                                 onClick={toggleDevices}
                             >
                                 <FaTools className="mr-2"/>
