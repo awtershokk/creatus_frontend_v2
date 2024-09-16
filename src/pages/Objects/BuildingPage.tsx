@@ -128,13 +128,11 @@ const BuildingPage = () => {
         setIsAddThermalCircuitModalOpen(false);
     };
 
-    // Удаление конкретной секции
     const handleDeleteSectionClick = (sectionId: number) => {
-        console.log(sectionId);
         setModalSectionId(sectionId);
     };
 
-    // Удаление конкретного теплового контура
+
     const handleDeleteThermalCircuitClick = (thermalCircuitId: number) => {
         console.log(thermalCircuitId);
         setModalThermalCircuitId(thermalCircuitId);

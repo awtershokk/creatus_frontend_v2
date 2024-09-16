@@ -230,7 +230,7 @@ const ThermalCircuitPage = () => {
             )}
             {modalRoomId !== null && (
                 <DeleteRoomModalManager
-                    RoomId={modalRoomId}
+                    roomId={modalRoomId}
                     onClose={() => {
                         getData()
                         handleModalRoomClose()
