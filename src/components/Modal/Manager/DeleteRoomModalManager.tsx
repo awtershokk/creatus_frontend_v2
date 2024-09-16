@@ -1,56 +1,48 @@
 import React, { useState, useEffect } from 'react';
-import {deleteRoom, fetchRoom} from "../../../api/roomApi.ts";
-
+import { deleteRoom, fetchRoom } from "../../../api/roomApi.ts";
+import { fetchMeasuringPoints } from "../../../api/measuringPointApi.ts";
 
 import DeleteRoomModal from "../Delete/Room/DeleteRoomModal.tsx";
 import DeleteRoomWithMeasuringPointsModal from "../Delete/Room/DeleteRoomWithMeasuringPointsModal.tsx";
-import {fetchMeasuringPoints} from "../../../api/measuringPointApi.ts";
 
 interface RoomModalManagerProps {
-    RoomId: number;
+    roomId: number;
     onClose: () => void;
 }
 
-const DeleteRoomModalManager: React.FC<RoomModalManagerProps> = ({
-                                                                     RoomId,
-                                                                           onClose
-                                                                       }) => {
+const DeleteRoomModalManager: React.FC<RoomModalManagerProps> = ({ roomId, onClose }) => {
     const [isDeleteRoomModalOpen, setIsDeleteRoomModalOpen] = useState(false);
     const [isDeleteRoomWithMeasuringPointsModalOpen, setIsDeleteRoomWithMeasuringPointsModalOpen] = useState(false);
-    const [selectedMeasuringPoints, setSelectedMeasuringPoints] = useState<any[]>([]);
-    const [loading, setLoading] = useState(true);
+    const [measuringPoints, setMeasuringPoints] = useState<any[]>([]);
     const [roomName, setRoomName] = useState('');
+    const [loading, setLoading] = useState(true);
+
+    // Fetch room data and measuring points
+    const fetchData = async () => {
+        try {
+            const room = await fetchRoom(roomId);
+            const roomNameObj = room.find(item => item.title === 'Наименование');
+            if (roomNameObj) setRoomName(roomNameObj.value);
+
+            const fetchedMeasuringPoints = await fetchMeasuringPoints(roomId);
+            setMeasuringPoints(fetchedMeasuringPoints);
+
+            // Show appropriate modal based on the existence of measuring points
+            if (fetchedMeasuringPoints.length === 0) {
+                setIsDeleteRoomModalOpen(true);
+            } else {
+                setIsDeleteRoomWithMeasuringPointsModalOpen(true);
+            }
+        } catch (error) {
+            console.error('Ошибка получения данных помещения или точек измерения:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-
-                const room = await fetchRoom(RoomId);
-                console.log(room);
-                const nameObject = room.find(item => item.title === 'Наименование');
-                if (nameObject) {
-                    setRoomName(nameObject.value);
-                }
-
-
-                const MeasuringPoints = await fetchMeasuringPoints(RoomId);
-                setSelectedMeasuringPoints(MeasuringPoints);
-
-
-                if (MeasuringPoints.length === 0) {
-                    setIsDeleteRoomModalOpen(true);
-                } else {
-                    setIsDeleteRoomWithMeasuringPointsModalOpen(true);
-                }
-            } catch (error) {
-                console.error('Ошибка получения данных помещения или точки измерения', error);
-            } finally {
-                setLoading(false);
-            }
-        };
-
         fetchData();
-    }, [RoomId]);
+    }, [roomId]);
 
     const handleDeleteRoomModalClose = () => {
         setIsDeleteRoomModalOpen(false);
@@ -64,10 +56,10 @@ const DeleteRoomModalManager: React.FC<RoomModalManagerProps> = ({
 
     const handleDelete = async () => {
         try {
-            await deleteRoom(RoomId)
+            await deleteRoom(roomId);
             onClose();
         } catch (error) {
-            console.error('Ошибка при удалении комнаты:', error);
+            console.error('Ошибка при удалении помещения:', error);
         }
     };
 
@@ -88,7 +80,7 @@ const DeleteRoomModalManager: React.FC<RoomModalManagerProps> = ({
             {isDeleteRoomWithMeasuringPointsModalOpen && (
                 <DeleteRoomWithMeasuringPointsModal
                     roomName={roomName}
-                    MeasuringPoints={selectedMeasuringPoints}
+                    MeasuringPoints={measuringPoints}
                     onClose={handleDeleteRoomWithMeasuringPointsModalClose}
                 />
             )}

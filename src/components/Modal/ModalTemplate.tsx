@@ -3,7 +3,7 @@ import { FaTimes } from "react-icons/fa";
 
 interface ModalTemplateProps {
     headerTitle: string;
-    buttonLabel: string | null; // если нужно что бы не было кнопки передаем ''
+    buttonLabel: string | null;
     onClose: () => void;
     onSubmit: () => void;
     children: React.ReactNode;
@@ -21,7 +21,7 @@ const ModalTemplate: React.FC<ModalTemplateProps> = ({
     const [showModal, setShowModal] = useState(false);
 
     useEffect(() => {
-        setShowModal(true);
+        setTimeout(() => setShowModal(true), 50);
     }, []);
 
     const handleClose = () => {
@@ -44,9 +44,12 @@ const ModalTemplate: React.FC<ModalTemplateProps> = ({
                         </button>
                     </div>
                 </div>
+
+
                 <div className="p-6 space-y-2 max-h-[60vh] overflow-y-auto">
                     {children}
                 </div>
+
                 <div className="flex justify-end space-x-4 p-6">
                     <button
                         onClick={handleClose}
