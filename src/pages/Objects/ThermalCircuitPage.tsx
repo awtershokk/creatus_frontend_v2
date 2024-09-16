@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import DefaultLayout from "../../layouts/DefaultLayout.tsx";
 import Label from "../../components/Text/Label.tsx";
 import EditButton from "../../components/Buttons/EditButton.tsx";
@@ -17,55 +17,71 @@ import MeasurementsFilters from '../../components/Filters/MeasurementsFilters.ts
 import DownloadButton from "../../components/Buttons/DownloadButton.tsx";
 import AddRoomInThermalCircuitModal from "../../components/Modal/Add/AddRoomInThermalCircuitModal.tsx";
 import DeleteRoomModalManager from "../../components/Modal/Manager/DeleteRoomModalManager.tsx";
+import LoadingSpinner from "../../components/Menu/LoadingSpinner.tsx";
 
 const ThermalCircuitPage = () => {
-    const { thermalCircuitId } = useParams();
-    const [thermalCircuit, setThermalCircuit] = useState<Array<{ id: number, title: string, value: string | number }>>([]);
+    const {thermalCircuitId} = useParams();
+    const [thermalCircuit, setThermalCircuit] = useState<Array<{
+        id: number,
+        title: string,
+        value: string | number
+    }>>([]);
     const [rooms, setRooms] = useState<Array<{ id: number, title: string, value: string, value2: string }>>([]);
     const [measurements, setMeasurements] = useState<Measurement[]>([]);
     const [filteredMeasurements, setFilteredMeasurements] = useState<Measurement[]>([]);
     const [totalMeasurements, setTotalMeasurements] = useState<number>(0);
     const [displayedMeasurements, setDisplayedMeasurements] = useState<number>(0);
-    const [dateRange, setDateRange] = useState<{ start: Date | null; end: Date | null }>({ start: null, end: null });
-    const [timeRange, setTimeRange] = useState<{ start: Date | null; end: Date | null }>({ start: null, end: null });
-    const [temperatureDeviation, setTemperatureDeviation] = useState<{ min: number | null; max: number | null }>({ min: null, max: null });
-    const [humidityDeviation, setHumidityDeviation] = useState<{ min: number | null; max: number | null }>({ min: null, max: null });
+    const [dateRange, setDateRange] = useState<{ start: Date | null; end: Date | null }>({start: null, end: null});
+    const [timeRange, setTimeRange] = useState<{ start: Date | null; end: Date | null }>({start: null, end: null});
+    const [temperatureDeviation, setTemperatureDeviation] = useState<{
+        min: number | null;
+        max: number | null
+    }>({min: null, max: null});
+    const [humidityDeviation, setHumidityDeviation] = useState<{ min: number | null; max: number | null }>({
+        min: null,
+        max: null
+    });
     const [isAddRoomInThermalCircuitModal, setIsAddRoomInThermalCircuitModal] = useState(false);
 
-    const [modalRoomId , setModalRoomId] =useState<number | null>(null);
+    const [modalRoomId, setModalRoomId] = useState<number | null>(null);
 
-        const getData = async () => {
-            try {
-                const thermalCircuitData = await fetchThermalCircuit(thermalCircuitId);
-                setThermalCircuit(thermalCircuitData);
-                const labelItem = thermalCircuitData.find(item => item.title === 'Наименование');
-                localStorage.setItem('thermalCircuit', JSON.stringify({
-                    label: labelItem?.value,
-                    icon: 'FaThermometerHalf',
-                    id: labelItem?.id
-                }));
+    const [isLoading, setIsLoading] = useState(true);
 
-                const roomsData = await fetchRoomsByThermalCircuit(thermalCircuitId);
-                const formattedRooms = roomsData.map(room => ({
-                    id: room.id,
-                    title: room.label,
-                    properties: 'Свойства',
-                    delete: 'Удалить',
-                    to: `room/${room.id}`
-                }));
-                setRooms(formattedRooms);
+    const getData = async () => {
+        try {
+            const thermalCircuitData = await fetchThermalCircuit(thermalCircuitId);
+            setThermalCircuit(thermalCircuitData);
+            const labelItem = thermalCircuitData.find(item => item.title === 'Наименование');
+            localStorage.setItem('thermalCircuit', JSON.stringify({
+                label: labelItem?.value,
+                icon: 'FaThermometerHalf',
+                id: labelItem?.id
+            }));
 
-                const measurementsData = await fetchMeasurementsThermalCircuit(thermalCircuitId);
-                setMeasurements(measurementsData);
-                setFilteredMeasurements(measurementsData);
+            const roomsData = await fetchRoomsByThermalCircuit(thermalCircuitId);
+            const formattedRooms = roomsData.map(room => ({
+                id: room.id,
+                title: room.label,
+                properties: 'Свойства',
+                delete: 'Удалить',
+                to: `room/${room.id}`
+            }));
+            setRooms(formattedRooms);
 
-                setTotalMeasurements(measurementsData.length);
-                setDisplayedMeasurements(measurementsData.length);
+            const measurementsData = await fetchMeasurementsThermalCircuit(thermalCircuitId);
+            setMeasurements(measurementsData);
+            setFilteredMeasurements(measurementsData);
 
-            } catch (error) {
-                console.error('Ошибка получения данных:', error);
-            }
-        };
+            setTotalMeasurements(measurementsData.length);
+            setDisplayedMeasurements(measurementsData.length);
+
+            setIsLoading(false);
+
+        } catch (error) {
+            setIsLoading(false);
+            console.error('Ошибка получения данных:', error);
+        }
+    };
 
 
     useEffect(() => {
@@ -175,25 +191,31 @@ const ThermalCircuitPage = () => {
 
     return (
         <DefaultLayout>
-            <div className="flex justify-between">
-                <div className="w-1/2">
-                    <Label text="Информация о тепловом контуре"/>
-                    <ObjectTable
-                        title="Свойства теплового контура"
-                        data={thermalCircuit}
-                        ButtonComponent={EditButton}
-                    />
+            {isLoading ? (
+                <LoadingSpinner/>
+            ) : (
+                <div className="flex justify-between">
+                    <div className="w-1/2">
+                        <Label text="Информация о тепловом контуре"/>
+                        <ObjectTable
+                            title="Свойства теплового контура"
+                            data={thermalCircuit}
+                            ButtonComponent={EditButton}
+                        />
+                    </div>
+                    <div className="w-full flex flex-col items-end mt-8 mr-8">
+                        <ChildElementsTable
+                            infoData={rooms}
+                            tableTitle="Помещения"
+                            ButtonComponent={() => (
+                                <AddButton onClick={handleAddRoomInThermalCircuitModalOpen}/>
+                            )}
+                            LinkComponent={BlueLink}
+                            onDelete={handleDeleteRoomClick}
+                        />
+                    </div>
                 </div>
-                <div className="w-full flex flex-col items-end mt-8 mr-8">
-                    <ChildElementsTable
-                        infoData={rooms}
-                        tableTitle="Помещения"
-                        ButtonComponent={() => <AddButton onClick={handleAddRoomInThermalCircuitModalOpen} />}
-                        LinkComponent={BlueLink}
-                        onDelete={handleDeleteRoomClick}
-                    />
-                </div>
-            </div>
+            )}
             <div className="mt-6 mb-4">
                 <div className="mt-4 flex items-center justify-between">
                     <div className="flex items-center">
@@ -218,6 +240,7 @@ const ThermalCircuitPage = () => {
                     />
                 </TableContainer>
             </div>
+
             {isAddRoomInThermalCircuitModal && (
                 <AddRoomInThermalCircuitModal
                     thermalCircuitId={thermalCircuitId}
@@ -228,18 +251,18 @@ const ThermalCircuitPage = () => {
                     }}
                 />
             )}
+
             {modalRoomId !== null && (
                 <DeleteRoomModalManager
                     roomId={modalRoomId}
                     onClose={() => {
-                        getData()
-                        handleModalRoomClose()
+                        getData();
+                        handleModalRoomClose();
                     }}
                 />
-            )
-            }
+            )}
+
         </DefaultLayout>
     );
-};
-
+}
 export default ThermalCircuitPage;

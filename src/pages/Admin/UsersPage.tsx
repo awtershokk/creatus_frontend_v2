@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import DefaultLayout from "../../layouts/DefaultLayout.tsx";
 import Label from "../../components/Text/Label.tsx";
 import ItemTable from '../../components/Tables/ItemTable.tsx';
@@ -6,6 +6,7 @@ import MiniAddButton from "../../components/Buttons/MiniAddButton.tsx";
 import { User } from "../../models/User.tsx";
 import { fetchUsers } from "../../api/userApi.ts";
 import AddUserModal from "../../components/Modal/Add/AddUserModal.tsx";
+import LoadingSpinner from "../../components/Menu/LoadingSpinner.tsx";
 
 const UsersPage = () => {
     const [users, setUsers] = useState<User[]>([]);
@@ -13,11 +14,14 @@ const UsersPage = () => {
 
     localStorage.setItem('users', JSON.stringify({ label: 'Пользователи', icon: 'FaUser' }));
 
+    const [isLoading, setIsLoading] = useState(true);
+
     useEffect(() => {
         const getData = async () => {
             try {
                 const usersData = await fetchUsers(handleEditUserClick, handleDeleteUserClick);
                 setUsers(usersData);
+                setIsLoading(false);
             } catch (error) {
                 console.error('Ошибка получения данных:', error);
             }
@@ -54,6 +58,9 @@ const UsersPage = () => {
 
     return (
         <DefaultLayout>
+            {isLoading ? (
+                <LoadingSpinner/>
+            ) : (
             <div className="">
                 <div className="">
                     <div className="flex items-center">
@@ -66,7 +73,7 @@ const UsersPage = () => {
                     headers={headers}
                 />
             </div>
-
+            )}
             {isAddUserModalOpen && (
                 <AddUserModal
                     onClose={handleAddUserModalClose}
