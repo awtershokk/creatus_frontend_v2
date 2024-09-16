@@ -5,7 +5,7 @@ import { Device } from '../../../models/Device.tsx';
 interface EditDeviceModalProps {
     device: Device;
     onClose: () => void;
-    onSave: (updatedDevice: { id: string; label: string }) => void;
+    onSave: (updatedDevice: { id: string; label: string }) => (updatedDevice: Device) => void;
 }
 
 const EditDeviceModal: React.FC<EditDeviceModalProps> = ({ device, onClose, onSave }) => {

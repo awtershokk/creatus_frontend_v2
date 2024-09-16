@@ -38,6 +38,7 @@ const DeleteSectionWithRoomsModal: React.FC<DeleteSectionWithRoomsModalProps> = 
             onClose={onClose}
             onSubmit={handleClose}
             loading={loading}
+            otmenaDisabled={true}
         >
             <p className="text-black">
                 Чтобы удалить секцию <b>{sectionName}</b>, необходимо сначала удалить следующие помещения:

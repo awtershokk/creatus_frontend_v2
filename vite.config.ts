@@ -7,7 +7,7 @@ export default defineConfig({
   plugins: [
     react(),
     eslintPlugin({
-      emitWarning: true,
+      emitWarning: false,
       failOnError: false,
     }),
   ],
