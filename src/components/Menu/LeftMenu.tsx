@@ -76,7 +76,7 @@ const LeftMenu: React.FC = () => {
                                 <FaChevronDown
                                     className={`ml-2 transition-transform duration-300 ${isSectionsOpen ? 'rotate-180' : ''} text-xs`}/>
                             </button>
-                            <ul className={`transition-max-height duration-300 ease-in-out overflow-y-auto ${isSectionsOpen ? 'max-h-[calc(100vh-200px)]' : 'max-h-0'} flex flex-col`}>
+                            <ul className={`transition-max-height duration-300 ease-in-out ${isSectionsOpen ? 'max-h-[200px]' : 'max-h-0'} overflow-hidden flex flex-col`}>
                                 {sections.map((section) => (
                                     <li key={section.id}>
                                         <Link to={`/building/section/${section.id}`}
@@ -99,7 +99,7 @@ const LeftMenu: React.FC = () => {
                                 <FaChevronDown
                                     className={`ml-2 transition-transform duration-300 ${isThermalCircuitsOpen ? 'rotate-180' : ''} text-xs`}/>
                             </button>
-                            <ul className={`transition-max-height duration-300 ease-in-out overflow-y-auto ${isThermalCircuitsOpen ? 'max-h-[calc(100vh-200px)]' : 'max-h-0'} flex flex-col`}>
+                            <ul className={`transition-max-height duration-300 ease-in-out ${isThermalCircuitsOpen ? 'max-h-[200px]' : 'max-h-0'} overflow-hidden flex flex-col`}>
                                 {thermalCircuits.map((circuit) => (
                                     <li key={circuit.id}>
                                         <Link to={`/building/thermalCircuit/${circuit.id}`}
@@ -122,7 +122,7 @@ const LeftMenu: React.FC = () => {
                                 <FaChevronDown
                                     className={`ml-2 transition-transform duration-300 ${isDevicesOpen ? 'rotate-180' : ''} text-xs`}/>
                             </button>
-                            <ul className={`transition-max-height duration-300 ease-in-out overflow-y-auto ${isDevicesOpen ? 'max-h-[calc(100vh-200px)]' : 'max-h-0'} flex flex-col`}>
+                            <ul className={`transition-max-height duration-300 ease-in-out ${isDevicesOpen ? 'max-h-[200px]' : 'max-h-0'} overflow-hidden flex flex-col`}>
                                 <li>
                                     <Link to="/building/devices/"
                                           className="flex items-center p-2 pl-8 rounded-lg hover:bg-gray-700 whitespace-normal overflow-hidden text-ellipsis">
