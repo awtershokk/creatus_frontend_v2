@@ -19,13 +19,12 @@ const SectionPage = () => {
     const [sectionData, setSectionData] = useState<any>(null);  // Данные секции
     const [rooms, setRooms] = useState<Array<{ id: number, title: string, value: string, value2: string }>>([]);
     const [isAddRoomInSectionModal, setIsAddRoomInSectionModal] = useState(false);
-    const [modalRoomId, setModalRoomId] = useState<number | null>(null);
-    const [isLoading, setIsLoading] = useState(true);
+
 
     const [modalRoomId , setModalRoomId] =useState<number | null>(null);
 
     const [isLoading, setIsLoading] = useState(true);
-  
+
     const getData = async () => {
         try {
             const fetchedSectionData = await fetchSection(sectionId);
