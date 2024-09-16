@@ -1,13 +1,14 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import { applyCellColor } from '../../utils/getTableCellColors';
 import { TiArrowSortedUp, TiArrowSortedDown } from 'react-icons/ti';
-import { FaSort } from 'react-icons/fa';
+import { FaSort, FaExclamationTriangle, FaCheckCircle } from 'react-icons/fa';
 
 interface ItemTableProps {
     headers: Record<string, string>;
     data: Array<Record<string, any>>;
     nonSortableColumns?: string[];
+    tableStyles?: string;
     headerStyles?: string;
     rowStyles?: string;
     cellStyles?: string;
@@ -17,9 +18,10 @@ const ItemTable = ({
                        headers,
                        data,
                        nonSortableColumns = [],
+                       tableStyles = 'table-auto border-collapse w-full',
                        headerStyles = 'bg-gray-800 text-white whitespace-nowrap',
-                       rowStyles = 'border-b border-gray-200 text-black ',
-                       cellStyles = 'p-1.5 border border-gray-300 whitespace-nowrap'
+                       rowStyles = 'border-b border-gray-200 text-black',
+                       cellStyles = 'p-1.5 border border-gray-300 whitespace-nowrap',
                    }: ItemTableProps) => {
     const [tableData, setTableData] = useState(data);
     const [sortConfig, setSortConfig] = useState<{ key: string; direction: 'ascending' | 'descending' }>({
@@ -88,9 +90,30 @@ const ItemTable = ({
         return null;
     };
 
+    const getCellContent = (value: any, columnName: string) => {
+        if (columnName === 'status') {
+            if (value === 'Активный') {
+                return (
+                    <>
+                        <FaExclamationTriangle className="text-red-500 mr-1 inline" />
+                        <span className='text-red-500 underline'>{value}</span>
+                    </>
+                );
+            } else if (value === 'Устранен') {
+                return (
+                    <>
+                        <FaCheckCircle className="text-green-500 mr-1 inline" />
+                        <span className='text-green-500 underline'>{value}</span>
+                    </>
+                );
+            }
+        }
+        return value;
+    };
+
     return (
-        <div className="overflow-auto">
-            <table className="table-auto border-collapse">
+        <div className="overflow-x-auto">
+            <table className={tableStyles}>
                 <thead className={headerStyles}>
                 <tr>
                     {Object.keys(headers).map((header, index) => (
@@ -117,7 +140,7 @@ const ItemTable = ({
                                 className={cellStyles}
                                 style={applyCellColor(value, columnName)}
                             >
-                                {value}
+                                {getCellContent(value, columnName)}
                             </td>
                         ))}
                     </tr>

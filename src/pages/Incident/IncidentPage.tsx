@@ -8,6 +8,7 @@ import IncidentFilters from "../../components/Filters/IncidentFilter.tsx";
 import StatusChangeModal from "../../components/Modal/Edit/StatusChangeModal.tsx";
 import {useSelector} from "react-redux";
 import {RootState} from "../../store/store.ts";
+import IncidentDetailsModal from "../../components/Modal/IncidentDetailsModal.tsx";
 
 interface Incident {
     id: number;
@@ -19,7 +20,7 @@ interface Incident {
     object: string;
     criticality: string;
     status: string;
-    history: { date: string; time: string; user: string; status: string }[];
+    history: { date: string | null; time: string | null; user: string | null; status: string | null }[];
 }
 
 const IncidentPage: React.FC = () => {
@@ -27,7 +28,8 @@ const IncidentPage: React.FC = () => {
 
     const user = useSelector((state: RootState) => state.auth.user);
     const [selectedIncident, setSelectedIncident] = useState<Incident | null>(null);
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isStatusChangeModalOpen, setStatusChangeModalOpen] = useState(false);
+    const [isIncidentHistoryModalOpen, setIncidentHistoryModalOpen] = useState(false);
     const [loading, setLoading] = useState(false);
 
 
@@ -74,7 +76,7 @@ const IncidentPage: React.FC = () => {
             criticality: 'Средняя',
             status: 'Устранен',
             history: [
-                { date: '12.08.2024', time: '13:30', user: 'Пользователь 3', status: 'Устранен' }
+                { date: null, time: null, user: null, status: null }
             ]
         },
         {
@@ -102,14 +104,23 @@ const IncidentPage: React.FC = () => {
 
     const openStatusModal = (incident: Incident) => {
         setSelectedIncident(incident);
-        setIsModalOpen(true);
+        setStatusChangeModalOpen(true);
     };
 
     const closeStatusModal = () => {
-        setIsModalOpen(false);
+        setStatusChangeModalOpen(false);
         setSelectedIncident(null);
     };
 
+    const openHistoryModal = (incident: Incident) => {
+        setSelectedIncident(incident);
+        setIncidentHistoryModalOpen(true);
+    };
+
+    const closeHistoryModal = () => {
+        setIncidentHistoryModalOpen(false);
+        setSelectedIncident(null);
+    };
     const changeIncidentStatus = () => {
         if (selectedIncident) {
             setLoading(true);
@@ -219,6 +230,7 @@ const IncidentPage: React.FC = () => {
                 className="underline text-blue-600"
                 onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
                     e.preventDefault();
+                    openHistoryModal(incident);
                 }}
             >
                 Подробности
@@ -246,15 +258,26 @@ const IncidentPage: React.FC = () => {
                     <ItemTable headers={headers} data={incidentsDataForTable}/>
                 </div>
             </div>
-            {isModalOpen && selectedIncident && (
+            {isStatusChangeModalOpen && selectedIncident && (
                 <StatusChangeModal
                     incidentId={selectedIncident.id}
                     incidentDescription={selectedIncident.description}
                     object={selectedIncident.object}
                     currentStatus={selectedIncident.status}
+                    incidents={incidents}
+                    setIncidents={setIncidents}
+                    selectedIncident={selectedIncident}
+                    user={user.fullName}
                     onClose={closeStatusModal}
-                    onSubmit={changeIncidentStatus}
                     loading={loading}
+                    setLoading={setLoading}
+                />
+            )}
+            {isIncidentHistoryModalOpen && selectedIncident && (
+                <IncidentDetailsModal
+                    loading={loading}
+                    incident={selectedIncident}
+                    onClose={closeHistoryModal}
                 />
             )}
         </DefaultLayout>
