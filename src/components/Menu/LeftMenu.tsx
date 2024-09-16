@@ -52,6 +52,7 @@ const LeftMenu: React.FC = () => {
     };
 
     return (
+
         <div className={`flex flex-nowrap h-full transition-width duration-300 ${isMenuExpanded ? 'w-[310px]' : 'w-[240px]'} bg-gray-800 text-white z-10`}>
             <div className="flex flex-col flex-grow p-4">
                 <div className="mb-6">
@@ -60,24 +61,27 @@ const LeftMenu: React.FC = () => {
                 <nav className="flex-1 overflow-y-auto">
                     <ul className="space-y-2">
                         <li>
-                            <Link to="/building/updates" className="flex items-center p-2 rounded-lg hover:bg-gray-700 whitespace-nowrap">
+                            <Link to="/building/updates"
+                                  className={`flex items-center ${isSectionsOpen || isThermalCircuitsOpen || isDevicesOpen ? 'w-[280px]' : 'w-[210px]'} p-2 rounded-lg hover:bg-gray-700 whitespace-nowrap transition-width duration-300`}>
                                 <FaCogs className="mr-2"/>
                                 Версия ПО
                             </Link>
                         </li>
                         <li>
                             <button
-                                className="flex items-center w-full p-2 rounded-lg hover:bg-gray-700 text-left"
+                                className={`flex items-center ${isSectionsOpen || isThermalCircuitsOpen || isDevicesOpen ? 'w-[280px]' : 'w-[210px]'} p-2 rounded-lg hover:bg-gray-700 text-left transition-width duration-300`}
                                 onClick={toggleSections}
                             >
                                 <FaBars className="mr-2"/>
                                 Секции
-                                <FaChevronDown className={`ml-2 transition-transform duration-300 ${isSectionsOpen ? 'rotate-180' : ''} text-xs`} />
+                                <FaChevronDown
+                                    className={`ml-2 transition-transform duration-300 ${isSectionsOpen ? 'rotate-180' : ''} text-xs`}/>
                             </button>
                             <ul className={`transition-max-height duration-300 ease-in-out overflow-hidden ${isSectionsOpen ? 'max-h-40' : 'max-h-0'}`}>
                                 {sections.map((section) => (
                                     <li key={section.id}>
-                                        <Link to={`/building/section/${section.id}`} className="flex items-center p-2 pl-8 rounded-lg hover:bg-gray-700 whitespace-nowrap">
+                                        <Link to={`/building/section/${section.id}`}
+                                              className="flex items-center p-2 pl-8 rounded-lg hover:bg-gray-700 whitespace-nowrap">
                                             <FaBars className="mr-2"/>
                                             {section.label}
                                         </Link>
@@ -85,19 +89,22 @@ const LeftMenu: React.FC = () => {
                                 ))}
                             </ul>
                         </li>
+
                         <li>
                             <button
-                                className="flex items-center w-full p-2 rounded-lg hover:bg-gray-700 text-left"
+                                className={`flex items-center ${isSectionsOpen || isThermalCircuitsOpen || isDevicesOpen ? 'w-[280px]' : 'w-[210px]'} p-2 rounded-lg hover:bg-gray-700 text-left transition-width duration-300`}
                                 onClick={toggleThermalCircuits}
                             >
                                 <FaThermometerHalf className="mr-2"/>
                                 Тепловые контуры
-                                <FaChevronDown className={`ml-2 transition-transform duration-300 ${isThermalCircuitsOpen ? 'rotate-180' : ''} text-xs`} />
+                                <FaChevronDown
+                                    className={`ml-2 transition-transform duration-300 ${isThermalCircuitsOpen ? 'rotate-180' : ''} text-xs`}/>
                             </button>
                             <ul className={`transition-max-height duration-300 ease-in-out overflow-hidden ${isThermalCircuitsOpen ? 'max-h-40' : 'max-h-0'}`}>
                                 {thermalCircuits.map((circuit) => (
                                     <li key={circuit.id}>
-                                        <Link to={`/building/thermalCircuit/${circuit.id}`} className="flex items-center p-2 pl-8 rounded-lg hover:bg-gray-700 whitespace-nowrap">
+                                        <Link to={`/building/thermalCircuit/${circuit.id}`}
+                                              className="flex items-center p-2 pl-8 rounded-lg hover:bg-gray-700 whitespace-nowrap">
                                             <FaThermometerHalf className="mr-2"/>
                                             {circuit.label}
                                         </Link>
@@ -105,44 +112,53 @@ const LeftMenu: React.FC = () => {
                                 ))}
                             </ul>
                         </li>
+
                         <li>
                             <button
-                                className="flex items-center w-full p-2 rounded-lg hover:bg-gray-700 text-left"
+                                className={`flex items-center ${isSectionsOpen || isThermalCircuitsOpen || isDevicesOpen ? 'w-[280px]' : 'w-[210px]'} p-2 rounded-lg hover:bg-gray-700 text-left transition-width duration-300`}
                                 onClick={toggleDevices}
                             >
                                 <FaTools className="mr-2"/>
                                 Устройства
-                                <FaChevronDown className={`ml-2 transition-transform duration-300 ${isDevicesOpen ? 'rotate-180' : ''} text-xs`} />
+                                <FaChevronDown
+                                    className={`ml-2 transition-transform duration-300 ${isDevicesOpen ? 'rotate-180' : ''} text-xs`}/>
                             </button>
                             <ul className={`transition-max-height duration-300 ease-in-out overflow-hidden ${isDevicesOpen ? 'max-h-40' : 'max-h-0'}`}>
                                 <li>
-                                    <Link to="/building/devices/" className="flex items-center p-2 pl-8 rounded-lg hover:bg-gray-700 whitespace-nowrap">
+                                    <Link to="/building/devices/"
+                                          className="flex items-center p-2 pl-8 rounded-lg hover:bg-gray-700 whitespace-nowrap">
                                         <FaBug className="mr-2"/>
                                         Датчики
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link to="/building/controllers" className="flex items-center p-2 pl-8 rounded-lg hover:bg-gray-700 whitespace-nowrap">
+                                    <Link to="/building/controllers"
+                                          className="flex items-center p-2 pl-8 rounded-lg hover:bg-gray-700 whitespace-nowrap">
                                         <FaMicrochip className="mr-2"/>
                                         Контроллеры
                                     </Link>
                                 </li>
                             </ul>
                         </li>
+
                         <li>
-                            <Link to="/building/incidents" className="flex items-center p-2 rounded-lg hover:bg-gray-700 whitespace-nowrap">
+                            <Link to="/building/incidents"
+                                  className={`flex items-center ${isSectionsOpen || isThermalCircuitsOpen || isDevicesOpen ? 'w-[280px]' : 'w-[210px]'} p-2 rounded-lg hover:bg-gray-700 whitespace-nowrap transition-width duration-300`}>
                                 <FaExclamationTriangle className="mr-2"/>
                                 Инциденты
                             </Link>
                         </li>
+
                         <li>
-                            <Link to="/building/users" className="flex items-center p-2 rounded-lg hover:bg-gray-700 whitespace-nowrap">
+                            <Link to="/building/users"
+                                  className={`flex items-center ${isSectionsOpen || isThermalCircuitsOpen || isDevicesOpen ? 'w-[280px]' : 'w-[210px]'} p-2 rounded-lg hover:bg-gray-700 whitespace-nowrap transition-width duration-300`}>
                                 <FaUser className="mr-2"/>
                                 Пользователи
                             </Link>
                         </li>
                     </ul>
                 </nav>
+
             </div>
         </div>
     );
