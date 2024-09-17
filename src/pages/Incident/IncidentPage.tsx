@@ -121,27 +121,7 @@ const IncidentPage: React.FC = () => {
         setIncidentHistoryModalOpen(false);
         setSelectedIncident(null);
     };
-    const changeIncidentStatus = () => {
-        if (selectedIncident) {
-            setLoading(true);
-            setTimeout(() => {
 
-                const newStatus = selectedIncident.status === 'Активный' ? 'Устранен' : 'Активный';
-
-
-                const updatedIncidents = incidents.map((incident) =>
-                    incident.id === selectedIncident.id
-                        ? { ...incident, status: newStatus }
-                        : incident
-                );
-
-                console.log('Пользователь', user.fullName, 'поменял статус инцидента', selectedIncident.id, 'На', newStatus);
-                setIncidents(updatedIncidents);
-                setLoading(false);
-                closeStatusModal();
-            }, 100);
-        }
-    };
 
 
 

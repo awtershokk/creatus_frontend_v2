@@ -40,6 +40,7 @@ const IncidentDetailsModal: React.FC<IncidentDetailsModalProps> = ({ incident, o
             onClose={onClose}
             onSubmit={onClose}
             cancelButtonLabel='Закрыть'
+            wight='max-w-[800px]'
         >
             <div className="text-black w-full space-y-2">
                 <p>

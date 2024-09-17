@@ -9,6 +9,7 @@ interface ModalTemplateProps {
     children: React.ReactNode;
     loading: boolean;
     cancelButtonLabel?: string;
+    wight?: string;
 }
 
 const ModalTemplate: React.FC<ModalTemplateProps> = ({
@@ -18,8 +19,9 @@ const ModalTemplate: React.FC<ModalTemplateProps> = ({
                                                          onSubmit,
                                                          children,
                                                          loading,
-                                                         cancelButtonLabel = 'Отмена', // Default value for the cancel button label
-                                                     }) => {
+                                                         cancelButtonLabel = 'Отмена',
+                                                         wight = 'max-w-[500px]',
+}) => {
     const [showModal, setShowModal] = useState(false);
 
     useEffect(() => {
@@ -34,7 +36,7 @@ const ModalTemplate: React.FC<ModalTemplateProps> = ({
     return (
         <div className={`fixed inset-0 flex items-center justify-center z-50 transition-opacity duration-300 ${showModal ? 'opacity-100' : 'opacity-0'}`}>
             <div className="absolute inset-0 bg-black opacity-50" onClick={handleClose}></div>
-            <div className={`relative bg-white rounded-lg shadow-lg w-full max-w-[800px] z-10 transform transition-transform duration-300 ${showModal ? 'scale-100' : 'scale-95'}`}>
+            <div className={`relative bg-white rounded-lg shadow-lg w-full ${wight} z-10 transform transition-transform duration-300 ${showModal ? 'scale-100' : 'scale-95'}`}>
                 <div className="bg-gray-800 px-6 py-4 rounded-t-lg w-full">
                     <div className="flex justify-between items-center">
                         <h2 className="text-xl font-semibold text-white">{headerTitle}</h2>

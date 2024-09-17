@@ -59,6 +59,7 @@ const StatusChangeModal: React.FC<StatusChangeModalProps> = ({
             onClose={onClose}
             onSubmit={changeIncidentStatus}
             loading={loading}
+            wight='max-w-[600px]'
         >
             <p className="text-black">
                 Поменять статус у инцидента № {incidentId} <strong>{incidentDescription}</strong> на объекте{' '}
