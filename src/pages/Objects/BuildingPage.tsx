@@ -226,6 +226,7 @@ const BuildingPage = () => {
                         <ItemTable
                             data={responsiblePersons}
                             headers={headers}
+                            tableStyles = 'table-auto border-collapse'
                         />
                     </div>
 

@@ -71,6 +71,7 @@ const UsersPage = () => {
                 <ItemTable
                     data={users}
                     headers={headers}
+                    tableStyles = 'table-auto border-collapse'
                 />
             </div>
             )}
