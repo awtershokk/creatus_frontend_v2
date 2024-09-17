@@ -40,12 +40,6 @@ function GraphPage({ selectedRoomId }) {
     };
 
     const createChartDataWithColors = (labels, data, limits, title) => {
-        const borderColors = data.map(value => {
-            if (value > limits.max || value < limits.min) {
-                return 'red';
-            }
-            return 'rgb(54, 162, 235)';
-        });
 
         return {
             labels,
@@ -53,7 +47,7 @@ function GraphPage({ selectedRoomId }) {
                 {
                     label: `Калиброванная ${title}`,
                     data: data,
-                    borderColor: borderColors,
+                    borderColor: 'rgb(54, 162, 235)',
                     backgroundColor: 'rgba(54, 162, 235, 0.5)',
                     segment: {
                         borderColor: (ctx) => {
@@ -138,7 +132,7 @@ function GraphPage({ selectedRoomId }) {
                     temperatureData = filteredRecordings.map(record => record.temperature);
                     humidityData = filteredRecordings.map(record => record.humidity);
                 } else {
-                    // Фильтрация по времени (день, неделя, месяц)
+                    // Фильтрация по день, неделя, месяц
                     switch (timeRange) {
                         case 'day':
                             filteredRecordings = recordings.filter(record =>

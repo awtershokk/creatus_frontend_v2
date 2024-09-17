@@ -5,9 +5,10 @@ interface ObjectTableProps {
     data: { id: number; title: string; value: string }[];
     ButtonComponent: ({ onClick }: { onClick: (id: number) => void }) => JSX.Element;
     onRowClick: (id: number) => void;
+
 }
 
-const ObjectTable = ({ title, data, ButtonComponent, onRowClick }: ObjectTableProps) => {
+const ObjectTable = ({ title, data, ButtonComponent, onRowClick}: ObjectTableProps) => {
     return (
         <div className="flex mt-2 z-10">
             <div className="w-[550px]">
