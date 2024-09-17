@@ -50,10 +50,10 @@ const ControllerPage = () => {
             </div>
             </div>
             <ItemTable
-    data={controllers}
-    headers={headers}
-
-    />
+                data={controllers}
+                headers={headers}
+                tableStyles = 'table-auto border-collapse'
+            />
     </div>
                 )}
     </DefaultLayout>
