@@ -258,6 +258,13 @@ const IncidentPage: React.FC = () => {
                     loading={loading}
                     incident={selectedIncident}
                     onClose={closeHistoryModal}
+                    incidents={incidents}
+                    setIncidents={setIncidents}
+                    selectedIncident={selectedIncident}
+                    user={user.fullName}
+
+
+                    setLoading={setLoading}
                 />
             )}
         </DefaultLayout>

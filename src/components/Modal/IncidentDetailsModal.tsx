@@ -1,9 +1,10 @@
-import React from 'react';
+import React, {useState} from 'react';
 import ModalTemplate from "./ModalTemplate.tsx";
 import ItemTable from "../Tables/ItemTable.tsx";
 import moment from 'moment';
-import { FaTelegramPlane } from "react-icons/fa";
+import {FaCheckCircle, FaExclamationTriangle, FaTelegramPlane} from "react-icons/fa";
 import BlueLink from "../Text/BlueLink.tsx";
+import StatusChangeModal from "./Edit/StatusChangeModal.tsx";
 
 interface IncidentDetailsModalProps {
     incident: {
@@ -15,22 +16,47 @@ interface IncidentDetailsModalProps {
         status: string;
         history: Array<{ date: string; time: string; user: string; status: string }>;
     };
+    incidents: any[];
+    setIncidents: (incidents: any[]) => void;
+    selectedIncident: any;
+    user: { fullName: string };
     loading: boolean;
     onClose: () => void;
 }
 
-const IncidentDetailsModal: React.FC<IncidentDetailsModalProps> = ({ incident, onClose }) => {
+const IncidentDetailsModal: React.FC<IncidentDetailsModalProps> = ({
+                                                                       incident, onClose, incidents, setIncidents, selectedIncident, user,
+                                                                   }) => {
     const headers = {
         'Дата': 'date',
         'Время': 'time',
         'Пользователь': 'user',
         'Статус': 'status',
     };
+    const [isStatusChangeModalOpen, setStatusChangeModalOpen] = useState(false);
+    const [currentStatus, setCurrentStatus] = useState(incident.status);
 
     const isHistoryEmpty = incident.history.length === 0 ||
-        incident.history.every(entry =>
-            !entry.date
+        incident.history.every(entry => !entry.date);
+
+    const openStatusModal = () => {
+        setStatusChangeModalOpen(true);
+    };
+
+    const closeStatusModal = () => {
+        setStatusChangeModalOpen(false);
+    };
+
+    const handleStatusChange = (newStatus: string) => {
+
+        setCurrentStatus(newStatus);
+
+
+        const updatedIncidents = incidents.map((inc) =>
+            inc.id === incident.id ? { ...inc, status: newStatus } : inc
         );
+        setIncidents(updatedIncidents);
+    };
 
     return (
         <ModalTemplate
@@ -46,11 +72,37 @@ const IncidentDetailsModal: React.FC<IncidentDetailsModalProps> = ({ incident, o
                 <p>
                     <strong>Инцидент:</strong> {incident.description}
                 </p>
+                <div>
+                    <p className="inline mt-2">
+                        <strong>Текущий статус:</strong>
+                    </p>
+                    <a
+                        href="#"
+                        className={`underline p-1.5 border-none bg-transparent ${
+                            currentStatus === 'Активный' ? 'text-red-500' : 'text-green-500'
+                        }`}
+                        onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
+                            e.preventDefault();
+                            openStatusModal();
+                        }}
+                    >
+                        {currentStatus === 'Активный' ? (
+                            <>
+                                <FaExclamationTriangle className="text-red-500 mr-1 inline"/> {currentStatus}
+                            </>
+                        ) : (
+                            <>
+                                <FaCheckCircle className="text-green-500 mr-1 inline"/> {currentStatus}
+                            </>
+                        )}
+                    </a>
+                </div>
+
                 <p>
                     <strong>Время возникновения:</strong>{' '}
                     {moment(`${incident.dateI} ${incident.time}`, 'DD.MM.YYYY HH:mm').format('DD.MM.YYYY HH:mm')}
                 </p>
-                {incident.status === 'Устранен' && (
+                {currentStatus === 'Устранен' && (
                     <p>
                         <strong>Время устранения:</strong>{' '}
                         {moment(`${incident.dateI} ${incident.time}`, 'DD.MM.YYYY HH:mm').format('DD.MM.YYYY HH:mm')}
@@ -80,16 +132,31 @@ const IncidentDetailsModal: React.FC<IncidentDetailsModalProps> = ({ incident, o
                     <h6 className="text-base mt-4">
                         Уведомление о инциденте успешно отправлено в
                         <span className="text-[#0088cc] font-bold ml-1 mr-1">
-                            <FaTelegramPlane className="inline mr-0.5 text-blue-500" />
+                            <FaTelegramPlane className="inline mr-0.5 text-blue-500"/>
                             Telegram
                         </span>
-                        пользователю <BlueLink to="#" text='@username' /> (Владислав Сучков)
+                        пользователю <BlueLink to="#" text='@username'/> (Владислав Сучков)
                     </h6>
                 </div>
+                {isStatusChangeModalOpen && selectedIncident && (
+                    <StatusChangeModal
+                        incidentId={incident.id}
+                        incidentDescription={incident.description}
+                        object={incident.object}
+                        currentStatus={currentStatus}
+                        incidents={incidents}
+                        setIncidents={setIncidents}
+                        selectedIncident={selectedIncident}
+                        user={user}
+                        onClose={closeStatusModal}
+                        onStatusChange={handleStatusChange}
+                        loading={false}
+                        setLoading={() => false}
+                    />
+                )}
             </div>
         </ModalTemplate>
     );
 };
 
 export default IncidentDetailsModal;
-
