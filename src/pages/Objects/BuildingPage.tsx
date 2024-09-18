@@ -19,6 +19,9 @@ import DeleteThermalCircuitModalManager from "../../components/Modal/Manager/Del
 import DeleteSectionModalManager from "../../components/Modal/Manager/DeleteSectionModalManager.tsx";
 import AddThermalCircuitModal from "../../components/Modal/Add/AddThermalCircuitModal.tsx";
 import LoadingSpinner from "../../components/Menu/LoadingSpinner.tsx";
+import {Building, transformBuildingData} from "../../models/Building.ts";
+
+
 
 const BuildingPage = () => {
     const [building, setBuilding] = useState<Array<{ id: number, title: string, value: string | number }>>([]);
@@ -41,12 +44,15 @@ const BuildingPage = () => {
     const [modalThermalCircuitId, setModalThermalCircuitId] = useState<number | null>(null);
     const [modalSectionId, setModalSectionId] = useState<number | null>(null);
     const buildingId = 1;
-
+    const [buildingData, setBuildingData] = useState<Building[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 
     const getData = async () => {
         try {
-            const buildingData = await fetchBuilding(buildingId);
+            const responsebuildingData = await fetchBuilding(buildingId);
+            setBuildingData(responsebuildingData);
+            const buildingData = transformBuildingData(responsebuildingData)
+            console.log(buildingData)
             setBuilding(buildingData);
             const labelItem = buildingData.find(item => item.title === 'Наименование');
             localStorage.setItem('building', JSON.stringify({label: labelItem?.value, icon: 'FaRegBuilding'}));
@@ -233,7 +239,7 @@ const BuildingPage = () => {
                     {/* Модальные окна */}
                     {isEditBuildingModalOpen && selectedBuilding && (
                         <BuildingEditModal
-                            building={selectedBuilding}
+                            building={buildingData}
                             buildingId={buildingId}
                             onClose={handleEditBuildingModalClose}
                             onUpdate={handleUpdateBuilding}

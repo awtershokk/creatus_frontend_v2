@@ -17,7 +17,7 @@ const DeleteRoomModalManager: React.FC<RoomModalManagerProps> = ({ roomId, onClo
     const [roomName, setRoomName] = useState('');
     const [loading, setLoading] = useState(true);
 
-    // Fetch room data and measuring points
+
     const fetchData = async () => {
         try {
             const room = await fetchRoom(roomId);
@@ -27,7 +27,7 @@ const DeleteRoomModalManager: React.FC<RoomModalManagerProps> = ({ roomId, onClo
             const fetchedMeasuringPoints = await fetchMeasuringPoints(roomId);
             setMeasuringPoints(fetchedMeasuringPoints);
 
-            // Show appropriate modal based on the existence of measuring points
+
             if (fetchedMeasuringPoints.length === 0) {
                 setIsDeleteRoomModalOpen(true);
             } else {
