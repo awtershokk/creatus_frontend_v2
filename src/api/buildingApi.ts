@@ -1,21 +1,25 @@
 import api from './api';
-import { Building, transformBuildingData } from '../models/Building';
+import { Building } from '../models/Building';
 import {ResponsiblePerson} from "../models/ResponsiblePerson.ts";
 import {BuildingInfo, BuildingResponse} from "../models/Public.ts";
+import {BuildingForm} from "../components/Modal/Edit/EditBuildingModal.tsx";
 
 export const fetchBuilding = async (buildingId: number) => {
     try {
         const response = await api.get(`/building/${buildingId}`);
         const building: Building = response.data.data;
-        return transformBuildingData(building);
+        console.log('До', building)
+        return building;
     } catch (error) {
         throw error;
     }
 };
 
-export const updateBuilding = async (buildingId: number, updatedBuilding: Building): Promise<Building> => {
+export const updateBuilding = async (buildingId: number, updatedBuilding: BuildingForm): Promise<Building> => {
     try {
+
         const response = await api.put(`/building/${buildingId}`, updatedBuilding);
+        console.log('суета',response.data.data);
         return response.data.data;
     } catch (error) {
         throw error;

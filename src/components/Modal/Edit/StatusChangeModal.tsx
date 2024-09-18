@@ -12,6 +12,7 @@ interface StatusChangeModalProps {
     user: { fullName: string };
     onClose: () => void;
     loading: boolean;
+    onStatusChange: (newStatus: string) => void;
     setLoading: (loading: boolean) => void;
 }
 
@@ -27,6 +28,8 @@ const StatusChangeModal: React.FC<StatusChangeModalProps> = ({
                                                                  onClose,
                                                                  loading,
                                                                  setLoading,
+                                                                 onStatusChange,
+
                                                              }) => {
     const newStatus = currentStatus === 'Активный' ? 'Устранен' : 'Активный';
 
@@ -35,6 +38,7 @@ const StatusChangeModal: React.FC<StatusChangeModalProps> = ({
 
 
     const changeIncidentStatus = () => {
+        onStatusChange(newStatus);
         if (selectedIncident) {
             setLoading(true);
             setTimeout(() => {

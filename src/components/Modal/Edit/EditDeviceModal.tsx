@@ -15,6 +15,7 @@ const EditDeviceModal: React.FC<EditDeviceModalProps> = ({ device, onClose, onSa
 
     useEffect(() => {
         setFormData(device);
+
     }, [device]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

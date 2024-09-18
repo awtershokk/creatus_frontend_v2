@@ -85,45 +85,44 @@ const SectionPage = () => {
             {isLoading ? (
                 <LoadingSpinner/>
             ) : (
-            <div className="flex justify-between">
-            <div className="w-1/2">
-                    <Label text="Информация о секции" />
-                    <ObjectTable
-                        title="Свойства секции"
-                        data={section}
-                        ButtonComponent={EditButton}
-                    />
+                <div className="flex justify-between overflow-x-hidden">
+                    <div className="w-1/2">
+                        <Label text="Информация о секции"/>
+                        <ObjectTable
+                            title="Свойства секции"
+                            data={section}
+                            ButtonComponent={EditButton}
+                        />
+                    </div>
+                    <div className="w-full flex flex-col items-end mt-8 mr-8">
+                        <ChildElementsTable
+                            infoData={rooms}
+                            tableTitle="Помещения"
+                            ButtonComponent={() => (<AddButton onClick={handleAddRoomInSectionModalOpen}/>)}
+                            LinkComponent={BlueLink}
+                            onDelete={handleDeleteRoomClick}
+                        />
+                    </div>
+                    {isAddRoomInSectionModal && (
+                        <AddRoomInSectionModal
+                            sectionId={sectionId}
+                            onClose={handleAddRoomInSectionModalClose}
+                            onSubmit={() => {
+                                getData();
+                                handleAddRoomInSectionModalClose();
+                            }}
+                        />
+                    )}
+                    {modalRoomId !== null && (
+                        <DeleteRoomModalManager
+                            roomId={modalRoomId}
+                            onClose={() => {
+                                handleModalRoomClose();
+                            }}
+                        />
+                    )}
                 </div>
-                <div className="w-full flex flex-col items-end mt-8 mr-8">
-                    <ChildElementsTable
-                        infoData={rooms}
-                        tableTitle="Помещения"
-                        ButtonComponent={() => <AddButton onClick={handleAddRoomInSectionModalOpen} />}
-                        LinkComponent={BlueLink}
-                        onDelete={handleDeleteRoomClick}
-                    />
-                </div>
-                {isAddRoomInSectionModal && (
-                    <AddRoomInSectionModal
-                        sectionId={sectionId}
-                        onClose={handleAddRoomInSectionModalClose}
-                        onSubmit={() => {
-                            getData();
-                            handleAddRoomInSectionModalClose();
-                        }}
-                    />
-                )}
-                {modalRoomId !== null && (
-                    <DeleteRoomModalManager
-                        RoomId={modalRoomId}
-                        onClose={() => {
-                            getData();
-                            handleModalRoomClose();
-                        }}
-                    />
-                )}
-            </div>
-                )}
+            )}
         </DefaultLayout>
     );
 };

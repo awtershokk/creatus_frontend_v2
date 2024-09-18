@@ -4,7 +4,7 @@ interface ChildElementsTableProps {
     infoData: { id: number; title: string; properties: string; delete: string }[];
     tableTitle: string;
     ButtonComponent: () => JSX.Element;
-    LinkComponent: (props: { to: string; text: string; className?: string }) => JSX.Element;
+    LinkComponent: (props: { to: string; text: string; className?: string; onClick?: () => void }) => JSX.Element;
     onDelete: (id: number) => void;
 }
 
@@ -26,12 +26,12 @@ const ChildElementsTable: React.FC<ChildElementsTableProps> = ({ infoData, table
                                 <div className="border-l border-gray-300 h-auto mx-2"></div>
                                 <div className="w-1/2 p-2 flex justify-between">
                                     <LinkComponent to={item.to} text={item.properties} className="text-gray-800 underline" />
-                                    <button
+                                    <LinkComponent
+                                        to="#"
+                                        text={item.delete}
                                         className="text-red-600 underline"
                                         onClick={() => onDelete(item.id)}
-                                    >
-                                        {item.delete}
-                                    </button>
+                                    />
                                 </div>
                             </div>
                         ))}
