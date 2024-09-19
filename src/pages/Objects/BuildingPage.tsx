@@ -111,9 +111,8 @@ const BuildingPage = () => {
         setSelectedBuilding(null);
     };
 
-    const handleUpdateBuilding = async (updatedBuilding: any) => {
+    const handleUpdateBuilding = async () => {
         try {
-            await updateBuilding(buildingId, updatedBuilding);
             await getData();
             handleEditBuildingModalClose();
         } catch (error) {

@@ -34,9 +34,10 @@ const EditSectionModal: React.FC<EditSectionModalProps> = ({ sectionId, section,
         try {
             const newErrors: { [key: string]: string } = {};
 
-            if (!formData.label) {
+            if (!formData.label || formData.label.trim() === '') {
                 newErrors.label = 'Наименование не должно быть пустым.';
             }
+
             if (!formData.area || formData.area <=0 ) {
                 newErrors.area = 'Площадь не должна быть пустой, быть равной нулю или иметь отрицательное значение.';
             }
