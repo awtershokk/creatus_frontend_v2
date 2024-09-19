@@ -52,7 +52,7 @@ const BuildingPage = () => {
             const responsebuildingData = await fetchBuilding(buildingId);
             setBuildingData(responsebuildingData);
             const buildingData = transformBuildingData(responsebuildingData)
-            console.log(buildingData)
+
             setBuilding(buildingData);
             const labelItem = buildingData.find(item => item.title === 'Наименование');
             localStorage.setItem('building', JSON.stringify({label: labelItem?.value, icon: 'FaRegBuilding'}));
@@ -145,12 +145,12 @@ const BuildingPage = () => {
     };
 
     const handleDeleteSectionClick = (sectionId: number) => {
-        console.log(sectionId);
+
         setModalSectionId(sectionId);
     };
 
     const handleDeleteThermalCircuitClick = (thermalCircuitId: number) => {
-        console.log(thermalCircuitId);
+
         setModalThermalCircuitId(thermalCircuitId);
     };
 
@@ -183,7 +183,6 @@ const BuildingPage = () => {
     };
 
     useEffect(() => {
-        console.log('Building state updated:', building);
     }, [building]);
 
     return (
