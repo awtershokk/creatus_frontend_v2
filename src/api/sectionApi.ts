@@ -2,6 +2,7 @@ import api from './api';
 import { Section, transformSectionData } from "../models/Section.ts";
 
 
+
 export const fetchSections = async (buildingId: number) => {
     try {
         const response = await api.get(`/section/${buildingId}`);
@@ -34,6 +35,16 @@ export const createSection = async (section: { label: string, area: number, volu
         const response = await api.post(`/section/1`, section);
         return response.data;
 
+    } catch (error) {
+        throw error;
+    }
+};
+export const updateSection = async (SectionID: number, updatedSection: Section): Promise<Section> => {
+    try {
+
+        const response = await api.put(`/section/1/${SectionID}`, updatedSection);
+        console.log('суета',response.data.data);
+        return response.data.data;
     } catch (error) {
         throw error;
     }
