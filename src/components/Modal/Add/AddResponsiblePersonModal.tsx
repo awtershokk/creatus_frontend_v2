@@ -358,6 +358,7 @@ const AddResponsiblePersonModal: React.FC<AddResponsiblePersonModalProps> = ({ o
                                 checked={selectAllIncidentTypes}
                                 onChange={handleSelectAllIncidentTypes}
                                 label="Выбрать все типы инцидентов"
+                                showDivider={false}
                             />
                             {['Датчик', 'Точка измерения', 'Помещение'].map(type => (
                                 <div key={type}>
