@@ -13,13 +13,17 @@ import AddRoomInSectionModal from "../../components/Modal/Add/AddRoomInSectionMo
 import DeleteRoomModalManager from "../../components/Modal/Manager/DeleteRoomModalManager.tsx";
 import LoadingSpinner from "../../components/Menu/LoadingSpinner.tsx";
 
+import EditSectionModal from "../../components/Modal/Edit/EditSectionModal.tsx";
+
+
+
 const SectionPage = () => {
     const { sectionId } = useParams();
     const [section, setSection] = useState<Array<{ id: number, title: string, value: string | number }>>([]);
-    const [sectionData, setSectionData] = useState<any>(null);  // Данные секции
+    const [sectionData, setSectionData] = useState<any>(null);
     const [rooms, setRooms] = useState<Array<{ id: number, title: string, value: string, value2: string }>>([]);
     const [isAddRoomInSectionModal, setIsAddRoomInSectionModal] = useState(false);
-
+    const [isEditSectionModalOpen, setIsEditSectionModalOpen] = useState(false);
     const [modalRoomId , setModalRoomId] =useState<number | null>(null);
 
     const [isLoading, setIsLoading] = useState(true);
@@ -42,6 +46,7 @@ const SectionPage = () => {
                 to: `room/${room.id}`
             }));
             setRooms(formattedRooms);
+
             setIsLoading(false);
         } catch (error) {
             console.error('Ошибка получения данных:', error);
@@ -52,7 +57,14 @@ const SectionPage = () => {
     useEffect(() => {
         getData();
     }, [sectionId]);
-
+    const handleUpdateSection = async () => {
+        try {
+            await getData();
+            handleEditSectionModalClose();
+        } catch (error) {
+            console.error('Ошибка обновления здания:', error);
+        }
+    };
     const handleAddRoomInSectionModalOpen = () => {
         setIsAddRoomInSectionModal(true);
     };
@@ -68,7 +80,15 @@ const SectionPage = () => {
     const handleModalRoomClose = () => {
         setModalRoomId(null);
     };
+    const handleEditButtonClick = (sectionItem: any) => {
+        setSectionData(sectionItem);
+        setIsEditSectionModalOpen(true);
+    };
 
+    const handleEditSectionModalClose = () => {
+        setIsEditSectionModalOpen(false);
+        setSectionData(null);
+    };
 
     if (isLoading) {
         return (
@@ -91,7 +111,7 @@ const SectionPage = () => {
                         <ObjectTable
                             title="Свойства секции"
                             data={section}
-                            ButtonComponent={EditButton}
+                            ButtonComponent={() => <EditButton onClick={() => handleEditButtonClick(section)}/>}
                         />
                     </div>
                     <div className="w-full flex flex-col items-end mt-8 mr-8">
@@ -121,6 +141,15 @@ const SectionPage = () => {
                             }}
                         />
                     )}
+                    {isEditSectionModalOpen && sectionData && (
+                        <EditSectionModal
+                            sectionId={sectionId}
+                            section={section}
+                            onClose={handleEditSectionModalClose}
+                            onUpdate={handleUpdateSection}
+                        />
+                    )}
+
                 </div>
             )}
         </DefaultLayout>
