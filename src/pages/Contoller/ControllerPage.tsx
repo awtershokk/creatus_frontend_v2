@@ -5,10 +5,17 @@ import ItemTable from '../../components/Tables/ItemTable.tsx';
 import {Controller} from "../../models/Controller.tsx";
 import {fetchControllers} from "../../api/controllerApi.ts";
 import LoadingSpinner from "../../components/Menu/LoadingSpinner.tsx";
+import {useDispatch} from "react-redux";
+import {setBreadcrumb} from "../../store/slices/breadcrumbSlice.ts";
 
 const ControllerPage = () => {
     const [controllers, setContollers] = useState<Controller[]>([]);
-    localStorage.setItem('controllers', JSON.stringify({ label: 'Контроллеры', icon: 'FaMicrochip' }));
+    const dispatch = useDispatch();
+    dispatch(setBreadcrumb({
+        key: 'controllers',
+        label:'Контроллеры',
+        icon: 'FaMicrochip',
+    }));
 
     const [isLoading, setIsLoading] = useState(true);
 
@@ -45,15 +52,16 @@ const ControllerPage = () => {
             ) : (
             <div className="">
         <div className="">
-        <div className="flex items-center">
+        <div className="flex items-center mb-2">
         <Label text="Контроллеры"/>
             </div>
             </div>
             <ItemTable
-                data={controllers}
-                headers={headers}
-                tableStyles = 'table-auto border-collapse'
-            />
+    data={controllers}
+    headers={headers}
+    tableStyles = 'table-auto border-collapse'
+
+    />
     </div>
                 )}
     </DefaultLayout>

@@ -15,7 +15,7 @@ interface BindDeviceModalProps {
 const BindMeasuringPointModal: React.FC<BindDeviceModalProps> = ({ deviceId, deviceLabel, measuringPointId, onClose, onSuccess }) => {
     const [loading, setLoading] = useState(false);
     const [measuringPoints, setMeasuringPoints] = useState<any[]>([]);
-    const [selectedMeasuringPointId, setSelectedMeasuringPointId] = useState<number>(measuringPointId);
+    const [selectedMeasuringPointId, setSelectedMeasuringPointId] = useState<string, number>("");
 
     useEffect(() => {
         const fetchMeasuringPoints = async () => {
@@ -60,6 +60,9 @@ const BindMeasuringPointModal: React.FC<BindDeviceModalProps> = ({ deviceId, dev
                 onChange={(e) => setSelectedMeasuringPointId(Number(e.target.value))}
                 className="w-full p-2 border border-gray-300 rounded-md text-black focus:outline-none focus:ring-2 focus:ring-gray-400 bg-white"
             >
+                <option value="" disabled>
+                    Выберите точку измерения
+                </option>
                 {measuringPoints.map(point => (
                     <option key={point.id} value={point.id}>
                         {point.label} ({point.roomLabel})
@@ -68,6 +71,5 @@ const BindMeasuringPointModal: React.FC<BindDeviceModalProps> = ({ deviceId, dev
             </select>
         </ModalTemplate>
     );
-};
-
+}
 export default BindMeasuringPointModal;

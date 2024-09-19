@@ -20,7 +20,7 @@ import ControllerOptionsPage from "./pages/Contoller/ControllerOptionsPage.jsx";
 import UserPage from "./pages/User/UserPage.tsx";
 import ControllerSchedulePage from "./pages/Contoller/ControllerSchedulePage.tsx";
 const App = () => {
-    const { refresh } = useAuth();
+    const { refresh, user } = useAuth();
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {

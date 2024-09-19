@@ -19,6 +19,8 @@ import {Device} from "../../models/Device.tsx";
 import DefaultButton from "../../components/Buttons/DefaultButton.tsx";
 import UnbindDeviceModal from "../../components/Modal/Bind/UnbindDeviceModal.tsx";
 import LoadingSpinner from "../../components/Menu/LoadingSpinner.tsx";
+import {setBreadcrumb} from "../../store/slices/breadcrumbSlice.ts";
+import {useDispatch} from "react-redux";
 
 const MeasuringPointPage = () => {
     const {measuringPointId} = useParams();
@@ -33,7 +35,6 @@ const MeasuringPointPage = () => {
     const [totalMeasurements, setTotalMeasurements] = useState<number>(0);
     const [displayedMeasurements, setDisplayedMeasurements] = useState<number>(0);
 
-    // Состояния для фильтров
     const [dateRange, setDateRange] = useState<{ start: Date | null; end: Date | null }>({start: null, end: null});
     const [timeRange, setTimeRange] = useState<{ start: Date | null; end: Date | null }>({start: null, end: null});
     const [temperatureDeviation, setTemperatureDeviation] = useState<{
@@ -56,16 +57,32 @@ const MeasuringPointPage = () => {
 
     const [isLoading, setIsLoading] = useState(true);
 
+    const dispatch = useDispatch();
+
     const getData = async () => {
         try {
             const measuringPointData = await fetchMeasuringPoint(measuringPointId);
             setMeasuringPoint(measuringPointData);
+
             const labelItem = measuringPointData.find(item => item.title === 'Наименование');
-            localStorage.setItem('measuringPoint', JSON.stringify({
+            dispatch(setBreadcrumb({
+                key: 'measuringPoint',
                 label: labelItem?.value,
                 icon: 'FaMapMarkerAlt',
                 id: labelItem?.id
             }));
+
+            const roomLabelItem = measuringPointData.find(item => item.title === 'Место установки');
+            const roomLabel = roomLabelItem ? roomLabelItem.value.props.text : null;
+            console.log('room', roomLabelItem)
+            dispatch(setBreadcrumb({
+                key: 'room',
+                label: roomLabel,
+                icon: 'FaDoorClosed',
+                id: roomLabelItem?.id
+            }));
+
+
 
             const measurementsData = await fetchMeasurementsMeasuringPoint(measuringPointId);
             setMeasurements(measurementsData);

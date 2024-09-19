@@ -1,6 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { FaUser, FaTools, FaChevronDown, FaBug, FaCogs, FaExclamationTriangle, FaMicrochip, FaBars, FaThermometerHalf } from 'react-icons/fa';
+import {
+    FaUser,
+    FaTools,
+    FaChevronDown,
+    FaBug,
+    FaCogs,
+    FaExclamationTriangle,
+    FaMicrochip,
+    FaBars,
+    FaThermometerHalf,
+    FaBell
+} from 'react-icons/fa';
 import { fetchSections } from '../../api/sectionApi.ts';
 import { fetchThermalCircuits } from '../../api/thermalCircuitApi.ts';
 
@@ -16,6 +27,10 @@ const LeftMenu: React.FC = () => {
     const thermalCircuitsRef = useRef<HTMLUListElement>(null);
     const devicesRef = useRef<HTMLUListElement>(null);
     const buildingId = 1;
+
+    const [hasUpdates, setHasUpdates] = useState(false);
+    const [isSwinging, setIsSwinging] = useState(false);
+
 
     useEffect(() => {
         const loadSections = async () => {
@@ -36,8 +51,14 @@ const LeftMenu: React.FC = () => {
             }
         };
 
+        const checkForUpdates = () => {
+            setHasUpdates(true);
+        };
+
+
         loadSections();
         loadThermalCircuits();
+        checkForUpdates();
     }, [buildingId]);
 
     const calculateWidth = (element: HTMLUListElement | null): number => {
@@ -88,6 +109,16 @@ const LeftMenu: React.FC = () => {
         setIsThermalCircuitsOpen(!isThermalCircuitsOpen);
     };
 
+    useEffect(() => {
+        const intervalId = setInterval(() => {
+            setIsSwinging(true);
+
+            setTimeout(() => setIsSwinging(false), 1000);
+        }, 2000);
+
+        return () => clearInterval(intervalId);
+    }, []);
+
     return (
         <div className="bg-gray-800 text-white z-10 " style={{ maxWidth: `${menuWidth}px`, transition: 'max-width 0.3s ease' }}>
             <div className="flex flex-col flex-grow p-4 h-full">
@@ -97,10 +128,16 @@ const LeftMenu: React.FC = () => {
                 <nav className="flex-1 overflow-y-auto overflow-x-hidden">
                     <ul className="space-y-2">
                         <li>
-                            <Link to="/building/updates"
-                                  className="flex items-center p-2 rounded-lg hover:bg-gray-700 whitespace-nowrap">
+                            <Link
+                                to="/building/updates"
+                                className="flex items-center p-2 rounded-lg hover:bg-gray-700 whitespace-nowrap"
+                            >
                                 <FaCogs className="mr-2"/>
                                 Версия ПО
+                                {/*<FaBell*/}
+                                {/*    className={`ml-2 text-green-500 ${isSwinging ? 'animate-swingTop' : ''}`}*/}
+                                {/*    title="Есть обновления"*/}
+                                {/*/>*/}
                             </Link>
                         </li>
 
@@ -114,7 +151,8 @@ const LeftMenu: React.FC = () => {
                                 <FaChevronDown
                                     className={`ml-2 transition-transform duration-300 ${isSectionsOpen ? 'rotate-180' : ''} text-xs`}/>
                             </button>
-                            <ul ref={sectionsRef} className={`transition-max-height duration-300 ease-in-out overflow-hidden ${isSectionsOpen ? 'max-h-40' : 'max-h-0'} w-fit`}>
+                            <ul ref={sectionsRef}
+                                className={`transition-max-height duration-300 ease-in-out overflow-hidden ${isSectionsOpen ? 'max-h-40' : 'max-h-0'} w-fit`}>
                                 {sections.map((section) => (
                                     <li key={section.id}>
                                         <Link to={`/building/section/${section.id}`}

@@ -1,14 +1,16 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import * as Icons from 'react-icons/fa';
 
 const Breadcrumbs = () => {
     const location = useLocation();
+    const breadcrumbs = useSelector((state) => state.breadcrumbs.breadcrumbs);
 
-    const pathnames = location.pathname.split('/').filter(x => x);
+    const pathnames = location.pathname.split('/').filter((x) => x);
 
     const getBreadcrumbData = (segment) => {
-        const data = JSON.parse(localStorage.getItem(segment)) || null;
+        const data = breadcrumbs[segment] || null;
         if (!data) return null;
         return {
             label: data.label || segment,
@@ -27,7 +29,7 @@ const Breadcrumbs = () => {
                     label,
                     Icon,
                     path: `/${pathnames.slice(0, index + 1).join('/')}`,
-                    id
+                    id,
                 });
             }
         } else if (acc.length > 0) {
@@ -52,9 +54,9 @@ const Breadcrumbs = () => {
                                     )}
                                     {isLast ? (
                                         <span className="text-gray-300 flex items-center inline-flex">
-                                            {breadcrumb.Icon && <breadcrumb.Icon className="mr-1" />}
+                      {breadcrumb.Icon && <breadcrumb.Icon className="mr-1" />}
                                             {breadcrumb.label}
-                                        </span>
+                    </span>
                                     ) : (
                                         <Link to={breadcrumb.path} className="text-white hover:underline flex items-center inline-flex">
                                             {breadcrumb.Icon && <breadcrumb.Icon className="mr-1" />}
