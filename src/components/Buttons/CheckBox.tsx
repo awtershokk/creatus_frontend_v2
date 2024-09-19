@@ -3,7 +3,7 @@ import React from 'react';
 const CustomCheckbox = ({ checked, onChange, label, showDivider = true }) => {
     return (
         <>
-            <label className="block ml-4 relative cursor-pointer select-none flex items-center">
+            <label className="block ml-1 relative cursor-pointer select-none flex items-center">
                 <input
                     type="checkbox"
                     className="appearance-none h-5 w-5 border-2 border-gray-300 rounded-md checked:bg-blue-500 checked:border-blue-500 focus:outline-none transition-all duration-300"

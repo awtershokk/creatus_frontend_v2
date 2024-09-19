@@ -303,6 +303,7 @@ const AddResponsiblePersonModal: React.FC<AddResponsiblePersonModalProps> = ({ o
                         checked={selectAllNotifications}
                         onChange={handleSelectAllNotifications}
                         label="Выбрать все уведомления"
+                        showDivider={false}
                     />
                 </div>
 
