@@ -132,19 +132,27 @@ const ItemTable = ({
                 </tr>
                 </thead>
                 <tbody>
-                {tableData.map((item, rowIndex) => (
-                    <tr key={rowIndex} className={rowStyles}>
-                        {Object.entries(item).map(([columnName, value]) => (
-                            <td
-                                key={columnName}
-                                className={cellStyles}
-                                style={applyCellColor(value, columnName)}
-                            >
-                                {getCellContent(value, columnName)}
-                            </td>
-                        ))}
+                {tableData.length > 0 ? (
+                    tableData.map((item, rowIndex) => (
+                        <tr key={rowIndex} className={rowStyles}>
+                            {Object.entries(item).map(([columnName, value]) => (
+                                <td
+                                    key={columnName}
+                                    className={cellStyles}
+                                    style={applyCellColor(value, columnName)}
+                                >
+                                    {getCellContent(value, columnName)}
+                                </td>
+                            ))}
+                        </tr>
+                    ))
+                ) : (
+                    <tr>
+                        <td className={cellStyles} colSpan={Object.keys(headers).length}>
+                            <h1 className='text-black items-center justify-center flex'>Нет данных</h1>
+                        </td>
                     </tr>
-                ))}
+                )}
                 </tbody>
             </table>
         </div>

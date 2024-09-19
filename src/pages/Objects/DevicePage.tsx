@@ -9,10 +9,18 @@ import UnbindDeviceModal from "../../components/Modal/Bind/UnbindDeviceModal.tsx
 import BindMeasuringPointModal from "../../components/Modal/Bind/BindMeasuringPointModal.tsx";
 import EditDeviceModal from "../../components/Modal/Edit/EditDeviceModal.tsx";
 import LoadingSpinner from "../../components/Menu/LoadingSpinner.tsx";
+import {setBreadcrumb} from "../../store/slices/breadcrumbSlice.ts";
+import {useDispatch} from "react-redux";
 
 const DevicePage = () => {
+    const dispatch = useDispatch();
     const [devices, setDevices] = useState<Device[]>([]);
-    localStorage.setItem('devices', JSON.stringify({label: 'Датчики', icon: 'FaBug'}));
+
+    dispatch(setBreadcrumb({
+        key: 'devices',
+        label: 'Датчики',
+        icon: 'FaBug',
+    }));
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [isUnbindModalOpen, setIsUnbindModalOpen] = useState(false);
@@ -135,6 +143,7 @@ const DevicePage = () => {
                     <ItemTable
                         data={devices}
                         headers={headers}
+                        tableStyles = 'table-auto border-collapse'
                         onEditClick={handleEditDeviceClick}
                         onDeleteClick={handleDeleteDeviceClick}
                     />

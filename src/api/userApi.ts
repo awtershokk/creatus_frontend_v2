@@ -14,3 +14,11 @@ export const fetchUsers = async (
     }
 };
 
+export const addUser = async (userData: { username: string; password: string; fullName: string; role: string }): Promise<User> => {
+    try {
+        const response = await api.post('/user', userData);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};

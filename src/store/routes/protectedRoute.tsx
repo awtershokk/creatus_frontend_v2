@@ -1,7 +1,8 @@
 import { Navigate, Outlet } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { RootState } from '../store/store.ts';
+import { RootState } from '../store';
 import { useEffect, useState } from 'react';
+import LoadingPage from "../../pages/Error/LoadingPage.tsx";
 
 interface ProtectedRouteProps {
     allowedRoles: number[];
@@ -12,14 +13,22 @@ const ProtectedRoute = ({ allowedRoles }: ProtectedRouteProps) => {
     const user = useSelector((state: RootState) => state.auth.user);
 
     useEffect(() => {
+        const checkAuth = () => {
+            if (user) {
+                setIsLoading(false);
+            } else {
+                const token = localStorage.getItem('token');
+                if (!token) {
+                    setIsLoading(false);
+                }
+            }
+        };
 
-        const timer = setTimeout(() => setIsLoading(false), 100);
-        return () => clearTimeout(timer);
-    }, []);
+        checkAuth();
+    }, [user]);
 
     if (isLoading) {
-
-        return <div>Loading...</div>;
+        return <LoadingPage/>;
     }
 
     if (!user) {

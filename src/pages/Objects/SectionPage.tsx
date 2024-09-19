@@ -12,6 +12,8 @@ import { fetchRoomsBySection } from "../../api/roomApi.ts";
 import AddRoomInSectionModal from "../../components/Modal/Add/AddRoomInSectionModal.tsx";
 import DeleteRoomModalManager from "../../components/Modal/Manager/DeleteRoomModalManager.tsx";
 import LoadingSpinner from "../../components/Menu/LoadingSpinner.tsx";
+import {setBreadcrumb} from "../../store/slices/breadcrumbSlice.ts";
+import {useDispatch} from "react-redux";
 
 import EditSectionModal from "../../components/Modal/Edit/EditSectionModal.tsx";
 
@@ -28,6 +30,8 @@ const SectionPage = () => {
 
     const [isLoading, setIsLoading] = useState(true);
 
+    const dispatch = useDispatch();
+
     const getData = async () => {
         try {
             const fetchedSectionData = await fetchSection(sectionId);
@@ -35,7 +39,13 @@ const SectionPage = () => {
             setSection(fetchedSectionData);
 
             const labelItem = fetchedSectionData.find(item => item.title === 'Наименование');
-            localStorage.setItem('section', JSON.stringify({ label: labelItem?.value, icon: 'FaBars', id: labelItem?.id }));
+            dispatch(setBreadcrumb({
+                key: 'section',
+                label: labelItem?.value,
+                icon: 'FaBars',
+                id: labelItem?.id
+            }));
+
 
             const roomsData = await fetchRoomsBySection(sectionId);
             const formattedRooms = roomsData.map(room => ({
@@ -150,8 +160,8 @@ const SectionPage = () => {
                         />
                     )}
 
-                </div>
-            )}
+            </div>
+                )}
         </DefaultLayout>
     );
 };

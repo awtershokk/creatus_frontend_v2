@@ -1,6 +1,8 @@
 import ItemTable from "../../components/Tables/ItemTable.tsx";
 import DefaultLayout from "../../layouts/DefaultLayout.tsx";
 import Label from "../../components/Text/Label.tsx";
+import {useDispatch} from "react-redux";
+import {setBreadcrumb} from "../../store/slices/breadcrumbSlice.ts";
 
 
 interface TableData {
@@ -11,7 +13,12 @@ interface TableData {
 }
 
 const IncidentDirectoryPage = () => {
-    localStorage.setItem('directory', JSON.stringify({ label: 'Справочник', icon: 'FaBook' }));
+    const dispatch = useDispatch();
+    dispatch(setBreadcrumb({
+        key: 'directory',
+        label:'Справочник',
+        icon: 'FaBook',
+    }));
 
 
     const headers = {
@@ -38,6 +45,7 @@ const IncidentDirectoryPage = () => {
                     <ItemTable
                         headers={headers}
                         data={tableData}
+                        tableStyles = 'table-auto border-collapse'
 
                     />
         </DefaultLayout>

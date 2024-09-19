@@ -6,11 +6,10 @@ const NoAccessPage = () => {
             <div className="bg-white p-6 rounded shadow-md w-80 text-center">
                 <h2 className="text-2xl font-bold  text-black">Нет доступа</h2>
                 <p className="text-black">У вас нет прав на просмотр данной страницы.</p>
-                <BlueLink to="/dashboard/" text="Вернуться на главную." />
+                <BlueLink to="/user" text="Вернуться на главную." />
             </div>
         </div>
     );
 };
-
 
 export default NoAccessPage;

@@ -3,6 +3,8 @@ import ControllerOptionsTable from "../../components/Tables/Controller/Controlle
 import {useEffect, useState} from "react";
 import {fetchControllerLabel} from "../../api/vremeniy_kostil/controllerApi";
 import {useParams} from "react-router-dom";
+import {useDispatch} from "react-redux";
+import {setBreadcrumb} from "../../store/slices/breadcrumbSlice.ts";
 
 const ControllerOptionsPage = () => {
     const [label, setLabel] = useState()
@@ -22,7 +24,13 @@ const ControllerOptionsPage = () => {
 
     }, [controllerId]);
 
-    localStorage.setItem('options', JSON.stringify({ label: `Параметры «${label}»`, icon: 'FaSlidersH' }));
+    const dispatch = useDispatch();
+    dispatch(setBreadcrumb({
+        key: 'options',
+        label: `Параметры «${label}»`,
+        icon: 'FaSlidersH',
+    }));
+
     return (
         <DefaultLayout>
             <div className="">
