@@ -19,6 +19,8 @@ import AddRoomInThermalCircuitModal from "../../components/Modal/Add/AddRoomInTh
 import DeleteRoomModalManager from "../../components/Modal/Manager/DeleteRoomModalManager.tsx";
 import LoadingSpinner from "../../components/Menu/LoadingSpinner.tsx";
 import EditThermalCircuitModal from "../../components/Modal/Edit/EditThermalCircuitPageModal.tsx";
+import {useDispatch} from "react-redux";
+import {setBreadcrumb} from "../../store/slices/breadcrumbSlice.ts";
 
 const ThermalCircuitPage = () => {
     const {thermalCircuitId} = useParams();
