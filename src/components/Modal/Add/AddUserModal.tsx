@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ModalTemplate from '../ModalTemplate';
 import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
+import { addUser } from '../../../api/userApi';
 
 interface AddUserModalProps {
     onClose: () => void;
@@ -91,9 +92,10 @@ const AddUserModal: React.FC<AddUserModalProps> = ({ onClose, onSubmit }) => {
 
         setLoading(true);
         try {
-            await new Promise(resolve => setTimeout(resolve, 100));
             console.log('Добавленный пользователь:', formData);
-            onSubmit(formData);
+            const newUser = await addUser(formData);
+
+            onSubmit(newUser);
             onClose();
         } catch (error) {
             console.error('Ошибка при добавлении пользователя:', error);
@@ -179,7 +181,7 @@ const AddUserModal: React.FC<AddUserModalProps> = ({ onClose, onSubmit }) => {
                     >
                         <option value="">Выберите роль</option>
                         {roles.map(role => (
-                            <option key={role.id} value={role.id}>
+                            <option key={role.id} value={role.label}>
                                 {role.label}
                             </option>
                         ))}

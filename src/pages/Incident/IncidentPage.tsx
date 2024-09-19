@@ -6,9 +6,10 @@ import Label from "../../components/Text/Label.tsx";
 import BlueLink from "../../components/Text/BlueLink.tsx";
 import IncidentFilters from "../../components/Filters/IncidentFilter.tsx";
 import StatusChangeModal from "../../components/Modal/Edit/StatusChangeModal.tsx";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../store/store.ts";
 import IncidentDetailsModal from "../../components/Modal/IncidentDetailsModal.tsx";
+import {setBreadcrumb} from "../../store/slices/breadcrumbSlice.ts";
 
 interface Incident {
     id: number;
@@ -24,7 +25,12 @@ interface Incident {
 }
 
 const IncidentPage: React.FC = () => {
-    localStorage.setItem('incidents', JSON.stringify({ label: 'Инциденты', icon: 'FaExclamationTriangle' }));
+    const dispatch = useDispatch();
+    dispatch(setBreadcrumb({
+        key: 'incidents',
+        label:'Инциденты',
+        icon: 'FaExclamationTriangle',
+    }));
 
     const user = useSelector((state: RootState) => state.auth.user);
     const [selectedIncident, setSelectedIncident] = useState<Incident | null>(null);
@@ -235,7 +241,7 @@ const IncidentPage: React.FC = () => {
             <IncidentFilters onFilterChange={handleFilterChange} />
             <div className="w-full overflow-x-auto">
                 <div className="min-w-[1000px]">
-                    <ItemTable headers={headers} data={incidentsDataForTable}/>
+                    <ItemTable headers={headers} data={incidentsDataForTable} tableStyles = 'table-auto border-collapse'/>
                 </div>
             </div>
             {isStatusChangeModalOpen && selectedIncident && (

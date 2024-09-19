@@ -255,8 +255,6 @@ const ControllerOptionTable = () => {
             </Tooltip>
         );
 
-
-
         return (
             <React.Fragment key={rowIndex}>
                 <tr
@@ -268,16 +266,15 @@ const ControllerOptionTable = () => {
                             overlay={item.hint && !item.children.length ? renderTooltip : <span></span>}
                             delay={{ show: 250, hide: 400 }}
                         >
-                            {/* Инлайн-стиль для отступа слева на основе уровня вложенности */}
                             <div
-                                className={`flex items-center pl-2 ml-${ level * 4}`} // Отступ слева для всех уровней, включая 0 уровень
+                                className={`flex items-center pl-2 ml-${ level * 4}`}
                             >
                                 {!item.children.length && (
                                     <div className="flex items-center mr-1">
                                         <FaStar
                                             onClick={() => handleToggleFavorite(item, context)}
                                             className="cursor-pointer ml-4"
-                                            color={favorites.includes(`${context}-${item.param}`) || item.favorites ? 'gold' : 'grey'}
+                                            color={favorites.includes(`${context}-${item.param}`) || item.favorites ? 'gold' : 'white'}
                                         />
                                         <input
                                             type="checkbox"
@@ -307,7 +304,7 @@ const ControllerOptionTable = () => {
                     </td>
                     <td
                         className={`${
-                            item.editable ? 'bg-gray-200' : 'bg-gray-300'
+                            item.editable ? 'bg-white' : 'bg-gray-300'
                         } cursor-pointer text-black border-b border-black`}
                         onClick={() =>
                             item.editable &&

@@ -12,6 +12,8 @@ import { fetchRoomsBySection } from "../../api/roomApi.ts";
 import AddRoomInSectionModal from "../../components/Modal/Add/AddRoomInSectionModal.tsx";
 import DeleteRoomModalManager from "../../components/Modal/Manager/DeleteRoomModalManager.tsx";
 import LoadingSpinner from "../../components/Menu/LoadingSpinner.tsx";
+import {setBreadcrumb} from "../../store/slices/breadcrumbSlice.ts";
+import {useDispatch} from "react-redux";
 
 const SectionPage = () => {
     const { sectionId } = useParams();
@@ -24,6 +26,8 @@ const SectionPage = () => {
 
     const [isLoading, setIsLoading] = useState(true);
 
+    const dispatch = useDispatch();
+
     const getData = async () => {
         try {
             const fetchedSectionData = await fetchSection(sectionId);
@@ -31,7 +35,13 @@ const SectionPage = () => {
             setSection(fetchedSectionData);
 
             const labelItem = fetchedSectionData.find(item => item.title === 'Наименование');
-            localStorage.setItem('section', JSON.stringify({ label: labelItem?.value, icon: 'FaBars', id: labelItem?.id }));
+            dispatch(setBreadcrumb({
+                key: 'section',
+                label: labelItem?.value,
+                icon: 'FaBars',
+                id: labelItem?.id
+            }));
+
 
             const roomsData = await fetchRoomsBySection(sectionId);
             const formattedRooms = roomsData.map(room => ({
@@ -85,44 +95,45 @@ const SectionPage = () => {
             {isLoading ? (
                 <LoadingSpinner/>
             ) : (
-                <div className="flex justify-between overflow-x-hidden">
-                    <div className="w-1/2">
-                        <Label text="Информация о секции"/>
-                        <ObjectTable
-                            title="Свойства секции"
-                            data={section}
-                            ButtonComponent={EditButton}
-                        />
-                    </div>
-                    <div className="w-full flex flex-col items-end mt-8 mr-8">
-                        <ChildElementsTable
-                            infoData={rooms}
-                            tableTitle="Помещения"
-                            ButtonComponent={() => (<AddButton onClick={handleAddRoomInSectionModalOpen}/>)}
-                            LinkComponent={BlueLink}
-                            onDelete={handleDeleteRoomClick}
-                        />
-                    </div>
-                    {isAddRoomInSectionModal && (
-                        <AddRoomInSectionModal
-                            sectionId={sectionId}
-                            onClose={handleAddRoomInSectionModalClose}
-                            onSubmit={() => {
-                                getData();
-                                handleAddRoomInSectionModalClose();
-                            }}
-                        />
-                    )}
-                    {modalRoomId !== null && (
-                        <DeleteRoomModalManager
-                            roomId={modalRoomId}
-                            onClose={() => {
-                                handleModalRoomClose();
-                            }}
-                        />
-                    )}
+            <div className="flex justify-between">
+            <div className="w-1/2">
+                    <Label text="Информация о секции" />
+                    <ObjectTable
+                        title="Свойства секции"
+                        data={section}
+                        ButtonComponent={EditButton}
+                    />
                 </div>
-            )}
+                <div className="w-full flex flex-col items-end mt-8 mr-8">
+                    <ChildElementsTable
+                        infoData={rooms}
+                        tableTitle="Помещения"
+                        ButtonComponent={() => <AddButton onClick={handleAddRoomInSectionModalOpen} />}
+                        LinkComponent={BlueLink}
+                        onDelete={handleDeleteRoomClick}
+                    />
+                </div>
+                {isAddRoomInSectionModal && (
+                    <AddRoomInSectionModal
+                        sectionId={sectionId}
+                        onClose={handleAddRoomInSectionModalClose}
+                        onSubmit={() => {
+                            getData();
+                            handleAddRoomInSectionModalClose();
+                        }}
+                    />
+                )}
+                {modalRoomId !== null && (
+                    <DeleteRoomModalManager
+                        roomId={modalRoomId}
+                        onClose={() => {
+                            getData();
+                            handleModalRoomClose();
+                        }}
+                    />
+                )}
+            </div>
+                )}
         </DefaultLayout>
     );
 };

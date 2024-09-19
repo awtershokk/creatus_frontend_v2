@@ -18,6 +18,8 @@ import DownloadButton from "../../components/Buttons/DownloadButton.tsx";
 import AddMeasuringPointModal from "../../components/Modal/Add/AddMeasuringPointModal.tsx";
 import DeleteMeasuringPointModal from "../../components/Modal/Delete/MeasuringPoint/DeleteMeasuringPointModal.tsx";
 import LoadingSpinner from "../../components/Menu/LoadingSpinner.tsx";
+import {setBreadcrumb} from "../../store/slices/breadcrumbSlice.ts";
+import {useDispatch} from "react-redux";
 
 const RoomPage = () => {
     const { roomId } = useParams();
@@ -36,13 +38,20 @@ const RoomPage = () => {
     const [deleteMeasuringPointId, setDeleteMeasuringPointId] = useState<number | null>(null);
 
     const [isLoading, setIsLoading] = useState(true);
+    const dispatch = useDispatch();
 
         const fetchData = async () => {
             try {
                 const roomData = await fetchRoom(roomId);
                 setRoom(roomData);
                 const labelItem = roomData.find(item => item.title === 'Наименование');
-                localStorage.setItem('room', JSON.stringify({ label: labelItem?.value, icon: 'FaDoorClosed', id: parseInt(roomId) }));
+
+                dispatch(setBreadcrumb({
+                    key: 'room',
+                    label: labelItem?.value,
+                    icon: 'FaDoorClosed',
+                    id: roomId
+                }));
 
                 const measuringPointsData = await fetchMeasuringPoints(roomId);
                 const formattedMeasuringPoints = measuringPointsData.map(point => ({

@@ -18,6 +18,8 @@ import DownloadButton from "../../components/Buttons/DownloadButton.tsx";
 import AddRoomInThermalCircuitModal from "../../components/Modal/Add/AddRoomInThermalCircuitModal.tsx";
 import DeleteRoomModalManager from "../../components/Modal/Manager/DeleteRoomModalManager.tsx";
 import LoadingSpinner from "../../components/Menu/LoadingSpinner.tsx";
+import {setBreadcrumb} from "../../store/slices/breadcrumbSlice.ts";
+import {useDispatch} from "react-redux";
 
 const ThermalCircuitPage = () => {
     const {thermalCircuitId} = useParams();
@@ -47,12 +49,16 @@ const ThermalCircuitPage = () => {
 
     const [isLoading, setIsLoading] = useState(true);
 
+    const dispatch = useDispatch();
+
     const getData = async () => {
         try {
             const thermalCircuitData = await fetchThermalCircuit(thermalCircuitId);
             setThermalCircuit(thermalCircuitData);
+
             const labelItem = thermalCircuitData.find(item => item.title === 'Наименование');
-            localStorage.setItem('thermalCircuit', JSON.stringify({
+            dispatch(setBreadcrumb({
+                key: 'thermalCircuit',
                 label: labelItem?.value,
                 icon: 'FaThermometerHalf',
                 id: labelItem?.id

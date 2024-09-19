@@ -7,6 +7,8 @@ import SaveButton from "../../components/Buttons/SaveButton.tsx";
 import {fetchControllerLabel} from "../../api/controllerApi.ts";
 import {useParams} from "react-router-dom";
 import Label from "../../components/Text/Label.tsx";
+import {useDispatch} from "react-redux";
+import {setBreadcrumb} from "../../store/slices/breadcrumbSlice.ts";
 
 const daysOfWeek = ["Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье"];
 
@@ -135,7 +137,12 @@ const ControllerSchedulePage = () => {
 
     }, [controllerId]);
 
-    localStorage.setItem("schedule", JSON.stringify({ label: `Расписание «${label}»`, icon: "FaCalendarAlt" }));
+    const dispatch = useDispatch();
+    dispatch(setBreadcrumb({
+        key: 'schedule',
+        label: `Расписание «${label}»`,
+        icon: 'FaCalendarAlt',
+    }));
 
     return (
         <DefaultLayout>

@@ -7,26 +7,38 @@ import { User } from "../../models/User.tsx";
 import { fetchUsers } from "../../api/userApi.ts";
 import AddUserModal from "../../components/Modal/Add/AddUserModal.tsx";
 import LoadingSpinner from "../../components/Menu/LoadingSpinner.tsx";
+import { useDispatch } from "react-redux";
+import { setBreadcrumb } from "../../store/slices/breadcrumbSlice.ts";
 
 const UsersPage = () => {
     const [users, setUsers] = useState<User[]>([]);
     const [isAddUserModalOpen, setIsAddUserModalOpen] = useState(false);
-
-    localStorage.setItem('users', JSON.stringify({ label: 'Пользователи', icon: 'FaUser' }));
-
     const [isLoading, setIsLoading] = useState(true);
 
-    useEffect(() => {
-        const getData = async () => {
-            try {
-                const usersData = await fetchUsers(handleEditUserClick, handleDeleteUserClick);
-                setUsers(usersData);
-                setIsLoading(false);
-            } catch (error) {
-                console.error('Ошибка получения данных:', error);
-            }
-        };
+    const dispatch = useDispatch();
 
+    useEffect(() => {
+        dispatch(setBreadcrumb({
+            key: 'users',
+            label: `Пользователи`,
+            icon: 'FaUser',
+        }));
+
+        getData();
+    }, [dispatch]);
+
+    const getData = async () => {
+        try {
+            const usersData = await fetchUsers(handleEditUserClick, handleDeleteUserClick);
+            setUsers(usersData);
+            setIsLoading(false);
+        } catch (error) {
+            console.error('Ошибка получения данных:', error);
+            setIsLoading(false);
+        }
+    };
+
+    useEffect(() => {
         getData();
     }, []);
 
@@ -54,31 +66,31 @@ const UsersPage = () => {
         setIsAddUserModalOpen(false);
     };
 
-
-
     return (
         <DefaultLayout>
             {isLoading ? (
-                <LoadingSpinner/>
+                <LoadingSpinner />
             ) : (
-            <div className="">
                 <div className="">
-                    <div className="flex items-center">
-                        <Label text="Пользователи"/>
-                        <MiniAddButton onClick={handleAddUserModalOpen} />
+                    <div className="">
+                        <div className="flex items-center">
+                            <Label text="Пользователи" />
+                            <MiniAddButton onClick={handleAddUserModalOpen} />
+                        </div>
                     </div>
+                    <ItemTable
+                        data={users}
+                        headers={headers}
+                        tableStyles='table-auto border-collapse'
+                    />
                 </div>
-                <ItemTable
-                    data={users}
-                    headers={headers}
-                    tableStyles = 'table-auto border-collapse'
-                />
-            </div>
             )}
             {isAddUserModalOpen && (
                 <AddUserModal
                     onClose={handleAddUserModalClose}
                     onSubmit={() => {
+                        getData();
+                        handleAddUserModalClose();
                     }}
                 />
             )}

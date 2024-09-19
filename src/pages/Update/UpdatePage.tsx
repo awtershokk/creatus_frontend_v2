@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import DefaultLayout from "../../layouts/DefaultLayout.tsx";
 import UpdateButton from "../../components/Buttons/UpdateButton.tsx";
 import Label from "../../components/Text/Label.tsx";
+import {useDispatch} from "react-redux";
+import {setBreadcrumb} from "../../store/slices/breadcrumbSlice.ts";
 
 
 interface Update {
@@ -55,6 +57,7 @@ const UpdatePage: React.FC = () => {
     const [expanded, setExpanded] = useState<string | null>(null);
     const [isClosing, setIsClosing] = useState(false);
     const [hasUpdates, setHasUpdates] = useState(false);
+    const dispatch = useDispatch();
 
     const toggleExpand = (version: string) => {
         if (expanded === version || expanded) {
@@ -74,7 +77,11 @@ const UpdatePage: React.FC = () => {
         localStorage.setItem('currentVersionId', currentVersion.id.toString());
         localStorage.setItem('latestVersionId', latestUpdate.id.toString());
 
-        localStorage.setItem('updates', JSON.stringify({ label: "Версия ПО", icon: 'FaCogs' }));
+        dispatch(setBreadcrumb({
+            key: 'updates',
+            label: `Версия ПО`,
+            icon: 'FaCogs',
+        }));
 
         const currentVersionId = localStorage.getItem('currentVersionId');
         const latestVersionId = localStorage.getItem('latestVersionId');
