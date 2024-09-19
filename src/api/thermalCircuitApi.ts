@@ -1,5 +1,6 @@
 import api from './api';
 import { ThermalCircuit, transformThermalCircuitData } from '../models/ThermalCircuit';
+import {Section} from "../models/Section.ts";
 
 export const fetchThermalCircuits = async (buildingId: number) => {
     try {
@@ -23,7 +24,7 @@ export const fetchThermalCircuit = async (thermalCircuitId: number) => {
 
 export const deleteThermalCircuit = async (thermalCircuitId: number) => {
     try {
-        const response = await api.delete(`/thermalCircuit/1/${thermalCircuitId}`);
+         await api.delete(`/thermalCircuit/1/${thermalCircuitId}`);
     }
     catch (error) {
         throw error;
@@ -59,6 +60,17 @@ export const fetchConnectionDiagrams = async () => {
     try {
         const response = await api.get('/thermalCircuit/list/connectionDiagrams');
         return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const updateThermalCircuit= async (thermalCircuitId: number, updateThermalCircuit: ThermalCircuit): Promise<ThermalCircuit> => {
+    try {
+
+        const response = await api.put(`/thermalCircuit/1/${thermalCircuitId}`, updateThermalCircuit);
+        console.log('суета',response.data.data);
+        return response.data.data;
     } catch (error) {
         throw error;
     }

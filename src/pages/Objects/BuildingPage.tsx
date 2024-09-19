@@ -6,7 +6,7 @@ import AddButton from "../../components/Buttons/AddButton.tsx";
 import ObjectTable from "../../components/Tables/ObjectTable.tsx";
 import ChildElementsTable from "../../components/Tables/ChildElementsTable.tsx";
 import ItemTable from '../../components/Tables/ItemTable.tsx';
-import { fetchBuilding, fetchResponsiblePersons} from '../../api/buildingApi';
+import { fetchBuilding, fetchResponsiblePersons, updateBuilding } from '../../api/buildingApi';
 import { fetchSections } from '../../api/sectionApi.ts';
 import { fetchThermalCircuits } from "../../api/thermalCircuitApi.ts";
 import { ResponsiblePerson } from '../../models/ResponsiblePerson';
@@ -20,8 +20,6 @@ import DeleteSectionModalManager from "../../components/Modal/Manager/DeleteSect
 import AddThermalCircuitModal from "../../components/Modal/Add/AddThermalCircuitModal.tsx";
 import LoadingSpinner from "../../components/Menu/LoadingSpinner.tsx";
 import {Building, transformBuildingData} from "../../models/Building.ts";
-import {setBreadcrumb} from "../../store/slices/breadcrumbSlice.ts";
-import {useDispatch} from "react-redux";
 
 
 
@@ -49,22 +47,15 @@ const BuildingPage = () => {
     const [buildingData, setBuildingData] = useState<Building[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 
-    const dispatch = useDispatch();
-
     const getData = async () => {
         try {
             const responsebuildingData = await fetchBuilding(buildingId);
             setBuildingData(responsebuildingData);
             const buildingData = transformBuildingData(responsebuildingData)
-            setBuilding(buildingData);
 
+            setBuilding(buildingData);
             const labelItem = buildingData.find(item => item.title === 'Наименование');
-            dispatch(setBreadcrumb({
-                key: 'building',
-                label: labelItem?.value,
-                icon: 'FaRegBuilding',
-                id: buildingId
-            }));
+            localStorage.setItem('building', JSON.stringify({label: labelItem?.value, icon: 'FaRegBuilding'}));
 
             const responsiblePersonsData = await fetchResponsiblePersons(buildingId);
             setResponsiblePersons(responsiblePersonsData);
@@ -154,12 +145,12 @@ const BuildingPage = () => {
     };
 
     const handleDeleteSectionClick = (sectionId: number) => {
-        console.log(sectionId);
+
         setModalSectionId(sectionId);
     };
 
     const handleDeleteThermalCircuitClick = (thermalCircuitId: number) => {
-        console.log(thermalCircuitId);
+
         setModalThermalCircuitId(thermalCircuitId);
     };
 
@@ -190,6 +181,9 @@ const BuildingPage = () => {
             console.error('Ошибка при обновлении тепловых контуров:', error);
         }
     };
+
+    useEffect(() => {
+    }, [building]);
 
     return (
         <DefaultLayout>

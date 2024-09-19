@@ -8,6 +8,7 @@ export const fetchBuilding = async (buildingId: number) => {
     try {
         const response = await api.get(`/building/${buildingId}`);
         const building: Building = response.data.data;
+
         return building;
     } catch (error) {
         throw error;

@@ -18,8 +18,7 @@ import DownloadButton from "../../components/Buttons/DownloadButton.tsx";
 import AddRoomInThermalCircuitModal from "../../components/Modal/Add/AddRoomInThermalCircuitModal.tsx";
 import DeleteRoomModalManager from "../../components/Modal/Manager/DeleteRoomModalManager.tsx";
 import LoadingSpinner from "../../components/Menu/LoadingSpinner.tsx";
-import {setBreadcrumb} from "../../store/slices/breadcrumbSlice.ts";
-import {useDispatch} from "react-redux";
+import EditThermalCircuitModal from "../../components/Modal/Edit/EditThermalCircuitPageModal.tsx";
 
 const ThermalCircuitPage = () => {
     const {thermalCircuitId} = useParams();
@@ -46,19 +45,15 @@ const ThermalCircuitPage = () => {
     const [isAddRoomInThermalCircuitModal, setIsAddRoomInThermalCircuitModal] = useState(false);
 
     const [modalRoomId, setModalRoomId] = useState<number | null>(null);
-
+    const [isEditThermalCircuitModalOpen, setIsEditThermalCircuitModalOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
-
-    const dispatch = useDispatch();
 
     const getData = async () => {
         try {
             const thermalCircuitData = await fetchThermalCircuit(thermalCircuitId);
             setThermalCircuit(thermalCircuitData);
-
             const labelItem = thermalCircuitData.find(item => item.title === 'Наименование');
-            dispatch(setBreadcrumb({
-                key: 'thermalCircuit',
+            localStorage.setItem('thermalCircuit', JSON.stringify({
                 label: labelItem?.value,
                 icon: 'FaThermometerHalf',
                 id: labelItem?.id
@@ -194,7 +189,23 @@ const ThermalCircuitPage = () => {
         'Отклонение t°': 'deviation_temperature',
         'Отклонение h': 'deviation_humidity',
     };
+    const handleEditButtonClick = (thermalCircuitItem: any) => {
+        setThermalCircuit(thermalCircuitItem);
+        setIsEditThermalCircuitModalOpen(true);
+    };
 
+    const handleEditThermalCircuitClose = () => {
+        setIsEditThermalCircuitModalOpen(false);
+
+    };
+    const handleUpdateSection = async () => {
+        try {
+            await getData();
+            handleEditThermalCircuitClose();
+        } catch (error) {
+            console.error('Ошибка обновления здания:', error);
+        }
+    };
     return (
         <DefaultLayout>
             {isLoading ? (
@@ -206,7 +217,7 @@ const ThermalCircuitPage = () => {
                         <ObjectTable
                             title="Свойства теплового контура"
                             data={thermalCircuit}
-                            ButtonComponent={EditButton}
+                            ButtonComponent={() => <EditButton onClick={() => handleEditButtonClick(thermalCircuit)}/>}
                         />
                     </div>
                     <div className="w-full flex flex-col items-end mt-8 mr-8">
@@ -265,6 +276,14 @@ const ThermalCircuitPage = () => {
                         getData();
                         handleModalRoomClose();
                     }}
+                />
+            )}
+            {isEditThermalCircuitModalOpen && thermalCircuit && (
+                <EditThermalCircuitModal
+                    thermalCircuitId={thermalCircuitId}
+                    thermalCircuit={thermalCircuit}
+                    onClose={handleEditThermalCircuitClose}
+                    onUpdate={handleUpdateSection}
                 />
             )}
 
