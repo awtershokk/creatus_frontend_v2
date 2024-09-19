@@ -19,15 +19,13 @@ import DeleteThermalCircuitModalManager from "../../components/Modal/Manager/Del
 import DeleteSectionModalManager from "../../components/Modal/Manager/DeleteSectionModalManager.tsx";
 import AddThermalCircuitModal from "../../components/Modal/Add/AddThermalCircuitModal.tsx";
 import LoadingSpinner from "../../components/Menu/LoadingSpinner.tsx";
-import {Building, transformBuildingData} from "../../models/Building.ts";
-import {setBreadcrumb} from "../../store/slices/breadcrumbSlice.ts";
-import {useDispatch} from "react-redux";
-
-
+import { Building, transformBuildingData } from "../../models/Building.ts";
+import { setBreadcrumb } from "../../store/slices/breadcrumbSlice.ts";
+import { useDispatch } from "react-redux";
+import { formatPhoneNumber } from '../../utils/phoneNumber.ts'; // Импорт функции форматирования
 
 const BuildingPage = () => {
     const [building, setBuilding] = useState<Array<{ id: number, title: string, value: string | number }>>([]);
-
     const [responsiblePersons, setResponsiblePersons] = useState<ResponsiblePerson[]>([]);
     const [sections, setSections] = useState<Array<{ id: number, title: string, value: string, value2: string }>>([]);
     const [thermalCircuits, setThermalCircuits] = useState<Array<{
@@ -96,11 +94,9 @@ const BuildingPage = () => {
         }
     };
 
-
     useEffect(() => {
         getData();
     }, [buildingId]);
-
 
     const headers = {
         'Должность': 'position',
@@ -154,12 +150,10 @@ const BuildingPage = () => {
     };
 
     const handleDeleteSectionClick = (sectionId: number) => {
-
         setModalSectionId(sectionId);
     };
 
     const handleDeleteThermalCircuitClick = (thermalCircuitId: number) => {
-
         setModalThermalCircuitId(thermalCircuitId);
     };
 
@@ -193,6 +187,12 @@ const BuildingPage = () => {
 
     useEffect(() => {
     }, [building]);
+
+    // Форматируем номера телефонов перед передачей в таблицу
+    const formattedResponsiblePersons = responsiblePersons.map(person => ({
+        ...person,
+        phone: formatPhoneNumber(person.phone)
+    }));
 
     return (
         <DefaultLayout>
@@ -237,9 +237,9 @@ const BuildingPage = () => {
                         </div>
 
                         <ItemTable
-                            data={responsiblePersons}
+                            data={formattedResponsiblePersons}
                             headers={headers}
-                            tableStyles = 'table-auto border-collapse'
+                            tableStyles='table-auto border-collapse'
                         />
                     </div>
 
@@ -258,8 +258,7 @@ const BuildingPage = () => {
                     {isAddResponsiblePersonModalOpen && (
                         <AddResponsiblePersonModal
                             onClose={handleAddResponsiblePersonModalClose}
-                            onSubmit={() => {
-                            }}
+                            onSubmit={() => {}}
                         />
                     )}
 
@@ -281,8 +280,8 @@ const BuildingPage = () => {
                         <DeleteThermalCircuitModalManager
                             thermalCircuitId={modalThermalCircuitId}
                             onClose={() => {
-                                getData()
-                                handleModalClose()
+                                getData();
+                                handleModalClose();
                             }}
                         />
                     )}
@@ -291,8 +290,8 @@ const BuildingPage = () => {
                         <DeleteSectionModalManager
                             SectionId={modalSectionId}
                             onClose={() => {
-                                getData()
-                                handleModalClose()
+                                getData();
+                                handleModalClose();
                             }}
                         />
                     )}
@@ -301,4 +300,5 @@ const BuildingPage = () => {
         </DefaultLayout>
     );
 }
+
 export default BuildingPage;
