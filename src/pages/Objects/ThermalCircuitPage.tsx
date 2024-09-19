@@ -28,6 +28,7 @@ const ThermalCircuitPage = () => {
         value: string | number
     }>>([]);
     const [rooms, setRooms] = useState<Array<{ id: number, title: string, value: string, value2: string }>>([]);
+
     const [measurements, setMeasurements] = useState<Measurement[]>([]);
     const [filteredMeasurements, setFilteredMeasurements] = useState<Measurement[]>([]);
     const [totalMeasurements, setTotalMeasurements] = useState<number>(0);
@@ -42,18 +43,23 @@ const ThermalCircuitPage = () => {
         min: null,
         max: null
     });
+
     const [isAddRoomInThermalCircuitModal, setIsAddRoomInThermalCircuitModal] = useState(false);
 
     const [modalRoomId, setModalRoomId] = useState<number | null>(null);
     const [isEditThermalCircuitModalOpen, setIsEditThermalCircuitModalOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
 
+    const dispatch = useDispatch();
+
     const getData = async () => {
         try {
             const thermalCircuitData = await fetchThermalCircuit(thermalCircuitId);
             setThermalCircuit(thermalCircuitData);
             const labelItem = thermalCircuitData.find(item => item.title === 'Наименование');
-            localStorage.setItem('thermalCircuit', JSON.stringify({
+
+            dispatch(setBreadcrumb({
+                key: 'thermalCircuit',
                 label: labelItem?.value,
                 icon: 'FaThermometerHalf',
                 id: labelItem?.id

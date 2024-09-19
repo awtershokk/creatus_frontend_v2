@@ -115,7 +115,7 @@ const SectionPage = () => {
             {isLoading ? (
                 <LoadingSpinner/>
             ) : (
-                <div className="flex justify-between overflow-x-hidden">
+                <div className="flex justify-between">
                     <div className="w-1/2">
                         <Label text="Информация о секции"/>
                         <ObjectTable
@@ -133,6 +133,7 @@ const SectionPage = () => {
                             onDelete={handleDeleteRoomClick}
                         />
                     </div>
+
                     {isAddRoomInSectionModal && (
                         <AddRoomInSectionModal
                             sectionId={sectionId}
@@ -147,6 +148,7 @@ const SectionPage = () => {
                         <DeleteRoomModalManager
                             roomId={modalRoomId}
                             onClose={() => {
+                                getData()
                                 handleModalRoomClose();
                             }}
                         />

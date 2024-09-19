@@ -17,7 +17,6 @@ const DeleteRoomModalManager: React.FC<RoomModalManagerProps> = ({ roomId, onClo
     const [roomName, setRoomName] = useState('');
     const [loading, setLoading] = useState(true);
 
-
     const fetchData = async () => {
         try {
             const room = await fetchRoom(roomId);

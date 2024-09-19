@@ -21,6 +21,7 @@ import UnbindDeviceModal from "../../components/Modal/Bind/UnbindDeviceModal.tsx
 import LoadingSpinner from "../../components/Menu/LoadingSpinner.tsx";
 import {setBreadcrumb} from "../../store/slices/breadcrumbSlice.ts";
 import {useDispatch} from "react-redux";
+import BindDeviceModal from "../../components/Modal/Bind/BindDeviceModal.tsx";
 
 const MeasuringPointPage = () => {
     const {measuringPointId} = useParams();
@@ -49,6 +50,7 @@ const MeasuringPointPage = () => {
     const [deviceId, setDeviceId] = useState<number>(null)
 
     const [isUnbindModalOpen, setIsUnbindModalOpen] = useState(false);
+    const [isBindModalOpen, setIsBindModalOpen] = useState(false);
     const [modalProps, setModalProps] = useState<{ deviceId: any; deviceLabel: string; measuringPointLabel: string }>({
         deviceId: null,
         deviceLabel: '',
@@ -82,20 +84,21 @@ const MeasuringPointPage = () => {
                 id: roomLabelItem?.id
             }));
 
-
-
             const measurementsData = await fetchMeasurementsMeasuringPoint(measuringPointId);
             setMeasurements(measurementsData);
             setFilteredMeasurements(measurementsData);
             setTotalMeasurements(measurementsData.length);
             setDisplayedMeasurements(measurementsData.length);
 
-            // const deviceId = await fetchDeviceId(measuringPointId);
-            // setDeviceId(deviceId)
-            // const deviceData = await fetchDevice(deviceId)
-            // setDevice(deviceData);
-
             setIsLoading(false);
+
+            const deviceId = await fetchDeviceId(measuringPointId);
+            setDeviceId(deviceId);
+
+            if (deviceId) {
+                const deviceData = await fetchDevice(deviceId);
+                setDevice(deviceData);
+            }
 
         } catch (error) {
             console.error('Ошибка получения данных:', error);
@@ -110,7 +113,6 @@ const MeasuringPointPage = () => {
         setDisplayedMeasurements(filteredMeasurements.length);
     }, [filteredMeasurements]);
 
-    // Обработчик изменения фильтров
     const handleFilterChange = (filters: {
         dateRange?: { start: Date | null; end: Date | null },
         timeRange?: { start: Date | null; end: Date | null },
@@ -193,20 +195,19 @@ const MeasuringPointPage = () => {
     };
 
     const handleUnbindClick = () => {
-        const deviceLabel = getLabelFromData(device, 'Наименование');
-        const measuringPointLabel = getLabelFromData(measuringPoint, 'Наименование');
+        const deviceLabel = device.find(item => item.title === 'Наименование')?.value;
+        const measuringPointLabel = measuringPoint.find(item => item.title === 'Наименование')?.value;
 
         if (deviceId) {
             setIsUnbindModalOpen(true);
-            setModalProps({
-                deviceId,
-                deviceLabel,
-                measuringPointLabel,
-            });
-        } else {
-            // В будущем тут будет другая модалка
-            console.log("Открыть другую модалку");
+            setModalProps({ deviceId, deviceLabel, measuringPointLabel });
         }
+    };
+
+    const handleBindClick = () => {
+        const measuringPointLabel = measuringPoint.find(item => item.title === 'Наименование')?.value;
+        setIsBindModalOpen(true);
+        setModalProps({ deviceId: null, deviceLabel: '', measuringPointLabel });
     };
 
 
@@ -241,17 +242,18 @@ const MeasuringPointPage = () => {
                             nonEditableFields={['Место установки']}
                         />
                     </div>
-                    {/*<div className="w-full flex flex-col items-end mt-8 mr-8">*/}
-                    {/*    <ObjectTable*/}
-                    {/*        title="Информация о датчике"*/}
-                    {/*        data={device}*/}
-                    {/*        ButtonComponent={() => (*/}
-                    {/*            <DefaultButton onClick={handleUnbindClick} deviceId={deviceId} />*/}
-
-                    {/*        )}*/}
-                    {/*        nonEditableFields={['Место установки']}*/}
-                    {/*    />*/}
-                    {/*</div>*/}
+                    <div className="w-full flex flex-col items-end mt-8 mr-8">
+                        <ObjectTable
+                            title="Информация о датчике"
+                            data={device}
+                            ButtonComponent={() => (
+                                <DefaultButton
+                                    onClick={deviceId ? handleUnbindClick : handleBindClick}
+                                    deviceId={deviceId}
+                                />
+                            )}
+                        />
+                    </div>
                 </div>
             )}
             <div className="mt-6 mb-4">
@@ -291,7 +293,19 @@ const MeasuringPointPage = () => {
                         setIsUnbindModalOpen(false);
                     }}
                 />
-            )} // Закрывающая скобка для условия isUnbindModalOpen
+            )}
+
+            {isBindModalOpen && (
+                <BindDeviceModal
+                    measuringPointId={measuringPointId}
+                    measuringPointLabel={modalProps.measuringPointLabel}
+                    onClose={() => setIsBindModalOpen(false)}
+                    onSuccess={() => {
+                        getData();
+                        setIsBindModalOpen(false);
+                    }}
+                />
+            )}
 
         </DefaultLayout>
     );

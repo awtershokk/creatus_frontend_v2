@@ -20,6 +20,7 @@ import DeleteSectionModalManager from "../../components/Modal/Manager/DeleteSect
 import AddThermalCircuitModal from "../../components/Modal/Add/AddThermalCircuitModal.tsx";
 import LoadingSpinner from "../../components/Menu/LoadingSpinner.tsx";
 import {Building, transformBuildingData} from "../../models/Building.ts";
+import {setBreadcrumb} from "../../store/slices/breadcrumbSlice.ts";
 
 
 
@@ -47,6 +48,8 @@ const BuildingPage = () => {
     const [buildingData, setBuildingData] = useState<Building[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 
+    const dispatch = useDispatch();
+
     const getData = async () => {
         try {
             const responsebuildingData = await fetchBuilding(buildingId);
@@ -55,7 +58,12 @@ const BuildingPage = () => {
 
             setBuilding(buildingData);
             const labelItem = buildingData.find(item => item.title === 'Наименование');
-            localStorage.setItem('building', JSON.stringify({label: labelItem?.value, icon: 'FaRegBuilding'}));
+            dispatch(setBreadcrumb({
+                key: 'building',
+                label: labelItem?.value,
+                icon: 'FaRegBuilding',
+                id: buildingId
+            }));
 
             const responsiblePersonsData = await fetchResponsiblePersons(buildingId);
             setResponsiblePersons(responsiblePersonsData);
