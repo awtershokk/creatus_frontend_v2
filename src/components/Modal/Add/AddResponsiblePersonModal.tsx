@@ -269,6 +269,7 @@ const AddResponsiblePersonModal: React.FC<AddResponsiblePersonModalProps> = ({ o
                     />
                     {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
                 </div>
+
                 <div>
                     <label htmlFor="phone" className="block text-sm font-medium text-gray-900">
                         Телефон
@@ -276,13 +277,15 @@ const AddResponsiblePersonModal: React.FC<AddResponsiblePersonModalProps> = ({ o
                     <input
                         id="phone"
                         name="phone"
-                        type="text"
+                        type="number"
+                        maxLength={10}
                         value={formData.phone}
                         onChange={handleChange}
                         className={`w-full p-2 border ${errors.phone ? 'border-red-500' : 'border-gray-300'} rounded-md text-black focus:outline-none focus:ring-2 focus:ring-gray-400 bg-white`}
                     />
                     {errors.phone && <p className="text-red-500 text-sm">{errors.phone}</p>}
                 </div>
+
                 <div>
                     <label htmlFor="email" className="block text-sm font-medium text-gray-900">
                         Email

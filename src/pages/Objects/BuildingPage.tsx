@@ -22,7 +22,7 @@ import LoadingSpinner from "../../components/Menu/LoadingSpinner.tsx";
 import { Building, transformBuildingData } from "../../models/Building.ts";
 import { setBreadcrumb } from "../../store/slices/breadcrumbSlice.ts";
 import { useDispatch } from "react-redux";
-import { formatPhoneNumber } from '../../utils/phoneNumber.ts'; // Импорт функции форматирования
+import { formatPhoneNumber } from '../../utils/phoneNumber.ts';
 
 const BuildingPage = () => {
     const [building, setBuilding] = useState<Array<{ id: number, title: string, value: string | number }>>([]);
@@ -188,7 +188,6 @@ const BuildingPage = () => {
     useEffect(() => {
     }, [building]);
 
-    // Форматируем номера телефонов перед передачей в таблицу
     const formattedResponsiblePersons = responsiblePersons.map(person => ({
         ...person,
         phone: formatPhoneNumber(person.phone)

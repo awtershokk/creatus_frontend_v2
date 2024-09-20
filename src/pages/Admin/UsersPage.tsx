@@ -17,6 +17,17 @@ const UsersPage = () => {
 
     const dispatch = useDispatch();
 
+    const fetchData = async () => {
+        try {
+            const usersData = await fetchUsers(handleEditUserClick, handleDeleteUserClick);
+            setUsers(usersData);
+        } catch (error) {
+            console.error('Ошибка получения данных:', error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
     useEffect(() => {
         dispatch(setBreadcrumb({
             key: 'users',
@@ -24,23 +35,9 @@ const UsersPage = () => {
             icon: 'FaUser',
         }));
 
-        getData();
+        fetchData();
     }, [dispatch]);
 
-    const getData = async () => {
-        try {
-            const usersData = await fetchUsers(handleEditUserClick, handleDeleteUserClick);
-            setUsers(usersData);
-            setIsLoading(false);
-        } catch (error) {
-            console.error('Ошибка получения данных:', error);
-            setIsLoading(false);
-        }
-    };
-
-    useEffect(() => {
-        getData();
-    }, []);
 
     const headers = {
         'Логин': 'username',
@@ -73,9 +70,9 @@ const UsersPage = () => {
             ) : (
                 <div className="">
                     <div className="">
-                        <div className="flex items-center">
+                        <div className="flex items-center mb-2">
                             <Label text="Пользователи" />
-                            <MiniAddButton onClick={handleAddUserModalOpen} />
+                            {/*<MiniAddButton onClick={handleAddUserModalOpen} />*/}
                         </div>
                     </div>
                     <ItemTable
@@ -89,7 +86,7 @@ const UsersPage = () => {
                 <AddUserModal
                     onClose={handleAddUserModalClose}
                     onSubmit={() => {
-                        getData();
+                        fetchData();
                         handleAddUserModalClose();
                     }}
                 />

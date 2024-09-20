@@ -10,12 +10,7 @@ import {setBreadcrumb} from "../../store/slices/breadcrumbSlice.ts";
 
 const ControllerPage = () => {
     const [controllers, setContollers] = useState<Controller[]>([]);
-    const dispatch = useDispatch();
-    dispatch(setBreadcrumb({
-        key: 'controllers',
-        label:'Контроллеры',
-        icon: 'FaMicrochip',
-    }));
+
 
     const [isLoading, setIsLoading] = useState(true);
 
@@ -25,6 +20,13 @@ const ControllerPage = () => {
                 const controllersData = await fetchControllers();
                 setContollers(controllersData);
                 setIsLoading(false);
+
+                const dispatch = useDispatch();
+                dispatch(setBreadcrumb({
+                    key: 'controllers',
+                    label:'Контроллеры',
+                    icon: 'FaMicrochip',
+                }));
 
             } catch (error) {
                 setIsLoading(false);
