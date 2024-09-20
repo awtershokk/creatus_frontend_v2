@@ -112,7 +112,7 @@ const EditThermalCircuitModal: React.FC<EditThermalCircuitModalProps> = ({ therm
 
     return (
         <ModalTemplate
-            headerTitle="Редактировать наименование секции"
+            headerTitle="Редактирование теплвого контура"
             buttonLabel="Сохранить"
             onClose={onClose}
             onSubmit={handleSubmit}

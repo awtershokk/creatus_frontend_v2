@@ -70,7 +70,7 @@ const EditSectionModal: React.FC<EditSectionModalProps> = ({ sectionId, section,
 
     return (
         <ModalTemplate
-            headerTitle="Редактировать наименование секции"
+            headerTitle="Редактирование секции"
             buttonLabel="Сохранить"
             onClose={onClose}
             onSubmit={handleSubmit}
