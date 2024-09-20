@@ -15,7 +15,14 @@ const AddRoomInThermalCircuitModal: React.FC<AddRoomInThermalCircuitProps> = ({ 
         floor: 0,
         windowOrientation: '',
         area: 0,
-        corner: false
+        corner: false,
+        temperatureMinimum: 0,
+        temperatureMaximum: 0,
+        temperatureActive: 'false',
+        humidityMinimum: 0,
+        humidityMaximum: 0,
+        humidityActive: 'false',
+        priority: 0,
     });
     const [sectionOptions, setSectionOptions] = useState([]);
     const [windowOptions, setWindowOptions] = useState([]);
@@ -49,11 +56,50 @@ const AddRoomInThermalCircuitModal: React.FC<AddRoomInThermalCircuitProps> = ({ 
         setLoading(true);
         setErrors({});
 
-        const { roomName, section, floor, windowOrientation, area, corner } = formData;
+        const { roomName, section, floor, windowOrientation, area, corner, temperatureMinimum, temperatureMaximum, temperatureActive, humidityMinimum, humidityMaximum, humidityActive, priority } = formData;
         const newErrors: { [key: string]: string } = {};
 
         if (!roomName.trim()) newErrors.roomName = 'Введите наименование';
-        if (!section) newErrors.section = 'Выберите секцию';
+
+        if (!section || section === 'Выберите секцию') {
+            newErrors.section = 'Выберите секцию';
+        }
+
+        if (!area || area <= 0 ) {
+            newErrors.area = 'Определите площадь';
+        }
+
+        if (!windowOrientation || windowOrientation === 'Выберите ориентацию окон') {
+            newErrors.windowOrientation = 'Выберите ориентацию окон';
+        }
+
+        if (!temperatureMinimum) {
+            newErrors.temperatureMinimum = 'Определите минимальную температуру';
+        }
+
+        if (!temperatureMaximum) {
+            newErrors.temperatureMaximum = 'Определите максимальную температуру';
+        }
+
+        if (temperatureMinimum && temperatureMaximum && parseFloat(temperatureMinimum) > parseFloat(temperatureMaximum)) {
+            newErrors.temperatureMinimum = 'Минимальная температура должна быть меньше или равна максимальной';
+            newErrors.temperatureMaximum = 'Максимальная температура должна быть больше или равна минимальной';
+        }
+
+        if (!humidityMinimum || humidityMinimum <= 0 || humidityMinimum > 100) {
+            newErrors.humidityMinimum = 'Определите минимальную влажность, влажность должна быть больше 0 и меньше или равна 100';
+        }
+
+        if (!humidityMaximum || humidityMaximum <= 0 || humidityMaximum > 100) {
+            newErrors.humidityMaximum = 'Определите максимальную влажность, влажность должна быть больше 0 и меньше или равна 100';
+        }
+
+        if (humidityMinimum && humidityMaximum && parseFloat(humidityMinimum) > parseFloat(humidityMaximum)) {
+            newErrors.humidityMinimum = 'Минимальная влажность должна быть меньше или равна максимальной';
+            newErrors.humidityMaximum = 'Максимальная влажность должна быть больше или равна минимальной';
+        }
+
+
         if (Object.keys(newErrors).length > 0) {
             setErrors(newErrors);
             setLoading(false);
@@ -65,18 +111,36 @@ const AddRoomInThermalCircuitModal: React.FC<AddRoomInThermalCircuitProps> = ({ 
             floor,
             windowOrientation,
             square: area,
-            angular: corner
+            angular: corner === 'true',
+            temperatureMinimum: temperatureMinimum,
+            temperatureMaximum: temperatureMaximum,
+            temperatureActive: temperatureActive === 'true',
+            humidityMinimum: humidityMinimum,
+            humidityMaximum: humidityMaximum,
+            humidityActive: humidityActive === 'true',
+            priority: priority,
         };
 
         try {
             await createRoom(thermalCircuitId, parseInt(section), requestData);
             onSubmit();
-        } catch (error) {
-            console.error('Ошибка при сохранении:', error);
+        } catch (error: any) {
+            if (error.response && error.response.status === 400) {
+
+                const errorMessages = error.response.data.errors;
+                if (errorMessages && errorMessages.includes('Запись с таким `label` уже существует')) {
+                    setErrors({ roomName: 'Комната с таким именем уже существует' });
+                } else {
+                    console.error('Неизвестная ошибка:', error.response.data);
+                }
+            } else {
+                console.error('Ошибка при сохранении:', error);
+            }
         } finally {
             setLoading(false);
         }
     };
+
 
     return (
         <ModalTemplate
@@ -192,6 +256,122 @@ const AddRoomInThermalCircuitModal: React.FC<AddRoomInThermalCircuitProps> = ({ 
                         <option value="true">Да</option>
                     </select>
                     {errors.corner && <p className="text-red-500 text-sm">{errors.corner}</p>}
+                </div>
+                <div>
+                    <label htmlFor="temperatureMinimum" className="block text-sm font-medium text-gray-700">
+                        Минимальная температура
+                    </label>
+                    <input
+                        id="temperatureMinimum"
+                        name="temperatureMinimum"
+                        type="number"
+                        value={formData.temperatureMinimum}
+                        onChange={handleChange}
+                        className="w-full p-2 border border-gray-300 rounded-md text-black focus:outline-none focus:ring-2 focus:ring-gray-400 bg-white"
+                        placeholder="Введите минимальную температуру"
+                    />
+                    {errors.temperatureMinimum && <p className="text-red-500 text-sm">{errors.temperatureMinimum}</p>}
+
+                </div>
+
+                <div>
+                    <label htmlFor="temperatureMaximum" className="block text-sm font-medium text-gray-700">
+                        Максимальная температура
+                    </label>
+                    <input
+                        id="temperatureMaximum"
+                        name="temperatureMaximum"
+                        type="number"
+                        value={formData.temperatureMaximum}
+                        onChange={handleChange}
+                        className="w-full p-2 border border-gray-300 rounded-md text-black focus:outline-none focus:ring-2 focus:ring-gray-400 bg-white"
+                        placeholder="Введите максимальную температуру"
+                    />
+                    {errors.temperatureMaximum && <p className="text-red-500 text-sm">{errors.temperatureMaximum}</p>}
+
+                </div>
+
+                <div>
+                    <label htmlFor="temperatureActive" className="block text-sm font-medium text-gray-700">
+                        Температура включена в расчёт
+                    </label>
+                    <select
+                        id="temperatureActive"
+                        name="temperatureActive"
+                        value={formData.temperatureActive}
+                        onChange={handleChange}
+                        className="w-full p-2 border border-gray-300 rounded-md text-black focus:outline-none focus:ring-2 focus:ring-gray-400 bg-white"
+                    >
+                        <option value="false">Нет</option>
+                        <option value="true">Да</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label htmlFor="humidityMinimum" className="block text-sm font-medium text-gray-700">
+                        Минимальная влажность
+                    </label>
+                    <input
+                        id="humidityMinimum"
+                        name="humidityMinimum"
+                        type="number"
+                        value={formData.humidityMinimum}
+                        onChange={handleChange}
+                        className="w-full p-2 border border-gray-300 rounded-md text-black focus:outline-none focus:ring-2 focus:ring-gray-400 bg-white"
+                        placeholder="Введите минимальную влажность"
+                    />
+                    {errors.humidityMinimum && <p className="text-red-500 text-sm">{errors.humidityMinimum}</p>}
+
+                </div>
+
+                <div>
+                    <label htmlFor="humidityMaximum" className="block text-sm font-medium text-gray-700">
+                        Максимальная влажность
+                    </label>
+                    <input
+                        id="humidityMaximum"
+                        name="humidityMaximum"
+                        type="number"
+                        value={formData.humidityMaximum}
+                        onChange={handleChange}
+                        className="w-full p-2 border border-gray-300 rounded-md text-black focus:outline-none focus:ring-2 focus:ring-gray-400 bg-white"
+                        placeholder="Введите максимальную влажность"
+                    />
+                    {errors.humidityMaximum && <p className="text-red-500 text-sm">{errors.humidityMaximum}</p>}
+
+                </div>
+
+                <div>
+                    <label htmlFor="humidityActive" className="block text-sm font-medium text-gray-700">
+                        Влажность включена в расчёт
+                    </label>
+                    <select
+                        id="humidityActive"
+                        name="humidityActive"
+                        value={formData.humidityActive}
+                        onChange={handleChange}
+                        className="w-full p-2 border border-gray-300 rounded-md text-black focus:outline-none focus:ring-2 focus:ring-gray-400 bg-white"
+                    >
+                        <option value="false">Нет</option>
+                        <option value="true">Да</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label htmlFor="priority" className="block text-sm font-medium text-gray-700">
+                        Приоритет
+                    </label>
+                    <input
+                        id="priority"
+                        name="priority"
+                        type="number"
+                        value={formData.priority}
+                        onChange={handleChange}
+                        className="w-full p-2 border border-gray-300 rounded-md text-black focus:outline-none focus:ring-2 focus:ring-gray-400 bg-white"
+                        placeholder="Введите приоритет"
+                    />
+                    {errors.priority && <p className="text-red-500 text-sm">{errors.priority}</p>}
+
                 </div>
             </div>
         </ModalTemplate>
