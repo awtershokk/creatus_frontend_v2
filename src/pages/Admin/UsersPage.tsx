@@ -4,7 +4,7 @@ import Label from "../../components/Text/Label.tsx";
 import ItemTable from '../../components/Tables/ItemTable.tsx';
 import MiniAddButton from "../../components/Buttons/MiniAddButton.tsx";
 import { User } from "../../models/User.tsx";
-import { fetchUsers } from "../../api/userApi.ts";
+import { fetchUsers } from "../../api/requests/userApi.ts";
 import AddUserModal from "../../components/Modal/Add/AddUserModal.tsx";
 import LoadingSpinner from "../../components/Menu/LoadingSpinner.tsx";
 import { useDispatch } from "react-redux";

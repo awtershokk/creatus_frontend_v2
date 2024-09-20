@@ -3,7 +3,7 @@ import DefaultLayout from "../../layouts/DefaultLayout.tsx";
 import Label from "../../components/Text/Label.tsx";
 import ItemTable from '../../components/Tables/ItemTable.tsx';
 import { Device } from "../../models/Device.tsx";
-import { fetchDevices } from "../../api/deviceApi.ts";
+import { fetchDevices } from "../../api/requests/deviceApi.ts";
 import DeleteDeviceModal from "../../components/Modal/Delete/DeleteDeviceModal.tsx";
 import UnbindDeviceModal from "../../components/Modal/Bind/UnbindDeviceModal.tsx";
 import BindMeasuringPointModal from "../../components/Modal/Bind/BindMeasuringPointModal.tsx";

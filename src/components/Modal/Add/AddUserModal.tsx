@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ModalTemplate from '../ModalTemplate';
 import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
-import { addUser } from '../../../api/userApi';
+import { addUser } from '../../../api/requests/userApi.ts';
 
 interface AddUserModalProps {
     onClose: () => void;

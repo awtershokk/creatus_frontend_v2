@@ -3,7 +3,7 @@ import DefaultLayout from "../../layouts/DefaultLayout.tsx";
 import Label from "../../components/Text/Label.tsx";
 import ItemTable from '../../components/Tables/ItemTable.tsx';
 import {Controller} from "../../models/Controller.tsx";
-import {fetchControllers} from "../../api/controllerApi.ts";
+import {fetchControllers} from "../../api/requests/controllerApi.ts";
 import LoadingSpinner from "../../components/Menu/LoadingSpinner.tsx";
 import {useDispatch} from "react-redux";
 import {setBreadcrumb} from "../../store/slices/breadcrumbSlice.ts";

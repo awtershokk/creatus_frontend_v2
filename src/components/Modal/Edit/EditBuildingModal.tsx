@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Building } from '../../../models/Building';
-import { updateBuilding, fetchListEnergyClasses, fetchListTimezones, fetchListHwsConnectionDiagrams } from '../../../api/buildingApi';
+import { updateBuilding, fetchListEnergyClasses, fetchListTimezones, fetchListHwsConnectionDiagrams } from '../../../api/requests/buildingApi.ts';
 import ModalTemplate from '../ModalTemplate';
 
 interface BuildingEditModalProps {

@@ -1,7 +1,7 @@
 import DefaultLayout from "../../layouts/DefaultLayout.tsx";
 import ControllerOptionsTable from "../../components/Tables/Controller/ControllerOptionsTable.jsx";
 import {useEffect, useState} from "react";
-import {fetchControllerLabel} from "../../api/vremeniy_kostil/controllerApi";
+import {fetchControllerLabel} from "../../api/requests/vremeniy_kostil/controllerApi";
 import {useParams} from "react-router-dom";
 import {useDispatch} from "react-redux";
 import {setBreadcrumb} from "../../store/slices/breadcrumbSlice.ts";

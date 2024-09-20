@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import ModalTemplate from '../ModalTemplate';
-import { fetchWiringDiagrams, fetchConnectionDiagrams, addThermalCircuit } from '../../../api/thermalCircuitApi';
+import { fetchWiringDiagrams, fetchConnectionDiagrams, addThermalCircuit } from '../../../api/requests/thermalCircuitApi.ts';
 
 interface AddItemModalProps {
     onClose: () => void;

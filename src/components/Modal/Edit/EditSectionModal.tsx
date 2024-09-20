@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ModalTemplate from '../ModalTemplate';
 
 import {reverseTransformSectionData, Section} from '../../../models/Section.ts';
-import { updateSection } from '../../../api/sectionApi.ts';
+import { updateSection } from '../../../api/requests/sectionApi.ts';
 
 interface EditSectionModalProps {
     sectionId: number;

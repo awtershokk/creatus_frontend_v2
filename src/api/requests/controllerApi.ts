@@ -1,9 +1,10 @@
 import axios from "axios";
-import { Controller, transformControllerData } from "../models/Controller.tsx";
+import { Controller, transformControllerData } from "../../models/Controller.tsx";
+import {MODBUS_API_URL} from "../modbusApi";
 
 export const fetchControllers = async () => {
     try {
-        const response = await axios.get('http://localhost:7001/api/ecl/all');
+        const response = await axios.get(`${MODBUS_API_URL}/ecl/all`);
         const controllers: Controller[] = response.data.data;
         return controllers.map(controller => transformControllerData(controller));
     } catch (error) {
@@ -13,7 +14,7 @@ export const fetchControllers = async () => {
 
 export const fetchControllerLabel = async (controllerId: number) => {
     try {
-        const { data: { data: { label } } } = await axios.get(`http://localhost:7001/api/ecl/one/${controllerId}`);
+        const { data: { data: { label } } } = await axios.get(`${MODBUS_API_URL}/ecl/one/${controllerId}`);
         return label;
     } catch (error) {
         throw error;

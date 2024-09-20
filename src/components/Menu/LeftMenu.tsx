@@ -12,8 +12,8 @@ import {
     FaThermometerHalf,
     FaBell
 } from 'react-icons/fa';
-import { fetchSections } from '../../api/sectionApi.ts';
-import { fetchThermalCircuits } from '../../api/thermalCircuitApi.ts';
+import { fetchSections } from '../../api/requests/sectionApi.ts';
+import { fetchThermalCircuits } from '../../api/requests/thermalCircuitApi.ts';
 
 const LeftMenu: React.FC = () => {
     const [isDevicesOpen, setIsDevicesOpen] = useState(false);

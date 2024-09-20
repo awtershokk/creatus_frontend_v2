@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import ModalTemplate from '../ModalTemplate';
-import { createMeasuringPoint } from '../../../api/measuringPointApi';
+import { createMeasuringPoint } from '../../../api/requests/measuringPointApi.ts';
 
 interface AddMeasurePointModalProps {
     onClose: () => void;

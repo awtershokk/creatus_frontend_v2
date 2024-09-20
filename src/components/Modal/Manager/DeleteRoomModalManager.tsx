@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { deleteRoom, fetchRoom } from "../../../api/roomApi.ts";
-import { fetchMeasuringPoints } from "../../../api/measuringPointApi.ts";
+import { deleteRoom, fetchRoom } from "../../../api/requests/roomApi.ts";
+import { fetchMeasuringPoints } from "../../../api/requests/measuringPointApi.ts";
 
 import DeleteRoomModal from "../Delete/Room/DeleteRoomModal.tsx";
 import DeleteRoomWithMeasuringPointsModal from "../Delete/Room/DeleteRoomWithMeasuringPointsModal.tsx";

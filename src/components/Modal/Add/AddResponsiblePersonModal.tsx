@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { FaChevronDown } from 'react-icons/fa';
 import ModalTemplate from '../ModalTemplate.tsx';
 import CustomCheckbox from "../../Buttons/CheckBox.tsx";
-import {fetchBuildingTypes} from "../../../api/buildingApi.ts";
+import {fetchBuildingTypes} from "../../../api/requests/buildingApi.ts";
 
 interface ResponsiblePerson {
     position: string;

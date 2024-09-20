@@ -1,12 +1,11 @@
-import api from './api';
+import api from '../api.ts';
 import {
     Device,
     transformDeviceData,
     transformDeviceDataForMP,
     transformDeviceDataForSettingMode
-} from "../models/Device";
-import {Section, transformSectionData} from "../models/Section.ts";
-import {ResponsiblePerson} from "../models/ResponsiblePerson.ts";
+} from "../../models/Device.tsx";
+
 
 export const fetchDevices = async (
     handleEditDeviceClick: (item: Device) => void = () => {},
@@ -22,7 +21,6 @@ export const fetchDevices = async (
         throw error;
     }
 };
-
 
 export const fetchDevicesSetiingsMode = async (
 ): Promise<Device[]> => {

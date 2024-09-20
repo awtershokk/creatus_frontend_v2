@@ -1,7 +1,6 @@
-import api from "./api.ts";
-import {Measurement, transformMeasurementData} from "../models/Measurements.ts";
-import {MeasurementMP, transformMeasurementMPData} from "../models/MeasurementsMP.ts";
-
+import api from "../api.ts";
+import {Measurement, transformMeasurementData} from "../../models/Measurements.ts";
+import {MeasurementMP, transformMeasurementMPData} from "../../models/MeasurementsMP.ts";
 
 export const fetchMeasurementsThermalCircuit = async (thermalCircuitId: number) => {
     try {

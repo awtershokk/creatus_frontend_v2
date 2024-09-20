@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import ModalTemplate from '../../ModalTemplate.tsx';
-import { deleteMeasuringPoint, fetchMeasuringPoint } from "../../../../api/measuringPointApi.ts";
+import { deleteMeasuringPoint, fetchMeasuringPoint } from "../../../../api/requests/measuringPointApi.ts";
 
 interface DeleteMeasuringPointModalProps {
     measuringPointID: number;

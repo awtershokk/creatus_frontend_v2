@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import ModalTemplate from '../ModalTemplate';
-import { createSection } from '../../../api/sectionApi';
+import { createSection } from '../../../api/requests/sectionApi.ts';
 
 interface AddSectionModalProps {
     onClose: () => void;

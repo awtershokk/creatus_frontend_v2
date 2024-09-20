@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import ModalTemplate from '../ModalTemplate';
-import { fetchThermalCircuitIdOptions, fetchWindowOptions, createRoom } from '../../../api/roomApi';
+import { fetchThermalCircuitIdOptions, fetchWindowOptions, createRoom } from '../../../api/requests/roomApi.ts';
 
 const AddRoomInSectionModal = ({ sectionId, onClose, onSubmit }) => {
     const [formData, setFormData] = useState({

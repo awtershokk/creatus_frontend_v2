@@ -11,9 +11,9 @@ import MeasurementsFilters from "../../components/Filters/MeasurementsFilters.ts
 import GraphPage from "../../components/Graph/GraphPage.tsx";
 import Label from "../../components/Text/Label.tsx";
 
-import { fetchRoomUser } from "../../api/roomApi.ts";
-import { fetchMeasurementsRoom } from "../../api/measurementsApi.ts";
-import {fetchPublicInfo} from "../../api/buildingApi.ts";
+import { fetchRoomUser } from "../../api/requests/roomApi.ts";
+import { fetchMeasurementsRoom } from "../../api/requests/measurementsApi.ts";
+import {fetchPublicInfo} from "../../api/requests/buildingApi.ts";
 
 interface MeasuringPoint {
     deviceActive: boolean | null;
