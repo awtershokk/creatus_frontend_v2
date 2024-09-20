@@ -115,7 +115,6 @@ const AddResponsiblePersonModal: React.FC<AddResponsiblePersonModalProps> = ({ o
         }));
     };
 
-    // Для всех уведомлений
     const handleSelectAllNotifications = () => {
         const newSelection = !selectAllNotifications;
         setSelectAllNotifications(newSelection);
@@ -133,7 +132,6 @@ const AddResponsiblePersonModal: React.FC<AddResponsiblePersonModalProps> = ({ o
         setSelectAllIncidentTypes(newSelection);
     };
 
-    // Для тепловых контуров
     const handleSelectAllHeatContours = () => {
         const newSelection = !selectAllHeatContours;
         setSelectAllHeatContours(newSelection);
@@ -143,7 +141,6 @@ const AddResponsiblePersonModal: React.FC<AddResponsiblePersonModalProps> = ({ o
         });
     };
 
-    // Для всех типов
     const handleSelectAllIncidentTypes = () => {
         const newSelection = !selectAllIncidentTypes;
         setSelectAllIncidentTypes(newSelection);

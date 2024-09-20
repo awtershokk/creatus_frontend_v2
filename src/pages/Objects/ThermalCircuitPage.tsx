@@ -21,6 +21,7 @@ import LoadingSpinner from "../../components/Menu/LoadingSpinner.tsx";
 import EditThermalCircuitModal from "../../components/Modal/Edit/EditThermalCircuitPageModal.tsx";
 import {useDispatch} from "react-redux";
 import {setBreadcrumb} from "../../store/slices/breadcrumbSlice.ts";
+import WeatherInfo from "../../components/Forms/WeatherInfo.tsx";
 
 const ThermalCircuitPage = () => {
     const {thermalCircuitId} = useParams();
