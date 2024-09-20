@@ -15,13 +15,13 @@ const AddRoomInThermalCircuitModal: React.FC<AddRoomInThermalCircuitProps> = ({ 
         floor: 0,
         windowOrientation: '',
         area: 0,
-        corner: false,
+        corner: '',
         temperatureMinimum: 0,
         temperatureMaximum: 0,
-        temperatureActive: 'false',
+        temperatureActive: '',
         humidityMinimum: 0,
         humidityMaximum: 0,
-        humidityActive: 'false',
+        humidityActive: '',
         priority: 0,
     });
     const [sectionOptions, setSectionOptions] = useState([]);
@@ -72,6 +72,17 @@ const AddRoomInThermalCircuitModal: React.FC<AddRoomInThermalCircuitProps> = ({ 
         if (!windowOrientation || windowOrientation === 'Выберите ориентацию окон') {
             newErrors.windowOrientation = 'Выберите ориентацию окон';
         }
+
+        if (!corner) {
+            newErrors.corner = 'Выберите угловое';
+        }
+        if (!temperatureActive) {
+            newErrors.temperatureActive = 'Выберите включенность температуры в расчёт';
+        }
+        if (!humidityActive) {
+            newErrors.humidityActive = 'Выберите включенность влажности в расчёт';
+        }
+
 
         if (!temperatureMinimum) {
             newErrors.temperatureMinimum = 'Определите минимальную температуру';
@@ -252,6 +263,8 @@ const AddRoomInThermalCircuitModal: React.FC<AddRoomInThermalCircuitProps> = ({ 
                         onChange={handleChange}
                         className={`w-full p-2 border ${errors.corner ? 'border-red-500' : 'border-gray-300'} rounded-md text-black focus:outline-none focus:ring-2 focus:ring-gray-400 bg-white`}
                     >
+                        <option value="" disabled>Угловое Да/Нет</option>
+
                         <option value="false">Нет</option>
                         <option value="true">Да</option>
                     </select>
@@ -302,9 +315,11 @@ const AddRoomInThermalCircuitModal: React.FC<AddRoomInThermalCircuitProps> = ({ 
                         onChange={handleChange}
                         className="w-full p-2 border border-gray-300 rounded-md text-black focus:outline-none focus:ring-2 focus:ring-gray-400 bg-white"
                     >
+                        <option value="" disabled>Температура включена в расчёт Да/Нет</option>
                         <option value="false">Нет</option>
                         <option value="true">Да</option>
                     </select>
+                    {errors.temperatureActive && <p className="text-red-500 text-sm">{errors.temperatureActive}</p>}
                 </div>
 
                 <div>
@@ -352,9 +367,12 @@ const AddRoomInThermalCircuitModal: React.FC<AddRoomInThermalCircuitProps> = ({ 
                         onChange={handleChange}
                         className="w-full p-2 border border-gray-300 rounded-md text-black focus:outline-none focus:ring-2 focus:ring-gray-400 bg-white"
                     >
+                        <option value="" disabled>Влажность включена в расчёт Да/Нет</option>
                         <option value="false">Нет</option>
                         <option value="true">Да</option>
                     </select>
+                    {errors.humidityActive && <p className="text-red-500 text-sm">{errors.humidityActive}</p>}
+
                 </div>
 
                 <div>
