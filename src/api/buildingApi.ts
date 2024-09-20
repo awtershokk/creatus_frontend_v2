@@ -95,3 +95,19 @@ export const fetchPublicInfo = async (id: number): Promise<BuildingInfo> => {
     }
 };
 
+export const fetchBuildingTypes = async () => {
+    try {
+        const response = await api.get('/building/list/types');
+        const data = await response.data;
+
+        const options = data.map((item: any) => ({
+            label: item.label,
+            value: item.id
+        }));
+
+        return options;
+    } catch (error) {
+        console.error('Ошибка при загрузке типов:', error);
+        throw error;
+    }
+};

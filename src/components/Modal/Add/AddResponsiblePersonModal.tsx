@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { FaChevronDown } from 'react-icons/fa';
 import ModalTemplate from '../ModalTemplate.tsx';
 import CustomCheckbox from "../../Buttons/CheckBox.tsx";
+import {fetchBuildingTypes} from "../../../api/buildingApi.ts";
 
 interface ResponsiblePerson {
     position: string;
@@ -63,16 +64,16 @@ const AddResponsiblePersonModal: React.FC<AddResponsiblePersonModalProps> = ({ o
     const [selectAllIncidentTypes, setSelectAllIncidentTypes] = useState(false); // Global select all incident types
 
     useEffect(() => {
-        fetch('http://localhost:5001/api/building/list/types')
-            .then(response => response.json())
-            .then(data => {
-                const options = data.map((item: any) => ({
-                    label: item.label,
-                    value: item.id
-                }));
+        const loadBuildingTypes = async () => {
+            try {
+                const options = await fetchBuildingTypes();
                 setResponsibleTypes(options);
-            })
-            .catch(error => console.error('Ошибка при загрузке типов:', error));
+            } catch (error) {
+                console.error('Ошибка при загрузке типов:', error);
+            }
+        };
+
+        loadBuildingTypes();
     }, []);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -410,6 +411,7 @@ const AddResponsiblePersonModal: React.FC<AddResponsiblePersonModalProps> = ({ o
                                 checked={notifyStatusChange}
                                 onChange={() => setNotifyStatusChange(prev => !prev)}
                                 label="Уведомлять об обновлении ПО"
+                                showDivider={false}
                             />
                         </div>
                     )}
