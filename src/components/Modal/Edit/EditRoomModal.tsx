@@ -74,7 +74,7 @@ const EditRoomModal: React.FC<EditRoomModalProps> = ({ roomId, room, onClose, on
         const selectedLabel = e.target.value;
         setFormData(prevData => ({
             ...prevData,
-            [fieldName]: selectedLabel,  /
+            [fieldName]: selectedLabel,
         }));
     };
 
