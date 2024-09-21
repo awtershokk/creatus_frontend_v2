@@ -1,6 +1,6 @@
 import api from './api';
 import { ThermalCircuit, transformThermalCircuitData } from '../models/ThermalCircuit';
-import {Section} from "../models/Section.ts";
+
 
 export const fetchThermalCircuits = async (buildingId: number) => {
     try {

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import DefaultLayout from "../../layouts/DefaultLayout.tsx";
 import Label from "../../components/Text/Label.tsx";
 import EditButton from "../../components/Buttons/EditButton.tsx";
@@ -7,7 +7,7 @@ import ObjectTable from "../../components/Tables/ObjectTable.tsx";
 import ChildElementsTable from "../../components/Tables/ChildElementsTable.tsx";
 import BlueLink from "../../components/Text/BlueLink.tsx";
 import { useParams } from "react-router-dom";
-import { fetchRoom } from "../../api/roomApi.ts";
+import { fetchRoom} from "../../api/roomApi.ts";
 import { fetchMeasuringPoints } from "../../api/measuringPointApi.ts";
 import { fetchMeasurementsRoom } from "../../api/measurementsApi.ts";
 import { Measurement } from "../../models/Measurements.ts";
@@ -20,14 +20,12 @@ import DeleteMeasuringPointModal from "../../components/Modal/Delete/MeasuringPo
 import LoadingSpinner from "../../components/Menu/LoadingSpinner.tsx";
 import {setBreadcrumb} from "../../store/slices/breadcrumbSlice.ts";
 import {useDispatch} from "react-redux";
-import EditRoomModal from "../../components/Modal/Edit/EditRoomModal.tsx";
 import {transformRoomData} from "../../models/Room.tsx";
-
+import EditRoomModal from "../../components/Modal/Edit/EditRoomModal.tsx";
 
 const RoomPage = () => {
     const { roomId } = useParams();
     const [room, setRoom] = useState<Array<{ id: number, title: string, value: string | number }>>([]);
-
     const [measuringPoints, setMeasuringPoints] = useState<Array<{ id: number, title: string, value: string, value2: string }>>([]);
     const [measurements, setMeasurements] = useState<Measurement[]>([]);
     const [filteredMeasurements, setFilteredMeasurements] = useState<Measurement[]>([]);
@@ -46,44 +44,43 @@ const RoomPage = () => {
     const [isLoading, setIsLoading] = useState(true);
     const dispatch = useDispatch();
 
-        const fetchData = async () => {
-            try {
-                const responsebuildingData = await fetchRoom(roomId);
-                setRoomData(responsebuildingData);
+    const fetchData = async () => {
+        try {
+            const responseRoomData = await fetchRoom(roomId);
+            setRoomData(responseRoomData);
+            const requestRoomForTable = await fetchRoom(roomId);
+            const roomData = transformRoomData(requestRoomForTable);
+            setRoom(roomData);
+            const labelItem = roomData.find(item => item.title === 'Наименование');
 
-                const roomForTable = transformRoomData(responsebuildingData)
+            dispatch(setBreadcrumb({
+                key: 'room',
+                label: labelItem?.value,
+                icon: 'FaDoorClosed',
+                id: roomId
+            }));
 
-                setRoom(roomForTable);
-                const labelItem = roomData.find(item => item.title === 'Наименование');
+            const measuringPointsData = await fetchMeasuringPoints(roomId);
+            const formattedMeasuringPoints = measuringPointsData.map(point => ({
+                id: point.id,
+                title: point.label,
+                properties: 'Свойства',
+                delete: 'Удалить',
+                to: `measuringPoint/${point.id}`
+            }));
+            setMeasuringPoints(formattedMeasuringPoints);
 
-                dispatch(setBreadcrumb({
-                    key: 'room',
-                    label: labelItem?.value,
-                    icon: 'FaDoorClosed',
-                    id: roomId
-                }));
-
-                const measuringPointsData = await fetchMeasuringPoints(roomId);
-                const formattedMeasuringPoints = measuringPointsData.map(point => ({
-                    id: point.id,
-                    title: point.label,
-                    properties: 'Свойства',
-                    delete: 'Удалить',
-                    to: `measuringPoint/${point.id}`
-                }));
-                setMeasuringPoints(formattedMeasuringPoints);
-
-                const measurementsData = await fetchMeasurementsRoom(roomId);
-                setMeasurements(measurementsData);
-                setFilteredMeasurements(measurementsData);
-                setTotalMeasurements(measurementsData.length);
-                setDisplayedMeasurements(measurementsData.length);
-                setIsLoading(false);
-            } catch (error) {
-                setIsLoading(false);
-                console.error('Ошибка получения данных:', error);
-            }
-        };
+            const measurementsData = await fetchMeasurementsRoom(roomId);
+            setMeasurements(measurementsData);
+            setFilteredMeasurements(measurementsData);
+            setTotalMeasurements(measurementsData.length);
+            setDisplayedMeasurements(measurementsData.length);
+            setIsLoading(false);
+        } catch (error) {
+            setIsLoading(false);
+            console.error('Ошибка получения данных:', error);
+        }
+    };
 
     useEffect(() => {
         fetchData();
@@ -95,6 +92,15 @@ const RoomPage = () => {
         } catch (error) {
             console.error('Ошибка обновления здания:', error);
         }
+    };
+    const handleEditButtonClick = (roomItem: any) => {
+        setRoomData(roomItem);
+        setIsEditRoomModalOpen(true);
+    };
+
+    const handleEditRoomModalClose = () => {
+        setIsEditRoomModalOpen(false);
+
     };
     const handleFilterChange = (filters: {
         dateRange?: { start: Date | null; end: Date | null },
@@ -164,16 +170,6 @@ const RoomPage = () => {
     const closeDeleteMeasurePointModal = () => {
         setDeleteMeasuringPointId(null);
         setIsDeleteMeasurePointModalOpen(false);
-    };
-
-    const handleEditButtonClick = (roomItem: any) => {
-        setRoomData(roomItem);
-        setIsEditRoomModalOpen(true);
-    };
-
-    const handleEditRoomModalClose = () => {
-        setIsEditRoomModalOpen(false);
-
     };
 
     const headers = {
