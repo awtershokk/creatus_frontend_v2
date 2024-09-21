@@ -6,7 +6,7 @@ import AddButton from "../../components/Buttons/AddButton.tsx";
 import ObjectTable from "../../components/Tables/ObjectTable.tsx";
 import ChildElementsTable from "../../components/Tables/ChildElementsTable.tsx";
 import ItemTable from '../../components/Tables/ItemTable.tsx';
-import { fetchBuilding, fetchResponsiblePersons, updateBuilding } from '../../api/buildingApi';
+import { fetchBuilding, fetchResponsiblePersons} from '../../api/buildingApi';
 import { fetchSections } from '../../api/sectionApi.ts';
 import { fetchThermalCircuits } from "../../api/thermalCircuitApi.ts";
 import { ResponsiblePerson } from '../../models/ResponsiblePerson';
@@ -22,7 +22,7 @@ import LoadingSpinner from "../../components/Menu/LoadingSpinner.tsx";
 import { Building, transformBuildingData } from "../../models/Building.ts";
 import { setBreadcrumb } from "../../store/slices/breadcrumbSlice.ts";
 import { useDispatch } from "react-redux";
-import { formatPhoneNumber } from '../../utils/phoneNumber.ts'; // Импорт функции форматирования
+import { formatPhoneNumber } from '../../utils/phoneNumber.ts';
 
 const BuildingPage = () => {
     const [building, setBuilding] = useState<Array<{ id: number, title: string, value: string | number }>>([]);
