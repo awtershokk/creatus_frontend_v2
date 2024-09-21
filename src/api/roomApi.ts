@@ -1,5 +1,6 @@
 import api from "./api.ts";
 import {Room, transformRoomData, transformRoomDataForUser} from "../models/Room.tsx";
+import {Section} from "../models/Section.ts";
 
 export const fetchRoomsBySection = async (sectionId: number) => {
     try {
@@ -23,7 +24,7 @@ export const fetchRoom = async (roomId: number) => {
     try {
         const response = await api.get(`/room/${roomId}`);
         const room: Room = response.data.data;
-        return transformRoomData(room);
+        return room;
     } catch (error) {
         throw error;
     }
@@ -92,6 +93,16 @@ export const fetchSectionOptions = async () => {
         }));
     } catch (error) {
         console.error('Error fetching sections:', error);
+        throw error;
+    }
+};
+export const updateRoom = async (RoomID: number, updatedRoom: Room): Promise<Room> => {
+    try {
+
+        const response = await api.put(`/room/${RoomID}`, updatedRoom);
+        console.log('суета', response.data.data);
+        return response.data.data;
+    } catch (error) {
         throw error;
     }
 };

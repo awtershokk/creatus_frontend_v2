@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import DefaultLayout from "../../layouts/DefaultLayout.tsx";
 import Label from "../../components/Text/Label.tsx";
 import EditButton from "../../components/Buttons/EditButton.tsx";
@@ -20,10 +20,14 @@ import DeleteMeasuringPointModal from "../../components/Modal/Delete/MeasuringPo
 import LoadingSpinner from "../../components/Menu/LoadingSpinner.tsx";
 import {setBreadcrumb} from "../../store/slices/breadcrumbSlice.ts";
 import {useDispatch} from "react-redux";
+import EditRoomModal from "../../components/Modal/Edit/EditRoomModal.tsx";
+import {transformRoomData} from "../../models/Room.tsx";
+
 
 const RoomPage = () => {
     const { roomId } = useParams();
     const [room, setRoom] = useState<Array<{ id: number, title: string, value: string | number }>>([]);
+
     const [measuringPoints, setMeasuringPoints] = useState<Array<{ id: number, title: string, value: string, value2: string }>>([]);
     const [measurements, setMeasurements] = useState<Measurement[]>([]);
     const [filteredMeasurements, setFilteredMeasurements] = useState<Measurement[]>([]);
@@ -37,13 +41,19 @@ const RoomPage = () => {
     const [isDeleteMeasurePointModalOpen, setIsDeleteMeasurePointModalOpen] = useState(false);
     const [deleteMeasuringPointId, setDeleteMeasuringPointId] = useState<number | null>(null);
 
+    const [roomData, setRoomData] = useState<any>(null);
+    const [isEditRoomModalOpen, setIsEditRoomModalOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const dispatch = useDispatch();
 
         const fetchData = async () => {
             try {
-                const roomData = await fetchRoom(roomId);
-                setRoom(roomData);
+                const responsebuildingData = await fetchRoom(roomId);
+                setRoomData(responsebuildingData);
+
+                const roomForTable = transformRoomData(responsebuildingData)
+
+                setRoom(roomForTable);
                 const labelItem = roomData.find(item => item.title === 'Наименование');
 
                 dispatch(setBreadcrumb({
@@ -78,7 +88,14 @@ const RoomPage = () => {
     useEffect(() => {
         fetchData();
     }, [roomId]);
-
+    const handleUpdateRoom = async () => {
+        try {
+            await fetchData();
+            handleEditRoomModalClose();
+        } catch (error) {
+            console.error('Ошибка обновления здания:', error);
+        }
+    };
     const handleFilterChange = (filters: {
         dateRange?: { start: Date | null; end: Date | null },
         timeRange?: { start: Date | null; end: Date | null },
@@ -149,6 +166,16 @@ const RoomPage = () => {
         setIsDeleteMeasurePointModalOpen(false);
     };
 
+    const handleEditButtonClick = (roomItem: any) => {
+        setRoomData(roomItem);
+        setIsEditRoomModalOpen(true);
+    };
+
+    const handleEditRoomModalClose = () => {
+        setIsEditRoomModalOpen(false);
+
+    };
+
     const headers = {
         'Дата': 'date',
         'Время': 'time',
@@ -170,7 +197,7 @@ const RoomPage = () => {
                             <ObjectTable
                                 title="Свойства помещения"
                                 data={room}
-                                ButtonComponent={EditButton}
+                                ButtonComponent={() => <EditButton onClick={() => handleEditButtonClick(roomData)}/>}
                                 nonEditableFields={['Секция', 'Тепловой контур']}
                             />
                         </div>
@@ -224,6 +251,14 @@ const RoomPage = () => {
                                     fetchData();
                                     closeDeleteMeasurePointModal();
                                 }}
+                            />
+                        )}
+                        {isEditRoomModalOpen && roomData && (
+                            <EditRoomModal
+                                roomId={roomId}
+                                room={roomData}
+                                onClose={handleEditRoomModalClose}
+                                onUpdate={handleUpdateRoom}
                             />
                         )}
                     </div>
