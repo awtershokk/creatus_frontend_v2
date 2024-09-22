@@ -3,6 +3,8 @@ import { FaChevronDown } from 'react-icons/fa';
 import ModalTemplate from '../ModalTemplate.tsx';
 import CustomCheckbox from "../../Buttons/CheckBox.tsx";
 import {fetchBuildingTypes} from "../../../api/buildingApi.ts";
+import { formatPhoneNumberOnInput} from "../../../utils/phoneNumber.ts";
+import Tooltip from "../../Buttons/Tooltip.tsx";
 
 interface ResponsiblePerson {
     position: string;
@@ -33,6 +35,7 @@ const AddResponsiblePersonModal: React.FC<AddResponsiblePersonModalProps> = ({ o
     const [loading, setLoading] = useState(false);
     const [errors, setErrors] = useState<{ [key: string]: string }>({});
     const [responsibleTypes, setResponsibleTypes] = useState<Option[]>([]);
+    const [showNumberTooltip, setShowNumberTooltip] = useState(false);
 
     const [heatContour, setHeatContour] = useState({
         contour1: false,
@@ -78,11 +81,23 @@ const AddResponsiblePersonModal: React.FC<AddResponsiblePersonModalProps> = ({ o
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
-        setFormData(prevData => ({
-            ...prevData,
-            [name]: value
-        }));
-    };
+
+        if (name === 'phone') {
+            // Форматируем телефон при вводе
+            const formattedPhone = formatPhoneNumberOnInput(value);
+
+            // Обновляем состояние с отформатированным телефоном
+            setFormData(prevData => ({
+                ...prevData,
+                phone: formattedPhone
+            }));
+        }  else {
+            setFormData(prevData => ({
+                ...prevData,
+                [name]: value
+            }));
+        }
+    };;
 
     const handleCheckboxChange = (section: string, field: string, parent?: string) => {
         if (parent) {
@@ -157,7 +172,11 @@ const AddResponsiblePersonModal: React.FC<AddResponsiblePersonModalProps> = ({ o
     const validateForm = (): boolean => {
         const newErrors: { [key: string]: string } = {};
         const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        const phonePattern = /^\d{11}$/;
+        const isValidPhoneNumber = (phoneNumber: string): boolean => {
+            const cleaned = phoneNumber.replace(/\D/g, '');
+            return cleaned.length === 11;
+        };
+
         const namePattern = /^[A-Za-zА-Яа-я\s]+$/;
 
         if (!formData.position) {
@@ -172,8 +191,8 @@ const AddResponsiblePersonModal: React.FC<AddResponsiblePersonModalProps> = ({ o
             newErrors.name = 'ФИО может содержать только буквы и пробелы.';
         }
 
-        if (!formData.phone || !phonePattern.test(formData.phone)) {
-            newErrors.phone = 'Телефон должен содержать 11 цифр.';
+        if (!formData.phone || !isValidPhoneNumber(formData.phone)) {
+            newErrors.phone = 'Телефон должен содержать 11 цифр и соответствовать формату.';
         }
 
         if (!formData.email || !emailPattern.test(formData.email)) {
@@ -193,6 +212,13 @@ const AddResponsiblePersonModal: React.FC<AddResponsiblePersonModalProps> = ({ o
         try {
             await new Promise(resolve => setTimeout(resolve, 100));
 
+            const cleanedPhone = formData.phone.replace(/\D/g, '');
+
+            const newPerson: ResponsiblePerson = {
+                ...formData,
+                phone: cleanedPhone // Передаем очищенный телефон
+            };
+
             const notificationSettings = {
                 name: formData.name,
                 heatContours: heatContour,
@@ -200,17 +226,17 @@ const AddResponsiblePersonModal: React.FC<AddResponsiblePersonModalProps> = ({ o
                 notifyStatusChange: notifyStatusChange
             };
 
-            console.log('Новое ответственное лицо:', formData);
+            console.log('Новое ответственное лицо:', newPerson);
             console.log('Настройки уведомлений:', notificationSettings);
 
-            onSubmit(formData);
+            onSubmit(newPerson);
             onClose();
         } catch (error) {
             console.error('Ошибка при добавлении:', error);
         } finally {
             setLoading(false);
         }
-    };
+    };;
 
     return (
         <ModalTemplate
@@ -269,10 +295,20 @@ const AddResponsiblePersonModal: React.FC<AddResponsiblePersonModalProps> = ({ o
                     />
                     {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
                 </div>
-                <div>
-                    <label htmlFor="phone" className="block text-sm font-medium text-gray-900">
-                        Телефон
-                    </label>
+                <div className="relative">
+                    <div className="">
+                        <label htmlFor="phone" className="block text-sm font-medium text-gray-900">
+                            Телефон
+                        </label>
+
+                        <Tooltip
+                            message="Введите номер телефона, который привязан к Telegram-аккаунту этого человека."
+                            isVisible={showNumberTooltip}
+                            toggleVisibility={() => setShowNumberTooltip(!showNumberTooltip)}
+                            iconClassName="text-gray-500 cursor-pointer ml-2 absolute left-0 ml-16 mb-5"
+                        />
+                    </div>
+
                     <input
                         id="phone"
                         name="phone"
