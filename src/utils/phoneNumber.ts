@@ -9,7 +9,7 @@ export const formatPhoneNumber = (phoneNumber: string): string => {
     return phoneNumber;
 };
 export const formatPhoneNumberOnInput = (phoneNumber: string): string => {
-    const cleaned = phoneNumber.replace(/\D/g, '');
+    const cleaned = phoneNumber.replace(/\D/g, '').slice(0, 11);;
 
     if (cleaned.length <= 1) {
         return cleaned;
