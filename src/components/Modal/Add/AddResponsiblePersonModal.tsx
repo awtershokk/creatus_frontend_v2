@@ -3,7 +3,7 @@ import { FaChevronDown } from 'react-icons/fa';
 import ModalTemplate from '../ModalTemplate.tsx';
 import CustomCheckbox from "../../Buttons/CheckBox.tsx";
 
-import { formatPhoneNumberOnInput} from "../../../utils/phoneNumber.ts";
+import { formatPhoneNumberOnInput} from "../../../utils/formatPhoneNumber.ts";
 import Tooltip from "../../Buttons/Tooltip.tsx";
 
 import {fetchBuildingTypes} from "../../../api/requests/buildingApi.ts";
@@ -45,9 +45,9 @@ const AddResponsiblePersonModal: React.FC<AddResponsiblePersonModalProps> = ({ o
     });
 
     const [incidentTypes, setIncidentTypes] = useState({
-        'Датчик': { 'Д.1': false, 'Д.2': false, 'Д.3': false },
-        'Точка измерения': { 'Т.1': false, 'Т.2': false },
-        'Помещение': { 'П.1': false, 'П.2': false }
+        'Датчик': {'Д.1': false, 'Д.2': false, 'Д.3': false},
+        'Точка измерения': {'Т.1': false, 'Т.2': false},
+        'Помещение': {'П.1': false, 'П.2': false}
     });
 
     const [notifyStatusChange, setNotifyStatusChange] = useState(false);
@@ -82,7 +82,7 @@ const AddResponsiblePersonModal: React.FC<AddResponsiblePersonModalProps> = ({ o
     }, []);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-        const { name, value } = e.target;
+        const {name, value} = e.target;
 
         if (name === 'phone') {
             // Форматируем телефон при вводе
@@ -93,13 +93,14 @@ const AddResponsiblePersonModal: React.FC<AddResponsiblePersonModalProps> = ({ o
                 ...prevData,
                 phone: formattedPhone
             }));
-        }  else {
+        } else {
             setFormData(prevData => ({
                 ...prevData,
                 [name]: value
             }));
         }
-    };;
+    };
+    ;
 
     const handleCheckboxChange = (section: string, field: string, parent?: string) => {
         if (parent) {
@@ -140,9 +141,9 @@ const AddResponsiblePersonModal: React.FC<AddResponsiblePersonModalProps> = ({ o
             contour2: newSelection
         });
         setIncidentTypes({
-            'Датчик': { 'Д.1': newSelection, 'Д.2': newSelection, 'Д.3': newSelection },
-            'Точка измерения': { 'Т.1': newSelection, 'Т.2': newSelection },
-            'Помещение': { 'П.1': newSelection, 'П.2': newSelection }
+            'Датчик': {'Д.1': newSelection, 'Д.2': newSelection, 'Д.3': newSelection},
+            'Точка измерения': {'Т.1': newSelection, 'Т.2': newSelection},
+            'Помещение': {'П.1': newSelection, 'П.2': newSelection}
         });
         setNotifyStatusChange(newSelection);
         setSelectAllHeatContours(newSelection);
@@ -162,9 +163,9 @@ const AddResponsiblePersonModal: React.FC<AddResponsiblePersonModalProps> = ({ o
         const newSelection = !selectAllIncidentTypes;
         setSelectAllIncidentTypes(newSelection);
         setIncidentTypes({
-            'Датчик': { 'Д.1': newSelection, 'Д.2': newSelection, 'Д.3': newSelection },
-            'Точка измерения': { 'Т.1': newSelection, 'Т.2': newSelection },
-            'Помещение': { 'П.1': newSelection, 'П.2': newSelection }
+            'Датчик': {'Д.1': newSelection, 'Д.2': newSelection, 'Д.3': newSelection},
+            'Точка измерения': {'Т.1': newSelection, 'Т.2': newSelection},
+            'Помещение': {'П.1': newSelection, 'П.2': newSelection}
         });
     };
 
@@ -235,7 +236,8 @@ const AddResponsiblePersonModal: React.FC<AddResponsiblePersonModalProps> = ({ o
         } finally {
             setLoading(false);
         }
-    };;
+    };
+    ;
 
     return (
         <ModalTemplate
@@ -454,5 +456,5 @@ const AddResponsiblePersonModal: React.FC<AddResponsiblePersonModalProps> = ({ o
             </div>
         </ModalTemplate>
     );
-
+}
 export default AddResponsiblePersonModal;
