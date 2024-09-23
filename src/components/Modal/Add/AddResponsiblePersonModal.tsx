@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FaChevronDown } from 'react-icons/fa';
+import {FaChevronDown, FaTelegramPlane} from 'react-icons/fa';
 import ModalTemplate from '../ModalTemplate.tsx';
 import CustomCheckbox from "../../Buttons/CheckBox.tsx";
 
@@ -303,11 +303,21 @@ const AddResponsiblePersonModal: React.FC<AddResponsiblePersonModalProps> = ({ o
                         </label>
 
                         <Tooltip
-                            message="Введите номер телефона, который привязан к Telegram-аккаунту этого человека."
+                            message={
+                                <span>
+    Для получения уведомлений номер телефона должен совпадать с номером телефона, привязанным к
+    <span className="text-[#0088cc] font-bold ml-1 mr-1 inline-flex items-center">
+        <FaTelegramPlane className="mr-1 text-[#0088cc]"/>
+        Telegram
+    </span>
+</span>
+
+                            }
                             isVisible={showNumberTooltip}
                             toggleVisibility={() => setShowNumberTooltip(!showNumberTooltip)}
-                            iconClassName="text-gray-500 cursor-pointer absolute left-0 ml-16 mb-5"
+                            iconClassName="text-gray-500 cursor-pointer ml-4 absolute left-0 ml-16 mb-5"
                         />
+
                     </div>
 
                     <input
