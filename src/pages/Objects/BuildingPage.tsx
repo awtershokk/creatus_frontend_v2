@@ -11,7 +11,7 @@ import { fetchBuilding, fetchResponsiblePersons, updateBuilding } from '../../ap
 import { fetchSections } from '../../api/requests/sectionApi.ts';
 import { fetchThermalCircuits } from "../../api/requests/thermalCircuitApi.ts";
 
-import { ResponsiblePerson } from '../../models/ResponsiblePerson';
+import { ResponsiblePerson } from '../../models/ResponsiblePerson.tsx';
 import BlueLink from "../../components/Text/BlueLink.tsx";
 import MiniAddButton from "../../components/Buttons/MiniAddButton.tsx";
 import BuildingEditModal from '../../components/Modal/Edit/EditBuildingModal';
@@ -107,7 +107,8 @@ const BuildingPage = () => {
         'Тип': 'type',
         'ФИО': 'fio',
         'Телефон': 'phone',
-        'E-mail': 'email'
+        'E-mail': 'email',
+        'Telegram': 'tg_username'
     };
 
     const handleEditButtonClick = (buildingItem: any) => {
@@ -246,7 +247,6 @@ const BuildingPage = () => {
                         />
                     </div>
 
-                    {/* Модальные окна */}
                     {isEditBuildingModalOpen && selectedBuilding && (
                         <BuildingEditModal
                             building={buildingData}
@@ -260,8 +260,11 @@ const BuildingPage = () => {
 
                     {isAddResponsiblePersonModalOpen && (
                         <AddResponsiblePersonModal
+                            buildingId={buildingId}
                             onClose={handleAddResponsiblePersonModalClose}
-                            onSubmit={() => {}}
+                            onSubmit={() => {
+                                getData();
+                            }}
                         />
                     )}
 

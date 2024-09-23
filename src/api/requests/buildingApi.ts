@@ -1,6 +1,6 @@
 import api from '../api.ts';
 import { Building } from '../../models/Building.ts';
-import {ResponsiblePerson} from "../../models/ResponsiblePerson.ts";
+import {ResponsiblePerson, transformResponsiblePersonData} from "../../models/ResponsiblePerson.tsx";
 import {BuildingInfo, BuildingResponse} from "../../models/Public.ts";
 import {BuildingForm} from "../../components/Modal/Edit/EditBuildingModal.tsx";
 
@@ -30,19 +30,40 @@ export const fetchResponsiblePersons = async (buildingId: number): Promise<Respo
         const response = await api.get(`/building/allResponsiblePerson/${buildingId}`);
         const data = response.data.data;
 
-        const transformedData: ResponsiblePerson[] = data.map((item: any) => ({
-            position: item.position,
-            type: item.personType.label,
-            fio: item.fullName,
-            phone: item.phone,
-            email: item.email,
-        }));
+        const transformedData: ResponsiblePerson[] = data.map((item: any) =>
+            transformResponsiblePersonData({
+                position: item.position,
+                type: item.personType.label,
+                fio: item.fullName,
+                phone: item.phone,
+                email: item.email,
+                tg_username: item.tg_username || null,
+            })
+        );
 
         return transformedData;
     } catch (error) {
         throw error;
     }
 };
+
+
+
+export const addResponsiblePerson = async (buildingId: number, personData: ResponsiblePerson): Promise<void> => {
+    try {
+        await api.post(`/building/addResponsiblePerson/${buildingId}`, {
+            position: personData.position,
+            personType: personData.type,
+            fullName: personData.name,
+            phone: personData.phone,
+            email: personData.email,
+        });
+    } catch (error) {
+        console.error('Ошибка при добавлении ответственного лица:', error);
+        throw error;
+    }
+};
+
 
 export const fetchListEnergyClasses = async () => {
     try {
