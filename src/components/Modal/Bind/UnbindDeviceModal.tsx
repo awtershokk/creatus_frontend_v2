@@ -17,6 +17,7 @@ const UnbindDeviceModal: React.FC<UnbindDeviceModalProps> = ({ deviceId, deviceL
         setLoading(true);
         try {
             await unbindDeviceFromMP(deviceId);
+
             onSuccess();
         } catch (error) {
             console.error(`Ошибка при отвязке устройства ${deviceLabel}:`, error);

@@ -7,6 +7,8 @@ import { formatPhoneNumberOnInput} from "../../../utils/formatPhoneNumber.ts";
 
 import {addResponsiblePerson, fetchBuildingTypes} from "../../../api/requests/buildingApi.ts";
 import Alert from "../../Alert.tsx";
+import {ThermalCircuit} from "../../../models/Public.ts";
+import {fetchThermalCircuits} from "../../../api/requests/thermalCircuitApi.ts";
 
 interface ResponsiblePerson {
     position: string;
@@ -41,10 +43,9 @@ const AddResponsiblePersonModal: React.FC<AddResponsiblePersonModalProps> = ({ b
     const [showNumberAlert, setShowNumberAlert] = useState(false);
     const [alertShownOnce, setAlertShownOnce] = useState(false);
 
-    const [heatContour, setHeatContour] = useState({
-        contour1: false,
-        contour2: false
-    });
+    const [thermalCircuits, setThermalCircuits] = useState<ThermalCircuit[]>([]);
+    const [selectedThermalCircuitIds, setSelectedThermalCircuitIds] = useState<number[]>([]);
+
 
     const [incidentTypes, setIncidentTypes] = useState({
         'Датчик': {'Д.1': false, 'Д.2': false, 'Д.3': false},
@@ -55,7 +56,7 @@ const AddResponsiblePersonModal: React.FC<AddResponsiblePersonModalProps> = ({ b
     const [notifyStatusChange, setNotifyStatusChange] = useState(false);
 
     const [openSections, setOpenSections] = useState({
-        heatContours: false,
+        thermalCircuits: false,
         incidentTypes: false,
         statusChange: false
     });
@@ -67,7 +68,7 @@ const AddResponsiblePersonModal: React.FC<AddResponsiblePersonModalProps> = ({ b
     });
 
     const [selectAllNotifications, setSelectAllNotifications] = useState(false);
-    const [selectAllHeatContours, setSelectAllHeatContours] = useState(false);
+    const [selectAllThermalCircuits, setSelectAllThermalCircuits] = useState(false);
     const [selectAllIncidentTypes, setSelectAllIncidentTypes] = useState(false);
 
     useEffect(() => {
@@ -80,7 +81,17 @@ const AddResponsiblePersonModal: React.FC<AddResponsiblePersonModalProps> = ({ b
             }
         };
 
+        const loadThermalCircuits = async () => {
+            try {
+                const circuits = await fetchThermalCircuits(1);
+                setThermalCircuits(circuits);
+            } catch (error) {
+                console.error('Ошибка при загрузке тепловых контуров:', error);
+            }
+        };
+
         loadBuildingTypes();
+        loadThermalCircuits();
     }, []);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -100,21 +111,10 @@ const AddResponsiblePersonModal: React.FC<AddResponsiblePersonModalProps> = ({ b
         }
     };
 
-    const handleCheckboxChange = (section: string, field: string, parent?: string) => {
-        if (parent) {
-            setIncidentTypes(prevState => ({
-                ...prevState,
-                [parent]: {
-                    ...prevState[parent],
-                    [field]: !prevState[parent][field]
-                }
-            }));
-        } else if (section === 'heatContours') {
-            setHeatContour(prevState => ({
-                ...prevState,
-                [field]: !prevState[field]
-            }));
-        }
+    const handleCheckboxChange = (id: number) => {
+        setSelectedThermalCircuitIds(prev =>
+            prev.includes(id) ? prev.filter(circuitId => circuitId !== id) : [...prev, id]
+        );
     };
 
     const toggleSection = (section: string) => {
@@ -134,27 +134,24 @@ const AddResponsiblePersonModal: React.FC<AddResponsiblePersonModalProps> = ({ b
     const handleSelectAllNotifications = () => {
         const newSelection = !selectAllNotifications;
         setSelectAllNotifications(newSelection);
-        setHeatContour({
-            contour1: newSelection,
-            contour2: newSelection
-        });
+
         setIncidentTypes({
             'Датчик': {'Д.1': newSelection, 'Д.2': newSelection, 'Д.3': newSelection},
             'Точка измерения': {'Т.1': newSelection, 'Т.2': newSelection},
             'Помещение': {'П.1': newSelection, 'П.2': newSelection}
         });
         setNotifyStatusChange(newSelection);
-        setSelectAllHeatContours(newSelection);
+        handleSelectAllThermalCircuits();
         setSelectAllIncidentTypes(newSelection);
     };
 
-    const handleSelectAllHeatContours = () => {
-        const newSelection = !selectAllHeatContours;
-        setSelectAllHeatContours(newSelection);
-        setHeatContour({
-            contour1: newSelection,
-            contour2: newSelection
-        });
+    const handleSelectAllThermalCircuits = () => {
+        if (selectAllThermalCircuits) {
+            setSelectedThermalCircuitIds([]);
+        } else {
+            setSelectedThermalCircuitIds(thermalCircuits.map(circuit => circuit.id));
+        }
+        setSelectAllThermalCircuits(!selectAllThermalCircuits);
     };
 
     const handleSelectAllIncidentTypes = () => {
@@ -212,6 +209,9 @@ const AddResponsiblePersonModal: React.FC<AddResponsiblePersonModalProps> = ({ b
                 ...formData,
                 phone: cleanedPhone,
             };
+
+
+            console.log("Че по контурам", selectedThermalCircuitIds);
 
             await addResponsiblePerson(buildingId, newPerson);
             onSubmit(newPerson);
@@ -338,32 +338,34 @@ const AddResponsiblePersonModal: React.FC<AddResponsiblePersonModalProps> = ({ b
                     />
                 </div>
 
-                {/* Тепловые контура */}
+
                 <div className="mt-4 w-full p-2 border rounded-md">
                     <h4
                         className="text-md font-medium cursor-pointer flex justify-between items-center"
-                        onClick={() => toggleSection('heatContours')}
+                        onClick={() => toggleSection('thermalCircuits')}
                     >
                         Тепловые контуры
                         <FaChevronDown
                             className={`transition-transform duration-300 ${
-                                openSections.heatContours ? 'rotate-180' : 'rotate-0'
+                                openSections.thermalCircuits ? 'rotate-180' : 'rotate-0'
                             }`}
                         />
                     </h4>
-                    {openSections.heatContours && (
-                        <div className="ml-4 mb-2 mt-2 space-y-2">
+                    {openSections.thermalCircuits && (
+                        <div className="ml-4 mt-2 space-y-2">
                             <CustomCheckbox
-                                checked={selectAllHeatContours}
-                                onChange={handleSelectAllHeatContours}
-                                label="Выбрать все контуры"
+                                checked={selectAllThermalCircuits}
+                                onChange={handleSelectAllThermalCircuits}
+                                label="Выбрать все тепловые контуры"
+                                labelClassname='ml-2 text-gray-700 font-bold'
                             />
-                            {['contour1', 'contour2'].map(contour => (
+                            {thermalCircuits.map((circuit, index) => (
                                 <CustomCheckbox
-                                    key={contour}
-                                    checked={heatContour[contour]}
-                                    onChange={() => handleCheckboxChange('heatContours', contour)}
-                                    label={`Контур ${contour.slice(-1)}`}
+                                    key={circuit.id}
+                                    checked={selectedThermalCircuitIds.includes(circuit.id)}
+                                    onChange={() => handleCheckboxChange(circuit.id)}
+                                    label={circuit.label}
+                                    showDivider={index < thermalCircuits.length - 1}
                                 />
                             ))}
                         </div>
@@ -452,7 +454,7 @@ const AddResponsiblePersonModal: React.FC<AddResponsiblePersonModalProps> = ({ b
                     <>
                         Для получения уведомлений номер телефона должен совпадать с номером телефона, привязанным к
                         <span className="text-[#0088cc] font-bold ml-1 mr-1 inline-flex items-center">
-                            <FaTelegramPlane className="mr-1 text-[#0088cc]" />
+                            <FaTelegramPlane className="mr-1 text-[#0088cc]"/>
                             Telegram
                         </span>
                     </>

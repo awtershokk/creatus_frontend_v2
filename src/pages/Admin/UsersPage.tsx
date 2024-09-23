@@ -47,9 +47,6 @@ const UsersPage = () => {
         '  ': 'delete'
     };
 
-    const handleEditUserClick = (item: User) => {
-        console.log('Edit user:', item);
-    };
 
     const handleDeleteUserClick = (item: User) => {
         console.log('Delete user:', item);

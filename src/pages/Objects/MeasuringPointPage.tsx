@@ -11,11 +11,7 @@ import TableContainer from "../../layouts/TableContainer.tsx";
 import ItemTable from "../../components/Tables/ItemTable.tsx";
 import MeasurementsFilters from '../../components/Filters/MeasurementsFilters.tsx';
 import DownloadButton from "../../components/Buttons/DownloadButton.tsx";
-import ChildElementsTable from "../../components/Tables/ChildElementsTable.tsx";
-import AddButton from "../../components/Buttons/AddButton.tsx";
-import BlueLink from "../../components/Text/BlueLink.tsx";
 import {fetchDevice} from "../../api/requests/deviceApi.ts";
-import {Device} from "../../models/Device.tsx";
 import DefaultButton from "../../components/Buttons/DefaultButton.tsx";
 import UnbindDeviceModal from "../../components/Modal/Bind/UnbindDeviceModal.tsx";
 import LoadingSpinner from "../../components/Menu/LoadingSpinner.tsx";
@@ -224,8 +220,14 @@ const MeasuringPointPage = () => {
             setIsUnbindModalOpen(true);
             setModalProps({ deviceId, deviceLabel, measuringPointLabel });
         }
-    };
 
+    };
+    const handleUnbindSuccess = () => {
+        setDevice([]);
+        setDeviceId(null);
+        getData();
+        setIsUnbindModalOpen(false);
+    };
     const handleBindClick = () => {
         const measuringPointLabel = measuringPoint.find(item => item.title === 'Наименование')?.value;
         setIsBindModalOpen(true);
@@ -270,8 +272,9 @@ const MeasuringPointPage = () => {
                             data={device}
                             ButtonComponent={() => (
                                 <DefaultButton
-                                    onClick={deviceId ? handleUnbindClick : handleBindClick}
+                                    onClick={deviceId ? handleUnbindClick : handleBindClick }
                                     deviceId={deviceId}
+
                                 />
                             )}
                         />
@@ -310,9 +313,7 @@ const MeasuringPointPage = () => {
                     measuringPointLabel={modalProps.measuringPointLabel}
                     onClose={() => setIsUnbindModalOpen(false)}
                     onSuccess={() => {
-                        setDevice([]);
-                        getData();
-                        setIsUnbindModalOpen(false);
+                        handleUnbindSuccess()
                     }}
                 />
             )}
