@@ -1,5 +1,6 @@
 import api from '../api.ts';
 import {MeasuringPoint, transformMeasuringPointData} from "../../models/MeasuringPoint.tsx";
+import {Room} from "../../models/Room.tsx";
 
 export const fetchMeasuringPoints = async (roomId: number) => {
     try {
@@ -23,7 +24,7 @@ export const fetchMeasuringPoint = async (measuringPointId: number) => {
     try {
         const response = await api.get(`/measuringPoint/${measuringPointId}`);
         const measuringPoint: MeasuringPoint = response.data.data;
-        return transformMeasuringPointData(measuringPoint);
+        return measuringPoint;
     } catch (error) {
         throw error;
     }
@@ -65,6 +66,16 @@ export const fetchDeviceId = async (measuringPointId: number) => {
     try {
         const { data: { data: { device: {id, label} } } } = await api.get(`/measuringPoint/${measuringPointId}`);
         return id;
+    } catch (error) {
+        throw error;
+    }
+};
+export const updateMeasuringPoint = async (measuringPointId: number, updatedMeasuringPoint: MeasuringPoint): Promise<MeasuringPoint> => {
+    try {
+        const response = await api.put(`/measuringPoint/${measuringPointId}`, updatedMeasuringPoint);
+        console.log('Точка измерения', updatedMeasuringPoint);
+        console.log(response.data)
+        return response.data.data;
     } catch (error) {
         throw error;
     }

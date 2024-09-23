@@ -22,6 +22,8 @@ import LoadingSpinner from "../../components/Menu/LoadingSpinner.tsx";
 import {setBreadcrumb} from "../../store/slices/breadcrumbSlice.ts";
 import {useDispatch} from "react-redux";
 import BindDeviceModal from "../../components/Modal/Bind/BindDeviceModal.tsx";
+import {transformMeasuringPointData} from "../../models/MeasuringPoint.tsx";
+import EditMeasuringPointModal from "../../components/Modal/Edit/EditMeasuringPointModal.tsx";
 
 const MeasuringPointPage = () => {
     const {measuringPointId} = useParams();
@@ -48,7 +50,7 @@ const MeasuringPointPage = () => {
     });
 
     const [deviceId, setDeviceId] = useState<number>(null)
-
+    const [measuringPointData, setMeasuringPointData] = useState<any>(null);
     const [isUnbindModalOpen, setIsUnbindModalOpen] = useState(false);
     const [isBindModalOpen, setIsBindModalOpen] = useState(false);
     const [modalProps, setModalProps] = useState<{ deviceId: any; deviceLabel: string; measuringPointLabel: string }>({
@@ -56,6 +58,7 @@ const MeasuringPointPage = () => {
         deviceLabel: '',
         measuringPointLabel: '',
     });
+    const [isEditMeasuringPointModalOpen, setIsEditMeasuringPointModalOpen] = useState(false);
 
     const [isLoading, setIsLoading] = useState(true);
 
@@ -63,10 +66,13 @@ const MeasuringPointPage = () => {
 
     const getData = async () => {
         try {
-            const measuringPointData = await fetchMeasuringPoint(measuringPointId);
-            setMeasuringPoint(measuringPointData);
+            const request = await fetchMeasuringPoint(measuringPointId);
+            const measuringPointForTable = transformMeasuringPointData(request) ;
+            setMeasuringPointData(request);
+            console.log('request',request)
+            setMeasuringPoint(measuringPointForTable);
 
-            const labelItem = measuringPointData.find(item => item.title === 'Наименование');
+            const labelItem = measuringPointForTable.find(item => item.title === 'Наименование');
             dispatch(setBreadcrumb({
                 key: 'measuringPoint',
                 label: labelItem?.value,
@@ -74,7 +80,7 @@ const MeasuringPointPage = () => {
                 id: labelItem?.id
             }));
 
-            const roomLabelItem = measuringPointData.find(item => item.title === 'Место установки');
+            const roomLabelItem = measuringPointForTable.find(item => item.title === 'Место установки');
             const roomLabel = roomLabelItem ? roomLabelItem.value.props.text : null;
             console.log('room', roomLabelItem)
             dispatch(setBreadcrumb({
@@ -112,7 +118,23 @@ const MeasuringPointPage = () => {
     useEffect(() => {
         setDisplayedMeasurements(filteredMeasurements.length);
     }, [filteredMeasurements]);
+    const handleUpdateMeasuringPoint = async () => {
+        try {
+            await getData();
+            handleEditMeasuringPointModalClose();
+        } catch (error) {
+            console.error('Ошибка обновления здания:', error);
+        }
+    };
+    const handleEditButtonClick = (measuringPointItem: any) => {
+        setMeasuringPointData(measuringPointItem);
+        setIsEditMeasuringPointModalOpen(true);
+    };
 
+    const handleEditMeasuringPointModalClose = () => {
+        setIsEditMeasuringPointModalOpen(false);
+
+    };
     const handleFilterChange = (filters: {
         dateRange?: { start: Date | null; end: Date | null },
         timeRange?: { start: Date | null; end: Date | null },
@@ -238,7 +260,7 @@ const MeasuringPointPage = () => {
                         <ObjectTable
                             title="Свойства точки измерения"
                             data={measuringPoint}
-                            ButtonComponent={EditButton}
+                            ButtonComponent={() => <EditButton onClick={() => handleEditButtonClick(measuringPointData)}/>}
                             nonEditableFields={['Место установки']}
                         />
                     </div>
@@ -304,6 +326,14 @@ const MeasuringPointPage = () => {
                         getData();
                         setIsBindModalOpen(false);
                     }}
+                />
+            )}
+            {isEditMeasuringPointModalOpen && measuringPointData && (
+                <EditMeasuringPointModal
+                    measuringPointId={measuringPointId}
+                    measuringPoint={measuringPointData}
+                    onClose={handleEditMeasuringPointModalClose}
+                    onUpdate={handleUpdateMeasuringPoint}
                 />
             )}
 
