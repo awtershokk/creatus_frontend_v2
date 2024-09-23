@@ -216,7 +216,7 @@ const AddResponsiblePersonModal: React.FC<AddResponsiblePersonModalProps> = ({ o
 
             const newPerson: ResponsiblePerson = {
                 ...formData,
-                phone: cleanedPhone // Передаем очищенный телефон
+                phone: cleanedPhone
             };
 
             const notificationSettings = {
