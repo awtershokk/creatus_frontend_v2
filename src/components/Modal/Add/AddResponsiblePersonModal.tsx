@@ -4,9 +4,9 @@ import ModalTemplate from '../ModalTemplate.tsx';
 import CustomCheckbox from "../../Buttons/CheckBox.tsx";
 
 import { formatPhoneNumberOnInput} from "../../../utils/formatPhoneNumber.ts";
-import Tooltip from "../../Buttons/Tooltip.tsx";
 
-import {fetchBuildingTypes} from "../../../api/requests/buildingApi.ts";
+import {addResponsiblePerson, fetchBuildingTypes} from "../../../api/requests/buildingApi.ts";
+import Alert from "../../Alert.tsx";
 
 interface ResponsiblePerson {
     position: string;
@@ -22,11 +22,12 @@ interface Option {
 }
 
 interface AddResponsiblePersonModalProps {
+    buildingId: number;
     onClose: () => void;
     onSubmit: (person: ResponsiblePerson) => void;
 }
 
-const AddResponsiblePersonModal: React.FC<AddResponsiblePersonModalProps> = ({ onClose, onSubmit }) => {
+const AddResponsiblePersonModal: React.FC<AddResponsiblePersonModalProps> = ({ buildingId, onClose, onSubmit }) => {
     const [formData, setFormData] = useState<ResponsiblePerson>({
         position: '',
         type: '',
@@ -37,7 +38,8 @@ const AddResponsiblePersonModal: React.FC<AddResponsiblePersonModalProps> = ({ o
     const [loading, setLoading] = useState(false);
     const [errors, setErrors] = useState<{ [key: string]: string }>({});
     const [responsibleTypes, setResponsibleTypes] = useState<Option[]>([]);
-    const [showNumberTooltip, setShowNumberTooltip] = useState(false);
+    const [showNumberAlert, setShowNumberAlert] = useState(false);
+    const [alertShownOnce, setAlertShownOnce] = useState(false);
 
     const [heatContour, setHeatContour] = useState({
         contour1: false,
@@ -64,9 +66,9 @@ const AddResponsiblePersonModal: React.FC<AddResponsiblePersonModalProps> = ({ o
         'Помещение': false
     });
 
-    const [selectAllNotifications, setSelectAllNotifications] = useState(false); // Global select all notifications
-    const [selectAllHeatContours, setSelectAllHeatContours] = useState(false); // Global select all heat contours
-    const [selectAllIncidentTypes, setSelectAllIncidentTypes] = useState(false); // Global select all incident types
+    const [selectAllNotifications, setSelectAllNotifications] = useState(false);
+    const [selectAllHeatContours, setSelectAllHeatContours] = useState(false);
+    const [selectAllIncidentTypes, setSelectAllIncidentTypes] = useState(false);
 
     useEffect(() => {
         const loadBuildingTypes = async () => {
@@ -82,13 +84,10 @@ const AddResponsiblePersonModal: React.FC<AddResponsiblePersonModalProps> = ({ o
     }, []);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-        const {name, value} = e.target;
+        const { name, value } = e.target;
 
         if (name === 'phone') {
-            // Форматируем телефон при вводе
             const formattedPhone = formatPhoneNumberOnInput(value);
-
-            // Обновляем состояние с отформатированным телефоном
             setFormData(prevData => ({
                 ...prevData,
                 phone: formattedPhone
@@ -100,7 +99,6 @@ const AddResponsiblePersonModal: React.FC<AddResponsiblePersonModalProps> = ({ o
             }));
         }
     };
-    ;
 
     const handleCheckboxChange = (section: string, field: string, parent?: string) => {
         if (parent) {
@@ -204,40 +202,37 @@ const AddResponsiblePersonModal: React.FC<AddResponsiblePersonModalProps> = ({ o
     };
 
     const handleSubmit = async () => {
-        if (!validateForm()) {
-            return;
-        }
+        if (!validateForm()) return;
 
         setLoading(true);
         try {
-            await new Promise(resolve => setTimeout(resolve, 100));
-
             const cleanedPhone = formData.phone.replace(/\D/g, '');
 
             const newPerson: ResponsiblePerson = {
                 ...formData,
-                phone: cleanedPhone
+                phone: cleanedPhone,
             };
 
-            const notificationSettings = {
-                name: formData.name,
-                heatContours: heatContour,
-                incidentTypes: incidentTypes,
-                notifyStatusChange: notifyStatusChange
-            };
-
-            console.log('Новое ответственное лицо:', newPerson);
-            console.log('Настройки уведомлений:', notificationSettings);
-
+            await addResponsiblePerson(buildingId, newPerson);
             onSubmit(newPerson);
             onClose();
         } catch (error) {
-            console.error('Ошибка при добавлении:', error);
+            console.error('Ошибка при добавлении ответственного лица:', error);
         } finally {
             setLoading(false);
         }
     };
-    ;
+
+    const handlePhoneClick = () => {
+        if (!alertShownOnce) {
+            setShowNumberAlert(true);
+            setAlertShownOnce(true);
+        }
+    };
+
+    const handleAlertClose = () => {
+        setShowNumberAlert(false);
+    };
 
     return (
         <ModalTemplate
@@ -282,6 +277,7 @@ const AddResponsiblePersonModal: React.FC<AddResponsiblePersonModalProps> = ({ o
                     </select>
                     {errors.type && <p className="text-red-500 text-sm">{errors.type}</p>}
                 </div>
+
                 <div>
                     <label htmlFor="name" className="block text-sm font-medium text-gray-900">
                         ФИО
@@ -296,28 +292,12 @@ const AddResponsiblePersonModal: React.FC<AddResponsiblePersonModalProps> = ({ o
                     />
                     {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
                 </div>
+
                 <div className="relative">
                     <div className="">
                         <label htmlFor="phone" className="block text-sm font-medium text-gray-900">
                             Телефон
                         </label>
-
-                        <Tooltip
-                            message={
-                                <span>
-    Для получения уведомлений номер телефона должен совпадать с номером телефона, привязанным к
-    <span className="text-[#0088cc] font-bold ml-1 mr-1 inline-flex items-center">
-        <FaTelegramPlane className="mr-1 text-[#0088cc]"/>
-        Telegram
-    </span>
-</span>
-
-                            }
-                            isVisible={showNumberTooltip}
-                            toggleVisibility={() => setShowNumberTooltip(!showNumberTooltip)}
-                            iconClassName="text-gray-500 cursor-pointer ml-4 absolute left-0 ml-16 mb-5"
-                        />
-
                     </div>
 
                     <input
@@ -326,10 +306,12 @@ const AddResponsiblePersonModal: React.FC<AddResponsiblePersonModalProps> = ({ o
                         type="text"
                         value={formData.phone}
                         onChange={handleChange}
+                        onClick={handlePhoneClick}
                         className={`w-full p-2 border ${errors.phone ? 'border-red-500' : 'border-gray-300'} rounded-md text-black focus:outline-none focus:ring-2 focus:ring-gray-400 bg-white`}
                     />
                     {errors.phone && <p className="text-red-500 text-sm">{errors.phone}</p>}
                 </div>
+
                 <div>
                     <label htmlFor="email" className="block text-sm font-medium text-gray-900">
                         Email
@@ -344,6 +326,7 @@ const AddResponsiblePersonModal: React.FC<AddResponsiblePersonModalProps> = ({ o
                     />
                     {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
                 </div>
+
                 <h3 className="text-lg font-medium text-gray-900">Уведомления</h3>
                 {/* Все уведомления*/}
                 <div className="mt-4">
@@ -464,6 +447,19 @@ const AddResponsiblePersonModal: React.FC<AddResponsiblePersonModalProps> = ({ o
                     )}
                 </div>
             </div>
+            <Alert
+                message={
+                    <>
+                        Для получения уведомлений номер телефона должен совпадать с номером телефона, привязанным к
+                        <span className="text-[#0088cc] font-bold ml-1 mr-1 inline-flex items-center">
+                            <FaTelegramPlane className="mr-1 text-[#0088cc]" />
+                            Telegram
+                        </span>
+                    </>
+                }
+                isVisible={showNumberAlert}
+                onClose={handleAlertClose}
+            />
         </ModalTemplate>
     );
 }
