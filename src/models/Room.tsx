@@ -19,10 +19,11 @@ export interface Room {
     angular: boolean;
     temperatureMinimum: number;
     temperatureMaximum: number;
+    temperatureActive: boolean;
     humidityMinimum: number;
     humidityMaximum: number;
-    priority: number;
     humidityActive: boolean;
+    priority: number;
 }
 
 export const transformRoomData = (room: Room) => {
@@ -40,10 +41,13 @@ export const transformRoomData = (room: Room) => {
     { id: 7, title: 'Угловое', value: room.angular ? 'Да' : 'Нет' },
     { id: 8, title: 'Мин. температура', value: room.temperatureMinimum },
     { id: 9, title: 'Макс. температура', value: room.temperatureMaximum },
-    { id: 10, title: 'Мин. влажность', value: room.humidityMinimum },
-    { id: 11, title: 'Макс. влажность', value: room.humidityMaximum },
-    { id: 12, title: 'Приоритет', value: room.priority },
-    { id: 13, title: 'Включен в расчет', value: room.humidityActive ? 'Да' : 'Нет' },
+    { id: 10, title: 'Температура включена в расчёт', value: room.temperatureActive ? 'Да' : 'Нет' },
+    { id: 11, title: 'Мин. влажность', value: room.humidityMinimum },
+    { id: 12, title: 'Макс. влажность', value: room.humidityMaximum },
+    { id: 14, title: 'Влажность включена в расчёт', value: room.humidityActive ? 'Да' : 'Нет' },
+    { id: 14, title: 'Приоритет', value: room.priority },
+
+
 ];
 };
 export const transformRoomDataForUser = (room: Room) => {
@@ -57,10 +61,11 @@ export const transformRoomDataForUser = (room: Room) => {
         { id: 7, title: 'Угловое', value: room.angular ? 'Да' : 'Нет' },
         { id: 8, title: 'Мин. температура', value: room.temperatureMinimum },
         { id: 9, title: 'Макс. температура', value: room.temperatureMaximum },
-        { id: 10, title: 'Мин. влажность', value: room.humidityMinimum },
-        { id: 11, title: 'Макс. влажность', value: room.humidityMaximum },
-        { id: 12, title: 'Приоритет', value: room.priority },
-        { id: 13, title: 'Включен в расчет', value: room.humidityActive ? 'Да' : 'Нет' },
+        { id: 10, title: 'Температура включена в расчёт', value: room.temperatureActive ? 'Да' : 'Нет' },
+        { id: 11, title: 'Мин. влажность', value: room.humidityMinimum },
+        { id: 12, title: 'Макс. влажность', value: room.humidityMaximum },
+        { id: 14, title: 'Влажность включена в расчёт', value: room.humidityActive ? 'Да' : 'Нет' },
+        { id: 14, title: 'Приоритет', value: room.priority },
     ];
 };
 

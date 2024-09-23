@@ -7,9 +7,11 @@ import ObjectTable from "../../components/Tables/ObjectTable.tsx";
 import ChildElementsTable from "../../components/Tables/ChildElementsTable.tsx";
 import BlueLink from "../../components/Text/BlueLink.tsx";
 import { useParams } from "react-router-dom";
+
 import { fetchRoom } from "../../api/requests/roomApi.ts";
 import { fetchMeasuringPoints } from "../../api/requests/measuringPointApi.ts";
 import { fetchMeasurementsRoom } from "../../api/requests/measurementsApi.ts";
+
 import { Measurement } from "../../models/Measurements.ts";
 import TableContainer from "../../layouts/TableContainer.tsx";
 import ItemTable from "../../components/Tables/ItemTable.tsx";
@@ -20,6 +22,8 @@ import DeleteMeasuringPointModal from "../../components/Modal/Delete/MeasuringPo
 import LoadingSpinner from "../../components/Menu/LoadingSpinner.tsx";
 import {setBreadcrumb} from "../../store/slices/breadcrumbSlice.ts";
 import {useDispatch} from "react-redux";
+import {transformRoomData} from "../../models/Room.tsx";
+import EditRoomModal from "../../components/Modal/Edit/EditRoomModal.tsx";
 
 const RoomPage = () => {
     const { roomId } = useParams();
@@ -37,48 +41,69 @@ const RoomPage = () => {
     const [isDeleteMeasurePointModalOpen, setIsDeleteMeasurePointModalOpen] = useState(false);
     const [deleteMeasuringPointId, setDeleteMeasuringPointId] = useState<number | null>(null);
 
+    const [roomData, setRoomData] = useState<any>(null);
+    const [isEditRoomModalOpen, setIsEditRoomModalOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const dispatch = useDispatch();
 
-        const fetchData = async () => {
-            try {
-                const roomData = await fetchRoom(roomId);
-                setRoom(roomData);
-                const labelItem = roomData.find(item => item.title === 'Наименование');
+    const fetchData = async () => {
+        try {
+            const responseRoomData = await fetchRoom(roomId);
+            setRoomData(responseRoomData);
+            const requestRoomForTable = await fetchRoom(roomId);
+            const roomData = transformRoomData(requestRoomForTable);
+            setRoom(roomData);
+            const labelItem = roomData.find(item => item.title === 'Наименование');
 
-                dispatch(setBreadcrumb({
-                    key: 'room',
-                    label: labelItem?.value,
-                    icon: 'FaDoorClosed',
-                    id: roomId
-                }));
+            dispatch(setBreadcrumb({
+                key: 'room',
+                label: labelItem?.value,
+                icon: 'FaDoorClosed',
+                id: roomId
+            }));
 
-                const measuringPointsData = await fetchMeasuringPoints(roomId);
-                const formattedMeasuringPoints = measuringPointsData.map(point => ({
-                    id: point.id,
-                    title: point.label,
-                    properties: 'Свойства',
-                    delete: 'Удалить',
-                    to: `measuringPoint/${point.id}`
-                }));
-                setMeasuringPoints(formattedMeasuringPoints);
+            const measuringPointsData = await fetchMeasuringPoints(roomId);
+            const formattedMeasuringPoints = measuringPointsData.map(point => ({
+                id: point.id,
+                title: point.label,
+                properties: 'Свойства',
+                delete: 'Удалить',
+                to: `measuringPoint/${point.id}`
+            }));
+            setMeasuringPoints(formattedMeasuringPoints);
 
-                const measurementsData = await fetchMeasurementsRoom(roomId);
-                setMeasurements(measurementsData);
-                setFilteredMeasurements(measurementsData);
-                setTotalMeasurements(measurementsData.length);
-                setDisplayedMeasurements(measurementsData.length);
-                setIsLoading(false);
-            } catch (error) {
-                setIsLoading(false);
-                console.error('Ошибка получения данных:', error);
-            }
-        };
+            const measurementsData = await fetchMeasurementsRoom(roomId);
+            setMeasurements(measurementsData);
+            setFilteredMeasurements(measurementsData);
+            setTotalMeasurements(measurementsData.length);
+            setDisplayedMeasurements(measurementsData.length);
+            setIsLoading(false);
+        } catch (error) {
+            setIsLoading(false);
+            console.error('Ошибка получения данных:', error);
+        }
+    };
 
     useEffect(() => {
         fetchData();
     }, [roomId]);
+    const handleUpdateRoom = async () => {
+        try {
+            await fetchData();
+            handleEditRoomModalClose();
+        } catch (error) {
+            console.error('Ошибка обновления здания:', error);
+        }
+    };
+    const handleEditButtonClick = (roomItem: any) => {
+        setRoomData(roomItem);
+        setIsEditRoomModalOpen(true);
+    };
 
+    const handleEditRoomModalClose = () => {
+        setIsEditRoomModalOpen(false);
+
+    };
     const handleFilterChange = (filters: {
         dateRange?: { start: Date | null; end: Date | null },
         timeRange?: { start: Date | null; end: Date | null },
@@ -170,7 +195,7 @@ const RoomPage = () => {
                             <ObjectTable
                                 title="Свойства помещения"
                                 data={room}
-                                ButtonComponent={EditButton}
+                                ButtonComponent={() => <EditButton onClick={() => handleEditButtonClick(roomData)}/>}
                                 nonEditableFields={['Секция', 'Тепловой контур']}
                             />
                         </div>
@@ -224,6 +249,14 @@ const RoomPage = () => {
                                     fetchData();
                                     closeDeleteMeasurePointModal();
                                 }}
+                            />
+                        )}
+                        {isEditRoomModalOpen && roomData && (
+                            <EditRoomModal
+                                roomId={roomId}
+                                room={roomData}
+                                onClose={handleEditRoomModalClose}
+                                onUpdate={handleUpdateRoom}
                             />
                         )}
                     </div>

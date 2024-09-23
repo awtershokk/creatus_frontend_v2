@@ -4,9 +4,10 @@ import { Transition } from '@headlessui/react';
 
 interface TooltipProps {
     message: string;
+    iconClassName?: string;
 }
 
-const Tooltip: React.FC<TooltipProps> = ({ message }) => {
+const Tooltip: React.FC<TooltipProps> = ({ message, iconClassName = 'text-gray-500 cursor-pointer absolute right-0' }) => {
     const [isVisible, setIsVisible] = useState(false);
 
     const handleMouseEnter = () => {
@@ -18,9 +19,13 @@ const Tooltip: React.FC<TooltipProps> = ({ message }) => {
     };
 
     return (
-        <div className="relative flex items-center" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+        <div
+            className="relative flex items-center"
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+        >
             <FaRegQuestionCircle
-                className="text-gray-500 cursor-pointer absolute right-0"
+                className={iconClassName}
                 size={16}
             />
             <Transition

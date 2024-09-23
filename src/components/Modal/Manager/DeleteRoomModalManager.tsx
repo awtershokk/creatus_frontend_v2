@@ -4,6 +4,7 @@ import { fetchMeasuringPoints } from "../../../api/requests/measuringPointApi.ts
 
 import DeleteRoomModal from "../Delete/Room/DeleteRoomModal.tsx";
 import DeleteRoomWithMeasuringPointsModal from "../Delete/Room/DeleteRoomWithMeasuringPointsModal.tsx";
+import {transformRoomData} from "../../../models/Room.tsx";
 
 interface RoomModalManagerProps {
     roomId: number;
@@ -19,7 +20,8 @@ const DeleteRoomModalManager: React.FC<RoomModalManagerProps> = ({ roomId, onClo
 
     const fetchData = async () => {
         try {
-            const room = await fetchRoom(roomId);
+            const request = await fetchRoom(roomId);
+            const room = transformRoomData(request)
             const roomNameObj = room.find(item => item.title === 'Наименование');
             if (roomNameObj) setRoomName(roomNameObj.value);
 
