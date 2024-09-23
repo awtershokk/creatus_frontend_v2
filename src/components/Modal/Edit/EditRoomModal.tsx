@@ -6,7 +6,7 @@ import {
     fetchThermalCircuitIdOptions,
     fetchWindowOptions,
     updateRoom
-} from "../../../api/roomApi.ts";
+} from "../../../api/requests/roomApi.ts";
 
 interface EditRoomModalProps {
     roomId: number;
