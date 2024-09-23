@@ -1,6 +1,6 @@
 import axios from "axios";
 import { Controller, transformControllerData } from "../../models/Controller.tsx";
-import {MODBUS_API_URL} from "../modbusApi";
+import {MODBUS_API_URL} from "../modbusApi.js";
 
 export const fetchControllers = async () => {
     try {

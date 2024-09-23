@@ -11,7 +11,7 @@ interface ObjectTableProps {
 const ObjectTable = ({ title, data, ButtonComponent, onRowClick}: ObjectTableProps) => {
     return (
         <div className="flex mt-2 z-10">
-            <div className="w-[550px]">
+            <div className="w-[600px]">
                 <div className="border border-gray-300 bg-gray-100">
                     <div className="flex justify-between items-center bg-gray-200 border-b border-gray-300 p-2 text-black">
                         <span className="flex-1 text-lg font-bold">{title}</span>

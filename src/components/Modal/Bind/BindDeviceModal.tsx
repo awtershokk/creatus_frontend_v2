@@ -34,7 +34,8 @@ const BindDeviceModal: React.FC<BindDeviceModalProps> = ({ measuringPointId, mea
         }
         setLoading(true);
         try {
-            await bindDeviceFromMP(selectedDeviceId, measuringPointId);
+            await bindDeviceFromMP(measuringPointId, selectedDeviceId);
+            console.log(selectedDeviceId, measuringPointId);
             onSuccess();
         } catch (error) {
             console.error('Ошибка при привязке устройства', error);
