@@ -35,34 +35,33 @@ const App = () => {
         initializeAuth();
     }, [refresh]);
 
-    if (loading) {
-        return <LoadingPage />;
-    }
-
     return (
         <Router>
-            <Routes>
-                <Route path="/" element={<LoginPage />} />
-                <Route path="/no-access" element={<NoAccessPage />} />
-                <Route path="user" element={<UserPage/>}/>
-                <Route element={<ProtectedRoute allowedRoles={[2, 3]} />}>
-                    <Route path="/building" element={<BuildingPage />} />
-                    <Route path="/building/updates" element={<UpdatePage/>}/>
-                    <Route path="/building/users" element={<UsersPage/>}/>
-                    <Route path="/building/devices" element={<DevicePage/>}/>
-                    <Route path="/building/controllers" element={<ControllerPage/>}/>
-                    <Route path="/building/controllers/options/:controllerId" element={<ControllerOptionsPage/>}/>
-                    <Route path='/building/controllers/schedule/:controllerId' element={<ControllerSchedulePage/>}/>
-                    <Route path="/building/section/:sectionId" element={<SectionPage />} />
-                    <Route path="/building/thermalCircuit/:thermalCircuitId" element={<ThermalCircuitPage />} />
-                    <Route path="/building/section/:sectionId/room/:roomId" element={<RoomPage />} />
-                    <Route path="/building/incidents" element={<IncidentPage/>}/>
-                    <Route path="/building/incidents/directory" element={<IncidentDirectoryPage/>}/>
-                    <Route path="/building/thermalCircuit/:thermalCircuitId/room/:roomId" element={<RoomPage />} />
-                    <Route path="/building/section/:sectionId/room/:roomId/measuringPoint/:measuringPointId" element={<MeasuringPointPage />} />
-                    <Route path="/building/thermalCircuit/:thermalCircuitId/room/:roomId/measuringPoint/:measuringPointId" element={<MeasuringPointPage />} />
-                </Route>
-            </Routes>
+                <Routes>
+                    <Route path="/" element={<LoginPage />} />
+                    <Route path="/no-access" element={<NoAccessPage />} />
+                    <Route element={<ProtectedRoute allowedRoles={[2, 3]} />}>
+                        <Route path="/building" element={<BuildingPage />} />
+                        <Route path="/building/users" element={<UsersPage />} />
+                        <Route path="/building/updates" element={<UpdatePage />} />
+                        <Route path="/building/devices" element={<DevicePage />} />
+                        <Route path="/building/controllers" element={<ControllerPage />} />
+                        <Route path="/building/controllers/options/:controllerId" element={<ControllerOptionsPage />} />
+                        <Route path="/building/controllers/schedule/:controllerId" element={<ControllerSchedulePage />} />
+                        <Route path="/building/section/:sectionId" element={<SectionPage />} />
+                        <Route path="/building/thermalCircuit/:thermalCircuitId" element={<ThermalCircuitPage />} />
+                        <Route path="/building/section/:sectionId/room/:roomId" element={<RoomPage />} />
+                        <Route path="/building/incidents" element={<IncidentPage />} />
+                        <Route path="/building/incidents/directory" element={<IncidentDirectoryPage />} />
+                        <Route path="/building/thermalCircuit/:thermalCircuitId/room/:roomId" element={<RoomPage />} />
+                        <Route path="/building/section/:sectionId/room/:roomId/measuringPoint/:measuringPointId" element={<MeasuringPointPage />} />
+                        <Route path="/building/thermalCircuit/:thermalCircuitId/room/:roomId/measuringPoint/:measuringPointId" element={<MeasuringPointPage />} />
+                    </Route>
+                    <Route element={<ProtectedRoute allowedRoles={[1, 2, 3]} />}>
+                        <Route path="user" element={<UserPage />} />
+                    </Route>
+                </Routes>
+
         </Router>
     );
 };

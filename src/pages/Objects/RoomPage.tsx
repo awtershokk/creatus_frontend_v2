@@ -7,9 +7,11 @@ import ObjectTable from "../../components/Tables/ObjectTable.tsx";
 import ChildElementsTable from "../../components/Tables/ChildElementsTable.tsx";
 import BlueLink from "../../components/Text/BlueLink.tsx";
 import { useParams } from "react-router-dom";
-import { fetchRoom} from "../../api/roomApi.ts";
-import { fetchMeasuringPoints } from "../../api/measuringPointApi.ts";
-import { fetchMeasurementsRoom } from "../../api/measurementsApi.ts";
+
+import { fetchRoom } from "../../api/requests/roomApi.ts";
+import { fetchMeasuringPoints } from "../../api/requests/measuringPointApi.ts";
+import { fetchMeasurementsRoom } from "../../api/requests/measurementsApi.ts";
+
 import { Measurement } from "../../models/Measurements.ts";
 import TableContainer from "../../layouts/TableContainer.tsx";
 import ItemTable from "../../components/Tables/ItemTable.tsx";

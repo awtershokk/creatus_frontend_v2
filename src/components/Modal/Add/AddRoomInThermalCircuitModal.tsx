@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import ModalTemplate from '../ModalTemplate';
-import { fetchSectionOptions, fetchWindowOptions, createRoom } from '../../../api/roomApi';
+import { fetchSectionOptions, fetchWindowOptions, createRoom } from '../../../api/requests/roomApi.ts';
 
 interface AddRoomInThermalCircuitProps {
     thermalCircuitId: number;

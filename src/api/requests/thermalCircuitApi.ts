@@ -1,5 +1,8 @@
-import api from './api';
 import { ThermalCircuit, transformThermalCircuitData } from '../models/ThermalCircuit';
+
+import api from '../api.ts';
+import { ThermalCircuit, transformThermalCircuitData } from '../../models/ThermalCircuit.ts';
+import {Section} from "../../models/Section.ts";
 
 
 export const fetchThermalCircuits = async (buildingId: number) => {
@@ -69,7 +72,6 @@ export const updateThermalCircuit= async (thermalCircuitId: number, updateTherma
     try {
 
         const response = await api.put(`/thermalCircuit/1/${thermalCircuitId}`, updateThermalCircuit);
-        console.log('суета',response.data.data);
         return response.data.data;
     } catch (error) {
         throw error;

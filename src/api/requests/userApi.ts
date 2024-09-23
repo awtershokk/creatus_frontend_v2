@@ -1,5 +1,5 @@
-import api from './api';
-import { User, transformUserData } from "../models/User";
+import api from '../api.ts';
+import { User, transformUserData } from "../../models/User.tsx";
 
 export const fetchUsers = async (
     handleEditUserClick: (item: User) => void = () => {},

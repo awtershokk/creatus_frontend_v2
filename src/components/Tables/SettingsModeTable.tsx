@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import ItemTable from './ItemTable';
 import {Device} from "../../models/Device.tsx";
-import {fetchDevicesSetiingsMode} from "../../api/deviceApi.ts";
+import {fetchDevicesSetiingsMode} from "../../api/requests/deviceApi.ts";
 
 
 const SettingsModeTable = () => {

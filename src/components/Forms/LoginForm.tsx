@@ -2,10 +2,9 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '../../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
-import LoadingPage from "../../pages/Error/LoadingPage.tsx";
 
 const LoginForm = () => {
-    const { login, error, status, user, refresh, loading } = useAuth();
+    const { login, error, status, user, refresh } = useAuth();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
@@ -18,7 +17,12 @@ const LoginForm = () => {
 
     useEffect(() => {
         if (user) {
-            navigate('/building');
+            if (user.roleId == 1) {
+                navigate('/user');
+            }
+            else {
+                navigate('/building');
+            }
         }
     }, [user, navigate]);
 
@@ -32,10 +36,6 @@ const LoginForm = () => {
     const handleTogglePasswordVisibility = () => {
         setShowPassword(!showPassword);
     };
-
-    if (loading) {
-        return <LoadingPage />;
-    }
 
     return (
         <div className="w-screen min-h-screen flex items-center justify-center bg-gray-100">

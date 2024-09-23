@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import DeleteThermalCircuitModal from "../Delete/ThermalCircuit/DeleteThermalCircuitModal.tsx";
 import DeleteThermalCircuitWithRoomsModal from '../Delete/ThermalCircuit/DeleteThermalCircuitWithRoomsModal.tsx';
-import { fetchRoomsByThermalCircuit} from "../../../api/roomApi.ts";
-import {deleteThermalCircuit, fetchThermalCircuit} from "../../../api/thermalCircuitApi.ts";
+import { fetchRoomsByThermalCircuit} from "../../../api/requests/roomApi.ts";
+import {deleteThermalCircuit, fetchThermalCircuit} from "../../../api/requests/thermalCircuitApi.ts";
 
 interface ThermalCircuitModalManagerProps {
     thermalCircuitId: number;

@@ -1,6 +1,8 @@
-import api from "./api.ts";
 import {Room, transformRoomData, transformRoomDataForUser} from "../models/Room.tsx";
 import {Section} from "../models/Section.ts";
+import api from "../api.ts";
+import {Room, transformRoomData, transformRoomDataForUser} from "../../models/Room.tsx";
+
 
 export const fetchRoomsBySection = async (sectionId: number) => {
     try {

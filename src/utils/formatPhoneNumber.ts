@@ -21,6 +21,7 @@ export const formatPhoneNumberOnInput = (phoneNumber: string): string => {
         return `${cleaned[0]}-(${cleaned.slice(1, 4)})-${cleaned.slice(4, 7)}-${cleaned.slice(7)}`; // "8-(XXX)-XXX-XX"
     } else if (cleaned.length <= 11) {
         return `${cleaned[0]}-(${cleaned.slice(1, 4)})-${cleaned.slice(4, 7)}-${cleaned.slice(7, 9)}-${cleaned.slice(9)}`; // Полное форматирование "8-(XXX)-XXX-XX-XX"
+        return `+${match[1]} ${match[2]} (${match[3]}) ${match[4]}-${match[5]}`;
     }
 
     return phoneNumber;

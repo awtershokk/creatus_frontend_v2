@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Building } from '../../../models/Building';
-import { updateBuilding, fetchListEnergyClasses, fetchListTimezones, fetchListHwsConnectionDiagrams } from '../../../api/buildingApi';
+import { updateBuilding, fetchListEnergyClasses, fetchListTimezones, fetchListHwsConnectionDiagrams } from '../../../api/requests/buildingApi.ts';
 import ModalTemplate from '../ModalTemplate';
 
 interface BuildingEditModalProps {
@@ -13,10 +13,10 @@ interface BuildingEditModalProps {
 export interface BuildingForm {
     label: string;
     address?: string;
-    energyClass?: number; // ID
+    energyClass?: number;
     constructionVolume?: number;
     heatedArea?: number;
-    timezone?: number; // ID
+    timezone?: number;
     allDayMode?: boolean;
     compactnessIndicator?: number;
     floor?: number;
@@ -25,7 +25,7 @@ export interface BuildingForm {
     hsLoad?: string;
     hwsLoad?: string;
     ventilationLoad?: string;
-    hwsConnectionDiagram?: number; // ID
+    hwsConnectionDiagram?: number;
     balanceHolderLabel?: string;
 }
 

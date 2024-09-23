@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ModalTemplate from '../ModalTemplate';
 import { reverseTransformThermalCircuitData, ThermalCircuit } from "../../../models/ThermalCircuit.ts";
-import { updateThermalCircuit, fetchWiringDiagrams, fetchConnectionDiagrams } from "../../../api/thermalCircuitApi.ts";
+import { updateThermalCircuit, fetchWiringDiagrams, fetchConnectionDiagrams } from "../../../api/requests/thermalCircuitApi.ts";
 
 interface EditThermalCircuitModalProps {
     thermalCircuitId: number;

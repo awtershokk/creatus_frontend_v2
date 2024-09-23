@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ModalTemplate from '../ModalTemplate.tsx';
-import {bindDeviceFromMP} from '../../../api/deviceApi.ts';
-import {fetchMeasuringPointsWithoutDevice} from "../../../api/measuringPointApi.ts";
+import {bindDeviceFromMP} from '../../../api/requests/deviceApi.ts';
+import {fetchMeasuringPointsWithoutDevice} from "../../../api/requests/measuringPointApi.ts";
 
 
 interface BindDeviceModalProps {

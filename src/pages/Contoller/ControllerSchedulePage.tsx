@@ -4,7 +4,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { ru } from "date-fns/locale";
 import SaveButton from "../../components/Buttons/SaveButton.tsx";
-import {fetchControllerLabel} from "../../api/controllerApi.ts";
+import {fetchControllerLabel} from "../../api/requests/controllerApi.ts";
 import {useParams} from "react-router-dom";
 import Label from "../../components/Text/Label.tsx";
 import {useDispatch} from "react-redux";

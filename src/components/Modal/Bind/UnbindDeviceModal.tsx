@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import ModalTemplate from '../ModalTemplate.tsx';
-import { unbindDeviceFromMP } from '../../../api/deviceApi.ts';
+import { unbindDeviceFromMP } from '../../../api/requests/deviceApi.ts';
 
 interface UnbindDeviceModalProps {
     deviceId: number;

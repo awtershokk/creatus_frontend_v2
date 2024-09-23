@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { FaChevronDown } from 'react-icons/fa';
 import ModalTemplate from '../ModalTemplate.tsx';
 import CustomCheckbox from "../../Buttons/CheckBox.tsx";
-import {fetchBuildingTypes} from "../../../api/buildingApi.ts";
+
 import { formatPhoneNumberOnInput} from "../../../utils/phoneNumber.ts";
 import Tooltip from "../../Buttons/Tooltip.tsx";
+
+import {fetchBuildingTypes} from "../../../api/requests/buildingApi.ts";
 
 interface ResponsiblePerson {
     position: string;
@@ -130,7 +132,6 @@ const AddResponsiblePersonModal: React.FC<AddResponsiblePersonModalProps> = ({ o
         }));
     };
 
-    // Для всех уведомлений
     const handleSelectAllNotifications = () => {
         const newSelection = !selectAllNotifications;
         setSelectAllNotifications(newSelection);
@@ -148,7 +149,6 @@ const AddResponsiblePersonModal: React.FC<AddResponsiblePersonModalProps> = ({ o
         setSelectAllIncidentTypes(newSelection);
     };
 
-    // Для тепловых контуров
     const handleSelectAllHeatContours = () => {
         const newSelection = !selectAllHeatContours;
         setSelectAllHeatContours(newSelection);
@@ -158,7 +158,6 @@ const AddResponsiblePersonModal: React.FC<AddResponsiblePersonModalProps> = ({ o
         });
     };
 
-    // Для всех типов
     const handleSelectAllIncidentTypes = () => {
         const newSelection = !selectAllIncidentTypes;
         setSelectAllIncidentTypes(newSelection);
@@ -455,6 +454,5 @@ const AddResponsiblePersonModal: React.FC<AddResponsiblePersonModalProps> = ({ o
             </div>
         </ModalTemplate>
     );
-};
 
 export default AddResponsiblePersonModal;

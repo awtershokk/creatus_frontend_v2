@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import {fetchRoomsBySection} from "../../../api/roomApi.ts";
-import {deleteSection, fetchSection} from "../../../api/sectionApi.ts";
+import {fetchRoomsBySection} from "../../../api/requests/roomApi.ts";
+import {deleteSection, fetchSection} from "../../../api/requests/sectionApi.ts";
 import DeleteSectionWithRoomsModal from "../Delete/Section/DeleteSectionWithRoomsModal.tsx";
 import DeleteSectionModal from "../Delete/Section/DeleteSectionModal.tsx";
 

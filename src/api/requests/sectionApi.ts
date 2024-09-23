@@ -1,5 +1,5 @@
-import api from './api';
-import { Section, transformSectionData } from "../models/Section.ts";
+import api from '../api.ts';
+import { Section, transformSectionData } from "../../models/Section.ts";
 
 
 

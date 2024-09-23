@@ -1,8 +1,8 @@
-import api from './api';
-import { Building } from '../models/Building';
-import {ResponsiblePerson} from "../models/ResponsiblePerson.ts";
-import {BuildingInfo, BuildingResponse} from "../models/Public.ts";
-import {BuildingForm} from "../components/Modal/Edit/EditBuildingModal.tsx";
+import api from '../api.ts';
+import { Building } from '../../models/Building.ts';
+import {ResponsiblePerson} from "../../models/ResponsiblePerson.ts";
+import {BuildingInfo, BuildingResponse} from "../../models/Public.ts";
+import {BuildingForm} from "../../components/Modal/Edit/EditBuildingModal.tsx";
 
 export const fetchBuilding = async (buildingId: number) => {
     try {

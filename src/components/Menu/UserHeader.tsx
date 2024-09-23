@@ -62,15 +62,17 @@ const UserHeader: React.FC<UserHeaderProps> = ({ officeName, currentCircuitLabel
         await logout();
     };
 
+    const isAdmin = user.roleId === 2 || user.roleId === 3;
+
     return (
         <header className="bg-gray-800 text-white w-full fixed top-0 left-0 z-50">
-            {/* Main Header */}
             <nav className="flex justify-between items-center py-3 px-6 ">
                 <div className="flex items-center space-x-4">
                     <Link className="text-xl text-white" to='/user'>SmartHeat </Link>
                 </div>
 
                 <div className="flex items-center ">
+                    {isAdmin && (
                     <div
                         ref={settingsRef}
                         className="relative"
@@ -98,6 +100,8 @@ const UserHeader: React.FC<UserHeaderProps> = ({ officeName, currentCircuitLabel
                             </ul>
                         )}
                     </div>
+                        )}
+
                     <div
                         ref={userRef}
                         className="relative"
@@ -130,8 +134,6 @@ const UserHeader: React.FC<UserHeaderProps> = ({ officeName, currentCircuitLabel
                     </div>
                 </div>
             </nav>
-
-            {/* Вторая шапка */}
             <div
                 className="bg-gray-900 text-white py-2 px-6 border-b border-gray-700 flex items-center justify-between">
                 <button className="p-2" onClick={onPrevClick}>
