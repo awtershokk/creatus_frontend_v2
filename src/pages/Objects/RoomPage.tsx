@@ -53,6 +53,7 @@ const RoomPage = () => {
             const requestRoomForTable = await fetchRoom(roomId);
             const roomData = transformRoomData(requestRoomForTable);
             setRoom(roomData);
+
             const labelItem = roomData.find(item => item.title === 'Наименование');
 
             dispatch(setBreadcrumb({
@@ -61,6 +62,24 @@ const RoomPage = () => {
                 icon: 'FaDoorClosed',
                 id: roomId
             }));
+
+            // const sectionLabelItem = roomData.find(item => item.title === 'Секция');
+            // const sectionLabel = sectionLabelItem ? sectionLabelItem.value.props.text : null;
+            // dispatch(setBreadcrumb({
+            //     key: 'section',
+            //     label: sectionLabel,
+            //     icon: 'FaBars',
+            //     id: sectionLabelItem.id
+            // }));
+            //
+            // const thermalCircuitLabelItem = roomData.find(item => item.title === 'Тепловой контур');
+            // const thermalCircuitLabel = thermalCircuitLabel ? thermalCircuitLabelItem.value.props.text : null;
+            // dispatch(setBreadcrumb({
+            //     key: 'thermalCircuit',
+            //     label: thermalCircuitLabel,
+            //     icon: 'FaThermometerHalf',
+            //     id: thermalCircuitLabel.id
+            // }));
 
             const measuringPointsData = await fetchMeasuringPoints(roomId);
             const formattedMeasuringPoints = measuringPointsData.map(point => ({

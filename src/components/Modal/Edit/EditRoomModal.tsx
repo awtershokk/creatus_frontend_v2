@@ -71,10 +71,24 @@ const EditRoomModal: React.FC<EditRoomModalProps> = ({ roomId, room, onClose, on
         }
         try {
             const updatedRoom = await updateRoom(roomId, formData);
-            console.log('formData',formData);
-            console.log('updatedRoom',updatedRoom);
-
+            console.log('updateRoom', updatedRoom);
             onUpdate(updatedRoom);
+
+            const { sectionId, thermalCircuitId } = updatedRoom;
+
+            const currentUrl = window.location.pathname;
+
+            let newUrl;
+            if (currentUrl.includes('/building/section/')) {
+                newUrl = `/building/section/${sectionId}/room/${roomId}`;
+            } else if (currentUrl.includes('/building/thermalCircuit/')) {
+                newUrl = `/building/thermalCircuit/${thermalCircuitId}/room/${roomId}`;
+            }
+
+            if (newUrl) {
+                window.history.pushState(null, '', newUrl);
+            }
+
             onClose();
         } catch (error) {
             console.error('Ошибка при обновлении комнаты:', error);
@@ -82,6 +96,7 @@ const EditRoomModal: React.FC<EditRoomModalProps> = ({ roomId, room, onClose, on
             setLoading(false);
         }
     };
+
 
     const renderInput = (id: string, label: string, type: string = 'text') => (
         <div>

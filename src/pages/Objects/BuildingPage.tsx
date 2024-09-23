@@ -26,6 +26,7 @@ import { setBreadcrumb } from "../../store/slices/breadcrumbSlice.ts";
 import { useDispatch } from "react-redux";
 
 import { formatPhoneNumber } from '../../utils/formatPhoneNumber.ts';
+import TelegramButton from "../../components/Buttons/TelegramButton.tsx";
 
 
 const BuildingPage = () => {
@@ -68,9 +69,6 @@ const BuildingPage = () => {
                 id: buildingId
             }));
 
-            const responsiblePersonsData = await fetchResponsiblePersons(buildingId);
-            setResponsiblePersons(responsiblePersonsData);
-
             const sectionsData = await fetchSections(buildingId);
             const formattedSections = sectionsData.map(section => ({
                 id: section.id,
@@ -98,8 +96,21 @@ const BuildingPage = () => {
         }
     };
 
+    const getResponsiblePersons = async () => {
+        try {
+            const responsiblePersonsData = await fetchResponsiblePersons(buildingId);
+            setResponsiblePersons(responsiblePersonsData);
+        } catch (error) {
+            console.error('Ошибка получения данных:', error);
+        }
+    };
+
     useEffect(() => {
         getData();
+    }, [buildingId]);
+
+    useEffect(() => {
+        getResponsiblePersons();
     }, [buildingId]);
 
     const headers = {
@@ -237,13 +248,13 @@ const BuildingPage = () => {
                             <div className="flex items-center ">
                                 <Label text="Ответственные лица"/>
                                 <MiniAddButton onClick={handleAddResponsiblePersonClick}/>
+                                <TelegramButton onClick={getResponsiblePersons}/>
                             </div>
                         </div>
-
                         <ItemTable
                             data={formattedResponsiblePersons}
                             headers={headers}
-                            tableStyles='table-auto border-collapse'
+                            tableStyles='table-auto border-collapse mt-2'
                         />
                     </div>
 
@@ -263,7 +274,7 @@ const BuildingPage = () => {
                             buildingId={buildingId}
                             onClose={handleAddResponsiblePersonModalClose}
                             onSubmit={() => {
-                                getData();
+                                getResponsiblePersons();
                             }}
                         />
                     )}

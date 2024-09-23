@@ -47,7 +47,6 @@ const EditMeasuringPointModal: React.FC<EditMeasuringPointModalProps> = ({ measu
         try {
             const updatedMeasuringPoint = await updateMeasuringPoint(measuringPointId, formData);
             onUpdate(updatedMeasuringPoint);
-
             onClose();
         } catch (error) {
             console.error('Ошибка при обновлении комнаты:', error);
@@ -92,7 +91,7 @@ const EditMeasuringPointModal: React.FC<EditMeasuringPointModalProps> = ({ measu
 
     return (
         <ModalTemplate
-            headerTitle="Редактирование точки измерения"
+            headerTitle="Редактирование комнаты"
             buttonLabel="Сохранить"
             onClose={onClose}
             onSubmit={handleSubmit}
