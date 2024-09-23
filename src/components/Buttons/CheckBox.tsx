@@ -1,6 +1,6 @@
 import React from 'react';
 
-const CustomCheckbox = ({ checked, onChange, label, showDivider = true }) => {
+const CustomCheckbox = ({ checked, onChange, label, showDivider = true, labelClassname ='ml-2 text-gray-700' }) => {
     return (
         <>
             <label className="block ml-1 relative cursor-pointer select-none flex items-center">
@@ -25,7 +25,7 @@ const CustomCheckbox = ({ checked, onChange, label, showDivider = true }) => {
                         clipRule="evenodd"
                     />
                 </svg>
-                <span className="ml-2 text-gray-700">{label}</span>
+                <span className={labelClassname}>{label}</span>
             </label>
             {showDivider && <hr className="my-2 border-t border-gray-300" />}
         </>
