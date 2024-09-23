@@ -216,7 +216,7 @@ const AddResponsiblePersonModal: React.FC<AddResponsiblePersonModalProps> = ({ o
 
             const newPerson: ResponsiblePerson = {
                 ...formData,
-                phone: cleanedPhone // Передаем очищенный телефон
+                phone: cleanedPhone
             };
 
             const notificationSettings = {
@@ -306,7 +306,7 @@ const AddResponsiblePersonModal: React.FC<AddResponsiblePersonModalProps> = ({ o
                             message="Введите номер телефона, который привязан к Telegram-аккаунту этого человека."
                             isVisible={showNumberTooltip}
                             toggleVisibility={() => setShowNumberTooltip(!showNumberTooltip)}
-                            iconClassName="text-gray-500 cursor-pointer ml-2 absolute left-0 ml-16 mb-5"
+                            iconClassName="text-gray-500 cursor-pointer absolute left-0 ml-16 mb-5"
                         />
                     </div>
 
