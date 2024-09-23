@@ -33,7 +33,7 @@ export const transformRoomData = (room: Room) => {
                 <BlueLink to={`/building/section/${room.section.id}`} text={room.section.label} />
 )},
     { id: 3, title: 'Тепловой контур', value: (
-            <BlueLink to={`/building/thermalCircuit/${room.section.id}`} text={room.thermalCircuit.label} />
+            <BlueLink to={`/building/thermalCircuit/${room.thermalCircuit.id}`} text={room.thermalCircuit.label} />
     )},
     { id: 4, title: 'Этаж', value: room.floor },
     { id: 5, title: 'Ориентация окон', value: room.windowOrientation.label },

@@ -1,7 +1,6 @@
-import {Room, transformRoomData, transformRoomDataForUser} from "../models/Room.tsx";
-import {Section} from "../models/Section.ts";
+
 import api from "../api.ts";
-import {Room, transformRoomData, transformRoomDataForUser} from "../../models/Room.tsx";
+import {Room, transformRoomDataForUser} from "../../models/Room.tsx";
 
 
 export const fetchRoomsBySection = async (sectionId: number) => {
@@ -31,6 +30,18 @@ export const fetchRoom = async (roomId: number) => {
         throw error;
     }
 };
+
+export const fetchAllRoom = async () => {
+    try {
+        const response = await api.get(`/room/0/0`);
+        const room: Room = response.data.data;
+        return room;
+    } catch (error) {
+        throw error;
+    }
+};
+
+
 export const fetchRoomUser = async (roomId: number) => {
     try {
         const response = await api.get(`/room/${roomId}`);
