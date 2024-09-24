@@ -127,9 +127,17 @@ const IncidentPage: React.FC = () => {
         setIncidentHistoryModalOpen(false);
         setSelectedIncident(null);
     };
-
-
-
+    const [currentStatus, setCurrentStatus] = useState(incidents.status);
+    const handleStatusChange = (newStatus: string) => {
+        if (selectedIncident) {
+            const updatedIncidents = incidents.map((inc) =>
+                inc.id === selectedIncident.id ? { ...inc, status: newStatus } : inc
+            );
+            setIncidents(updatedIncidents);
+            setCurrentStatus(newStatus);
+            setStatusChangeModalOpen(false);
+        }
+    };
 
 
     const handleFilterChange = (filters: {
@@ -249,14 +257,15 @@ const IncidentPage: React.FC = () => {
                     incidentId={selectedIncident.id}
                     incidentDescription={selectedIncident.description}
                     object={selectedIncident.object}
-                    currentStatus={selectedIncident.status}
+                    currentStatus={currentStatus}
                     incidents={incidents}
                     setIncidents={setIncidents}
                     selectedIncident={selectedIncident}
-                    user={user.fullName}
+                    user={user}
                     onClose={closeStatusModal}
-                    loading={loading}
-                    setLoading={setLoading}
+                    onStatusChange={handleStatusChange}
+                    loading={false}
+                    setLoading={() => false}
                 />
             )}
             {isIncidentHistoryModalOpen && selectedIncident && (
