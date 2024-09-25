@@ -92,6 +92,8 @@ const ControllerSchedulePage = () => {
     const {controllerId} = useParams()
     const [label, setLabel] = useState<string | null>(null);
 
+    const dispatch = useDispatch();
+
     const handleHotWaterClick = () => setSelectedSystem("hotWater");
     const handleHeatingSystemClick = () => setSelectedSystem("heatingSystem");
     const handleDayClick = (day: string) => setSelectedDay(day);
@@ -134,15 +136,17 @@ const ControllerSchedulePage = () => {
         };
 
         getLabel();
-
     }, [controllerId]);
 
-    const dispatch = useDispatch();
-    dispatch(setBreadcrumb({
-        key: 'schedule',
-        label: `Расписание «${label}»`,
-        icon: 'FaCalendarAlt',
-    }));
+    useEffect(() => {
+        if (label !== null) {
+            dispatch(setBreadcrumb({
+                key: 'schedule',
+                label: `Расписание «${label}»`,
+                icon: 'FaCalendarAlt',
+            }));
+        }
+    }, [label, dispatch]);
 
     return (
         <DefaultLayout>

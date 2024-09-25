@@ -128,17 +128,12 @@ const LeftMenu: React.FC = () => {
                 <nav className="flex-1 overflow-y-auto overflow-x-hidden">
                     <ul className="space-y-2">
                         <li>
-                            <Link
-                                to="/building/updates"
-                                className="flex items-center p-2 rounded-lg hover:bg-gray-700 whitespace-nowrap"
+                            <div
+                                className="flex items-center p-2 rounded-lg cursor-not-allowed"
                             >
-                                <FaCogs className="mr-2"/>
-                                Версия ПО
-                                {/*<FaBell*/}
-                                {/*    className={`ml-2 text-green-500 ${isSwinging ? 'animate-swingTop' : ''}`}*/}
-                                {/*    title="Есть обновления"*/}
-                                {/*/>*/}
-                            </Link>
+                                <FaCogs className="mr-2 text-gray-400"/>
+                                <span className="text-gray-300">Версия ПО</span>
+                            </div>
                         </li>
 
                         <li>
@@ -175,7 +170,8 @@ const LeftMenu: React.FC = () => {
                                 <FaChevronDown
                                     className={`ml-2 transition-transform duration-300 ${isThermalCircuitsOpen ? 'rotate-180' : ''} text-xs`}/>
                             </button>
-                            <ul ref={thermalCircuitsRef} className={`transition-max-height duration-300 ease-in-out overflow-hidden ${isThermalCircuitsOpen ? 'max-h-40' : 'max-h-0'} w-fit`}>
+                            <ul ref={thermalCircuitsRef}
+                                className={`transition-max-height duration-300 ease-in-out overflow-hidden ${isThermalCircuitsOpen ? 'max-h-40' : 'max-h-0'} w-fit`}>
                                 {thermalCircuits.map((circuit) => (
                                     <li key={circuit.id}>
                                         <Link to={`/building/thermalCircuit/${circuit.id}`}
@@ -198,7 +194,8 @@ const LeftMenu: React.FC = () => {
                                 <FaChevronDown
                                     className={`ml-2 transition-transform duration-300 ${isDevicesOpen ? 'rotate-180' : ''} text-xs`}/>
                             </button>
-                            <ul ref={devicesRef} className={`transition-max-height duration-300 ease-in-out overflow-hidden ${isDevicesOpen ? 'max-h-40' : 'max-h-0'} w-fit`}>
+                            <ul ref={devicesRef}
+                                className={`transition-max-height duration-300 ease-in-out overflow-hidden ${isDevicesOpen ? 'max-h-40' : 'max-h-0'} w-fit`}>
                                 <li>
                                     <Link to="/building/devices/"
                                           className="flex items-center p-2 pl-8 rounded-lg hover:bg-gray-700 whitespace-nowrap">
@@ -217,17 +214,19 @@ const LeftMenu: React.FC = () => {
                         </li>
 
                         <li>
-                            <Link to="/building/incidents"
-                                  className="flex items-center p-2 rounded-lg hover:bg-gray-700 whitespace-nowrap">
-                                <FaExclamationTriangle className="mr-2"/>
-                                Инциденты
-                            </Link>
+                            <div
+                                className="flex items-center p-2 rounded-lg cursor-not-allowed"
+                            >
+                                <FaExclamationTriangle className="mr-2 text-gray-400 "/>
+                                <span className="text-gray-300">Инциденты</span>
+
+                            </div>
                         </li>
 
-                        <li>
-                            <Link to="/building/users"
-                                  className="flex items-center p-2 rounded-lg hover:bg-gray-700 whitespace-nowrap">
-                                <FaUser className="mr-2"/>
+                    <li>
+                        <Link to="/building/users"
+                              className="flex items-center p-2 rounded-lg hover:bg-gray-700 whitespace-nowrap">
+                        <FaUser className="mr-2"/>
                                 Пользователи
                             </Link>
                         </li>

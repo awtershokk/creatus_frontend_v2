@@ -52,6 +52,10 @@ const UsersPage = () => {
         console.log('Delete user:', item);
     };
 
+    const handleEditUserClick = (item: User) => {
+        console.log('Edit user:', item);
+    };
+
     const handleAddUserModalOpen = () => {
         setIsAddUserModalOpen(true);
     };
@@ -69,7 +73,7 @@ const UsersPage = () => {
                     <div className="">
                         <div className="flex items-center mb-2">
                             <Label text="Пользователи" />
-                            {/*<MiniAddButton onClick={handleAddUserModalOpen} />*/}
+                                <MiniAddButton onClick={handleAddUserModalOpen} />
                         </div>
                     </div>
                     <ItemTable

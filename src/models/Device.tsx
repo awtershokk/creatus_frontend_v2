@@ -76,9 +76,9 @@ export const transformDeviceDataForSettingMode = (device: Device): {} => {
 
 export const transformDeviceDataForMP = (device: Device): {} => {
     return [
-        { id: 1, title: 'Наименование', value: device.label },
-        { id: 2, title: 'Модель', value: device.model === null ? 'Не указана' : device.model},
+        { id: 1, title: 'Наименование', value: (
+                <BlueLink to={'/building/device'} text='Наименование'/>
+            )},
         { id: 3, title: 'Статус', value: device.active ? <span style={{ color: 'green' }}>Онлайн</span> : <span style={{ color: 'red' }}>Оффлайн</span> },
-        { id: 3, title: 'Серийный номер', value: device.topic },
     ];
 };
