@@ -13,7 +13,8 @@ import Label from "../../components/Text/Label.tsx";
 
 import { fetchRoomUser } from "../../api/requests/roomApi.ts";
 import { fetchMeasurementsRoom } from "../../api/requests/measurementsApi.ts";
-import {fetchPublicInfo} from "../../api/requests/buildingApi.ts";
+import { fetchPublicInfo } from "../../api/requests/buildingApi.ts";
+import { FaRegArrowAltCircleUp } from "react-icons/fa";
 
 interface MeasuringPoint {
     deviceActive: boolean | null;
@@ -51,11 +52,10 @@ interface ThermalCircuit {
 const UserPage: React.FC = () => {
     const [info, setInfo] = useState<ThermalCircuit[]>([]);
     const [currentCircuitIndex, setCurrentCircuitIndex] = useState(0);
-    const [officeName, setOfficeName] = useState()
+    const [officeName, setOfficeName] = useState();
     const [selectedRoomId, setSelectedRoomId] = useState<string | null>(null);
     const [tabIndex, setTabIndex] = useState(0);
     const [roomDataFields, setRoomDataFields] = useState([]);
-
     const [recordings, setRecordings] = useState<Array<Record<string, any>>>([]);
     const [totalRecordings, setTotalRecordings] = useState<number>(0);
     const [filteredRecordings, setFilteredRecordings] = useState<Measurement[]>([]);
@@ -63,7 +63,7 @@ const UserPage: React.FC = () => {
     const [timeRange, setTimeRange] = useState<{ start: Date | null; end: Date | null }>({ start: null, end: null });
     const [temperatureDeviation, setTemperatureDeviation] = useState<{ min: number | null; max: number | null }>({ min: null, max: null });
     const [humidityDeviation, setHumidityDeviation] = useState<{ min: number | null; max: number | null }>({ min: null, max: null });
-
+    const [isScrollButtonVisible, setIsScrollButtonVisible] = useState(false);
 
     useEffect(() => {
         const fetchInfo = async () => {
@@ -248,6 +248,25 @@ const UserPage: React.FC = () => {
     const currentCircuitLabel = currentCircuit?.label || "No Circuit Available";
     const nonEditableFields = useMemo(() => roomDataFields.map(field => field.title), [roomDataFields]);
 
+    const scrollToTop = () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    useEffect(() => {
+        const handleScroll = () => {
+            if (window.scrollY > 300) {
+                setIsScrollButtonVisible(true);
+            } else {
+                setIsScrollButtonVisible(false);
+            }
+        };
+
+        window.addEventListener('scroll', handleScroll);
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, []);
+
     return (
         <div className="container mx-auto p-4 w-max">
             <UserHeader
@@ -311,6 +330,15 @@ const UserPage: React.FC = () => {
                         )}
                     </div>
                 </div>
+            )}
+            {isScrollButtonVisible && (
+                <button
+                    onClick={scrollToTop}
+                    className="fixed bottom-10 right-10 bg-gray-800 bg-opacity-75 text-white p-2 rounded-full shadow-lg hover:bg-gray-600 transition z-[60]"
+                    title="Scroll to Top"
+                >
+                    <FaRegArrowAltCircleUp size={24} />
+                </button>
             )}
         </div>
     );

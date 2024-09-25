@@ -89,7 +89,7 @@ const CircuitDisplay: React.FC<CircuitDisplayProps> = ({ sections, selectedRoomI
     );
 
     return (
-        <div className="flex justify-start items-start flex-nowrap overflow-x-auto">
+        <div className="flex justify-start items-start flex-nowrap overflow-x-auto space-x-4">
             {sections.map((section, sectionIndex) => (
                 <div key={sectionIndex} className="inline-block text-left p-1.5 border-2 border-black bg-gray-400">
                     <div className="p-1 text-center">
@@ -109,7 +109,7 @@ const CircuitDisplay: React.FC<CircuitDisplayProps> = ({ sections, selectedRoomI
                                     circuit.R.map((room, roomIndex) => {
                                         const {
                                             backgroundColor,
-                                            measuringPointIndicators
+
                                         } = getRoomStyle(room.tempDev, room.measuringPoints);
 
                                         return (

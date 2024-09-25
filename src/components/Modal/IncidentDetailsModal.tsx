@@ -148,8 +148,9 @@ const IncidentDetailsModal: React.FC<IncidentDetailsModalProps> = ({
                         setIncidents={setIncidents}
                         selectedIncident={selectedIncident}
                         user={user}
-                        onClose={closeStatusModal}
                         onStatusChange={handleStatusChange}
+                        onClose={closeStatusModal}
+
                         loading={false}
                         setLoading={() => false}
                     />
