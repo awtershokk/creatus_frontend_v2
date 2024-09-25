@@ -271,7 +271,6 @@ const RoomPage = () => {
                         )}
                         {tabIndex === 2 && (
                             <GraphModal roomId={roomId} onClose={handleClose} roomName={roomName} />
-
                         )}
 
                         {isAddMeasurePointModalOpen && (
