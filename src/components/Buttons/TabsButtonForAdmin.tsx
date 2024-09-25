@@ -15,7 +15,7 @@ const TabsButtonForAdmin: React.FC<TabProps> = ({ tabIndex, setTabIndex }) => {
                 }`}
                 onClick={() => setTabIndex(1)}
             >
-                Измеренные значения
+                Таблица
             </button>
             <button
                 className={`tab py-2 px-4 text-sm font-medium border-b-2 ${
@@ -23,7 +23,7 @@ const TabsButtonForAdmin: React.FC<TabProps> = ({ tabIndex, setTabIndex }) => {
                 }`}
                 onClick={() => setTabIndex(2)}
             >
-                График t° и h
+                График
             </button>
         </div>
     );
