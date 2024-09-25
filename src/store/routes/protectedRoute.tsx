@@ -13,23 +13,19 @@ const ProtectedRoute = ({ allowedRoles }: ProtectedRouteProps) => {
     const user = useSelector((state: RootState) => state.auth.user);
 
     useEffect(() => {
-        const checkAuth = async () => {
-            const token = localStorage.getItem('token');
-            if (token) {
-                if (!user) {
-                } else {
-                    setIsLoading(false);
-                }
-            } else {
-                setIsLoading(false);
-            }
-        };
+        const token = localStorage.getItem('token');
 
-        checkAuth();
+        if (!token) {
+            setIsLoading(false);
+        } else if (!user) {
+            setIsLoading(true);
+        } else {
+            setIsLoading(false);
+        }
     }, [user]);
 
     if (isLoading) {
-        return <LoadingPage/>;
+        return <LoadingPage />;
     }
 
     if (!user) {

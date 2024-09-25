@@ -69,24 +69,6 @@ const RoomPage = () => {
                 id: roomId
             }));
 
-            // const sectionLabelItem = roomData.find(item => item.title === 'Секция');
-            // const sectionLabel = sectionLabelItem ? sectionLabelItem.value.props.text : null;
-            // dispatch(setBreadcrumb({
-            //     key: 'section',
-            //     label: sectionLabel,
-            //     icon: 'FaBars',
-            //     id: sectionLabelItem.id
-            // }));
-            //
-            // const thermalCircuitLabelItem = roomData.find(item => item.title === 'Тепловой контур');
-            // const thermalCircuitLabel = thermalCircuitLabel ? thermalCircuitLabelItem.value.props.text : null;
-            // dispatch(setBreadcrumb({
-            //     key: 'thermalCircuit',
-            //     label: thermalCircuitLabel,
-            //     icon: 'FaThermometerHalf',
-            //     id: thermalCircuitLabel.id
-            // }));
-
             const measuringPointsData = await fetchMeasuringPoints(roomId);
             const formattedMeasuringPoints = measuringPointsData.map(point => ({
                 id: point.id,
@@ -99,6 +81,8 @@ const RoomPage = () => {
 
             const measurementsData = await fetchMeasurementsRoom(roomId);
             setMeasurements(measurementsData);
+            console.log('measurements', measurements)
+
             setFilteredMeasurements(measurementsData);
             setTotalMeasurements(measurementsData.length);
             setDisplayedMeasurements(measurementsData.length);
@@ -267,13 +251,26 @@ const RoomPage = () => {
                                     />
                                 </TableContainer>
                             </div>
-
                         )}
                         {tabIndex === 2 && (
                             <GraphModal roomId={roomId} onClose={handleClose} roomName={roomName} />
 
                         )}
-
+                        </div>
+                        <DownloadButton headers={headers} data={filteredMeasurements} />
+                        <MeasurementsFilters
+                            dateRange={dateRange}
+                            timeRange={timeRange}
+                            temperatureDeviation={temperatureDeviation}
+                            humidityDeviation={humidityDeviation}
+                            onFilterChange={handleFilterChange}
+                        />
+                        <TableContainer>
+                            <ItemTable
+                                data={filteredMeasurements}
+                                headers={headers}
+                            />
+                        </TableContainer>
                         {isAddMeasurePointModalOpen && (
                             <AddMeasuringPointModal
                                 onClose={closeAddMeasurePointModal}
