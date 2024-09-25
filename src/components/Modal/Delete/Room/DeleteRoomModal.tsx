@@ -29,10 +29,12 @@ const DeleteRoomModal: React.FC<DeleteRoomModalProps> = ({
     return (
         <ModalTemplate
             headerTitle="Подтвердите удаление"
-            buttonLabel="Удалить"
+            buttonLabel="Удалить (Удерживать)"
             onClose={onClose}
             onSubmit={handleDelete}
             loading={loading}
+            deleteMode={true}
+            buttonStyles="px-4 py-2 border border-red-500 bg-red-500 text-white rounded-md transition relative overflow-hidden"
         >
             <p className="text-black">
                 Вы уверены, что хотите удалить помещение <b>{roomName}</b>?
