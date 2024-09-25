@@ -61,7 +61,6 @@ const GraphModal: React.FC<GraphModalProps> = ({
                 <button
                     onClick={scrollToTop}
                     className="fixed bottom-10 right-10 bg-gray-800 bg-opacity-75 text-white p-2 rounded-full shadow-lg hover:bg-gray-600 transition z-[60]"
-
                 >
                     <FaRegArrowAltCircleUp size={24} />
                 </button>
@@ -69,25 +68,26 @@ const GraphModal: React.FC<GraphModalProps> = ({
             <div className="absolute inset-0 bg-black opacity-50" onClick={handleClose}></div>
             <div className={`relative bg-white w-full h-full z-10 transform transition-transform duration-300 ${showModal ? 'scale-100' : 'scale-95'}`}>
 
-                <div className="bg-gray-800 px-6 py-4 flex justify-between items-center">
-                    <h2 className="text-xl font-semibold text-white">График для комнаты "{roomName}"</h2>
-                    <button
-                        onClick={handleClose}
-                        className="text-gray-500 hover:text-gray-400"
+                <div className="flex flex-col w-full h-full">
+                    <div className="bg-gray-800 px-6 py-4 flex justify-between items-center flex-none">
+                        <h2 className="text-xl font-semibold text-white">График для комнаты "{roomName}"</h2>
+                        <button
+                            onClick={handleClose}
+                            className="text-gray-500 hover:text-gray-400"
+                        >
+                            <FaTimes size={20} />
+                        </button>
+                    </div>
+
+
+                    <div
+                        ref={modalContentRef}
+                        className="p-6 w-full flex-1 overflow-y-auto"
                     >
-                        <FaTimes size={20} />
-                    </button>
-                </div>
-
-                <div
-                    ref={modalContentRef}
-                    className="p-6 w-full h-full overflow-y-auto"
-
-                >
-                    <GraphPage selectedRoomId={roomId} />
+                        <GraphPage selectedRoomId={roomId} />
+                    </div>
                 </div>
             </div>
-
         </div>
     );
 };
