@@ -41,7 +41,7 @@ const StatusChangeModal: React.FC<StatusChangeModalProps> = ({
         onStatusChange(newStatus);
         if (selectedIncident) {
             setLoading(true);
-            setTimeout(() => {
+
                 const updatedIncidents = incidents.map((incident) =>
                     incident.id === selectedIncident.id
                         ? { ...incident, status: newStatus }
@@ -49,10 +49,11 @@ const StatusChangeModal: React.FC<StatusChangeModalProps> = ({
                 );
 
                 console.log('Пользователь', user, 'поменял статус инцидента', selectedIncident.id, 'На', newStatus);
+                onClose();
                 setIncidents(updatedIncidents);
                 setLoading(false);
-                onClose();
-            }, 100);
+
+
         }
     };
 

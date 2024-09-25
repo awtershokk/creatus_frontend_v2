@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import DefaultLayout from "../../layouts/DefaultLayout.tsx";
 import Label from "../../components/Text/Label.tsx";
 import EditButton from "../../components/Buttons/EditButton.tsx";
@@ -24,6 +24,8 @@ import {setBreadcrumb} from "../../store/slices/breadcrumbSlice.ts";
 import {useDispatch} from "react-redux";
 import {transformRoomData} from "../../models/Room.tsx";
 import EditRoomModal from "../../components/Modal/Edit/EditRoomModal.tsx";
+import TabsButtonForAdmin from "../../components/Buttons/TabsButtonForAdmin.tsx";
+import GraphModal from "../../components/Modal/GraphModal.tsx";
 
 const RoomPage = () => {
     const { roomId } = useParams();
@@ -41,6 +43,10 @@ const RoomPage = () => {
     const [isDeleteMeasurePointModalOpen, setIsDeleteMeasurePointModalOpen] = useState(false);
     const [deleteMeasuringPointId, setDeleteMeasuringPointId] = useState<number | null>(null);
 
+    const [tabIndex, setTabIndex] = useState(1);
+    const [roomName, setRoomName] = useState('')
+    const [isGraphModalOpen, setIsGraphModalOpen] = useState(false);
+
     const [roomData, setRoomData] = useState<any>(null);
     const [isEditRoomModalOpen, setIsEditRoomModalOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
@@ -55,7 +61,7 @@ const RoomPage = () => {
             setRoom(roomData);
 
             const labelItem = roomData.find(item => item.title === 'Наименование');
-
+            setRoomName(labelItem.value);
             dispatch(setBreadcrumb({
                 key: 'room',
                 label: labelItem?.value,
@@ -106,6 +112,10 @@ const RoomPage = () => {
     const handleEditRoomModalClose = () => {
         setIsEditRoomModalOpen(false);
 
+    };
+    const handleClose = () => {
+        setIsGraphModalOpen(false);
+        setTabIndex(1);
     };
     const handleFilterChange = (filters: {
         dateRange?: { start: Date | null; end: Date | null },
@@ -202,6 +212,7 @@ const RoomPage = () => {
                                 nonEditableFields={['Секция', 'Тепловой контур']}
                             />
                         </div>
+
                         <div className="w-full flex flex-col items-end mt-8 mr-8">
                             <ChildElementsTable
                                 infoData={measuringPoints}
@@ -213,13 +224,38 @@ const RoomPage = () => {
                         </div>
                     </div>
                     <div className="mt-6 mb-4">
-                        <div className="mt-4 flex items-center justify-between">
-                            <div className="flex items-center">
-                                <Label text="Рассчитанные значения" />
-                                <div className="ml-4 mt-1 text-sm text-gray-600">
-                                    Всего значений: {totalMeasurements}, Отображаемых значений: {displayedMeasurements}
+                        <TabsButtonForAdmin tabIndex={tabIndex} setTabIndex={setTabIndex} />
+                        {tabIndex === 1 && (
+                            <div>
+                                <div className="mt-4 flex items-center justify-between">
+                                    <div className="flex items-center">
+                                        <Label text="Рассчитанные значения"/>
+                                        <div className="ml-4 mt-1 text-sm text-gray-600">
+                                            Всего значений: {totalMeasurements}, Отображаемых
+                                            значений: {displayedMeasurements}
+                                        </div>
+                                    </div>
                                 </div>
+                                <DownloadButton/>
+                                <MeasurementsFilters
+                                    dateRange={dateRange}
+                                    timeRange={timeRange}
+                                    temperatureDeviation={temperatureDeviation}
+                                    humidityDeviation={humidityDeviation}
+                                    onFilterChange={handleFilterChange}
+                                />
+                                <TableContainer>
+                                    <ItemTable
+                                        data={filteredMeasurements}
+                                        headers={headers}
+                                    />
+                                </TableContainer>
                             </div>
+                        )}
+                        {tabIndex === 2 && (
+                            <GraphModal roomId={roomId} onClose={handleClose} roomName={roomName} />
+
+                        )}
                         </div>
                         <DownloadButton headers={headers} data={filteredMeasurements} />
                         <MeasurementsFilters

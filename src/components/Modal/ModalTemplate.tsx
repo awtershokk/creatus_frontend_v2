@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { FaTimes } from "react-icons/fa";
 
 interface ModalTemplateProps {
@@ -10,6 +10,8 @@ interface ModalTemplateProps {
     loading: boolean;
     cancelButtonLabel?: string;
     wight?: string;
+    deleteMode?: boolean;
+    buttonStyles?: string;
 }
 
 const ModalTemplate: React.FC<ModalTemplateProps> = ({
@@ -21,8 +23,12 @@ const ModalTemplate: React.FC<ModalTemplateProps> = ({
                                                          loading,
                                                          cancelButtonLabel = 'Отмена',
                                                          wight = 'max-w-[500px]',
-}) => {
+                                                         deleteMode = false,
+                                                         buttonStyles = "px-4 py-2 bg-gray-700 text-white rounded-md hover:bg-black transition", // дефолтные стили
+                                                     }) => {
     const [showModal, setShowModal] = useState(false);
+    const [holdProgress, setHoldProgress] = useState(0);
+    const holdTimeout = useRef<NodeJS.Timeout | null>(null);
 
     useEffect(() => {
         setTimeout(() => setShowModal(true), 50);
@@ -31,6 +37,31 @@ const ModalTemplate: React.FC<ModalTemplateProps> = ({
     const handleClose = () => {
         setShowModal(false);
         setTimeout(onClose, 300);
+    };
+
+
+    const handleMouseDown = () => {
+        if (!deleteMode) return;
+        setHoldProgress(0);
+        holdTimeout.current = setInterval(() => {
+            setHoldProgress(prev => {
+                if (prev >= 100) {
+                    clearInterval(holdTimeout.current!); // Остановить, когда достигнут 100%
+                    onSubmit();
+                    return prev;
+                }
+                return prev + 1;
+            });
+        }, 10); // Прогресс будет увеличиваться каждые 10ms (итого 1 секунды для 100%)
+    };
+
+    // Остановка удержания
+    const handleMouseUp = () => {
+        if (!deleteMode) return;
+        if (holdTimeout.current) {
+            clearInterval(holdTimeout.current); // Остановить таймер
+            setHoldProgress(0);
+        }
     };
 
     return (
@@ -61,13 +92,26 @@ const ModalTemplate: React.FC<ModalTemplateProps> = ({
                         {cancelButtonLabel}
                     </button>
                     {buttonLabel && (
-                        <button
-                            onClick={onSubmit}
-                            className="px-4 py-2 bg-gray-700 text-white rounded-md hover:bg-black transition"
-                            disabled={loading}
+                        <div
+                            className="relative"
+                            onMouseDown={handleMouseDown}
+                            onMouseUp={handleMouseUp}
+                            onMouseLeave={handleMouseUp}
                         >
-                            {loading ? 'Сохранение...' : buttonLabel}
-                        </button>
+                            <button
+                                onClick={!deleteMode ? onSubmit : undefined}
+                                className={`${buttonStyles} relative overflow-hidden`}
+                                disabled={loading}
+                            >
+                                {loading ? 'Сохранение...' : buttonLabel}
+                                {deleteMode && (
+                                    <div
+                                        style={{ width: `${holdProgress}%` }}
+                                        className="absolute top-0 left-0 h-full bg-red-600 opacity-50"
+                                    />
+                                )}
+                            </button>
+                        </div>
                     )}
                 </div>
             </div>
