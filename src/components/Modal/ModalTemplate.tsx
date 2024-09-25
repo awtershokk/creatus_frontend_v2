@@ -10,8 +10,8 @@ interface ModalTemplateProps {
     loading: boolean;
     cancelButtonLabel?: string;
     wight?: string;
-    deleteMode?: boolean; // Флаг для режима удаления
-    buttonStyles?: string; // Кастомные стили для кнопки
+    deleteMode?: boolean;
+    buttonStyles?: string;
 }
 
 const ModalTemplate: React.FC<ModalTemplateProps> = ({
