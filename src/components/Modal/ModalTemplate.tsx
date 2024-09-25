@@ -31,6 +31,7 @@ const ModalTemplate: React.FC<ModalTemplateProps> = ({
     const holdTimeout = useRef<NodeJS.Timeout | null>(null);
 
     const modalContentRef = useRef<HTMLDivElement | null>(null);
+    const submitButtonRef = useRef<HTMLButtonElement | null>(null); // Реф для кнопки подтверждения
 
     useEffect(() => {
         setTimeout(() => setShowModal(true), 50);
@@ -81,6 +82,18 @@ const ModalTemplate: React.FC<ModalTemplateProps> = ({
             const prevIndex = (currentIndex - 1 + focusable.length) % focusable.length;
             (focusable[prevIndex] as HTMLElement)?.focus();
         }
+
+
+        if (e.key === 'Enter' && submitButtonRef.current) {
+            e.preventDefault();
+            submitButtonRef.current.click();
+        }
+
+
+        if (e.key === 'Escape') {
+            e.preventDefault();
+            handleClose();
+        }
     };
 
     return (
@@ -122,6 +135,7 @@ const ModalTemplate: React.FC<ModalTemplateProps> = ({
                             onMouseLeave={handleMouseUp}
                         >
                             <button
+                                ref={submitButtonRef}
                                 onClick={!deleteMode ? onSubmit : undefined}
                                 className={`${buttonStyles} relative overflow-hidden`}
                                 disabled={loading}
