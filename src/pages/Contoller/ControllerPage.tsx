@@ -43,7 +43,7 @@ const ControllerPage = () => {
         'Тепловой контур': 'thermalCircuit',
         'Тип ECL': 'ecl_type',
         'Параметры': 'settings',
-        'Расписание': 'schedule',
+       // 'Расписание': 'schedule',
     };
 
     return (

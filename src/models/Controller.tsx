@@ -28,9 +28,9 @@ export const transformControllerData = (
         settings: (
             <BlueLink to={`/building/controllers/options/${controller.id}`} text={'Параметры'}/>
         ),
-        schedule: (
-            <BlueLink to={`/building/controllers/schedule/${controller.id}`} text={'Расписание'}/>
-        ),
+       // schedule: (
+         //   <BlueLink to={`/building/controllers/schedule/${controller.id}`} text={'Расписание'}/>
+        //),
 
     };
 };
