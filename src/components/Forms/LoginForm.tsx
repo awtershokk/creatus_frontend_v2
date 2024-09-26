@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuth } from '../../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
@@ -10,9 +10,6 @@ const LoginForm = () => {
     const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
 
-    const usernameRef = useRef<HTMLInputElement>(null);
-    const passwordRef = useRef<HTMLInputElement>(null);
-
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         await login(username, password);
@@ -20,9 +17,10 @@ const LoginForm = () => {
 
     useEffect(() => {
         if (user) {
-            if (user.roleId === 1) {
+            if (user.roleId == 1) {
                 navigate('/user');
-            } else {
+            }
+            else {
                 navigate('/building');
             }
         }
@@ -37,21 +35,6 @@ const LoginForm = () => {
 
     const handleTogglePasswordVisibility = () => {
         setShowPassword(!showPassword);
-    };
-
-
-    const handleKeyDown = (e: React.KeyboardEvent) => {
-        if (e.key === 'ArrowDown') {
-            e.preventDefault();
-            if (document.activeElement === usernameRef.current) {
-                passwordRef.current?.focus();
-            }
-        } else if (e.key === 'ArrowUp') {
-            e.preventDefault();
-            if (document.activeElement === passwordRef.current) {
-                usernameRef.current?.focus();
-            }
-        }
     };
 
     return (
@@ -78,8 +61,6 @@ const LoginForm = () => {
                         id="username"
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
-                        ref={usernameRef}
-                        onKeyDown={handleKeyDown}
                         className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                         autoComplete="off"
                         name="notUsername"
@@ -100,8 +81,6 @@ const LoginForm = () => {
                             id="password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            ref={passwordRef}
-                            onKeyDown={handleKeyDown}
                             className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm pr-10"
                             autoComplete="new-password"
                             name="notPassword"

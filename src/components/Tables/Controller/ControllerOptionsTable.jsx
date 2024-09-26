@@ -3,6 +3,7 @@ import {FaStar, FaFolder, FaTimes, FaSearch, FaSpinner} from 'react-icons/fa';
 import { FiChevronDown, FiChevronUp } from 'react-icons/fi';
 import { Tooltip, OverlayTrigger } from 'react-bootstrap';
 import { MODBUS_API_URL } from "../../../api/modbusApi.js";
+import HistoryTable from "../HistoryTable.jsx";
 
 
 const ControllerOptionTable = () => {
@@ -413,9 +414,9 @@ const ControllerOptionTable = () => {
 
     return (
         <div className="flex flex-wrap">
-            <div className="w-full md:w-[53%]">
+            <div className="h-full w-full md:w-[53%]">
                 <div className="table-wrapper">
-                    <div className="search-container relative w-[530px] flex items-center mt-4 mb-3">
+                    <div className="search-container relative w-[600px] flex items-center mt-4 mb-3">
                         <FaSearch className="search-icon absolute left-2 text-gray-500"/>
                         <input
                             type="text"
@@ -469,6 +470,10 @@ const ControllerOptionTable = () => {
                             Выходы
                         </button>
 
+                    </div>
+
+                    <div className="tabs-container space-x-2 flex mb-3 mt-2">
+
                         <button
                             className={`tab px-3 py-1 rounded ${activeTab === 'control' ? 'bg-gray-600' : 'bg-gray-500'}`}
                             onClick={() => handleTabChange('control')}
@@ -482,9 +487,6 @@ const ControllerOptionTable = () => {
                         >
                             Аварии
                         </button>
-                    </div>
-
-                    <div className="tabs-container space-x-2 flex mb-3 mt-2">
                         <button
                             className={`tab px-3 py-1 rounded ${activeTab === 'values' ? 'bg-gray-600' : 'bg-gray-500'}`}
                             onClick={() => handleTabChange('values')}
@@ -523,7 +525,7 @@ const ControllerOptionTable = () => {
                         </label>
                     </div>
 
-                    <div className="ecltable-container max-h-[445px] overflow-y-auto w-[600px] noscroll">
+                    <div className="min-h-[calc(100vh-400px)] max-h-[calc(100vh-380px)] h-auto overflow-y-auto w-[600px] noscroll">
                         <div className="params-table-container">
                             <table className="table table-bordered w-full">
                                 <thead>
@@ -548,14 +550,15 @@ const ControllerOptionTable = () => {
                     </div>
                 </div>
 
-                {/*{historyData.length >= 1 && (*/}
-                {/*    <div className="w-full md:w-[45%] ml-[545px] mt-[-665px]">*/}
-                {/*        <div className="history-table">*/}
-                {/*            <HistoryTable data={historyData}/>*/}
-                {/*        </div>*/}
-                {/*    </div>*/}
-                {/*)}*/}
+
             </div>
+            {historyData.length >= 1 && (
+                <div className="w-full md:w-[45%] ml-[650px] mt-[-540px]">
+                    <div className="history-table">
+                        <HistoryTable data={historyData}/>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

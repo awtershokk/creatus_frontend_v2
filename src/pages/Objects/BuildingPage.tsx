@@ -7,7 +7,7 @@ import ObjectTable from "../../components/Tables/ObjectTable.tsx";
 import ChildElementsTable from "../../components/Tables/ChildElementsTable.tsx";
 import ItemTable from '../../components/Tables/ItemTable.tsx';
 
-import { fetchBuilding, fetchResponsiblePersons, updateBuilding } from '../../api/requests/buildingApi.ts';
+import { fetchBuilding, fetchResponsiblePersons } from '../../api/requests/buildingApi.ts';
 import { fetchSections } from '../../api/requests/sectionApi.ts';
 import { fetchThermalCircuits } from "../../api/requests/thermalCircuitApi.ts";
 
