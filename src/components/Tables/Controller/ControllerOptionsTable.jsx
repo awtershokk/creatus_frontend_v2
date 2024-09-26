@@ -525,7 +525,8 @@ const ControllerOptionTable = () => {
                         </label>
                     </div>
 
-                    <div className="min-h-[calc(100vh-400px)] max-h-[calc(100vh-380px)] h-auto overflow-y-auto w-[600px] noscroll">
+                    <div
+                        className=" max-h-[278px] h-auto overflow-y-auto w-[600px] noscroll">
                         <div className="params-table-container">
                             <table className="table table-bordered w-full">
                                 <thead>
@@ -540,7 +541,6 @@ const ControllerOptionTable = () => {
                             </table>
                         </div>
                     </div>
-
                     <div className="selection-info flex items-center mt-1 mb-3 text-black">
                         <span>Выбрано: {selectedCount} / 10</span>
                         <FaTimes
@@ -553,7 +553,7 @@ const ControllerOptionTable = () => {
 
             </div>
             {historyData.length >= 1 && (
-                <div className="w-full md:w-[45%] ml-[650px] mt-[-540px]">
+                <div className="w-full md:w-[45%] ml-[650px] mt-[-510px]">
                     <div className="history-table">
                         <HistoryTable data={historyData}/>
                     </div>
