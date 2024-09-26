@@ -96,7 +96,7 @@ const UpdatePage: React.FC = () => {
 
     return (
         <DefaultLayout>
-            <div className="max-w-3xl">
+            <div className="max-w-3xl mb-2">
                <Label text='История обновлений'/>
                 <div className="mb-4 mt-4 border rounded-md  p-2 w-[300px] bg-gray-200">
                     <h2 className="text-xl font-semibold text-black">Текущая версия</h2>

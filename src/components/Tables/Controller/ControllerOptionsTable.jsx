@@ -143,7 +143,7 @@ const ControllerOptionTable = () => {
     const sendFavoriteRequest = async (parameter, isAdding) => {
         const parameterId = parameter.id;
         const status = isAdding ? '1' : '0';
-        const url = `http://localhost:7001/api/ecl/parameter/favorites/1/${parameterId}/${status}`;
+        const url = `${MODBUS_API_URL}/ecl/parameter/favorites/1/${parameterId}/${status}`;
         try {
             const response = await fetch(url, { method: 'PUT' });
             if (!response.ok) {
@@ -205,7 +205,7 @@ const ControllerOptionTable = () => {
         setData(newData);
         setShowModal(false);
 
-        const url = `http://localhost:7001/api/ecl/parameter/write/1/${currentParameterId}`;
+        const url = `${MODBUS_API_URL}/ecl/parameter/write/1/${currentParameterId}`;
         const body = {
             value: newValue
         };
@@ -390,7 +390,7 @@ const ControllerOptionTable = () => {
         try {
             const requestBody = { modbusParameters: selectedIds };
 
-            const response = await fetch('http://localhost:7001/api/ecl/parameter/statistics/1', {
+            const response = await fetch(`${MODBUS_API_URL}/ecl/parameter/statistics/1`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(requestBody)

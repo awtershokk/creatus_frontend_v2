@@ -125,7 +125,7 @@ const LeftMenu: React.FC = () => {
                 <div className="mb-6">
                     <h1 className="text-xl font-bold whitespace-nowrap">SmartHeat</h1>
                 </div>
-                <nav className="flex-1 overflow-y-auto overflow-x-hidden">
+                <nav className="flex-1 overflow-y-auto overflow-x-hidden mb-6">
                     <ul className="space-y-2">
                         <li>
                             <Link
