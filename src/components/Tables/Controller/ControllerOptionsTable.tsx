@@ -1,34 +1,47 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import {FaStar, FaFolder, FaTimes, FaSearch, FaSpinner} from 'react-icons/fa';
+import { FaStar, FaFolder, FaTimes, FaSearch, FaSpinner } from 'react-icons/fa';
 import { FiChevronDown, FiChevronUp } from 'react-icons/fi';
 import { Tooltip, OverlayTrigger } from 'react-bootstrap';
-import { MODBUS_API_URL } from "../../../api/modbusApi.js";
-import HistoryTable from "../HistoryTable.jsx";
+import { MODBUS_API_URL } from "../../../api/modbusApi";
+import HistoryTable from "../HistoryTable";
 
 
-const ControllerOptionTable = () => {
-    const [data, setData] = useState([]);
-    const [expanded, setExpanded] = useState({});
-    const [favorites, setFavorites] = useState([]);
-    const [searchTerm, setSearchTerm] = useState('');
-    const [showModal, setShowModal] = useState(false);
-    const [currentParameter, setCurrentParameter] = useState('');
-    const [currentParameterValue, setCurrentParameterValue] = useState('');
-    const [currentParameterType, setCurrentParameterType] = useState('');
-    const [currentRowIndex, setCurrentRowIndex] = useState(null);
-    const [activeTab, setActiveTab] = useState('all');
-    const [groupParameters, setGroupParameters] = useState(false);
+interface ParameterItem {
+    id: number;
+    param: string;
+    value: string | number;
+    type: string;
+    hint: string;
+    unified: boolean;
+    editable: boolean;
+    favorites: boolean;
+    children: ParameterItem[];
+}
 
-    const [checkboxState, setCheckboxState] = useState({});
-    const [selectedCount, setSelectedCount] = useState(0);
+interface HistoryDataItem {
+    timestamp: string;
+    value: string | number;
+}
 
-    const [selectedParameterIds, setSelectedParameterIds] = useState([]);
+const ControllerOptionTable: React.FC = () => {
+    const [data, setData] = useState<ParameterItem[]>([]);
+    const [expanded, setExpanded] = useState<{ [key: string]: boolean }>({});
+    const [favorites, setFavorites] = useState<string[]>([]);
+    const [searchTerm, setSearchTerm] = useState<string>('');
+    const [showModal, setShowModal] = useState<boolean>(false);
+    const [currentParameter, setCurrentParameter] = useState<string>('');
+    const [currentParameterValue, setCurrentParameterValue] = useState<string | number>('');
+    const [currentParameterType, setCurrentParameterType] = useState<string>('');
+    const [currentRowIndex, setCurrentRowIndex] = useState<string | null>(null);
+    const [activeTab, setActiveTab] = useState<string>('all');
+    const [groupParameters, setGroupParameters] = useState<boolean>(false);
+    const [checkboxState, setCheckboxState] = useState<{ [key: string]: boolean }>({});
+    const [selectedCount, setSelectedCount] = useState<number>(0);
+    const [selectedParameterIds, setSelectedParameterIds] = useState<number[]>([]);
+    const [historyData, setHistoryData] = useState<HistoryDataItem[]>([]);
+    const [currentParameterId, setCurrentParameterId] = useState<number | null>(null);
 
-    const [historyData, setHistoryData] = useState([]);
-
-    const [currentParameterId, setCurrentParameterId] = useState(null);
-
-    const handleCheckboxChange = (index, id) => {
+    const handleCheckboxChange = (index: string, id: number) => {
         setCheckboxState(prevState => {
             const newState = { ...prevState, [index]: !prevState[index] };
             const newSelectedCount = Object.values(newState).filter(val => val).length;
@@ -37,7 +50,7 @@ const ControllerOptionTable = () => {
                 return prevState;
             }
 
-            let newSelectedParameterIds;
+            let newSelectedParameterIds: number[];
             if (newState[index]) {
                 newSelectedParameterIds = [...selectedParameterIds, id];
             } else {
@@ -52,7 +65,6 @@ const ControllerOptionTable = () => {
             return newState;
         });
     };
-
 
     const handleClearSelection = () => {
         setCheckboxState({});
@@ -69,7 +81,7 @@ const ControllerOptionTable = () => {
         }
     }, [selectedParameterIds]);
 
-    const getApiUrl = () => {
+    const getApiUrl = (): string => {
         const groupingFlag = groupParameters ? '1' : '0';
         switch (activeTab) {
             case 'settings':
@@ -99,7 +111,6 @@ const ControllerOptionTable = () => {
         const fetchData = async () => {
             try {
                 const response = await fetch(`${MODBUS_API_URL}/${apiUrl}`);
-                console.log(response)
                 const result = await response.json();
                 if (response.ok) {
                     const transformedData = transformApiData(result.data);
@@ -115,32 +126,29 @@ const ControllerOptionTable = () => {
         fetchData();
     }, [apiUrl]);
 
-    const transformApiData = (apiData) => {
-        const transformDataRecursive = (data) => {
-            return data.map(item => {
-                const transformedItem = {
-                    id: item.modbusParameterId,
-                    param: item.label,
-                    value: item.value,
-                    type: item.type,
-                    hint: item.hint,
-                    unified: !!item.modbusParameterId,
-                    editable: item.write || false,
-                    favorites: item.favorites || false,
-                    children: item.data ? transformDataRecursive(item.data) : []
-                };
-                return transformedItem;
-            });
+    const transformApiData = (apiData: any[]): ParameterItem[] => {
+        const transformDataRecursive = (data: any[]): ParameterItem[] => {
+            return data.map(item => ({
+                id: item.modbusParameterId,
+                param: item.label,
+                value: item.value,
+                type: item.type,
+                hint: item.hint,
+                unified: !!item.modbusParameterId,
+                editable: item.write || false,
+                favorites: item.favorites || false,
+                children: item.data ? transformDataRecursive(item.data) : []
+            }));
         };
 
         return transformDataRecursive(apiData);
     };
 
-    const handleToggleExpand = useCallback((key) => {
+    const handleToggleExpand = useCallback((key: string) => {
         setExpanded((prev) => ({ ...prev, [key]: !prev[key] }));
     }, []);
 
-    const sendFavoriteRequest = async (parameter, isAdding) => {
+    const sendFavoriteRequest = async (parameter: ParameterItem, isAdding: boolean) => {
         const parameterId = parameter.id;
         const status = isAdding ? '1' : '0';
         const url = `http://localhost:7001/api/ecl/parameter/favorites/1/${parameterId}/${status}`;
@@ -154,7 +162,7 @@ const ControllerOptionTable = () => {
         }
     };
 
-    const handleToggleFavorite = useCallback((parameter, context) => {
+    const handleToggleFavorite = useCallback((parameter: ParameterItem, context: string) => {
         setFavorites((prev) => {
             const identifier = `${context}-${parameter.param}`;
             const isFavorite = prev.some(fav => fav === identifier);
@@ -167,7 +175,7 @@ const ControllerOptionTable = () => {
         });
 
         setData((prevData) => {
-            const updateFavorites = (items) => {
+            const updateFavorites = (items: ParameterItem[]): ParameterItem[] => {
                 return items.map(item => {
                     if (item.id === parameter.id) {
                         return { ...item, favorites: !item.favorites };
@@ -182,7 +190,7 @@ const ControllerOptionTable = () => {
         });
     }, []);
 
-    const handleOpenModal = useCallback((parameter, parameterValue, parameterType, index, id) => {
+    const handleOpenModal = useCallback((parameter: string, parameterValue: string | number, parameterType: string, index: string, id: number) => {
         setCurrentParameter(parameter);
         setCurrentParameterValue(parameterValue);
         setCurrentParameterType(parameterType);
@@ -191,8 +199,8 @@ const ControllerOptionTable = () => {
         setShowModal(true);
     }, []);
 
-    const handleSaveModal = useCallback(async (newValue) => {
-        const updateItem = (items, idx) => {
+    const handleSaveModal = useCallback(async (newValue: string | number) => {
+        const updateItem = (items: ParameterItem[], idx: number[]) => {
             if (idx.length === 1) {
                 items[idx[0]].value = newValue;
             } else {
@@ -201,7 +209,9 @@ const ControllerOptionTable = () => {
         };
 
         const newData = [...data];
-        updateItem(newData, currentRowIndex.split('-').map(Number));
+        if (currentRowIndex) {
+            updateItem(newData, currentRowIndex.split('-').map(Number));
+        }
         setData(newData);
         setShowModal(false);
 
@@ -209,8 +219,6 @@ const ControllerOptionTable = () => {
         const body = {
             value: newValue
         };
-        console.log(`URL: ${url}`)
-        console.log(`body: ${body.value}`)
 
         try {
             const response = await fetch(url, {
@@ -229,18 +237,18 @@ const ControllerOptionTable = () => {
         }
     }, [data, currentRowIndex, currentParameterId]);
 
-
-    const searchInChildren = (item, term) => {
+    const searchInChildren = (item: ParameterItem, term: string): boolean => {
         const matches = item.param.toLowerCase().includes(term.toLowerCase());
         if (matches) return true;
         return item.children && item.children.some(child => searchInChildren(child, term));
     };
 
-    const filterData = (data, term) => {
+    const filterData = (data: ParameterItem[], term: string): ParameterItem[] => {
         return data.filter(item => searchInChildren(item, term));
     };
 
     const filteredData = filterData(data, searchTerm);
+
 
     const renderRow = (item, index, level = 0, context = '') => {
         const rowIndex = `${index}`;

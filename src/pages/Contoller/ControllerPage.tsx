@@ -3,7 +3,7 @@ import DefaultLayout from "../../layouts/DefaultLayout.tsx";
 import Label from "../../components/Text/Label.tsx";
 import ItemTable from '../../components/Tables/ItemTable.tsx';
 import {Controller} from "../../models/Controller.tsx";
-import {fetchControllers} from "../../api/requests/controllerApi.ts";
+import { fetchControllers} from "../../api/requests/controllerApi.ts";
 import LoadingSpinner from "../../components/Menu/LoadingSpinner.tsx";
 import {useDispatch} from "react-redux";
 import {setBreadcrumb} from "../../store/slices/breadcrumbSlice.ts";
@@ -51,20 +51,19 @@ const ControllerPage = () => {
             {isLoading ? (
                 <LoadingSpinner/>
             ) : (
-            <div className="">
         <div className="">
-        <div className="flex items-center mb-2">
-        <Label text="Контроллеры"/>
+            <div className="">
+                <div className="flex items-center mb-2">
+                    <Label text="Контроллеры"/>
+                </div>
             </div>
-            </div>
-            <ItemTable
-    data={controllers}
-    headers={headers}
-    tableStyles = 'table-auto border-collapse'
-
-    />
-    </div>
-                )}
+                <ItemTable
+                    data={controllers}
+                    headers={headers}
+                    tableStyles = 'table-auto border-collapse'
+                />
+        </div>
+        )}
     </DefaultLayout>
 );
 };

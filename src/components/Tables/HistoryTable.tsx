@@ -1,13 +1,29 @@
 import React from 'react';
 
+interface TableEntry {
+    x: number; // Timestamp
+    y: string | number; // Value
+}
 
-const HistoryTable = ({ data }) => {
+interface TableData {
+    head: {
+        module: string;
+        group: string;
+        label: string;
+    };
+    table: TableEntry[];
+}
+
+interface HistoryTableProps {
+    data: TableData[]; // Array of data items
+}
+
+const HistoryTable: React.FC<HistoryTableProps> = ({ data }) => {
     if (!data || !Array.isArray(data)) {
         return <div>Нет данных для отображения</div>;
     }
 
     const headers = ['Модуль', 'Группа', 'Параметр', 'Дата', 'Значение'];
-
 
     const formattedData = data.flatMap(item =>
         item.table.map(entry => ({
@@ -20,7 +36,7 @@ const HistoryTable = ({ data }) => {
     );
 
     return (
-        <div >
+        <div>
             <h3 className="text-black mt-3 mb-3 text-2xl">История</h3>
 
             <div className="inline-block max-h-[300px] max-w-[520px] overflow-y-auto border-3 mr-1">
