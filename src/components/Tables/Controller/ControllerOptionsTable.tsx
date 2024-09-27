@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { FaStar, FaFolder, FaTimes, FaSearch, FaSpinner } from 'react-icons/fa';
+import { FaStar, FaFolder, FaTimes} from 'react-icons/fa';
 import { FiChevronDown, FiChevronUp } from 'react-icons/fi';
 import { Tooltip, OverlayTrigger } from 'react-bootstrap';
 import { MODBUS_API_URL } from "../../../api/modbusApi";
@@ -7,7 +7,7 @@ import HistoryTable from "../HistoryTable";
 import TabBarForController from "../../Buttons/TabsBarForController.tsx";
 import SearchForController from "../../Search/SearchForController.tsx";
 import ToggleSwitchForController from "../../Buttons/ToggleSwitch.tsx";
-import RenderTableForController from "../Render/RenderTableForController.tsx";
+import RenderDataForController from "../Render/RenderDataForController.tsx";
 
 
 interface ParameterItem {
@@ -394,7 +394,7 @@ const ControllerOptionTable: React.FC = () => {
                                 </tr>
                                 </thead>
                                 <tbody className="text-center">
-                                <RenderTableForController
+                                <RenderDataForController
                                     activeTab={activeTab}
                                     filteredData={filteredData}
                                     favorites={favorites}

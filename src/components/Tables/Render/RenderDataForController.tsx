@@ -1,14 +1,14 @@
 import React from 'react';
 import { FaSpinner } from 'react-icons/fa';
 
-interface RenderTableForControllerProps {
+interface RenderDataForControllerProps {
     activeTab: string;
     filteredData: any[];
     favorites: string[];
     renderRow: (item: any, index: number) => JSX.Element;
 }
 
-const RenderTableForController: React.FC<RenderTableForControllerProps> = ({ activeTab, filteredData, favorites, renderRow }) => {
+const RenderDataForController: React.FC<RenderDataForControllerProps> = ({ activeTab, filteredData, favorites, renderRow }) => {
     const filterFavorites = (items: any[]) => {
         return items.reduce((acc, item) => {
             if (item.favorites || favorites.includes(`-${item.param}`)) {
@@ -68,4 +68,4 @@ const RenderTableForController: React.FC<RenderTableForControllerProps> = ({ act
     return <>{renderTableData()}</>;
 };
 
-export default RenderTableForController;
+export default RenderDataForController;
