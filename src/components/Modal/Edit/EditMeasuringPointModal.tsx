@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import ModalTemplate from '../ModalTemplate';
-import { MeasuringPoint} from "../../../models/MeasuringPoint.tsx";
+import { MeasuringPoint } from "../../../models/MeasuringPoint.tsx";
 import { updateMeasuringPoint } from "../../../api/requests/measuringPointApi.ts";
 
 interface EditMeasuringPointModalProps {
@@ -11,15 +11,12 @@ interface EditMeasuringPointModalProps {
 }
 
 const EditMeasuringPointModal: React.FC<EditMeasuringPointModalProps> = ({ measuringPointId, measuringPoint, onClose, onUpdate }) => {
-    const [formData, setFormData] = useState({
-        ...measuringPoint,
-    });
-    console.log('formData', formData);
-    console.log('measuringPoint',measuringPoint);
+
+    const { room,device, ...initialFormData } = measuringPoint;
+
+    const [formData, setFormData] = useState(initialFormData);
     const [loading, setLoading] = useState(false);
     const [errors, setErrors] = useState<{ [key: string]: string }>({});
-
-
 
     const handleChange = ({ target: { name, value } }: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         setFormData(prevData => ({ ...prevData, [name]: value }));
@@ -49,7 +46,7 @@ const EditMeasuringPointModal: React.FC<EditMeasuringPointModalProps> = ({ measu
             onUpdate(updatedMeasuringPoint);
             onClose();
         } catch (error) {
-            console.error('Ошибка при обновлении комнаты:', error);
+            console.error('Ошибка при обновлении точки измерения:', error);
         } finally {
             setLoading(false);
         }
@@ -70,8 +67,6 @@ const EditMeasuringPointModal: React.FC<EditMeasuringPointModalProps> = ({ measu
         </div>
     );
 
-
-
     const renderBooleanSelect = (id: string, label: string) => (
         <div>
             <label htmlFor={id} className="block text-sm font-medium text-gray-700">{label}</label>
@@ -91,7 +86,7 @@ const EditMeasuringPointModal: React.FC<EditMeasuringPointModalProps> = ({ measu
 
     return (
         <ModalTemplate
-            headerTitle="Редактирование комнаты"
+            headerTitle="Редактирование точки измерения"
             buttonLabel="Сохранить"
             onClose={onClose}
             onSubmit={handleSubmit}
@@ -99,7 +94,6 @@ const EditMeasuringPointModal: React.FC<EditMeasuringPointModalProps> = ({ measu
         >
             <div className="space-y-4">
                 {renderInput('label', 'Наименование')}
-
                 {renderInput('height', 'Высота', 'number')}
                 {renderInput('temperatureMinimum', 'Мин. температура', 'number')}
                 {renderInput('temperatureMaximum', 'Макс. температура', 'number')}
@@ -109,10 +103,11 @@ const EditMeasuringPointModal: React.FC<EditMeasuringPointModalProps> = ({ measu
                 {renderBooleanSelect('humidityActive', 'Влажность включена в расчёт')}
                 {renderInput('temperatureLocation', 'Коэффициент расположения', 'number')}
                 {renderInput('temperatureHeight', 'Коэффициент высоты', 'number')}
-                {renderInput('temperatureCalibration', 'Калибровочный Коэффициент для температуры', 'number')}
-                {renderInput('humidityCalibration', 'Калибровочный Коэффициент для влажности', 'number')}
+                {renderInput('temperatureCalibration', 'Калибровочный коэффициент для температуры', 'number')}
+                {renderInput('humidityCalibration', 'Калибровочный коэффициент для влажности', 'number')}
             </div>
         </ModalTemplate>
     );
 };
+
 export default EditMeasuringPointModal;
