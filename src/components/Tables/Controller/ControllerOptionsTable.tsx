@@ -4,6 +4,10 @@ import { FiChevronDown, FiChevronUp } from 'react-icons/fi';
 import { Tooltip, OverlayTrigger } from 'react-bootstrap';
 import { MODBUS_API_URL } from "../../../api/modbusApi";
 import HistoryTable from "../HistoryTable";
+import TabBarForController from "../../Buttons/TabsBarForController.tsx";
+import SearchForController from "../../Search/SearchForController.tsx";
+import ToggleSwitchForController from "../../Buttons/ToggleSwitch.tsx";
+import RenderTableForController from "../Render/RenderTableForController.tsx";
 
 
 interface ParameterItem {
@@ -334,58 +338,6 @@ const ControllerOptionTable: React.FC = () => {
 
     };
 
-    const renderTableData = () => {
-        let dataToRender = filteredData;
-
-        if (activeTab === 'favorites') {
-            const filterFavorites = (items) => {
-                return items.reduce((acc, item) => {
-                    if (item.favorites || favorites.includes(`-${item.param}`)) {
-                        acc.push(item);
-                    } else if (item.children.length > 0) {
-                        const filteredChildren = filterFavorites(item.children);
-                        if (filteredChildren.length > 0) {
-                            acc.push({ ...item, children: filteredChildren });
-                        }
-                    }
-                    return acc;
-                }, []);
-            };
-            dataToRender = filterFavorites(filteredData);
-        } else if (activeTab === 'settings') {
-            const filterSettings = (items) => {
-                return items.reduce((acc, item) => {
-                    if (item.editable) {
-                        acc.push(item);
-                    } else if (item.children.length > 0) {
-                        const filteredChildren = filterSettings(item.children);
-                        if (filteredChildren.length > 0) {
-                            acc.push({ ...item, children: filteredChildren });
-                        }
-                    }
-                    return acc;
-                }, []);
-            };
-            dataToRender = filterSettings(filteredData);
-        }
-
-        if (dataToRender.length === 0 && activeTab != 'favorites') {
-            return (
-                <tr>
-                    <FaSpinner className="spinner" />
-                </tr>
-            );
-        } else if (dataToRender.length === 0 && activeTab === 'favorites') {
-            return (
-                <tr>
-                    <td colSpan="2" className="text-center">В избранном ничего нет</td>
-                </tr>
-            );
-        }
-
-        return dataToRender.map((item, index) => renderRow(item, index));
-    };
-
     const handleTabChange = (tab) => {
         setActiveTab(tab);
     };
@@ -424,114 +376,12 @@ const ControllerOptionTable: React.FC = () => {
         <div className="flex-grow">
             <div className="h-full w-full md:w-[53%]">
                 <div className="table-wrapper">
-                    <div className="search-container relative w-[600px] flex items-center mt-4 mb-3">
-                        <FaSearch className="search-icon absolute left-2 text-gray-500"/>
-                        <input
-                            type="text"
-                            placeholder="Поиск по параметрам"
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                            className="search-input form-control text-black w-full bg-white border border-black rounded py-1 pl-8 pr-8"
-                        />
-                        {searchTerm && (
-                            <button className="clear-search-button absolute right-2 text-gray-400"
-                                    onClick={() => setSearchTerm('')}>
-                                <FaTimes/>
-                            </button>
-                        )}
-                    </div>
 
-                    <div className="tabs-container flex space-x-2 mb-3">
-                        <button
-                            className={`tab px-3 py-1 rounded ${activeTab === 'all' ? 'bg-gray-600' : 'bg-gray-500'}`}
-                            onClick={() => handleTabChange('all')}
-                        >
-                            Все
-                        </button>
+                    <SearchForController searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
 
-                        <button
-                            className={`tab px-3 py-1 rounded flex items-center ${activeTab === 'favorites' ? 'bg-gray-600' : 'bg-gray-500'}`}
-                            onClick={() => handleTabChange('favorites')}
-                        >
-                            <FaStar className="mr-1"/>
-                            Избранное
-                        </button>
+                    <TabBarForController activeTab={activeTab} onTabChange={handleTabChange} />
 
-                        <button
-                            className={`tab px-3 py-1 rounded ${activeTab === 'settings' ? 'bg-gray-600' : 'bg-gray-500'}`}
-                            onClick={() => handleTabChange('settings')}
-                        >
-                            Уставки
-                        </button>
-
-                        <button
-                            className={`tab px-3 py-1 rounded ${activeTab === 'inputs' ? 'bg-gray-600' : 'bg-gray-500'}`}
-                            onClick={() => handleTabChange('inputs')}
-                        >
-                            Входы
-                        </button>
-
-                        <button
-                            className={`tab px-3 py-1 rounded ${activeTab === 'outputs' ? 'bg-gray-600' : 'bg-gray-500'}`}
-                            onClick={() => handleTabChange('outputs')}
-                        >
-                            Выходы
-                        </button>
-
-                    </div>
-
-                    <div className="tabs-container space-x-2 flex mb-3 mt-2">
-
-                        <button
-                            className={`tab px-3 py-1 rounded ${activeTab === 'control' ? 'bg-gray-600' : 'bg-gray-500'}`}
-                            onClick={() => handleTabChange('control')}
-                        >
-                            Настройки
-                        </button>
-
-                        <button
-                            className={`tab px-3 py-1 rounded ${activeTab === 'accidents' ? 'bg-gray-600' : 'bg-gray-500'}`}
-                            onClick={() => handleTabChange('accidents')}
-                        >
-                            Аварии
-                        </button>
-                        <button
-                            className={`tab px-3 py-1 rounded ${activeTab === 'values' ? 'bg-gray-600' : 'bg-gray-500'}`}
-                            onClick={() => handleTabChange('values')}
-                        >
-                            Текущие значения
-                        </button>
-
-                        <button
-                            className={`tab px-3 py-1 rounded ${activeTab === 'input_node' ? 'bg-gray-600' : 'bg-gray-500'}`}
-                            onClick={() => handleTabChange('input_node')}
-                        >
-                            Узел ввода
-                        </button>
-                    </div>
-
-
-                    <div className="group-parameters mt-6 ">
-                        <label htmlFor="group-parameters-switch" className="flex items-center cursor-pointer mb-3">
-                            <div className="relative">
-                                <input
-                                    type="checkbox"
-                                    id="group-parameters-switch"
-                                    checked={groupParameters}
-                                    onChange={handleGroupParametersChange}
-                                    className="sr-only"
-                                />
-                                <div
-                                    className={`block w-10 h-6 rounded-full ${groupParameters ? 'bg-gray-700' : 'bg-gray-300'}`}></div>
-                                <div
-                                    className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full transition-transform ${
-                                        groupParameters ? 'transform translate-x-4' : ''
-                                    }`}
-                                ></div>
-                            </div>
-                            <span className="ml-3 text-black font-medium">Группировать параметры</span>
-                        </label>
-                    </div>
+                    <ToggleSwitchForController groupParameters={groupParameters} onChange={handleGroupParametersChange} />
 
                     <div
                         className=" max-h-[350px] h-auto overflow-y-auto w-[600px] noscroll">
@@ -544,7 +394,12 @@ const ControllerOptionTable: React.FC = () => {
                                 </tr>
                                 </thead>
                                 <tbody className="text-center">
-                                {renderTableData()}
+                                <RenderTableForController
+                                    activeTab={activeTab}
+                                    filteredData={filteredData}
+                                    favorites={favorites}
+                                    renderRow={renderRow}
+                                />
                                 </tbody>
                             </table>
                         </div>
