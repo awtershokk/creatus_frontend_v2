@@ -8,6 +8,7 @@ interface ItemTableProps {
     headers: Record<string, string>;
     data: Array<Record<string, any>>;
     nonSortableColumns?: string[];
+    mainTableStyles?: string;
     tableStyles?: string;
     headerStyles?: string;
     rowStyles?: string;
@@ -18,6 +19,7 @@ const ItemTable = ({
                        headers,
                        data,
                        nonSortableColumns = [],
+                       mainTableStyles = 'overflow-x-auto',
                        tableStyles = 'table-auto border-collapse w-full',
                        headerStyles = 'bg-gray-800 text-white whitespace-nowrap',
                        rowStyles = 'border-b border-gray-200 text-black',
@@ -112,7 +114,7 @@ const ItemTable = ({
     };
 
     return (
-        <div className="overflow-x-auto">
+        <div className={mainTableStyles}>
             <table className={tableStyles}>
                 <thead className={headerStyles}>
                 <tr>

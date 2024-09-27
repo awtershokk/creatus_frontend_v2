@@ -561,10 +561,8 @@ const ControllerOptionTable: React.FC = () => {
 
             </div>
             {historyData.length >= 1 && (
-                <div className="w-full md:w-[45%] ml-[650px] mt-[-510px]">
-                    <div className="history-table">
+                <div className="w-full mb-4">
                         <HistoryTable data={historyData}/>
-                    </div>
                 </div>
             )}
         </div>
