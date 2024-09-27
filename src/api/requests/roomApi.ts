@@ -113,7 +113,7 @@ export const updateRoom = async (RoomID: number, updatedRoom: Room): Promise<Roo
     try {
 
         const response = await api.put(`/room/${RoomID}`, updatedRoom);
-        console.log('суета', response.data.data);
+
         return response.data.data;
     } catch (error) {
         throw error;

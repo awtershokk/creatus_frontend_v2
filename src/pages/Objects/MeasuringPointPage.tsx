@@ -65,7 +65,6 @@ const MeasuringPointPage = () => {
             const request = await fetchMeasuringPoint(measuringPointId);
             const measuringPointForTable = transformMeasuringPointData(request) ;
             setMeasuringPointData(request);
-            console.log('request',request)
             setMeasuringPoint(measuringPointForTable);
 
             const labelItem = measuringPointForTable.find(item => item.title === 'Наименование');
@@ -78,7 +77,6 @@ const MeasuringPointPage = () => {
 
             const roomLabelItem = measuringPointForTable.find(item => item.title === 'Место установки');
             const roomLabel = roomLabelItem ? roomLabelItem.value.props.text : null;
-            console.log('room', roomLabelItem)
             dispatch(setBreadcrumb({
                 key: 'room',
                 label: roomLabel,

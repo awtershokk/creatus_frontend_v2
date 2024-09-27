@@ -129,7 +129,7 @@ const BuildingEditModal: React.FC<BuildingEditModalProps> = ({
                 hwsConnectionDiagram: options.hwsConnectionDiagram?.find(option => option.id === formData.hwsConnectionDiagram)?.label || formData.hwsConnectionDiagram,
             };
 
-            console.log('Updated form data:', updatedFormData);
+
 
             const updatedBuilding = await updateBuilding(buildingId, updatedFormData);
             onUpdate(updatedBuilding);

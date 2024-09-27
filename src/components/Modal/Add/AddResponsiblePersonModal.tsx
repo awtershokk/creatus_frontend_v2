@@ -211,7 +211,7 @@ const AddResponsiblePersonModal: React.FC<AddResponsiblePersonModalProps> = ({ b
             };
 
 
-            console.log("Че по контурам", selectedThermalCircuitIds);
+
 
             await addResponsiblePerson(buildingId, newPerson);
             onSubmit(newPerson);

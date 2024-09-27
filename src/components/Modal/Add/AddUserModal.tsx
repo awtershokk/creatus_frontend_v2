@@ -92,7 +92,7 @@ const AddUserModal: React.FC<AddUserModalProps> = ({ onClose, onSubmit }) => {
 
         setLoading(true);
         try {
-            console.log('Добавленный пользователь:', formData);
+
             const newUser = await addUser(formData);
 
             onSubmit(newUser);

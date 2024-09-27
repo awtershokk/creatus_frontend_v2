@@ -117,9 +117,7 @@ const ControllerSchedulePage = () => {
 
     const handleSaveClick = () => {
         if (selectedSystem && selectedDay) {
-            console.log(`Saving changes for ${selectedSystem} on ${selectedDay}`);
             schedule[selectedSystem][selectedDay].forEach((period, index) => {
-                console.log(`Period ${index + 1}: Start - ${period.start.toLocaleTimeString()}, End - ${period.end.toLocaleTimeString()}`);
             });
             setHasChanges(false);
         }

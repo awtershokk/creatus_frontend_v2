@@ -50,7 +50,7 @@ const Header = () => {
                 const response = await fetch(apiUrl, { method: 'POST' });
 
                 if (response.ok) {
-                    console.log(`Запрос успешно отправлен к ${apiUrl}`);
+
                 } else {
                     console.error(`Ошибка при отправке запроса к ${apiUrl}: ${response.status} ${response.statusText}`);
                 }

@@ -18,7 +18,7 @@ const EditSectionModal: React.FC<EditSectionModalProps> = ({ sectionId, section,
 
 
     useEffect(() => {
-        console.log('formdata',formData)
+
         const reverse = reverseTransformSectionData(section);
         setFormData(reverse);
     }, [section]);

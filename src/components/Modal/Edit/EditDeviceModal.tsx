@@ -46,7 +46,7 @@ const EditDeviceModal: React.FC<EditDeviceModalProps> = ({ device, onClose, onSa
                 id: formData.id,
                 label: formData.label
             };
-            console.log('Обновлен датчик:', updatedDevice);
+
             onSave(updatedDevice);
             onClose();
         } catch (error) {
