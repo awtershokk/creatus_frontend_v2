@@ -100,22 +100,12 @@ const SectionPage = () => {
         setSectionData(null);
     };
 
-    if (isLoading) {
-        return (
-            <DefaultLayout>
-                <div className="flex justify-center items-center h-screen">
-                    <p>Загрузка данных...</p>
-                </div>
-            </DefaultLayout>
-        );
-    }
-
     return (
         <DefaultLayout>
             {isLoading ? (
                 <LoadingSpinner/>
             ) : (
-                <div className="flex justify-between">
+                <div className="flex justify-between overflow-x-hidden">
                     <div className="w-1/2">
                         <Label text="Информация о секции"/>
                         <ObjectTable

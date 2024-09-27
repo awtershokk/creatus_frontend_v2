@@ -73,7 +73,6 @@ const DevicePage = () => {
         handleCloseEditModal();
     };
 
-
     const handleDeleteDeviceClick = (item: Device) => {
         setSelectedDevice(item);
         setIsDeleteModalOpen(true);
