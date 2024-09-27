@@ -7,7 +7,7 @@ interface TabProps {
 
 const TabsButtonForAdmin: React.FC<TabProps> = ({ tabIndex, setTabIndex }) => {
     return (
-        <div className="tabs inline-flex border-b border-gray-700 mb-4 justify-center">
+        <div className="tabs inline-flex border-b border-gray-700 justify-center">
 
             <button
                 className={`tab py-2 px-4 text-sm font-medium border-b-2 ${

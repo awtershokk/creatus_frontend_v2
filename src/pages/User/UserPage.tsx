@@ -245,7 +245,7 @@ const UserPage: React.FC = () => {
     }, []);
 
     const currentCircuit = useMemo(() => info[currentCircuitIndex], [info, currentCircuitIndex]);
-    const currentCircuitLabel = currentCircuit?.label || "No Circuit Available";
+    const currentCircuitLabel = currentCircuit?.label || "Тепловых контуров нет.";
     const nonEditableFields = useMemo(() => roomDataFields.map(field => field.title), [roomDataFields]);
 
     const scrollToTop = () => {
