@@ -421,7 +421,7 @@ const ControllerOptionTable: React.FC = () => {
     };
 
     return (
-        <div className="flex flex-wrap">
+        <div className="flex-grow">
             <div className="h-full w-full md:w-[53%]">
                 <div className="table-wrapper">
                     <div className="search-container relative w-[600px] flex items-center mt-4 mb-3">
@@ -534,7 +534,7 @@ const ControllerOptionTable: React.FC = () => {
                     </div>
 
                     <div
-                        className=" max-h-[278px] h-auto overflow-y-auto w-[600px] noscroll">
+                        className=" max-h-[350px] h-auto overflow-y-auto w-[600px] noscroll">
                         <div className="params-table-container">
                             <table className="table table-bordered w-full">
                                 <thead>
@@ -561,7 +561,7 @@ const ControllerOptionTable: React.FC = () => {
 
             </div>
             {historyData.length >= 1 && (
-                <div className="w-full mb-4">
+                <div className="w-[800px] mb-4">
                         <HistoryTable data={historyData}/>
                 </div>
             )}
