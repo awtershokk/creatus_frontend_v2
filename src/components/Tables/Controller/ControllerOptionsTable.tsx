@@ -8,6 +8,7 @@ import TabBarForController from "../../Buttons/TabsBarForController.tsx";
 import SearchForController from "../../Search/SearchForController.tsx";
 import ToggleSwitchForController from "../../Buttons/ToggleSwitch.tsx";
 import RenderDataForController from "./Render/RenderDataForController.tsx";
+import LoadingSpinner from "../../Menu/LoadingSpinner.tsx";
 
 interface ParameterItem {
     id: number;
@@ -43,7 +44,7 @@ const ControllerOptionTable: React.FC = () => {
     const [selectedParameterIds, setSelectedParameterIds] = useState<number[]>([]);
     const [historyData, setHistoryData] = useState<HistoryDataItem[]>([]);
     const [currentParameterId, setCurrentParameterId] = useState<number | null>(null);
-
+    const [isLoading, setIsLoading] = useState(true);
     const handleCheckboxChange = (index: string, id: number) => {
         setCheckboxState(prevState => {
             const newState = { ...prevState, [index]: !prevState[index] };
@@ -118,11 +119,13 @@ const ControllerOptionTable: React.FC = () => {
                 if (response.ok) {
                     const transformedData = transformApiData(result.data);
                     setData(transformedData);
+                    setIsLoading(false);
                 } else {
                     console.error('ошибка:', result.message);
                 }
             } catch (error) {
                 console.error('ошибка:', error);
+                setIsLoading(false);
             }
         };
 
@@ -388,28 +391,33 @@ const ControllerOptionTable: React.FC = () => {
                     <TabBarForController activeTab={activeTab} onTabChange={handleTabChange} />
 
                     <ToggleSwitchForController groupParameters={groupParameters} onChange={handleGroupParametersChange} />
-
-                    <div
-                        className=" max-h-[350px] h-auto overflow-y-auto w-[600px] noscroll">
-                        <div className="params-table-container">
-                            <table className="table table-bordered w-full">
-                                <thead>
-                                <tr>
-                                    <th className='bg-gray-500 text-white px-3 py-1'>Параметр</th>
-                                    <th className='bg-gray-600 text-white px-1 py-1'>Значение</th>
-                                </tr>
-                                </thead>
-                                <tbody className="text-center">
-                                <RenderDataForController
-                                    activeTab={activeTab}
-                                    filteredData={filteredData}
-                                    favorites={favorites}
-                                    renderRow={renderRow}
-                                />
-                                </tbody>
-                            </table>
+                    {isLoading ? (
+                        <div className="flex justify-center items-center h-[350px] w-[600px]">
+                            <LoadingSpinner />
                         </div>
-                    </div>
+                    ) : (
+                        <div className="max-h-[350px] h-auto overflow-y-auto w-[600px] noscroll">
+                            <div className="params-table-container">
+                                <table className="table table-bordered w-full">
+                                    <thead>
+                                    <tr>
+                                        <th className="bg-gray-500 text-white px-3 py-1">Параметр</th>
+                                        <th className="bg-gray-600 text-white px-1 py-1">Значение</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody className="text-center">
+                                    <RenderDataForController
+                                        activeTab={activeTab}
+                                        filteredData={filteredData}
+                                        favorites={favorites}
+                                        renderRow={renderRow}
+                                    />
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    )}
+
                     <div className="selection-info flex items-center mt-1 mb-3 text-black">
                         <span>Выбрано: {selectedCount} / 10</span>
                         <FaTimes
