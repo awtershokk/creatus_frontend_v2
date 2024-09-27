@@ -61,7 +61,7 @@ const AddSectionModal: React.FC<AddSectionModalProps> = ({ onClose, onSubmit }) 
             };
 
             const response = await createSection(section);
-            console.log('Добавлена секция:', response);
+
 
             onSubmit(response);
             onClose();

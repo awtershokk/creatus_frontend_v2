@@ -71,7 +71,7 @@ const EditRoomModal: React.FC<EditRoomModalProps> = ({ roomId, room, onClose, on
         }
         try {
             const updatedRoom = await updateRoom(roomId, formData);
-            console.log('updateRoom', updatedRoom);
+
             onUpdate(updatedRoom);
 
             const { sectionId, thermalCircuitId } = updatedRoom;

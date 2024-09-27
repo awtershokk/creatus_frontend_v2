@@ -80,6 +80,7 @@ const DevicePage = () => {
 
     const handleUnbindDeviceClick = (deviceId: number, deviceLabel: string, measuringPointLabel: string) => {
         setSelectedDevice({id: deviceId, label: deviceLabel, measuringPointLabel});
+
         setIsUnbindModalOpen(true);
     };
 
@@ -112,7 +113,7 @@ const DevicePage = () => {
 
     const handleConfirmUnbind = async () => {
         if (selectedDevice) {
-            console.log('Отвязываем устройство:', selectedDevice.label);
+
             const updatedDevicesData = await fetchDevices(handleEditDeviceClick, handleDeleteDeviceClick, handleUnbindDeviceClick, handleBindDeviceClick);
             setDevices(updatedDevicesData);
             handleCloseUnbindModal();
@@ -121,7 +122,7 @@ const DevicePage = () => {
 
     const handleConfirmBind = async () => {
         if (selectedDevice) {
-            console.log('Привязываем устройство:', selectedDevice.label);
+
             const updatedDevicesData = await fetchDevices(handleEditDeviceClick, handleDeleteDeviceClick, handleUnbindDeviceClick, handleBindDeviceClick);
             setDevices(updatedDevicesData);
             handleCloseBindModal();

@@ -16,7 +16,7 @@ export const fetchThermalCircuit = async (thermalCircuitId: number) => {
     try {
         const response = await api.get(`/thermalCircuit/1/${thermalCircuitId}`);
         const thermalCircuit: ThermalCircuit = response.data.data;
-        console.log(thermalCircuit)
+
         return transformThermalCircuitData(thermalCircuit);
     } catch (error) {
         throw error;

@@ -360,7 +360,7 @@ const ControllerOptionTable: React.FC = () => {
             }
 
             const result = await response.json();
-            console.log('Статистика:', result);
+
             setHistoryData(result.data);
         } catch (error) {
             console.error('Ошибка при отправке запроса статистики:', error);

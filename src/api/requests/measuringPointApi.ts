@@ -73,8 +73,6 @@ export const fetchDeviceId = async (measuringPointId: number) => {
 export const updateMeasuringPoint = async (measuringPointId: number, updatedMeasuringPoint: MeasuringPoint): Promise<MeasuringPoint> => {
     try {
         const response = await api.put(`/measuringPoint/${measuringPointId}`, updatedMeasuringPoint);
-        console.log('Точка измерения', updatedMeasuringPoint);
-        console.log(response.data)
         return response.data.data;
     } catch (error) {
         throw error;

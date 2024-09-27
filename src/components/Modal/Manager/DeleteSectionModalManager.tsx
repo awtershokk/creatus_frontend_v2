@@ -24,7 +24,6 @@ const DeleteSectionModalManager: React.FC<SectionModalManagerProps> = ({
             try {
 
                 const section = await fetchSection(SectionId);
-                console.log(section);
                 const nameObject = section.find(item => item.title === 'Наименование');
                 if (nameObject) {
                     setSectionName(nameObject.value);

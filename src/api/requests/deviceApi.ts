@@ -39,6 +39,7 @@ export const fetchDevice = async (deviceId: number) => {
         const device: Device = response.data.data[0];
 
         return transformDeviceDataForMP(device);
+
     } catch (error) {
         throw error;
     }
@@ -55,6 +56,7 @@ export const fetchDevicesWithoutMP = async (): Promise<Device[]> => {
         }));
 
         return transformedData;
+
     } catch (error) {
         throw error;
     }

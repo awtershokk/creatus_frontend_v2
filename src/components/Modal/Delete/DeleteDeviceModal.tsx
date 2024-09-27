@@ -14,7 +14,7 @@ const DeleteDeviceModal: React.FC<DeleteDeviceModalProps> = ({ label, onClose })
         setLoading(true);
         try {
             await new Promise(resolve => setTimeout(resolve, 100));
-            console.log('Удален датчик:', label );
+
             onClose();
         } catch (error) {
             console.error('Ошибка при удалении датчика:', error);

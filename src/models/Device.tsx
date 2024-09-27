@@ -80,5 +80,6 @@ export const transformDeviceDataForMP = (device: Device): {} => {
                 <BlueLink to={'/building/devices'} text={device.label}/>
             )},
         { id: 3, title: 'Статус', value: device.active ? <span style={{ color: 'green' }}>Онлайн</span> : <span style={{ color: 'red' }}>Оффлайн</span> },
+
     ];
 };

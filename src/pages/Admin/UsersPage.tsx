@@ -49,11 +49,11 @@ const UsersPage = () => {
 
 
     const handleDeleteUserClick = (item: User) => {
-        console.log('Delete user:', item);
+
     };
 
     const handleEditUserClick = (item: User) => {
-        console.log('Edit user:', item);
+
     };
 
     const handleAddUserModalOpen = () => {
