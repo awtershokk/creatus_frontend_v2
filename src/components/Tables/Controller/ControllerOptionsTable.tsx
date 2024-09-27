@@ -7,7 +7,7 @@ import HistoryTable from "../HistoryTable";
 import TabBarForController from "../../Buttons/TabsBarForController.tsx";
 import SearchForController from "../../Search/SearchForController.tsx";
 import ToggleSwitchForController from "../../Buttons/ToggleSwitch.tsx";
-import RenderDataForController from "../Render/RenderDataForController.tsx";
+import RenderDataForController from "./Render/RenderDataForController.tsx";
 
 interface ParameterItem {
     id: number;
