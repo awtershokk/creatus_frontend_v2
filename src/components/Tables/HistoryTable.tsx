@@ -1,6 +1,8 @@
 import React from 'react';
 import ItemTable from './ItemTable';
 import {HistoryTableProps} from "../../models/History.ts";
+import TableContainer from "../../layouts/TableContainer.tsx";
+import Label from "../Text/Label.tsx";
 
 
 const HistoryTable: React.FC<HistoryTableProps> = ({ data }) => {
@@ -29,14 +31,15 @@ const HistoryTable: React.FC<HistoryTableProps> = ({ data }) => {
 
     return (
         <div>
-            <h3 className="text-black mt-3 mb-3 text-2xl">История</h3>
-            <ItemTable
-                headers={headers}
-                data={formattedData}
-                nonSortableColumns={['module', 'group', 'label']}
-                mainTableStyles="overflow-x-auto max-h-[400px]"
+            <Label text='История'/>
+            <TableContainer>
+                <ItemTable
+                    headers={headers}
+                    data={formattedData}
+                    nonSortableColumns={['module', 'group', 'label']}
 
-            />
+                />
+            </TableContainer>
         </div>
     );
 };

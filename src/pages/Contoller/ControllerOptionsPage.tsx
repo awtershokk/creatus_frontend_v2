@@ -1,10 +1,12 @@
 import DefaultLayout from "../../layouts/DefaultLayout";
 import ControllerOptionsTable from "../../components/Tables/Controller/ControllerOptionsTable";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { fetchControllerLabel } from "../../api/requests/controllerApi";
 import { useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setBreadcrumb } from "../../store/slices/breadcrumbSlice";
+import Label from "../../components/Text/Label.tsx";
+
 
 
 interface Params {
@@ -15,7 +17,6 @@ const ControllerOptionsPage = () => {
 
     const [label, setLabel] = useState<string | null>(null);
 
-    // Используем useParams с интерфейсом Params
     const { controllerId } = useParams<Params>();
 
     const dispatch = useDispatch();
@@ -49,8 +50,11 @@ const ControllerOptionsPage = () => {
 
     return (
         <DefaultLayout>
+            <div className="flex items-center mb-2">
+                <Label text="Параметры контроллера"/>
+            </div>
             <div>
-                <ControllerOptionsTable />
+                <ControllerOptionsTable/>
             </div>
         </DefaultLayout>
     );

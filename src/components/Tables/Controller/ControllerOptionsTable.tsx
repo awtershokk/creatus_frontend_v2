@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, {useState, useEffect, useCallback, useRef} from 'react';
 import { FaStar, FaFolder, FaTimes} from 'react-icons/fa';
 import { FiChevronDown, FiChevronUp } from 'react-icons/fi';
 import { Tooltip, OverlayTrigger } from 'react-bootstrap';
@@ -371,6 +371,13 @@ const ControllerOptionTable: React.FC = () => {
         await fetchHistoryData(selectedIds);
     };
 
+    const historyTableRef = useRef(null);
+    useEffect(() => {
+        if (historyData.length > 0) {
+            historyTableRef.current?.scrollIntoView({ behavior: 'smooth' });
+        }
+    }, [historyData]);
+
     return (
         <div className="flex-grow">
             <div className="h-full w-full md:w-[53%]">
@@ -415,7 +422,7 @@ const ControllerOptionTable: React.FC = () => {
 
             </div>
             {historyData.length >= 1 && (
-                <div className="w-[800px] mb-4">
+                <div className="w-[800px] mb-4 " ref={historyTableRef}>
                         <HistoryTable data={historyData}/>
                 </div>
             )}
