@@ -9,6 +9,7 @@ import SearchForController from "../../Search/SearchForController.tsx";
 import ToggleSwitchForController from "../../Buttons/ToggleSwitch.tsx";
 import RenderDataForController from "./Render/RenderDataForController.tsx";
 import LoadingSpinner from "../../Menu/LoadingSpinner.tsx";
+import EditControllerParametrModal from "../../Modal/Edit/EditControllerParametrModal.tsx";
 
 interface ParameterItem {
     id: number;
@@ -434,6 +435,17 @@ const ControllerOptionTable: React.FC = () => {
                         <HistoryTable data={historyData}/>
                 </div>
             )}
+            {showModal && currentParameter !== '' && (
+                    <EditControllerParametrModal
+                    onHide={() => setShowModal(false)}
+                    parameter={currentParameter}
+                    parameterValue={currentParameterValue}
+                    parameterType={currentParameterType}
+                    onSave={handleSaveModal}
+                    />
+                )
+            }
+
         </div>
     );
 };
