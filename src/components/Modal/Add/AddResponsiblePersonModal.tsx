@@ -308,9 +308,11 @@ const AddResponsiblePersonModal: React.FC<AddResponsiblePersonModalProps> = ({ b
                         onChange={handleChange}
                         onClick={handlePhoneClick}
                         className={`w-full p-2 border ${errors.phone ? 'border-red-500' : 'border-gray-300'} rounded-md text-black focus:outline-none focus:ring-2 focus:ring-gray-400 bg-white`}
+                        autoComplete="off"
                     />
                     {errors.phone && <p className="text-red-500 text-sm">{errors.phone}</p>}
                 </div>
+
 
                 <div>
                     <label htmlFor="email" className="block text-sm font-medium text-gray-900">
@@ -454,7 +456,7 @@ const AddResponsiblePersonModal: React.FC<AddResponsiblePersonModalProps> = ({ b
                     <>
                         Для получения уведомлений номер телефона должен совпадать с номером телефона, привязанным к
                         <span className="text-[#0088cc] font-bold ml-1 mr-1 inline-flex items-center">
-                            <FaTelegramPlane className="mr-1 text-[#0088cc]"/>
+                            <FaTelegramPlane className="mr-0.5 text-[#0088cc]"/>
                             Telegram
                         </span>
                     </>

@@ -11,6 +11,7 @@ import EditDeviceModal from "../../components/Modal/Edit/EditDeviceModal.tsx";
 import LoadingSpinner from "../../components/Menu/LoadingSpinner.tsx";
 import {setBreadcrumb} from "../../store/slices/breadcrumbSlice.ts";
 import {useDispatch} from "react-redux";
+import {toast} from "react-toastify";
 
 const DevicePage = () => {
     const dispatch = useDispatch();
@@ -117,6 +118,7 @@ const DevicePage = () => {
             const updatedDevicesData = await fetchDevices(handleEditDeviceClick, handleDeleteDeviceClick, handleUnbindDeviceClick, handleBindDeviceClick);
             setDevices(updatedDevicesData);
             handleCloseUnbindModal();
+            toast.success('Точка измерения успешно отвязана от датчика.');
         }
     };
 
@@ -126,6 +128,7 @@ const DevicePage = () => {
             const updatedDevicesData = await fetchDevices(handleEditDeviceClick, handleDeleteDeviceClick, handleUnbindDeviceClick, handleBindDeviceClick);
             setDevices(updatedDevicesData);
             handleCloseBindModal();
+            toast.success('Точка измерения успешно привязана к датчику.');
         }
     };
 

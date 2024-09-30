@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import LoginPage from './pages/Auth/LoginPage';
 import NoAccessPage from './pages/Error/NoAccesPage';
 import ProtectedRoute from './store/routes/protectedRoute';
@@ -19,6 +19,9 @@ import UserPage from "./pages/User/UserPage.tsx";
 import ControllerSchedulePage from "./pages/Contoller/ControllerSchedulePage.tsx";
 import NotFoundPage from "./pages/Error/NotFoundPage.tsx";
 import ControllerOptionsPage from "./pages/Contoller/ControllerOptionsPage.tsx";
+import 'react-toastify/dist/ReactToastify.css';
+import {ToastContainer} from "react-toastify";
+
 const App = () => {
     const { refresh, user } = useAuth();
     const [loading, setLoading] = useState(true);
@@ -37,6 +40,7 @@ const App = () => {
 
     return (
         <Router>
+            <ToastContainer />
             <Routes>
                 <Route path="/" element={<LoginPage />} />
                 <Route path="/no-access" element={<NoAccessPage />} />

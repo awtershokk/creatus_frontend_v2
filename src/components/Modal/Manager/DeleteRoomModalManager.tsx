@@ -5,6 +5,7 @@ import { fetchMeasuringPoints } from "../../../api/requests/measuringPointApi.ts
 import DeleteRoomModal from "../Delete/Room/DeleteRoomModal.tsx";
 import DeleteRoomWithMeasuringPointsModal from "../Delete/Room/DeleteRoomWithMeasuringPointsModal.tsx";
 import {transformRoomData} from "../../../models/Room.tsx";
+import {toast} from "react-toastify";
 
 interface RoomModalManagerProps {
     roomId: number;
@@ -59,6 +60,7 @@ const DeleteRoomModalManager: React.FC<RoomModalManagerProps> = ({ roomId, onClo
         try {
             await deleteRoom(roomId);
             onClose();
+            toast.success('Помещение успешно удалено.');
         } catch (error) {
             console.error('Ошибка при удалении помещения:', error);
         }

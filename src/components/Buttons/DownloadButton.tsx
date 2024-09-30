@@ -1,10 +1,8 @@
 import React, {useState} from 'react';
-import {FaRegFileExcel, FaFileCsv, FaTelegramPlane} from 'react-icons/fa';
+import {FaRegFileExcel, FaFileCsv} from 'react-icons/fa';
 import { saveAs } from 'file-saver';
 import * as XLSX from 'xlsx';
-import Alert from "../Alert.tsx";
-import {Simulate} from "react-dom/test-utils";
-import error = Simulate.error;
+import {toast, ToastContainer} from "react-toastify";
 
 type DownloadButtonProps = {
     headers: { [key: string]: string };
@@ -12,24 +10,9 @@ type DownloadButtonProps = {
 };
 
 const DownloadButton: ({headers, data}: { headers: any; data: any }) => void = ({ headers, data }) => {
-    const [showNumberAlert, setShowNumberAlert] = useState(false);
-    const [alertShownOnce, setAlertShownOnce] = useState(false);
-
-
-    const handlePhoneClick = () => {
-        if (!alertShownOnce) {
-            setShowNumberAlert(true);
-            setAlertShownOnce(true);
-        }
-    };
-
-    const handleAlertClose = () => {
-        setShowNumberAlert(false);
-    };
-
     const exportToCSV = () => {
         if (!headers || typeof headers !== 'object' || !data) {
-            setShowNumberAlert(true)
+            toast.error('Ошибка выгрузки таблицы');
             return;
         }
 
@@ -48,7 +31,7 @@ const DownloadButton: ({headers, data}: { headers: any; data: any }) => void = (
 
     const exportToExcel = () => {
         if (!headers || typeof headers !== 'object' || !data) {
-            setShowNumberAlert(true)
+            toast.error('Ошибка выгрузки таблицы');
             return;
         }
 
@@ -79,17 +62,6 @@ const DownloadButton: ({headers, data}: { headers: any; data: any }) => void = (
                 <FaRegFileExcel className="mr-2" />
                 Выгрузить таблицу в Excel
             </button>
-            <Alert
-                message={
-                    <>
-                        <span className="text-red-600">
-                            Ошибка выгрузки таблицы.
-                        </span>
-                    </>
-                }
-                isVisible={showNumberAlert}
-                onClose={handleAlertClose}
-            />
         </div>
 
     );

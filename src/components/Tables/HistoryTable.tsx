@@ -15,23 +15,30 @@ const HistoryTable: React.FC<HistoryTableProps> = ({ data }) => {
         'Группа': 'group',
         'Параметр': 'label',
         'Дата': 'date',
+        'Время': 'time',
         'Значение': 'value'
     };
 
 
     const formattedData = data.flatMap(item =>
-        item.table.map(entry => ({
-            'module': item.head.module,
-            'group': item.head.group,
-            'label': item.head.label,
-            'date': new Date(entry.x).toLocaleString(),
-            'value': entry.y
-        }))
+        item.table.map(entry => {
+            const date = new Date(entry.x);
+            return {
+                'module': item.head.module,
+                'group': item.head.group,
+                'label': item.head.label,
+                'date': date.toLocaleDateString(),
+                'time': date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                'value': entry.y
+            };
+        })
     );
 
     return (
         <div>
-            <Label text='История'/>
+            <div className="flex items-center mb-2">
+                <Label text="История"/>
+            </div>
             <TableContainer>
                 <ItemTable
                     headers={headers}

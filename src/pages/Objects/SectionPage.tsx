@@ -16,6 +16,7 @@ import {setBreadcrumb} from "../../store/slices/breadcrumbSlice.ts";
 import {useDispatch} from "react-redux";
 
 import EditSectionModal from "../../components/Modal/Edit/EditSectionModal.tsx";
+import {toast} from "react-toastify";
 
 
 
@@ -71,6 +72,7 @@ const SectionPage = () => {
         try {
             await getData();
             handleEditSectionModalClose();
+            toast.success('Информация о секции успешно обновлена.');
         } catch (error) {
             console.error('Ошибка обновления здания:', error);
         }
@@ -131,6 +133,7 @@ const SectionPage = () => {
                             onSubmit={() => {
                                 getData();
                                 handleAddRoomInSectionModalClose();
+                                toast.success('Помещение успешно добавлено.');
                             }}
                         />
                     )}
@@ -140,6 +143,7 @@ const SectionPage = () => {
                             onClose={() => {
                                 getData()
                                 handleModalRoomClose();
+
                             }}
                         />
                     )}

@@ -26,6 +26,7 @@ import {transformRoomData} from "../../models/Room.tsx";
 import EditRoomModal from "../../components/Modal/Edit/EditRoomModal.tsx";
 import TabsButtonForAdmin from "../../components/Buttons/TabsButtonForAdmin.tsx";
 import GraphModal from "../../components/Modal/GraphModal.tsx";
+import {toast} from "react-toastify";
 
 const RoomPage = () => {
     const { roomId } = useParams();
@@ -116,6 +117,7 @@ const RoomPage = () => {
         try {
             await fetchData();
             handleEditRoomModalClose();
+            toast.success('Информация о комнате успешно обновлена.');
         } catch (error) {
             console.error('Ошибка обновления здания:', error);
         }
@@ -279,6 +281,7 @@ const RoomPage = () => {
                                 onSubmit={() => {
                                     fetchData();
                                     closeAddMeasurePointModal();
+                                    toast.success('Точка измерения успешно добавлена.');
                                 }}
                                 roomId={roomId}
                             />
@@ -289,6 +292,7 @@ const RoomPage = () => {
                                 onClose={() => {
                                     fetchData();
                                     closeDeleteMeasurePointModal();
+                                    toast.success('Точка измерения успешно удалена.');
                                 }}
                             />
                         )}
