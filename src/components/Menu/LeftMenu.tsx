@@ -22,6 +22,7 @@ const LeftMenu: React.FC = () => {
     const [sections, setSections] = useState<any[]>([]);
     const [thermalCircuits, setThermalCircuits] = useState<any[]>([]);
     const [menuWidth, setMenuWidth] = useState(240);
+    const [componentWidth, setComponentWidth] = useState(240);
 
     const sectionsRef = useRef<HTMLUListElement>(null);
     const thermalCircuitsRef = useRef<HTMLUListElement>(null);
@@ -91,6 +92,8 @@ const LeftMenu: React.FC = () => {
             newWidth = Math.max(calculateWidth(sectionsRef.current), newWidth);
         }
         setMenuWidth(newWidth);
+
+
     };
 
     useEffect(() => {
@@ -143,7 +146,8 @@ const LeftMenu: React.FC = () => {
 
                         <li>
                             <button
-                                className="flex items-center p-2 rounded-lg hover:bg-gray-700 text-left"
+                                className={`flex items-center p-2 rounded-lg hover:bg-gray-700 text-left`}
+                                style={{ width: `${menuWidth - 35}px` }}
                                 onClick={handleToggleSections}
                             >
                                 <FaBars className="mr-2"/>
@@ -156,7 +160,8 @@ const LeftMenu: React.FC = () => {
                                 {sections.map((section) => (
                                     <li key={section.id}>
                                         <Link to={`/building/section/${section.id}`}
-                                              className="flex items-center p-2 pl-8 rounded-lg hover:bg-gray-700 whitespace-nowrap">
+                                              className="flex items-center p-2 pl-8 rounded-lg hover:bg-gray-700 whitespace-nowrap"
+                                              style={{ width: `${menuWidth - 35}px` }}>
                                             <FaBars className="mr-2"/>
                                             {section.label}
                                         </Link>
@@ -167,7 +172,8 @@ const LeftMenu: React.FC = () => {
 
                         <li>
                             <button
-                                className="flex items-center p-2 rounded-lg hover:bg-gray-700 text-left"
+                                className="flex items-center w-auto p-2 rounded-lg hover:bg-gray-700 text-left"
+                                style={{ width: `${menuWidth - 35}px` }}
                                 onClick={handleToggleThermalCircuits}
                             >
                                 <FaThermometerHalf className="mr-2"/>
@@ -179,7 +185,8 @@ const LeftMenu: React.FC = () => {
                                 {thermalCircuits.map((circuit) => (
                                     <li key={circuit.id}>
                                         <Link to={`/building/thermalCircuit/${circuit.id}`}
-                                              className="flex items-center p-2 pl-8 rounded-lg hover:bg-gray-700 whitespace-nowrap">
+                                              className="flex items-center p-2 pl-8 rounded-lg hover:bg-gray-700 whitespace-nowrap"
+                                              style={{ width: `${menuWidth - 35}px` }}>
                                             <FaThermometerHalf className="mr-2"/>
                                             {circuit.label}
                                         </Link>
@@ -191,6 +198,7 @@ const LeftMenu: React.FC = () => {
                         <li>
                             <button
                                 className="flex items-center p-2 rounded-lg hover:bg-gray-700 text-left"
+                                style={{ width: `${menuWidth - 35}px` }}
                                 onClick={handleToggleDevices}
                             >
                                 <FaTools className="mr-2"/>
@@ -201,14 +209,16 @@ const LeftMenu: React.FC = () => {
                             <ul ref={devicesRef} className={`transition-max-height duration-300 ease-in-out overflow-hidden ${isDevicesOpen ? 'max-h-40' : 'max-h-0'} w-fit`}>
                                 <li>
                                     <Link to="/building/devices/"
-                                          className="flex items-center p-2 pl-8 rounded-lg hover:bg-gray-700 whitespace-nowrap">
+                                          className="flex items-center p-2 pl-8 rounded-lg hover:bg-gray-700 whitespace-nowrap"
+                                          style={{ width: `${menuWidth - 35}px` }}>
                                         <FaBug className="mr-2"/>
                                         Датчики
                                     </Link>
                                 </li>
                                 <li>
                                     <Link to="/building/controllers"
-                                          className="flex items-center p-2 pl-8 rounded-lg hover:bg-gray-700 whitespace-nowrap">
+                                          className="flex items-center p-2 pl-8 rounded-lg hover:bg-gray-700 whitespace-nowrap"
+                                          style={{ width: `${menuWidth - 35}px` }}>
                                         <FaMicrochip className="mr-2"/>
                                         Контроллеры
                                     </Link>
