@@ -3,6 +3,7 @@ import DeleteThermalCircuitModal from "../Delete/ThermalCircuit/DeleteThermalCir
 import DeleteThermalCircuitWithRoomsModal from '../Delete/ThermalCircuit/DeleteThermalCircuitWithRoomsModal.tsx';
 import { fetchRoomsByThermalCircuit} from "../../../api/requests/roomApi.ts";
 import {deleteThermalCircuit, fetchThermalCircuit} from "../../../api/requests/thermalCircuitApi.ts";
+import {toast} from "react-toastify";
 
 interface ThermalCircuitModalManagerProps {
     thermalCircuitId: number;
@@ -63,6 +64,7 @@ const DeleteThermalCircuitModalManager: React.FC<ThermalCircuitModalManagerProps
         try {
             await deleteThermalCircuit(thermalCircuitId)
             onClose();
+            toast.success('Тепловой контур успешно удален.');
         } catch (error) {
             console.error('Ошибка при удалении теплового контура:', error);
         }

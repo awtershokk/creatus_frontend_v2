@@ -3,6 +3,7 @@ import {fetchRoomsBySection} from "../../../api/requests/roomApi.ts";
 import {deleteSection, fetchSection} from "../../../api/requests/sectionApi.ts";
 import DeleteSectionWithRoomsModal from "../Delete/Section/DeleteSectionWithRoomsModal.tsx";
 import DeleteSectionModal from "../Delete/Section/DeleteSectionModal.tsx";
+import {toast} from "react-toastify";
 
 interface SectionModalManagerProps {
     SectionId: number;
@@ -63,6 +64,7 @@ const DeleteSectionModalManager: React.FC<SectionModalManagerProps> = ({
         try {
             await deleteSection(SectionId)
             onClose();
+            toast.success('Секция успешно удалена.');
         } catch (error) {
             console.error('Ошибка при удалении теплового контура:', error);
         }

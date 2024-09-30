@@ -22,6 +22,7 @@ import EditThermalCircuitModal from "../../components/Modal/Edit/EditThermalCirc
 import {useDispatch} from "react-redux";
 import {setBreadcrumb} from "../../store/slices/breadcrumbSlice.ts";
 import WeatherInfo from "../../components/Forms/WeatherInfo.tsx";
+import {toast} from "react-toastify";
 
 const ThermalCircuitPage = () => {
     const {thermalCircuitId} = useParams();
@@ -211,6 +212,7 @@ const ThermalCircuitPage = () => {
         try {
             await getData();
             handleEditThermalCircuitClose();
+            toast.success('Информация о тепловом контуре успешно обновлена.');
         } catch (error) {
             console.error('Ошибка обновления здания:', error);
         }
@@ -274,6 +276,7 @@ const ThermalCircuitPage = () => {
                     onSubmit={() => {
                         getData();
                         handleAddRoomInThermalCircuitModalClose();
+                        toast.success('Помещение успешно добавлено.');
                     }}
                 />
             )}

@@ -28,6 +28,8 @@ import { useDispatch } from "react-redux";
 import { formatPhoneNumber } from '../../utils/formatPhoneNumber.ts';
 import TelegramButton from "../../components/Buttons/TelegramButton.tsx";
 
+import {toast, ToastContainer} from "react-toastify";
+
 
 const BuildingPage = () => {
     const [building, setBuilding] = useState<Array<{ id: number, title: string, value: string | number }>>([]);
@@ -136,8 +138,9 @@ const BuildingPage = () => {
         try {
             await getData();
             handleEditBuildingModalClose();
+            toast.success('Информация о здании успешно обновлена.');
         } catch (error) {
-            console.error('Ошибка обновления здания:', error);
+            toast.error('Ошибка обновления информации о здании');
         }
     };
 
@@ -181,8 +184,9 @@ const BuildingPage = () => {
     const handleAddSection = async (newSection: { label: string; area: number; volume: number }) => {
         try {
             await getData();
+            toast.success('Секция успешно добавлена.');
         } catch (error) {
-            console.error('Ошибка при обновлении секций:', error);
+            toast.error('Ошибка добавления секции');
         }
     };
 
@@ -196,8 +200,9 @@ const BuildingPage = () => {
     }) => {
         try {
             await getData();
+            toast.success('Тепловой контур успешно добавлен.');
         } catch (error) {
-            console.error('Ошибка при обновлении тепловых контуров:', error);
+            toast.error('Ошибка добавления теплового контура');
         }
     };
 

@@ -20,6 +20,7 @@ import {useDispatch} from "react-redux";
 import BindDeviceModal from "../../components/Modal/Bind/BindDeviceModal.tsx";
 import {transformMeasuringPointData} from "../../models/MeasuringPoint.tsx";
 import EditMeasuringPointModal from "../../components/Modal/Edit/EditMeasuringPointModal.tsx";
+import {toast} from "react-toastify";
 
 const MeasuringPointPage = () => {
     const {measuringPointId} = useParams();
@@ -213,7 +214,6 @@ const MeasuringPointPage = () => {
     const handleUnbindClick = () => {
         const deviceLabel = device.find(item => item.title === 'Наименование')?.value;
         const measuringPointLabel = measuringPoint.find(item => item.title === 'Наименование')?.value;
-
         if (deviceId) {
             setIsUnbindModalOpen(true);
             setModalProps({ deviceId, deviceLabel, measuringPointLabel });
@@ -225,6 +225,7 @@ const MeasuringPointPage = () => {
         setDeviceId(null);
         getData();
         setIsUnbindModalOpen(false);
+        toast.success('Точка измерения успешно отвязана от датчика.');
     };
     const handleBindClick = () => {
         const measuringPointLabel = measuringPoint.find(item => item.title === 'Наименование')?.value;
@@ -324,6 +325,7 @@ const MeasuringPointPage = () => {
                     onSuccess={() => {
                         getData();
                         setIsBindModalOpen(false);
+                        toast.success('Точка измерения успешно привязана к датчику.');
                     }}
                 />
             )}
