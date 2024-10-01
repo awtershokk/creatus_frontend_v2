@@ -132,8 +132,8 @@ const LeftMenu: React.FC = () => {
                     <ul className="space-y-2">
                         <li>
                             <Link
-                                to="/building/updates"
-                                className="flex items-center p-2 rounded-lg hover:bg-gray-700 whitespace-nowrap"
+                                to=""
+                                className="flex items-center p-2 rounded-lg cursor-not-allowed text-gray-500 whitespace-nowrap"
                             >
                                 <FaCogs className="mr-2"/>
                                 Версия ПО
@@ -227,8 +227,8 @@ const LeftMenu: React.FC = () => {
                         </li>
 
                             <li>
-                                <Link to="/building/incidents"
-                                      className="flex items-center p-2 rounded-lg hover:bg-gray-700 whitespace-nowrap">
+                                <Link to=""
+                                      className="flex items-center p-2 rounded-lg cursor-not-allowed text-gray-500 whitespace-nowrap">
                                     <FaExclamationTriangle className="mr-2"/>
                                     Инциденты
                                 </Link>

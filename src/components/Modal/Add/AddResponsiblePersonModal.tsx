@@ -329,127 +329,127 @@ const AddResponsiblePersonModal: React.FC<AddResponsiblePersonModalProps> = ({ b
                     {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
                 </div>
 
-                <h3 className="text-lg font-medium text-gray-900">Уведомления</h3>
-                {/* Все уведомления*/}
-                <div className="mt-4">
-                    <CustomCheckbox
-                        checked={selectAllNotifications}
-                        onChange={handleSelectAllNotifications}
-                        label="Выбрать все уведомления"
-                        showDivider={false}
-                    />
-                </div>
+                {/*<h3 className="text-lg font-medium text-gray-900">Уведомления</h3>*/}
+                {/*/!* Все уведомления*!/*/}
+                {/*<div className="mt-4">*/}
+                {/*    <CustomCheckbox*/}
+                {/*        checked={selectAllNotifications}*/}
+                {/*        onChange={handleSelectAllNotifications}*/}
+                {/*        label="Выбрать все уведомления"*/}
+                {/*        showDivider={false}*/}
+                {/*    />*/}
+                {/*</div>*/}
 
 
-                <div className="mt-4 w-full p-2 border rounded-md">
-                    <h4
-                        className="text-md font-medium cursor-pointer flex justify-between items-center"
-                        onClick={() => toggleSection('thermalCircuits')}
-                    >
-                        Тепловые контуры
-                        <FaChevronDown
-                            className={`transition-transform duration-300 ${
-                                openSections.thermalCircuits ? 'rotate-180' : 'rotate-0'
-                            }`}
-                        />
-                    </h4>
-                    {openSections.thermalCircuits && (
-                        <div className="ml-4 mt-2 space-y-2">
-                            <CustomCheckbox
-                                checked={selectAllThermalCircuits}
-                                onChange={handleSelectAllThermalCircuits}
-                                label="Выбрать все тепловые контуры"
-                                labelClassname='ml-2 text-gray-700 font-bold'
-                            />
-                            {thermalCircuits.map((circuit, index) => (
-                                <CustomCheckbox
-                                    key={circuit.id}
-                                    checked={selectedThermalCircuitIds.includes(circuit.id)}
-                                    onChange={() => handleCheckboxChange(circuit.id)}
-                                    label={circuit.label}
-                                    showDivider={index < thermalCircuits.length - 1}
-                                />
-                            ))}
-                        </div>
-                    )}
-                </div>
+                {/*<div className="mt-4 w-full p-2 border rounded-md">*/}
+                {/*    <h4*/}
+                {/*        className="text-md font-medium cursor-pointer flex justify-between items-center"*/}
+                {/*        onClick={() => toggleSection('thermalCircuits')}*/}
+                {/*    >*/}
+                {/*        Тепловые контуры*/}
+                {/*        <FaChevronDown*/}
+                {/*            className={`transition-transform duration-300 ${*/}
+                {/*                openSections.thermalCircuits ? 'rotate-180' : 'rotate-0'*/}
+                {/*            }`}*/}
+                {/*        />*/}
+                {/*    </h4>*/}
+                {/*    {openSections.thermalCircuits && (*/}
+                {/*        <div className="ml-4 mt-2 space-y-2">*/}
+                {/*            <CustomCheckbox*/}
+                {/*                checked={selectAllThermalCircuits}*/}
+                {/*                onChange={handleSelectAllThermalCircuits}*/}
+                {/*                label="Выбрать все тепловые контуры"*/}
+                {/*                labelClassname='ml-2 text-gray-700 font-bold'*/}
+                {/*            />*/}
+                {/*            {thermalCircuits.map((circuit, index) => (*/}
+                {/*                <CustomCheckbox*/}
+                {/*                    key={circuit.id}*/}
+                {/*                    checked={selectedThermalCircuitIds.includes(circuit.id)}*/}
+                {/*                    onChange={() => handleCheckboxChange(circuit.id)}*/}
+                {/*                    label={circuit.label}*/}
+                {/*                    showDivider={index < thermalCircuits.length - 1}*/}
+                {/*                />*/}
+                {/*            ))}*/}
+                {/*        </div>*/}
+                {/*    )}*/}
+                {/*</div>*/}
 
-                {/* Типы инцидентов */}
-                <div className="mt-4 w-full p-2 border rounded-md">
-                    <h4
-                        className="text-md font-medium cursor-pointer flex justify-between items-center"
-                        onClick={() => toggleSection('incidentTypes')}
-                    >
-                        Типы инцидентов
-                        <FaChevronDown
-                            className={`transition-transform duration-300 ${
-                                openSections.incidentTypes ? 'rotate-180' : 'rotate-0'
-                            }`}
-                        />
-                    </h4>
-                    {openSections.incidentTypes && (
-                        <div className="ml-4 mb-2 mt-2 space-y-2">
-                            <CustomCheckbox
-                                checked={selectAllIncidentTypes}
-                                onChange={handleSelectAllIncidentTypes}
-                                label="Выбрать все типы инцидентов"
-                                showDivider={false}
-                            />
-                            {['Датчик', 'Точка измерения', 'Помещение'].map(type => (
-                                <div key={type}>
-                                    <h5
-                                        className="border rounded-md p-2 cursor-pointer flex justify-between items-center"
-                                        onClick={() => toggleIncidentSubmenu(type)}
-                                    >
-                                        {type}
-                                        <FaChevronDown
-                                            className={`transition-transform duration-300 ${
-                                                openIncidentSubmenus[type] ? 'rotate-180' : 'rotate-0'
-                                            }`}
-                                        />
-                                    </h5>
-                                    {openIncidentSubmenus[type] && (
-                                        <div className="ml-4 mt-2 space-y-2">
-                                            {Object.keys(incidentTypes[type]).map((incident, index) => (
-                                                <CustomCheckbox
-                                                    key={index}
-                                                    checked={incidentTypes[type][incident]}
-                                                    onChange={() => handleCheckboxChange('incidentTypes', incident, type)}
-                                                    label={incident}
-                                                />
-                                            ))}
-                                        </div>
-                                    )}
-                                </div>
-                            ))}
-                        </div>
-                    )}
-                </div>
+                {/*/!* Типы инцидентов *!/*/}
+                {/*<div className="mt-4 w-full p-2 border rounded-md">*/}
+                {/*    <h4*/}
+                {/*        className="text-md font-medium cursor-pointer flex justify-between items-center"*/}
+                {/*        onClick={() => toggleSection('incidentTypes')}*/}
+                {/*    >*/}
+                {/*        Типы инцидентов*/}
+                {/*        <FaChevronDown*/}
+                {/*            className={`transition-transform duration-300 ${*/}
+                {/*                openSections.incidentTypes ? 'rotate-180' : 'rotate-0'*/}
+                {/*            }`}*/}
+                {/*        />*/}
+                {/*    </h4>*/}
+                {/*    {openSections.incidentTypes && (*/}
+                {/*        <div className="ml-4 mb-2 mt-2 space-y-2">*/}
+                {/*            <CustomCheckbox*/}
+                {/*                checked={selectAllIncidentTypes}*/}
+                {/*                onChange={handleSelectAllIncidentTypes}*/}
+                {/*                label="Выбрать все типы инцидентов"*/}
+                {/*                showDivider={false}*/}
+                {/*            />*/}
+                {/*            {['Датчик', 'Точка измерения', 'Помещение'].map(type => (*/}
+                {/*                <div key={type}>*/}
+                {/*                    <h5*/}
+                {/*                        className="border rounded-md p-2 cursor-pointer flex justify-between items-center"*/}
+                {/*                        onClick={() => toggleIncidentSubmenu(type)}*/}
+                {/*                    >*/}
+                {/*                        {type}*/}
+                {/*                        <FaChevronDown*/}
+                {/*                            className={`transition-transform duration-300 ${*/}
+                {/*                                openIncidentSubmenus[type] ? 'rotate-180' : 'rotate-0'*/}
+                {/*                            }`}*/}
+                {/*                        />*/}
+                {/*                    </h5>*/}
+                {/*                    {openIncidentSubmenus[type] && (*/}
+                {/*                        <div className="ml-4 mt-2 space-y-2">*/}
+                {/*                            {Object.keys(incidentTypes[type]).map((incident, index) => (*/}
+                {/*                                <CustomCheckbox*/}
+                {/*                                    key={index}*/}
+                {/*                                    checked={incidentTypes[type][incident]}*/}
+                {/*                                    onChange={() => handleCheckboxChange('incidentTypes', incident, type)}*/}
+                {/*                                    label={incident}*/}
+                {/*                                />*/}
+                {/*                            ))}*/}
+                {/*                        </div>*/}
+                {/*                    )}*/}
+                {/*                </div>*/}
+                {/*            ))}*/}
+                {/*        </div>*/}
+                {/*    )}*/}
+                {/*</div>*/}
 
-                {/* Обновления */}
-                <div className="mt-4 w-full p-2 border rounded-md">
-                    <h4
-                        className="text-md font-medium cursor-pointer flex justify-between items-center"
-                        onClick={() => toggleSection('statusChange')}
-                    >
-                        Обновления
-                        <FaChevronDown
-                            className={`transition-transform duration-300 ${
-                                openSections.statusChange ? 'rotate-180' : 'rotate-0'
-                            }`}
-                        />
-                    </h4>
-                    {openSections.statusChange && (
-                        <div className="ml-4 mb-2 mt-2">
-                            <CustomCheckbox
-                                checked={notifyStatusChange}
-                                onChange={() => setNotifyStatusChange(prev => !prev)}
-                                label="Уведомлять об обновлении ПО"
-                                showDivider={false}
-                            />
-                        </div>
-                    )}
-                </div>
+                {/*/!* Обновления *!/*/}
+                {/*<div className="mt-4 w-full p-2 border rounded-md">*/}
+                {/*    <h4*/}
+                {/*        className="text-md font-medium cursor-pointer flex justify-between items-center"*/}
+                {/*        onClick={() => toggleSection('statusChange')}*/}
+                {/*    >*/}
+                {/*        Обновления*/}
+                {/*        <FaChevronDown*/}
+                {/*            className={`transition-transform duration-300 ${*/}
+                {/*                openSections.statusChange ? 'rotate-180' : 'rotate-0'*/}
+                {/*            }`}*/}
+                {/*        />*/}
+                {/*    </h4>*/}
+                {/*    {openSections.statusChange && (*/}
+                {/*        <div className="ml-4 mb-2 mt-2">*/}
+                {/*            <CustomCheckbox*/}
+                {/*                checked={notifyStatusChange}*/}
+                {/*                onChange={() => setNotifyStatusChange(prev => !prev)}*/}
+                {/*                label="Уведомлять об обновлении ПО"*/}
+                {/*                showDivider={false}*/}
+                {/*            />*/}
+                {/*        </div>*/}
+                {/*    )}*/}
+                {/*</div>*/}
             </div>
             <Alert
                 message={
