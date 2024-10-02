@@ -232,12 +232,14 @@ const UserPage: React.FC = () => {
         if (tempDev !== null) {
             const deviation = parseFloat(tempDev.toString());
             if (!isNaN(deviation)) {
-                const intensity = Math.round(Math.abs(deviation) / 10 * 500);
-                const roundedIntensity = Math.round(intensity / 100) * 100;
-
-                backgroundColor = deviation > 0
-                    ? `bg-red-${Math.min(500, roundedIntensity)}`
-                    : `bg-blue-${Math.min(500, roundedIntensity)}`
+                const intensity = Math.min(Math.abs(deviation), 8);
+                if (deviation > 0) {
+                    backgroundColor = `bg-red-${100 + intensity * 100}`;
+                } else if (deviation < 0) {
+                    backgroundColor = `bg-blue-${100 + intensity * 100}`;
+                } else {
+                    backgroundColor = 'bg-gray-200';
+                }
             }
         }
 
