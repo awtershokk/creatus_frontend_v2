@@ -44,7 +44,7 @@ const DeleteMeasuringPointModal: React.FC<DeleteMeasuringPointModalProps> = ({
 
     return (
         <ModalTemplate
-            headerTitle="Подтвердите удаление"
+            headerTitle="Удаление точки измерения"
             buttonLabel="Удалить (Удерживать)"
             onClose={onClose}
             onSubmit={handleDelete}

@@ -74,7 +74,7 @@ const AddSectionModal: React.FC<AddSectionModalProps> = ({ onClose, onSubmit }) 
 
     return (
         <ModalTemplate
-            headerTitle="Создать секцию"
+            headerTitle="Создание секции"
             buttonLabel="Добавить"
             onClose={onClose}
             onSubmit={handleSubmit}

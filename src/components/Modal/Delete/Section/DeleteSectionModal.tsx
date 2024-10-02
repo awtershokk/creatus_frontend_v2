@@ -28,7 +28,7 @@ const DeleteSectionModal: React.FC<DeleteSectionModalProps> = ({
 
     return (
         <ModalTemplate
-            headerTitle="Подтвердите удаление"
+            headerTitle="Удаление секции"
             buttonLabel="Удалить (Удерживать)"
             onClose={onClose}
             onSubmit={handleDelete}

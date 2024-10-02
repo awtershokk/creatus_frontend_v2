@@ -64,7 +64,7 @@ const AddMeasuringPointModal: React.FC<AddMeasurePointModalProps> = ({ onClose, 
 
     return (
         <ModalTemplate
-            headerTitle="Добавить точку измерения"
+            headerTitle="Добавление точки измерения"
             buttonLabel="Сохранить"
             onClose={onClose}
             onSubmit={handleSubmit}
