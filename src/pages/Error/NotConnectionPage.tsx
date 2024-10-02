@@ -16,7 +16,7 @@ function NotConnectionPage() {
     return (
         <div className="flex items-center justify-center w-screen h-screen bg-gray-200">
             <div className="bg-gray-100 p-8 rounded-lg shadow-lg text-center">
-                <div className="flex flex-col items-center justify-center mb-2">
+                <div className="flex flex-col items-center justify-center mb-4">
                     {/*<div className="">*/}
                     {/*    <img*/}
                     {/*        src={not_connection}*/}
@@ -25,28 +25,30 @@ function NotConnectionPage() {
                     {/*    />*/}
                     {/*</div>*/}
                 </div>
-                <h2 className="text-xl text-gray-800">
+                <h2 className="text-xl text-gray-800 mb-2">
                     Сбой подключения к серверу. Код ошибки: 500
                 </h2>
-                <p className="text-md text-gray-600 mb-2">
+                <p className="text-md text-gray-600 mb-4">
                     Повторите попытку позже.
                 </p>
-                <button
-                    onClick={handleRefresh}
-                    className={`p-2 bg-gray-700 text-white rounded-full transition ml-1 text-s ${
-                        isLoading ? 'cursor-not-allowed opacity-50' : 'hover:bg-gray-900'
-                    }`}
-                    disabled={isLoading}
-                >
-                    {isLoading ? (
-                        <AiOutlineLoading3Quarters className="animate-spin text-white mr-2" />
-                    ) : (
-                        <VscDebugDisconnect className="text-white mr-0.5 ml-0.5" />
-                    )}
-                    <span className="text-white">
-                        {isLoading ? 'Перезагрузка...' : 'Проверить подключение'}
-                    </span>
-                </button>
+                <div className="flex justify-center">
+                    <button
+                        onClick={handleRefresh}
+                        className={`flex items-center p-2 bg-gray-700 text-white rounded-full hover:bg-gray-600 transition text-s ${
+                            isLoading ? 'cursor-not-allowed opacity-50' : 'hover:bg-gray-900'
+                        }`}
+                        disabled={isLoading}
+                    >
+                        {isLoading ? (
+                            <AiOutlineLoading3Quarters className="animate-spin text-white mr-2" />
+                        ) : (
+                            <VscDebugDisconnect className="text-white mr-0.5 ml-0.5" />
+                        )}
+                        <span className="text-white">
+                            {isLoading ? 'Перезагрузка...' : 'Проверить подключение'}
+                        </span>
+                    </button>
+                </div>
             </div>
         </div>
     );
