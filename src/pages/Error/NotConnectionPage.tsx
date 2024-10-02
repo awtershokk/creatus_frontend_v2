@@ -1,5 +1,5 @@
 import React from 'react';
-import not_connection from '../../assets/not_connection.gif';
+import not_connection from "../../assets/not_connection.gif";
 
 function NotConnectionPage() {
     const handleRefresh = () => {
@@ -10,11 +10,11 @@ function NotConnectionPage() {
         <div className="flex items-center justify-center w-screen h-screen bg-gray-200">
             <div className="bg-gray-100 p-8 rounded-lg shadow-lg text-center">
                 <div className="flex flex-col items-center justify-center mb-2">
-                    <div className="">
+                    <div className="w-[200px] h-[100px]">
                         <img
                             src={not_connection}
-                            alt=""
-                            className="w-[300]"
+                            alt="Не удалось подключиться"
+                            className="w-full h-full object-contain"
                         />
                     </div>
                 </div>
