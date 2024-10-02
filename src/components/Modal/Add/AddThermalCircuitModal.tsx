@@ -77,7 +77,7 @@ const AddThermalCircuitModal: React.FC<AddItemModalProps> = ({ onClose, onSubmit
     };
     return (
         <ModalTemplate
-            headerTitle="Создание теплового контура"
+            headerTitle="Добавление теплового контура"
             buttonLabel="Добавить"
             onClose={onClose}
             onSubmit={handleSubmit}
