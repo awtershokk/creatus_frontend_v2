@@ -28,7 +28,7 @@ const DeleteRoomModal: React.FC<DeleteRoomModalProps> = ({
 
     return (
         <ModalTemplate
-            headerTitle="Подтвердите удаление"
+            headerTitle="Удаление помещения"
             buttonLabel="Удалить (Удерживать)"
             onClose={onClose}
             onSubmit={handleDelete}

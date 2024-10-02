@@ -28,7 +28,7 @@ const DeleteThermalCircuitModal: React.FC<DeleteThermalCircuitModalProps> = ({
 
     return (
         <ModalTemplate
-            headerTitle="Подтвердите удаление"
+            headerTitle="удаление теплового контура"
             buttonLabel="Удалить (Удерживать)"
             onClose={onClose}
             onSubmit={handleDelete}

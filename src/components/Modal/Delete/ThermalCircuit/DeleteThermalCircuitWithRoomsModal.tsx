@@ -33,7 +33,7 @@ const DeleteThermalCircuitWithRoomsModal: React.FC<DeleteThermalCircuitWithRooms
 
     return (
         <ModalTemplate
-            headerTitle="Удаление невозможно"
+            headerTitle="Удаление теплового контура"
             buttonLabel=''
             onClose={onClose}
             onSubmit={handleClose}

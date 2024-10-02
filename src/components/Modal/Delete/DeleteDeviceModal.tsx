@@ -24,7 +24,7 @@ const DeleteDeviceModal: React.FC<DeleteDeviceModalProps> = ({ label, onClose })
     };
     return (
         <ModalTemplate
-            headerTitle="Подтвердите удаление"
+            headerTitle="Удаление датчика"
             buttonLabel="Удалить"
             onClose={onClose}
             onSubmit={handleSubmit}

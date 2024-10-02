@@ -33,7 +33,7 @@ const DeleteSectionWithRoomsModal: React.FC<DeleteSectionWithRoomsModalProps> = 
 
     return (
         <ModalTemplate
-            headerTitle="Удаление невозможно"
+            headerTitle="Удаление секции"
             buttonLabel=''
             onClose={onClose}
             onSubmit={handleClose}

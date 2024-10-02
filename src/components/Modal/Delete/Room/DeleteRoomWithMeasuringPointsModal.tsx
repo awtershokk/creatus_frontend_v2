@@ -33,7 +33,7 @@ const DeleteRoomWithMeasuringPointsModal: React.FC<DeleteRoomWithMeasuringPoints
 
     return (
         <ModalTemplate
-            headerTitle="Удаление невозможно"
+            headerTitle="Удаление помещения"
             buttonLabel=''
             onClose={onClose}
             onSubmit={handleClose}

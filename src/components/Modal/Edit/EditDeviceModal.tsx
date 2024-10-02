@@ -58,7 +58,7 @@ const EditDeviceModal: React.FC<EditDeviceModalProps> = ({ device, onClose, onSa
 
     return (
         <ModalTemplate
-            headerTitle="Редактировать наименование датчика"
+            headerTitle="Редактировние наименования датчика"
             buttonLabel="Сохранить"
             onClose={onClose}
             onSubmit={handleSubmit}

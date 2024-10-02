@@ -148,7 +148,7 @@ const EditRoomModal: React.FC<EditRoomModalProps> = ({ roomId, room, onClose, on
 
     return (
         <ModalTemplate
-            headerTitle="Редактирование комнаты"
+            headerTitle="Редактирование помещения"
             buttonLabel="Сохранить"
             onClose={onClose}
             onSubmit={handleSubmit}
