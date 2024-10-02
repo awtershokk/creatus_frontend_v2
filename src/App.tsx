@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import LoginPage from './pages/Auth/LoginPage';
 import NoAccessPage from './pages/Error/NoAccesPage';
+import NotConnectionPage from './pages/Error/NotConnectionPage';
 import ProtectedRoute from './store/routes/protectedRoute';
 import { useAuth } from './hooks/useAuth';
 import BuildingPage from "./pages/Objects/BuildingPage.tsx";
@@ -20,11 +21,18 @@ import ControllerSchedulePage from "./pages/Contoller/ControllerSchedulePage.tsx
 import NotFoundPage from "./pages/Error/NotFoundPage.tsx";
 import ControllerOptionsPage from "./pages/Contoller/ControllerOptionsPage.tsx";
 import 'react-toastify/dist/ReactToastify.css';
-import {ToastContainer} from "react-toastify";
+import { ToastContainer } from "react-toastify";
+import useServerStatus from './hooks/useServerStatus';
+import LoadingSpinner from "./components/Menu/LoadingSpinner.tsx";
 
 const App = () => {
     const { refresh, user } = useAuth();
     const [loading, setLoading] = useState(true);
+    const { serverConnected, checkServerConnection } = useServerStatus();
+
+    const handleInteraction = () => {
+        checkServerConnection();
+    };
 
     useEffect(() => {
         const initializeAuth = async () => {
@@ -38,31 +46,38 @@ const App = () => {
         initializeAuth();
     }, [refresh]);
 
+
+    if (!serverConnected) {
+        return <NotConnectionPage />;
+    }
+
+
     return (
         <Router>
-            <ToastContainer />
+            <ToastContainer/>
             <Routes>
-                <Route path="/" element={<LoginPage />} />
-                <Route path="/no-access" element={<NoAccessPage />} />
+                <Route path="/" element={<LoginPage onClick={handleInteraction} />} />
+                <Route path="/no-access" element={<NoAccessPage onClick={handleInteraction} />} />
+                <Route path="/no-connection" element={<NotConnectionPage />} />
                 <Route element={<ProtectedRoute allowedRoles={[2, 3]} />}>
-                    <Route path="/building" element={<BuildingPage />} />
-                    <Route path="/building/users" element={<UsersPage />} />
-                    <Route path="/building/updates" element={<UpdatePage />} />
-                    <Route path="/building/devices" element={<DevicePage />} />
-                    <Route path="/building/controllers" element={<ControllerPage />} />
-                    <Route path="/building/controllers/options/:controllerId" element={<ControllerOptionsPage />} />
-                    <Route path="/building/controllers/schedule/:controllerId" element={<ControllerSchedulePage />} />
-                    <Route path="/building/section/:sectionId" element={<SectionPage />} />
-                    <Route path="/building/thermalCircuit/:thermalCircuitId" element={<ThermalCircuitPage />} />
-                    <Route path="/building/section/:sectionId/room/:roomId" element={<RoomPage />} />
-                    <Route path="/building/incidents" element={<IncidentPage />} />
-                    <Route path="/building/incidents/directory" element={<IncidentDirectoryPage />} />
-                    <Route path="/building/thermalCircuit/:thermalCircuitId/room/:roomId" element={<RoomPage />} />
-                    <Route path="/building/section/:sectionId/room/:roomId/measuringPoint/:measuringPointId" element={<MeasuringPointPage />} />
-                    <Route path="/building/thermalCircuit/:thermalCircuitId/room/:roomId/measuringPoint/:measuringPointId" element={<MeasuringPointPage />} />
+                    <Route path="/building" element={<BuildingPage onClick={handleInteraction} />} />
+                    <Route path="/building/users" element={<UsersPage onClick={handleInteraction} />} />
+                    <Route path="/building/updates" element={<UpdatePage onClick={handleInteraction} />} />
+                    <Route path="/building/devices" element={<DevicePage onClick={handleInteraction} />} />
+                    <Route path="/building/controllers" element={<ControllerPage onClick={handleInteraction} />} />
+                    <Route path="/building/controllers/options/:controllerId" element={<ControllerOptionsPage onClick={handleInteraction} />} />
+                    <Route path="/building/controllers/schedule/:controllerId" element={<ControllerSchedulePage onClick={handleInteraction} />} />
+                    <Route path="/building/section/:sectionId" element={<SectionPage onClick={handleInteraction} />} />
+                    <Route path="/building/thermalCircuit/:thermalCircuitId" element={<ThermalCircuitPage onClick={handleInteraction} />} />
+                    <Route path="/building/section/:sectionId/room/:roomId" element={<RoomPage onClick={handleInteraction} />} />
+                    <Route path="/building/incidents" element={<IncidentPage onClick={handleInteraction} />} />
+                    <Route path="/building/incidents/directory" element={<IncidentDirectoryPage onClick={handleInteraction} />} />
+                    <Route path="/building/thermalCircuit/:thermalCircuitId/room/:roomId" element={<RoomPage onClick={handleInteraction} />} />
+                    <Route path="/building/section/:sectionId/room/:roomId/measuringPoint/:measuringPointId" element={<MeasuringPointPage onClick={handleInteraction} />} />
+                    <Route path="/building/thermalCircuit/:thermalCircuitId/room/:roomId/measuringPoint/:measuringPointId" element={<MeasuringPointPage onClick={handleInteraction} />} />
                 </Route>
                 <Route element={<ProtectedRoute allowedRoles={[1, 2, 3]} />}>
-                    <Route path="user" element={<UserPage />} />
+                    <Route path="user" element={<UserPage onClick={handleInteraction} />} />
                 </Route>
                 <Route path="*" element={<NotFoundPage />} />
             </Routes>
@@ -71,4 +86,3 @@ const App = () => {
 };
 
 export default App;
-
