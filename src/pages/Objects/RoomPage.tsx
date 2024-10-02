@@ -292,7 +292,6 @@ const RoomPage = () => {
                                 onClose={() => {
                                     fetchData();
                                     closeDeleteMeasurePointModal();
-                                    toast.success('Точка измерения успешно удалена.');
                                 }}
                             />
                         )}

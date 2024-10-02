@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ModalTemplate from '../../ModalTemplate.tsx';
 import { deleteMeasuringPoint, fetchMeasuringPoint } from "../../../../api/requests/measuringPointApi.ts";
+import {toast} from "react-toastify";
 
 interface DeleteMeasuringPointModalProps {
     measuringPointID: number;
@@ -35,6 +36,7 @@ const DeleteMeasuringPointModal: React.FC<DeleteMeasuringPointModalProps> = ({
         try {
             await deleteMeasuringPoint(measuringPointID);
             onClose();
+            toast.success('Точка измерения успешно удалена.');
         } catch (error) {
             console.error('Ошибка при удалении точки измерения:', error);
         } finally {
