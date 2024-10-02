@@ -253,7 +253,7 @@ const BuildingPage = () => {
                             <div className="flex items-center ">
                                 <Label text="Ответственные лица"/>
                                 <MiniAddButton onClick={handleAddResponsiblePersonClick}/>
-                                <TelegramButton onClick={getResponsiblePersons}/>
+                                {/*<TelegramButton onClick={getResponsiblePersons}/>*/}
                             </div>
                         </div>
                         <ItemTable

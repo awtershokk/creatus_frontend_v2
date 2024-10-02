@@ -186,8 +186,8 @@ const LeftMenu: React.FC = () => {
                         {/* Меню "Версия ПО" */}
                         <li>
                             <Link
-                                to="/building/updates"
-                                className="flex items-center p-2 rounded-lg hover:bg-gray-700 whitespace-nowrap"
+                                to=""
+                                className="flex items-center p-2 rounded-lg cursor-not-allowed text-gray-500 whitespace-nowrap"
                             >
                                 <FaCogs className="mr-2" />
                                 Версия ПО
@@ -297,18 +297,14 @@ const LeftMenu: React.FC = () => {
                             </ul>
                         </li>
 
-                        {/*"Инциденты" */}
-                        <li>
-                            <Link
-                                to="/building/incidents"
-                                className="flex items-center p-2 rounded-lg hover:bg-gray-700 whitespace-nowrap"
-                            >
-                                <FaExclamationTriangle className="mr-2" />
-                                Инциденты
-                            </Link>
+                            <li>
+                                <Link to=""
+                                      className="flex items-center p-2 rounded-lg cursor-not-allowed text-gray-500 whitespace-nowrap">
+                                    <FaExclamationTriangle className="mr-2"/>
+                                    Инциденты
+                                </Link>
                         </li>
 
-                        {/*  "Пользователи" */}
                         <li>
                             <Link
                                 to="/building/users"
