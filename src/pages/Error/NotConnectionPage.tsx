@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { VscDebugDisconnect } from "react-icons/vsc";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
+
 function NotConnectionPage() {
     const [isLoading, setIsLoading] = useState(false);
 
