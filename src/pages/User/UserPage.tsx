@@ -232,17 +232,48 @@ const UserPage: React.FC = () => {
         if (tempDev !== null) {
             const deviation = parseFloat(tempDev.toString());
             if (!isNaN(deviation)) {
-                const intensity = Math.min(Math.abs(deviation), 8);
-                if (deviation > 0) {
-                    backgroundColor = `bg-red-${100 + intensity * 100}`;
-                } else if (deviation < 0) {
-                    backgroundColor = `bg-blue-${100 + intensity * 100}`;
-                } else {
-                    backgroundColor = 'bg-gray-200';
+                const flooredDeviation = Math.floor(Math.abs(deviation)); // Округляем отклонение
+
+                switch (true) {
+                    case deviation > 0:
+                        switch (flooredDeviation) {
+                            case 0: backgroundColor = 'bg-red-50'; break;
+                            case 1: backgroundColor = 'bg-red-100'; break;
+                            case 2: backgroundColor = 'bg-red-200'; break;
+                            case 3: backgroundColor = 'bg-red-300'; break;
+                            case 4: backgroundColor = 'bg-red-400'; break;
+                            case 5: backgroundColor = 'bg-red-500'; break;
+                            case 6: backgroundColor = 'bg-red-600'; break;
+                            case 7: backgroundColor = 'bg-red-700'; break;
+                            case 8: backgroundColor = 'bg-red-800'; break;
+                            case 9: backgroundColor = 'bg-red-900'; break;
+                            default: backgroundColor = 'bg-red-900'; // Максимум
+                        }
+                        break;
+
+                    case deviation < 0:
+                        switch (flooredDeviation) {
+                            case 0: backgroundColor = 'bg-blue-50'; break;
+                            case 1: backgroundColor = 'bg-blue-100'; break;
+                            case 2: backgroundColor = 'bg-blue-200'; break;
+                            case 3: backgroundColor = 'bg-blue-300'; break;
+                            case 4: backgroundColor = 'bg-blue-400'; break;
+                            case 5: backgroundColor = 'bg-blue-500'; break;
+                            case 6: backgroundColor = 'bg-blue-600'; break;
+                            case 7: backgroundColor = 'bg-blue-700'; break;
+                            case 8: backgroundColor = 'bg-blue-800'; break;
+                            case 9: backgroundColor = 'bg-blue-900'; break;
+                            default: backgroundColor = 'bg-blue-900'; // Максимум
+                        }
+                        break;
+
+                    default:
+                        backgroundColor = 'bg-gray-200'; // Цвет для 0
+                        break;
                 }
             }
         }
-
+        //А вот с теилвиндом не разобрался как по другому делать
         return { backgroundColor, measuringPointIndicators };
     }, []);
 
