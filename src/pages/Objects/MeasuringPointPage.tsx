@@ -265,19 +265,19 @@ const MeasuringPointPage = () => {
                             nonEditableFields={['Место установки']}
                         />
                     </div>
-                    <div className="w-full flex flex-col items-end mt-8 mr-8">
-                        <ObjectTable
-                            title="Информация о датчике"
-                            data={device}
-                            ButtonComponent={() => (
-                                <DefaultButton
-                                    onClick={deviceId ? handleUnbindClick : handleBindClick }
-                                    deviceId={deviceId}
+                    {/*<div className="w-full flex flex-col items-end mt-8 mr-8">*/}
+                    {/*    <ObjectTable*/}
+                    {/*        title="Информация о датчике"*/}
+                    {/*        data={device}*/}
+                    {/*        ButtonComponent={() => (*/}
+                    {/*            <DefaultButton*/}
+                    {/*                onClick={deviceId ? handleUnbindClick : handleBindClick }*/}
+                    {/*                deviceId={deviceId}*/}
 
-                                />
-                            )}
-                        />
-                    </div>
+                    {/*            />*/}
+                    {/*        )}*/}
+                    {/*    />*/}
+                    {/*</div>*/}
                 </div>
             )}
             <div className="mt-6 mb-4">
