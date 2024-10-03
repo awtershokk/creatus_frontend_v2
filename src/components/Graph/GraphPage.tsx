@@ -351,7 +351,7 @@ function GraphPage({ selectedRoomId }) {
                 <Label text="Фильтры"/>
             </div>
             <GraphFilter onFilterChange={setFilters}/>
-            <div className="w-screen h-auto">
+            <div className="w-[800px] h-auto mb-4">
                 {hasData ? (
                     <canvas ref={chartRef}/>
                 ) : (

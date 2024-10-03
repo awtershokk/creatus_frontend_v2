@@ -15,6 +15,7 @@ import { fetchRoomUser } from "../../api/requests/roomApi.ts";
 import { fetchMeasurementsRoom } from "../../api/requests/measurementsApi.ts";
 import { fetchPublicInfo } from "../../api/requests/buildingApi.ts";
 import { FaRegArrowAltCircleUp } from "react-icons/fa";
+import LoadingSpinner from "../../components/Menu/LoadingSpinner.tsx";
 
 interface MeasuringPoint {
     deviceActive: boolean | null;
@@ -64,6 +65,9 @@ const UserPage: React.FC = () => {
     const [temperatureDeviation, setTemperatureDeviation] = useState<{ min: number | null; max: number | null }>({ min: null, max: null });
     const [humidityDeviation, setHumidityDeviation] = useState<{ min: number | null; max: number | null }>({ min: null, max: null });
     const [isScrollButtonVisible, setIsScrollButtonVisible] = useState(false);
+    const [isLoadingRoomData, setIsLoadingRoomData] = useState(true);
+    const [isLoadingMeasurementsData, setIsLoadingMeasurementsData] = useState(true);
+    const [isLoadingHeaderData, setIsLoadingHeaderData] = useState(true);
 
     useEffect(() => {
         const fetchInfo = async () => {
@@ -71,8 +75,10 @@ const UserPage: React.FC = () => {
                 const data = await fetchPublicInfo(5);
                 setOfficeName(data.officeName);
                 setInfo(data.thermalCircuits);
+                setIsLoadingHeaderData(false);
             } catch (error) {
                 console.error('Ошибка при получении данных:', error);
+
             }
         };
         fetchInfo();
@@ -84,8 +90,12 @@ const UserPage: React.FC = () => {
                 try {
                     const transformedRoomData = await fetchRoomUser(selectedRoomId);
                     setRoomDataFields(transformedRoomData);
+                    setIsLoadingRoomData(false);
                 } catch (error) {
                     console.error('Ошибка при получении данных о комнате', error);
+                }
+                finally {
+                    setIsLoadingRoomData(false);
                 }
             };
 
@@ -185,9 +195,11 @@ const UserPage: React.FC = () => {
                 setRecordings(selectedData);
                 setFilteredRecordings(selectedData);
                 setTotalRecordings(selectedData.length);
+                setIsLoadingMeasurementsData(false);
             } catch (error) {
                 console.error('Нет доступных значений', error);
             }
+
         };
 
         if (selectedRoomId) {
@@ -302,13 +314,23 @@ const UserPage: React.FC = () => {
 
     return (
         <div className="container mx-auto p-4 w-max">
-            <UserHeader
-                officeName={officeName}
-                currentCircuitLabel={currentCircuitLabel}
-                onPrevClick={handlePrevClick}
-                onNextClick={handleNextClick}
-            />
-
+            {isLoadingHeaderData ? (
+                <UserHeader
+                    officeName={<LoadingSpinner containerClassName = "flex items-center justify-center"
+                                                spinnerClassName = "w-6 h-6 border-4 border-gray-200 border-t-gray-700 rounded-full animate-spin" />}
+                    currentCircuitLabel={<LoadingSpinner containerClassName = "flex items-center justify-center"
+                                                         spinnerClassName = "w-6 h-6 border-4 border-gray-200 border-t-gray-700 rounded-full animate-spin"  />}
+                    onPrevClick={handlePrevClick}
+                    onNextClick={handleNextClick}
+                />
+            ) : (
+                <UserHeader
+                    officeName={officeName}
+                    currentCircuitLabel={currentCircuitLabel}
+                    onPrevClick={handlePrevClick}
+                    onNextClick={handleNextClick}
+                />
+            )}
             <div className="w-10 h-24 m-2.5"></div>
 
             <CircuitDisplay
@@ -323,14 +345,25 @@ const UserPage: React.FC = () => {
                     <TabsButton tabIndex={tabIndex} setTabIndex={setTabIndex} />
                     <div>
                         {tabIndex === 0 && (
-                            <ObjectTable
-                                title="Информация о помещении"
-                                data={roomDataFields}
-                                ButtonComponent={'EditButton'}
-                                nonEditableFields={nonEditableFields}
-                            />
+                            isLoadingRoomData ? (
+                                <LoadingSpinner
+                                    containerClassName = "flex items-center justify-center mr-[250px]"
+                                    spinnerClassName = "w-12 h-12 border-4 border-gray-200 border-t-gray-700 rounded-full animate-spin" />
+                            ) : (
+                                <ObjectTable
+                                    title="Информация о помещении"
+                                    data={roomDataFields}
+                                    ButtonComponent={'EditButton'}
+                                    nonEditableFields={nonEditableFields}
+                                />
+                            )
                         )}
                         {tabIndex === 1 && (
+                            isLoadingMeasurementsData ? (
+                                <LoadingSpinner
+                                    containerClassName = "flex items-center justify-center mr-[250px]"
+                                    spinnerClassName = "w-12 h-12 border-4 border-gray-200 border-t-gray-700 rounded-full animate-spin" />
+                            ) : (
                             <div>
                                 <DownloadButton />
                                 <div className="mt-4 flex items-center justify-between">
@@ -357,6 +390,7 @@ const UserPage: React.FC = () => {
                                     />
                                 </TableContainer>
                             </div>
+                            )
                         )}
                         {tabIndex === 2 && (
                             <GraphPage selectedRoomId={selectedRoomId} />
