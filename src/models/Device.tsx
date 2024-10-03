@@ -24,10 +24,17 @@ export const transformDeviceData = (
     handleEditDeviceClick: (item: Device) => void,
     handleDeleteDeviceClick: (item: Device) => void,
     handleUnbindDeviceClick: (deviceId: number, deviceLabel: string, measuringPointLabel: string) => void,
-    handleBindDeviceClick: (deviceId: number, deviceLabel: string) => void
+    handleBindDeviceClick: (deviceId: number, deviceLabel: string) => void,
+    handleLabelClick: (deviceId: number, deviceLabel: string) => void,
 ): {} => {
     return {
-        label: device.label,
+        label: (
+            <BlueLink
+                to="#"
+                text={device.label}
+                onClick={() => handleLabelClick(device.id, device.label)}  // Open modal with id and label
+            />
+        ),
         active: device.active ? <span style={{ color: 'green' }}>Онлайн</span> : <span style={{ color: 'red' }}>Оффлайн</span>,
         model: device.model === null ? 'Не указана' : device.model,
         sernom: device.topic,
@@ -38,7 +45,7 @@ export const transformDeviceData = (
             <BlueLink to={`/building/section/${device.sectionId}/room/${device.roomId}/measuringPoint/${device.measuringPointId}`} text={device.measuringPointLabel} />
         ),
         battery: device.battery === null ? 'Неизвестно' : (`${device.battery}%`),
-        linkquality: device.linkquality === null ? 'Неизвестно' : (`${device.linkquality}%`),
+        linkquality: device.linkquality === null ? 'Неизвестно' : (`${device.linkquality} LQI`),
         connect: device.measuringPointLabel === null ? (
             <BlueLink to="#"
                       text="Привязать"

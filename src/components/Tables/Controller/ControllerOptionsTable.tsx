@@ -266,7 +266,7 @@ const ControllerOptionTable: React.FC = () => {
         }
 
         const renderTooltip = (props) => (
-            <Tooltip id="button-tooltip" className="bg-black text-white px-3 py-2 rounded-lg shadow-lg" {...props} >
+            <Tooltip id="button-tooltip" className="bg-black z-50 text-white px-3 py-2 rounded-lg shadow-lg" {...props} >
                 {item.hint}
             </Tooltip>
         );
