@@ -356,7 +356,7 @@ function GraphPage({ selectedRoomId }) {
                     <canvas ref={chartRef}/>
                 ) : (
                     <div className="items-center">
-                       <Label text="Нету данных для отображения"></Label>
+                       <Label text="Нет данных для отображения"></Label>
                     </div>
                 )}
             </div>
