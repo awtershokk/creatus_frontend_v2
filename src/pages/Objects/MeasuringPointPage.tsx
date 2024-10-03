@@ -85,13 +85,13 @@ const MeasuringPointPage = () => {
                 id: roomLabelItem?.id
             }));
 
-            setIsLoading(false);
-
             const measurementsData = await fetchMeasurementsMeasuringPoint(measuringPointId);
             setMeasurements(measurementsData);
             setFilteredMeasurements(measurementsData);
             setTotalMeasurements(measurementsData.length);
             setDisplayedMeasurements(measurementsData.length);
+
+            setIsLoading(false);
 
             const deviceId = await fetchDeviceId(measuringPointId);
             setDeviceId(deviceId);
