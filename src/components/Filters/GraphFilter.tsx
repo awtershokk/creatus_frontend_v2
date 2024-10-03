@@ -29,9 +29,8 @@ const GraphFilter: React.FC<GraphFilterProps> = ({ onFilterChange }) => {
     const handleDateChange = (dates: [Date | null, Date | null]) => {
         const [start, end] = dates;
         setDateRange({ start, end });
-        onFilterChange({ dateRange: { start, end } });
+        onFilterChange({ dateRange: { start: start ? start.getTime() : null, end: end ? end.getTime() : null } });
     };
-
     const handleResetAllFilters = () => {
         setDateRange({ start: null, end: null });
         onFilterChange({ dateRange: { start: null, end: null } });

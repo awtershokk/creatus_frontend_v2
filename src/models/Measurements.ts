@@ -1,4 +1,5 @@
 import {formatDateTime} from "../utils/formatDateTime.ts";
+import moment from "moment";
 
 
 export interface Measurement {
@@ -23,5 +24,20 @@ export const transformMeasurementData = (
     };
 };
 
+export const retransformMeasurementData = (
+    transformedData: { date: string, time: string, calculated_temperature: number, calculated_humidity: number, deviation_temperature: number, deviation_humidity: number }
+): Measurement => {
+    const { date, time, calculated_temperature, calculated_humidity, deviation_temperature, deviation_humidity } = transformedData;
 
+
+    const createdAt = moment(`${date} ${time}`, 'DD.MM.YYYY HH:mm').valueOf();
+
+    return {
+        createdAt: createdAt.toString(),
+        temperature: calculated_temperature ?? 0,
+        humidity: calculated_humidity ?? 0,
+        temperatureDeviation: deviation_temperature ?? 0,
+        humidityDeviation: deviation_humidity ?? 0
+    };
+};
 

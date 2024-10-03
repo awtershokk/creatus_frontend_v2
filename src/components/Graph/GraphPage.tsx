@@ -4,6 +4,9 @@ import zoomPlugin from 'chartjs-plugin-zoom';
 import moment from 'moment';
 import GraphFilter from "../Filters/GraphFilter.tsx";
 import Label from "../Text/Label.tsx";
+import { formatDateTime } from "../../utils/formatDateTime.ts";
+import { fetchRoom } from "../../api/requests/roomApi.ts";
+import api from "../../api/api.ts";
 
 Chart.register(zoomPlugin);
 
@@ -17,11 +20,11 @@ function GraphPage({ selectedRoomId }) {
     const [humidityLimits, setHumidityLimits] = useState({ min: 1, max: 100 });
     const [labels, setLabels] = useState([]);
     const [timeRange, setTimeRange] = useState('day');
-
     const [filters, setFilters] = useState({
         dateRange: { start: null, end: null }
     });
 
+    // Функция для вычисления шкалы Y
     const calculateYScale = (data, limits) => {
         const minValue = Math.min(...data);
         const maxValue = Math.max(...data);
@@ -40,7 +43,6 @@ function GraphPage({ selectedRoomId }) {
     };
 
     const createChartDataWithColors = (labels, data, limits, title) => {
-
         return {
             labels,
             datasets: [
@@ -53,13 +55,12 @@ function GraphPage({ selectedRoomId }) {
                         borderColor: (ctx) => {
                             const currentValue = ctx.p0.parsed.y;
                             const previousValue = ctx.p1.parsed.y;
-                            if ((currentValue > limits.max || previousValue > limits.max )){
+                            if ((currentValue > limits.max || previousValue > limits.max)){
                                 return 'red';
                             }
                             if (currentValue < limits.min || previousValue < limits.min){
                                 return 'rgb(0,13,174)';
                             }
-
                         },
                     },
                 },
@@ -84,10 +85,7 @@ function GraphPage({ selectedRoomId }) {
     useEffect(() => {
         const fetchRoomData = async () => {
             try {
-                const response = await fetch(`http://localhost:5001/api/room/${selectedRoomId}`);
-                const data = await response.json();
-                const roomData = data.data;
-
+                const roomData = await fetchRoom(selectedRoomId);
                 setTemperatureLimits({
                     min: roomData.temperatureMinimum,
                     max: roomData.temperatureMaximum,
@@ -103,75 +101,91 @@ function GraphPage({ selectedRoomId }) {
 
         const fetchRecordings = async () => {
             try {
-                const response = await fetch(`http://localhost:5001/api/room/all/Measurements/${selectedRoomId}`);
-                if (!response.ok) {
+                const response = await api.get(`/room/all/Measurements/${selectedRoomId}`);
+                if (response.status !== 200) {
                     throw new Error('Ошибка при получении данных с сервера');
                 }
-                const data = await response.json();
-                const recordings = data.data;
+                const recordings = response.data.data;
 
                 if (!recordings || recordings.length === 0) {
                     console.error('Нет доступных значений');
                     return;
                 }
 
+                // Сортировка записей по createdAt (временная метка)
+                const sortedRecordings = recordings.sort((a, b) => Number(a.createdAt) - Number(b.createdAt));
+
                 let filteredRecordings;
                 let newLabels;
                 let temperatureData = [];
                 let humidityData = [];
 
+                // Логика фильтрации по диапазону дат, если применен фильтр
                 if (filters.dateRange.start) {
-                    // Фильтрация по дате
-                    const startDate = moment(filters.dateRange.start).startOf('day');
-                    const endDate = moment(filters.dateRange.end || filters.dateRange.start).endOf('day');
+                    const startDate = moment(filters.dateRange.start).startOf('day').valueOf();
+                    const endDate = moment(filters.dateRange.end || filters.dateRange.start).endOf('day').valueOf();
 
-                    filteredRecordings = recordings.filter(record =>
-                        moment(record.createdAt).isBetween(startDate, endDate, 'minute', '[]')
+                    filteredRecordings = sortedRecordings.filter(record =>
+                        Number(record.createdAt) >= startDate && Number(record.createdAt) <= endDate
                     );
-                    newLabels = filteredRecordings.map(record => moment(record.createdAt).format("DD.MM.YYYY HH:mm"));
+
+                    newLabels = filteredRecordings.map(record => {
+                        const { date, time } = formatDateTime(record.createdAt);
+                        return `${date} ${time}`;
+                    });
+
                     temperatureData = filteredRecordings.map(record => record.temperature);
                     humidityData = filteredRecordings.map(record => record.humidity);
                 } else {
-                    // Фильтрация по день, неделя, месяц
+                    // Логика фильтрации по времени (день, неделя, месяц)
                     switch (timeRange) {
                         case 'day':
-                            filteredRecordings = recordings.filter(record =>
-                                moment(record.createdAt).isSame(moment(), 'day')
+                            filteredRecordings = sortedRecordings.filter(record =>
+                                moment(Number(record.createdAt)).isSame(moment(), 'day')
                             );
-                            newLabels = filteredRecordings.map(record => moment(record.createdAt).format("HH:mm"));
+                            newLabels = filteredRecordings.map(record => {
+                                const { time } = formatDateTime(record.createdAt);
+                                return time;
+                            });
                             temperatureData = filteredRecordings.map(record => record.temperature);
                             humidityData = filteredRecordings.map(record => record.humidity);
                             break;
+
                         case 'week':
-                            filteredRecordings = recordings.filter(record =>
-                                moment(record.createdAt).isAfter(moment().subtract(1, 'weeks'))
+                            filteredRecordings = sortedRecordings.filter(record =>
+                                moment(Number(record.createdAt)).isAfter(moment().subtract(1, 'weeks'))
                             );
-                            newLabels = filteredRecordings.map(record => moment(record.createdAt).format("DD.MM.YYYY HH:mm"));
+                            newLabels = filteredRecordings.map(record => {
+                                const { date, time } = formatDateTime(record.createdAt);
+                                return `${date} ${time}`;
+                            });
                             temperatureData = filteredRecordings.map(record => record.temperature);
                             humidityData = filteredRecordings.map(record => record.humidity);
                             break;
+
                         case 'month':
                             const dailyData = {};
-
-                            recordings.forEach(record => {
-                                const day = moment(record.createdAt).format("DD.MM.YYYY");
-
-                                if (!dailyData[day]) {
-                                    dailyData[day] = { temperatureSum: 0, humiditySum: 0, count: 0 };
+                            sortedRecordings.forEach(record => {
+                                const { date } = formatDateTime(record.createdAt);
+                                if (!dailyData[date]) {
+                                    dailyData[date] = { temperatureSum: 0, humiditySum: 0, count: 0 };
                                 }
-
-                                dailyData[day].temperatureSum += record.temperature;
-                                dailyData[day].humiditySum += record.humidity;
-                                dailyData[day].count += 1;
+                                dailyData[date].temperatureSum += record.temperature;
+                                dailyData[date].humiditySum += record.humidity;
+                                dailyData[date].count += 1;
                             });
 
                             newLabels = Object.keys(dailyData);
                             temperatureData = newLabels.map(day => dailyData[day].temperatureSum / dailyData[day].count);
                             humidityData = newLabels.map(day => dailyData[day].humiditySum / dailyData[day].count);
                             break;
+
                         default:
-                            filteredRecordings = recordings;
-                            newLabels = filteredRecordings.map(record => moment(record.createdAt).format("DD.MM.YYYY HH:mm"));
+                            filteredRecordings = sortedRecordings;
+                            newLabels = filteredRecordings.map(record => {
+                                const { date, time } = formatDateTime(record.createdAt);
+                                return `${date} ${time}`;
+                            });
                             temperatureData = filteredRecordings.map(record => record.temperature);
                             humidityData = filteredRecordings.map(record => record.humidity);
                             break;
@@ -185,6 +199,7 @@ function GraphPage({ selectedRoomId }) {
                 console.error('Ошибка при получении данных', error);
             }
         };
+
 
         fetchRoomData();
         fetchRecordings();
@@ -277,8 +292,10 @@ function GraphPage({ selectedRoomId }) {
 
     const handleTimeRangeClick = (range) => {
         setTimeRange(range);
-
     };
+
+    // Проверка наличия данных
+    const hasData = selectedChart === 'temperature' ? temperatureData.length > 0 : humidityData.length > 0;
 
     return (
         <div>
@@ -335,7 +352,13 @@ function GraphPage({ selectedRoomId }) {
             </div>
             <GraphFilter onFilterChange={setFilters}/>
             <div className="w-screen h-auto">
-                <canvas ref={chartRef}/>
+                {hasData ? (
+                    <canvas ref={chartRef}/>
+                ) : (
+                    <div className="items-center">
+                       <Label text="Нету данных для отображения"></Label>
+                    </div>
+                )}
             </div>
         </div>
     );
