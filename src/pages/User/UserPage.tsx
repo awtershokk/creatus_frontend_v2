@@ -65,9 +65,9 @@ const UserPage: React.FC = () => {
     const [temperatureDeviation, setTemperatureDeviation] = useState<{ min: number | null; max: number | null }>({ min: null, max: null });
     const [humidityDeviation, setHumidityDeviation] = useState<{ min: number | null; max: number | null }>({ min: null, max: null });
     const [isScrollButtonVisible, setIsScrollButtonVisible] = useState(false);
+    const [isLoadingPageData, setIsLoadingPageData] = useState(true);
     const [isLoadingRoomData, setIsLoadingRoomData] = useState(true);
     const [isLoadingMeasurementsData, setIsLoadingMeasurementsData] = useState(true);
-    const [isLoadingHeaderData, setIsLoadingHeaderData] = useState(true);
 
     useEffect(() => {
         const fetchInfo = async () => {
@@ -75,7 +75,7 @@ const UserPage: React.FC = () => {
                 const data = await fetchPublicInfo(5);
                 setOfficeName(data.officeName);
                 setInfo(data.thermalCircuits);
-                setIsLoadingHeaderData(false);
+                setIsLoadingPageData(false);
             } catch (error) {
                 console.error('Ошибка при получении данных:', error);
 
@@ -314,47 +314,55 @@ const UserPage: React.FC = () => {
 
     return (
         <div className="container mx-auto p-4 w-max">
-            {isLoadingHeaderData ? (
-                <UserHeader
-                    officeName={<LoadingSpinner containerClassName = "flex items-center justify-center"
-                                                spinnerClassName = "w-6 h-6 border-4 border-gray-200 border-t-gray-700 rounded-full animate-spin" />}
-                    currentCircuitLabel={<LoadingSpinner containerClassName = "flex items-center justify-center"
-                                                         spinnerClassName = "w-6 h-6 border-4 border-gray-200 border-t-gray-700 rounded-full animate-spin"  />}
-                    onPrevClick={handlePrevClick}
-                    onNextClick={handleNextClick}
-                />
-            ) : (
-                <UserHeader
-                    officeName={officeName}
-                    currentCircuitLabel={currentCircuitLabel}
-                    onPrevClick={handlePrevClick}
-                    onNextClick={handleNextClick}
-                />
-            )}
-            <div className="w-10 h-24 m-2.5"></div>
+            {isLoadingPageData ? (
+                <div className="fixed inset-0 flex items-center justify-center z-50">
+                    <LoadingSpinner
+                        containerClassName="flex items-center justify-center"
+                        spinnerClassName="w-12 h-12 border-4 border-gray-200 border-t-gray-700 rounded-full animate-spin"
+                    />
+                </div>
 
-            <CircuitDisplay
-                sections={currentCircuit?.S || []}
-                selectedRoomId={selectedRoomId}
-                onRoomClick={handleRoomClick}
-                getRoomStyle={getRoomStyle}
-            />
+            ) : (
+                <div>
+                    <UserHeader
+                        officeName={officeName}
+                        currentCircuitLabel={currentCircuitLabel}
+                        onPrevClick={handlePrevClick}
+                        onNextClick={handleNextClick}
+                    />
+                    <div className="w-10 h-24 m-2.5"></div>
+
+                    <CircuitDisplay
+                        sections={currentCircuit?.S || []}
+                        selectedRoomId={selectedRoomId}
+                        onRoomClick={handleRoomClick}
+                        getRoomStyle={getRoomStyle}
+                    />
+                </div>
+
+                    )
+                }
+
+
 
             {selectedRoomId && (
-                <div className="mt-8">
-                    <TabsButton tabIndex={tabIndex} setTabIndex={setTabIndex} />
-                    <div>
-                        {tabIndex === 0 && (
-                            isLoadingRoomData ? (
-                                <LoadingSpinner
-                                    containerClassName = "flex items-center justify-center mr-[250px]"
-                                    spinnerClassName = "w-12 h-12 border-4 border-gray-200 border-t-gray-700 rounded-full animate-spin" />
-                            ) : (
-                                <ObjectTable
-                                    title="Информация о помещении"
-                                    data={roomDataFields}
-                                    ButtonComponent={'EditButton'}
-                                    nonEditableFields={nonEditableFields}
+        <div className="mt-8">
+            <TabsButton tabIndex={tabIndex} setTabIndex={setTabIndex}/>
+            <div>
+                {tabIndex === 0 && (
+                    isLoadingRoomData ? (
+                        <div className="fixed  flex items-center justify-center z-50">
+                            <LoadingSpinner
+                                containerClassName="flex items-center justify-center"
+                                spinnerClassName="w-12 h-12 border-4 border-gray-200 border-t-gray-700 rounded-full animate-spin"
+                            />
+                        </div>
+                    ) : (
+                        <ObjectTable
+                            title="Информация о помещении"
+                            data={roomDataFields}
+                            ButtonComponent={'EditButton'}
+                            nonEditableFields={nonEditableFields}
                                 />
                             )
                         )}
