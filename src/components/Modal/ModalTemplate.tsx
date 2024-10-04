@@ -12,6 +12,7 @@ interface ModalTemplateProps {
     wight?: string;
     deleteMode?: boolean;
     buttonStyles?: string;
+    progressStyles?: string;
 }
 
 const ModalTemplate: React.FC<ModalTemplateProps> = ({
@@ -25,6 +26,7 @@ const ModalTemplate: React.FC<ModalTemplateProps> = ({
                                                          wight = 'max-w-[500px]',
                                                          deleteMode = false,
                                                          buttonStyles = "px-4 py-2 bg-gray-700 text-white rounded-md hover:bg-black transition",
+                                                         progressStyles="absolute top-0 left-0 h-full bg-red-600 opacity-50"
                                                      }) => {
     const [showModal, setShowModal] = useState(false);
     const [holdProgress, setHoldProgress] = useState(0);
@@ -144,7 +146,7 @@ const ModalTemplate: React.FC<ModalTemplateProps> = ({
                                 {deleteMode && (
                                     <div
                                         style={{ width: `${holdProgress}%` }}
-                                        className="absolute top-0 left-0 h-full bg-red-600 opacity-50"
+                                        className={progressStyles}
                                     />
                                 )}
                             </button>
