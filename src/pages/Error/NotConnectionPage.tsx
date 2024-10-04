@@ -10,7 +10,7 @@ function NotConnectionPage() {
         setIsLoading(true);
         setTimeout(() => {
             window.location.reload();
-        }, 1000);
+        }, 1500);
     };
 
     return (
@@ -45,7 +45,7 @@ function NotConnectionPage() {
                             <VscDebugDisconnect className="text-white mr-0.5 ml-0.5" />
                         )}
                         <span className="text-white">
-                            {isLoading ? 'Перезагрузка...' : 'Проверить подключение'}
+                            {isLoading ? 'Проверка...' : 'Проверить подключение'}
                         </span>
                     </button>
                 </div>

@@ -85,13 +85,13 @@ const MeasuringPointPage = () => {
                 id: roomLabelItem?.id
             }));
 
-            setIsLoading(false);
-
             const measurementsData = await fetchMeasurementsMeasuringPoint(measuringPointId);
             setMeasurements(measurementsData);
             setFilteredMeasurements(measurementsData);
             setTotalMeasurements(measurementsData.length);
             setDisplayedMeasurements(measurementsData.length);
+
+            setIsLoading(false);
 
             const deviceId = await fetchDeviceId(measuringPointId);
             setDeviceId(deviceId);
@@ -265,19 +265,19 @@ const MeasuringPointPage = () => {
                             nonEditableFields={['Место установки']}
                         />
                     </div>
-                    <div className="w-full flex flex-col items-end mt-8 mr-8">
-                        <ObjectTable
-                            title="Информация о датчике"
-                            data={device}
-                            ButtonComponent={() => (
-                                <DefaultButton
-                                    onClick={deviceId ? handleUnbindClick : handleBindClick }
-                                    deviceId={deviceId}
+                    {/*<div className="w-full flex flex-col items-end mt-8 mr-8">*/}
+                    {/*    <ObjectTable*/}
+                    {/*        title="Информация о датчике"*/}
+                    {/*        data={device}*/}
+                    {/*        ButtonComponent={() => (*/}
+                    {/*            <DefaultButton*/}
+                    {/*                onClick={deviceId ? handleUnbindClick : handleBindClick }*/}
+                    {/*                deviceId={deviceId}*/}
 
-                                />
-                            )}
-                        />
-                    </div>
+                    {/*            />*/}
+                    {/*        )}*/}
+                    {/*    />*/}
+                    {/*</div>*/}
                 </div>
             )}
             <div className="mt-6 mb-4">
