@@ -117,6 +117,7 @@ const MeasuringPointPage = () => {
         try {
             await getData();
             handleEditMeasuringPointModalClose();
+            toast.success('Информация о точке измерения успешно обновлена.');
         } catch (error) {
             console.error('Ошибка обновления здания:', error);
         }

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import ModalTemplate from '../ModalTemplate.tsx';
 import { unbindDeviceFromMP } from '../../../api/requests/deviceApi.ts';
+import {toast} from "react-toastify";
 
 interface UnbindDeviceModalProps {
     deviceId: number;
@@ -17,8 +18,8 @@ const UnbindDeviceModal: React.FC<UnbindDeviceModalProps> = ({ deviceId, deviceL
         setLoading(true);
         try {
             await unbindDeviceFromMP(deviceId);
-
             onSuccess();
+            toast.success('Точка измерения успешно отвязана от датчика.');
         } catch (error) {
             console.error(`Ошибка при отвязке устройства ${deviceLabel}:`, error);
         } finally {
