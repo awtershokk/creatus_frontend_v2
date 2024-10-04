@@ -299,6 +299,9 @@ function GraphPage({ selectedRoomId }) {
 
     return (
         <div>
+            <div className="mb-2">
+                <Label text="Параметр"/>
+            </div>
             <div className="tabs inline-flex border-b border-gray-700 mb-4 justify-center">
                 <button
                     className={`tab py-2 px-4 text-sm font-medium border-b-2 ${
@@ -347,17 +350,17 @@ function GraphPage({ selectedRoomId }) {
                     Месяц
                 </button>
             </div>
-            <div className="mb-2">
-                <Label text="Фильтры"/>
+            <div className="flex inline mb-2">
+                <Label text="Фильтры:"/>
+                <GraphFilter onFilterChange={setFilters}/>
             </div>
-            <GraphFilter onFilterChange={setFilters}/>
+
             <div className="w-[800px] h-auto mb-4">
                 {hasData ? (
                     <canvas ref={chartRef}/>
                 ) : (
                     <div className="items-center">
-
-                       <Label text="Нет данных для отображения"></Label>
+                        <Label text="Нет данных для отображения"></Label>
                     </div>
                 )}
             </div>

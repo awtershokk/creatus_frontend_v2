@@ -27,6 +27,7 @@ import EditRoomModal from "../../components/Modal/Edit/EditRoomModal.tsx";
 import TabsButtonForAdmin from "../../components/Buttons/TabsButtonForAdmin.tsx";
 import GraphModal from "../../components/Modal/GraphModal.tsx";
 import {toast} from "react-toastify";
+import GraphPage from "../../components/Graph/GraphPage.tsx";
 
 const RoomPage = () => {
     const { roomId } = useParams();
@@ -272,7 +273,10 @@ const RoomPage = () => {
 
                         )}
                         {tabIndex === 2 && (
-                            <GraphModal roomId={roomId} onClose={handleClose} roomName={roomName} />
+                            <div className="mt-4">
+                                <GraphPage selectedRoomId={roomId} />
+                            </div>
+
                         )}
 
                         {isAddMeasurePointModalOpen && (

@@ -60,7 +60,7 @@ const GraphFilter: React.FC<GraphFilterProps> = ({ onFilterChange }) => {
 
     return (
         <div>
-            <div className="flex flex-wrap space-x-4 mt-3">
+            <div className="flex flex-wrap space-x-4 ml-2">
 
 
                 <div className="relative" ref={dateRef}>
