@@ -5,19 +5,46 @@ import { FaChevronDown, FaChevronUp, FaTimesCircle } from 'react-icons/fa';
 import { ru } from 'date-fns/locale';
 import Tooltip from "../Buttons/Tooltip.tsx";
 
-
 interface GraphFilterProps {
     onFilterChange: (filters: {
         dateRange?: { start: Date | null; end: Date | null },
     }) => void;
+    timeRange?: 'day' | 'week' | 'month';
 }
 
-const GraphFilter: React.FC<GraphFilterProps> = ({ onFilterChange }) => {
+const GraphFilter: React.FC<GraphFilterProps> = ({ onFilterChange, timeRange }) => {
     const [isDateOpen, setIsDateOpen] = useState(false);
     const [dateRange, setDateRange] = useState<{ start: Date | null; end: Date | null }>({ start: null, end: null });
     const [showDateTooltip, setShowDateTooltip] = useState(false);
-
     const dateRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        if (timeRange) {
+            const now = new Date();
+            let start: Date | null = null;
+            let end: Date | null = null;
+
+            switch (timeRange) {
+                case 'day':
+                    start = new Date(now.setHours(0, 0, 0, 0));
+                    end = new Date(now.setHours(23, 59, 59, 999));
+                    break;
+                case 'week':
+                    start = new Date(now.setDate(now.getDate() - now.getDay()));
+                    end = new Date(now.setDate(start.getDate() + 7));
+                    break;
+                case 'month':
+                    start = new Date(now.getFullYear(), now.getMonth(), 1);
+                    end = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+                    break;
+                default:
+                    break;
+            }
+
+            setDateRange({ start, end });
+            onFilterChange({ dateRange: { start, end } });
+        }
+    }, [timeRange, onFilterChange]);
 
     const toggleDateFilter = () => {
         setIsDateOpen(!isDateOpen);
@@ -31,6 +58,7 @@ const GraphFilter: React.FC<GraphFilterProps> = ({ onFilterChange }) => {
         setDateRange({ start, end });
         onFilterChange({ dateRange: { start: start ? start.getTime() : null, end: end ? end.getTime() : null } });
     };
+
     const handleResetAllFilters = () => {
         setDateRange({ start: null, end: null });
         onFilterChange({ dateRange: { start: null, end: null } });
@@ -61,8 +89,6 @@ const GraphFilter: React.FC<GraphFilterProps> = ({ onFilterChange }) => {
     return (
         <div>
             <div className="flex flex-wrap space-x-4 ">
-
-
                 <div className="relative" ref={dateRef}>
                     <button
                         onClick={toggleDateFilter}
