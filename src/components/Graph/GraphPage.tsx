@@ -350,10 +350,10 @@ function GraphPage({ selectedRoomId }) {
                     Месяц
                 </button>
             </div>
-            <div className="flex inline mb-2">
+            <div className="mb-2">
                 <Label text="Фильтры:"/>
-                <GraphFilter onFilterChange={setFilters}/>
             </div>
+            <GraphFilter onFilterChange={setFilters}/>
 
             <div className="w-[800px] h-auto mb-4">
                 {hasData ? (
