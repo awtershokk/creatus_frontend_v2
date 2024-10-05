@@ -24,6 +24,7 @@ function GraphPage({ selectedRoomId }) {
         dateRange: { start: null, end: null }
     });
 
+
     // Функция для вычисления шкалы Y
     const calculateYScale = (data, limits) => {
         const minValue = Math.min(...data);
@@ -354,11 +355,11 @@ function GraphPage({ selectedRoomId }) {
                     Месяц
                 </button>
             </div>
+            <div className="mb-2">
             </div>
-            <div className="flex inline">
                 <Label text="Фильтры:"/>
-                <GraphFilter onFilterChange={setFilters}/>
             </div>
+            <GraphFilter onFilterChange={setFilters} timeRange={timeRange}/>
 
             <div className="w-[850px] h-auto mb-4">
                 {hasData ? (
