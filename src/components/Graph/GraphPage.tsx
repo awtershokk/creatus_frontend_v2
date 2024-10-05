@@ -300,10 +300,12 @@ function GraphPage({ selectedRoomId }) {
 
     return (
         <div>
-            <div className="mb-2">
-                <Label text="Параметр"/>
-            </div>
-            <div className="tabs inline-flex border-b border-gray-700 mb-4 justify-center">
+            <div className="flex inline mb-2">
+                <div className='mr-2'>
+                    <Label text="Параметр:"/>
+                </div>
+
+                <div className="tabs inline-flex border-b border-gray-700 mb-4 justify-center">
                 <button
                     className={`tab py-2 px-4 text-sm font-medium border-b-2 ${
                         selectedChart === 'temperature' ? 'border-gray-800 text-gray-700' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'
@@ -321,10 +323,12 @@ function GraphPage({ selectedRoomId }) {
                     Влажность
                 </button>
             </div>
-
-            <div className="mb-2">
-                <Label text="Период"/>
             </div>
+
+            <div className="flex inline mb-2">
+                <div className='mr-2'>
+                <Label text="Период:"/>
+                </div>
             <div className="tabs inline-flex border-b border-gray-700 mb-4">
                 <button
                     className={`tab py-2 px-4 text-sm font-medium border-b-2 ${
@@ -352,11 +356,12 @@ function GraphPage({ selectedRoomId }) {
                 </button>
             </div>
             <div className="mb-2">
+            </div>
                 <Label text="Фильтры:"/>
             </div>
             <GraphFilter onFilterChange={setFilters} timeRange={timeRange}/>
 
-            <div className="w-[800px] h-auto mb-4">
+            <div className="w-[850px] h-auto mb-4">
                 {hasData ? (
                     <canvas ref={chartRef}/>
                 ) : (

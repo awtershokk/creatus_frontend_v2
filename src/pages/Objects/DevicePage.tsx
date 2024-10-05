@@ -114,11 +114,9 @@ const DevicePage = () => {
 
     const handleConfirmUnbind = async () => {
         if (selectedDevice) {
-
             const updatedDevicesData = await fetchDevices(handleEditDeviceClick, handleDeleteDeviceClick, handleUnbindDeviceClick, handleBindDeviceClick);
             setDevices(updatedDevicesData);
             handleCloseUnbindModal();
-            toast.success('Точка измерения успешно отвязана от датчика.');
         }
     };
 
