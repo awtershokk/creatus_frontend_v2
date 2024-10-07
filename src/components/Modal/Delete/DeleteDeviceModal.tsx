@@ -25,10 +25,13 @@ const DeleteDeviceModal: React.FC<DeleteDeviceModalProps> = ({ label, onClose })
     return (
         <ModalTemplate
             headerTitle="Удаление датчика"
-            buttonLabel="Удалить"
+            buttonLabel="Удалить (Удерживать)"
             onClose={onClose}
             onSubmit={handleSubmit}
             loading={loading}
+            deleteMode={true}
+            buttonStyles="px-4 py-2 border border-gray-700 bg-gray-700 text-white rounded-md transition relative overflow-hidden"
+            progressStyles="absolute top-0 left-0 h-full bg-gray-400 opacity-50"
         >
             <p className="text-black">Вы действительно хотите удалить датчик <b>{label}</b>?</p>
         </ModalTemplate>

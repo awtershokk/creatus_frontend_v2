@@ -30,18 +30,22 @@ function GraphPage({ selectedRoomId }) {
         const minValue = Math.min(...data);
         const maxValue = Math.max(...data);
 
-        if (minValue === maxValue || isNaN(minValue) || isNaN(maxValue)) {
-            return { min: 0, max: 100, stepSize: 10 };
+        // Calculate range and stepSize
+        let range = maxValue - minValue;
+
+
+        // If minValue is equal to maxValue, set stepSize to 10 and add offset
+        if (minValue === maxValue) {
+            range = 1;
         }
 
-        const range = maxValue - minValue;
-        const stepSize = range / 10;
+        // Adjust min and max
+        const adjustedMin = Math.min(minValue - range, limits.min - range);
+        const adjustedMax = Math.max(maxValue + range, limits.max + range);
 
-        const adjustedMin = Math.min(minValue - stepSize, limits.min - stepSize);
-        const adjustedMax = Math.max(maxValue + stepSize, limits.max + stepSize);
-
-        return { min: adjustedMin, max: adjustedMax, stepSize };
+        return { min: adjustedMin, max: adjustedMax };
     };
+
 
     const createChartDataWithColors = (labels, data, limits, title) => {
         return {
