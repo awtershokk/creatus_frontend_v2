@@ -12,6 +12,7 @@ import LoadingSpinner from "../../components/Menu/LoadingSpinner.tsx";
 import {setBreadcrumb} from "../../store/slices/breadcrumbSlice.ts";
 import {useDispatch} from "react-redux";
 import {toast} from "react-toastify";
+import DeviceStatisticModal from "../../components/Modal/DeviceStatisticModal.tsx";
 
 const DevicePage = () => {
     const dispatch = useDispatch();
@@ -26,6 +27,7 @@ const DevicePage = () => {
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [isUnbindModalOpen, setIsUnbindModalOpen] = useState(false);
     const [isBindModalOpen, setIsBindModalOpen] = useState(false);
+    const [isStatisticModalOpen, setIsStatisticModalOpen] = useState(false);
     const [selectedDevice, setSelectedDevice] = useState<Device | null>(null);
 
     const [isLoading, setIsLoading] = useState(true);
@@ -33,7 +35,7 @@ const DevicePage = () => {
     useEffect(() => {
         const getData = async () => {
             try {
-                const devicesData = await fetchDevices(handleEditDeviceClick, handleDeleteDeviceClick, handleUnbindDeviceClick, handleBindDeviceClick);
+                const devicesData = await fetchDevices(handleEditDeviceClick, handleDeleteDeviceClick, handleUnbindDeviceClick, handleBindDeviceClick, handleLabelClick);
                 setDevices(devicesData);
                 setIsLoading(false);
             } catch (error) {
@@ -88,6 +90,17 @@ const DevicePage = () => {
     const handleBindDeviceClick = (deviceId: number, deviceLabel: string) => {
         setSelectedDevice({id: deviceId, label: deviceLabel, measuringPointLabel: 'Нет'});
         setIsBindModalOpen(true);
+    };
+
+    const handleLabelClick = (deviceId: number, deviceLabel: string) => {
+        console.log(`Label Clicked - ID: ${deviceId}, Label: ${deviceLabel}`);
+        setSelectedDevice({id: deviceId, label: deviceLabel});
+        setIsStatisticModalOpen(true);
+
+    };
+    const handleCloseStatisticModal = () => {
+        setIsStatisticModalOpen(false);
+        setSelectedDevice(null);
     };
 
     const handleCloseDeleteModal = () => {
@@ -166,6 +179,14 @@ const DevicePage = () => {
                     measuringPointLabel={selectedDevice.measuringPointLabel || 'Нет'}
                     onClose={handleCloseUnbindModal}
                     onSuccess={handleConfirmUnbind}
+                />
+            )}
+            {isStatisticModalOpen && selectedDevice && (
+                <DeviceStatisticModal
+                    deviceId={selectedDevice.id}
+                    deviceName={selectedDevice.label}
+                    onClose={handleCloseStatisticModal}
+
                 />
             )}
 

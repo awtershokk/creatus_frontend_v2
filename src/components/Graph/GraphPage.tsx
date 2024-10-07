@@ -145,16 +145,18 @@ function GraphPage({ selectedRoomId }) {
                                 moment(Number(record.createdAt)).isSame(moment(), 'day')
                             );
                             newLabels = filteredRecordings.map(record => {
-                                const { time } = formatDateTime(record.createdAt);
-                                return time;
+                                const { date, time } = formatDateTime(record.createdAt);
+                                return `${date} ${time}`;
                             });
                             temperatureData = filteredRecordings.map(record => record.temperature);
                             humidityData = filteredRecordings.map(record => record.humidity);
                             break;
 
                         case 'week':
+                            // Фильтрация за последние 7 дней
+                            const weekStartDate = moment().subtract(7, 'days').startOf('day');
                             filteredRecordings = sortedRecordings.filter(record =>
-                                moment(Number(record.createdAt)).isAfter(moment().subtract(1, 'weeks'))
+                                moment(Number(record.createdAt)).isBetween(weekStartDate, moment(), 'day', '[]')
                             );
                             newLabels = filteredRecordings.map(record => {
                                 const { date, time } = formatDateTime(record.createdAt);
@@ -165,20 +167,17 @@ function GraphPage({ selectedRoomId }) {
                             break;
 
                         case 'month':
-                            const dailyData = {};
-                            sortedRecordings.forEach(record => {
-                                const { date } = formatDateTime(record.createdAt);
-                                if (!dailyData[date]) {
-                                    dailyData[date] = { temperatureSum: 0, humiditySum: 0, count: 0 };
-                                }
-                                dailyData[date].temperatureSum += record.temperature;
-                                dailyData[date].humiditySum += record.humidity;
-                                dailyData[date].count += 1;
+                            // Фильтрация за последние 30 дней
+                            const monthStartDate = moment().subtract(30, 'days').startOf('day');
+                            filteredRecordings = sortedRecordings.filter(record =>
+                                moment(Number(record.createdAt)).isBetween(monthStartDate, moment(), 'day', '[]')
+                            );
+                            newLabels = filteredRecordings.map(record => {
+                                const { date, time } = formatDateTime(record.createdAt);
+                                return `${date} ${time}`;
                             });
-
-                            newLabels = Object.keys(dailyData);
-                            temperatureData = newLabels.map(day => dailyData[day].temperatureSum / dailyData[day].count);
-                            humidityData = newLabels.map(day => dailyData[day].humiditySum / dailyData[day].count);
+                            temperatureData = filteredRecordings.map(record => record.temperature);
+                            humidityData = filteredRecordings.map(record => record.humidity);
                             break;
 
                         default:
@@ -200,6 +199,7 @@ function GraphPage({ selectedRoomId }) {
                 console.error('Ошибка при получении данных', error);
             }
         };
+
 
 
         fetchRoomData();
