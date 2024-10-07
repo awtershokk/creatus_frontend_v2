@@ -120,7 +120,7 @@ export const transformDeviceStatistics = (data: {
     return data.data.map(stat => {
         const dateObj = new Date(parseInt(stat.date));
         const formattedDate = dateObj.toLocaleDateString();
-        const formattedTime = dateObj.toLocaleTimeString()
+        const formattedTime = dateObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
         return {
             date: formattedDate,
             time: formattedTime,

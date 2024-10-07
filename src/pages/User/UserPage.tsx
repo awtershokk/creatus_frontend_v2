@@ -402,8 +402,8 @@ const UserPage: React.FC = () => {
                     />
                 </div>
 
-                    )
-                }
+            )
+            }
 
             {selectedMeasuringPointId && choise == "MP" &&  (
                 <div className="mt-8">
@@ -412,34 +412,34 @@ const UserPage: React.FC = () => {
 
                         {tabIndex === 0 && (
 
-                                <ObjectTable
-                                    title="Информация о точке измерения"
-                                    data={selectedMeasuringPointData}
-                                    ButtonComponent={'EditButton'}
+                            <ObjectTable
+                                title="Информация о точке измерения"
+                                data={selectedMeasuringPointData}
+                                ButtonComponent={'EditButton'}
 
-                                />
-                            )
+                            />
+                        )
                         }
                         {tabIndex === 1 && (
 
-                                <div>
-                                    <DownloadButton />
-                                    <div className="mt-4 flex items-center justify-between">
-                                        <div className="flex items-center">
-                                            <Label text="Рассчитанные значения" />
-                                            <div className="ml-4 mt-1 text-sm text-gray-600">
-                                                Всего значений: {totalRecordings}
-                                            </div>
+                            <div>
+                                <DownloadButton />
+                                <div className="mt-4 flex items-center justify-between">
+                                    <div className="flex items-center">
+                                        <Label text="Рассчитанные значения" />
+                                        <div className="ml-4 mt-1 text-sm text-gray-600">
+                                            Всего значений: {totalRecordings}
                                         </div>
                                     </div>
-
-                                    <TableContainer>
-                                        <ItemTable
-                                            headers={headersMP}
-                                            data={filteredMeasurementsMP}
-                                        />
-                                    </TableContainer>
                                 </div>
+
+                                <TableContainer>
+                                    <ItemTable
+                                        headers={headersMP}
+                                        data={filteredMeasurementsMP}
+                                    />
+                                </TableContainer>
+                            </div>
 
                         )}
 
@@ -448,24 +448,24 @@ const UserPage: React.FC = () => {
             )}
 
             {selectedRoomId && choise == "Room" && (
-        <div className="mt-8">
-            <TabsButton tabIndex={tabIndex} setTabIndex={setTabIndex}  tabs={tabsForRoom}/>
-            <div>
+                <div className="mt-8">
+                    <TabsButton tabIndex={tabIndex} setTabIndex={setTabIndex}  tabs={tabsForRoom}/>
+                    <div>
 
-                    {tabIndex === 0 && (
-                    isLoadingRoomData ? (
-                        <div className="fixed  flex items-center justify-center z-50">
-                            <LoadingSpinner
-                                containerClassName="flex items-center justify-center"
-                                spinnerClassName="w-12 h-12 border-4 border-gray-200 border-t-gray-700 rounded-full animate-spin"
-                            />
-                        </div>
-                    ) : (
-                        <ObjectTable
-                            title="Информация о помещении"
-                            data={roomDataFields}
-                            ButtonComponent={'EditButton'}
-                            nonEditableFields={nonEditableFields}
+                        {tabIndex === 0 && (
+                            isLoadingRoomData ? (
+                                <div className="fixed  flex items-center justify-center z-50">
+                                    <LoadingSpinner
+                                        containerClassName="flex items-center justify-center"
+                                        spinnerClassName="w-12 h-12 border-4 border-gray-200 border-t-gray-700 rounded-full animate-spin"
+                                    />
+                                </div>
+                            ) : (
+                                <ObjectTable
+                                    title="Информация о помещении"
+                                    data={roomDataFields}
+                                    ButtonComponent={'EditButton'}
+                                    nonEditableFields={nonEditableFields}
                                 />
                             )
                         )}
@@ -475,32 +475,32 @@ const UserPage: React.FC = () => {
                                     containerClassName = "flex items-center justify-center mr-[250px]"
                                     spinnerClassName = "w-12 h-12 border-4 border-gray-200 border-t-gray-700 rounded-full animate-spin" />
                             ) : (
-                            <div>
-                                <DownloadButton />
-                                <div className="mt-4 flex items-center justify-between">
-                                    <div className="flex items-center">
-                                        <Label text="Рассчитанные значения" />
-                                        <div className="ml-4 mt-1 text-sm text-gray-600">
-                                            Всего значений: {totalRecordings}, Отображаемых
-                                            значений: {filteredRecordings.length}
+                                <div>
+                                    <DownloadButton />
+                                    <div className="mt-4 flex items-center justify-between">
+                                        <div className="flex items-center">
+                                            <Label text="Рассчитанные значения" />
+                                            <div className="ml-4 mt-1 text-sm text-gray-600">
+                                                Всего значений: {totalRecordings}, Отображаемых
+                                                значений: {filteredRecordings.length}
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
 
-                                <MeasurementsFilters
-                                    dateRange={dateRange}
-                                    timeRange={timeRange}
-                                    temperatureDeviation={temperatureDeviation}
-                                    humidityDeviation={humidityDeviation}
-                                    onFilterChange={handleFilterChange}
-                                />
-                                <TableContainer>
-                                    <ItemTable
-                                        headers={headers}
-                                        data={filteredRecordings}
+                                    <MeasurementsFilters
+                                        dateRange={dateRange}
+                                        timeRange={timeRange}
+                                        temperatureDeviation={temperatureDeviation}
+                                        humidityDeviation={humidityDeviation}
+                                        onFilterChange={handleFilterChange}
                                     />
-                                </TableContainer>
-                            </div>
+                                    <TableContainer>
+                                        <ItemTable
+                                            headers={headers}
+                                            data={filteredRecordings}
+                                        />
+                                    </TableContainer>
+                                </div>
                             )
                         )}
                         {tabIndex === 2 && (
