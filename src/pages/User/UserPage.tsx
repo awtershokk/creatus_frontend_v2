@@ -11,11 +11,13 @@ import MeasurementsFilters from "../../components/Filters/MeasurementsFilters.ts
 import GraphPage from "../../components/Graph/GraphPage.tsx";
 import Label from "../../components/Text/Label.tsx";
 
-import { fetchRoomUser } from "../../api/requests/roomApi.ts";
-import { fetchMeasurementsRoom } from "../../api/requests/measurementsApi.ts";
+import { fetchRoomUser} from "../../api/requests/roomApi.ts";
+import {fetchMeasurementsMeasuringPoint, fetchMeasurementsRoom} from "../../api/requests/measurementsApi.ts";
 import { fetchPublicInfo } from "../../api/requests/buildingApi.ts";
 import { FaRegArrowAltCircleUp } from "react-icons/fa";
 import LoadingSpinner from "../../components/Menu/LoadingSpinner.tsx";
+import {fetchMeasuringPoint} from "../../api/requests/measuringPointApi.ts";
+import { transformMeasuringPointDataForUser} from "../../models/MeasuringPoint.tsx";
 
 interface MeasuringPoint {
     deviceActive: boolean | null;
@@ -55,11 +57,15 @@ const UserPage: React.FC = () => {
     const [currentCircuitIndex, setCurrentCircuitIndex] = useState(0);
     const [officeName, setOfficeName] = useState();
     const [selectedRoomId, setSelectedRoomId] = useState<string | null>(null);
+    const [selectedMeasuringPointId, setSelectedMeasuringPointId] = useState<string | null>(null);
     const [tabIndex, setTabIndex] = useState(0);
     const [roomDataFields, setRoomDataFields] = useState([]);
     const [recordings, setRecordings] = useState<Array<Record<string, any>>>([]);
     const [totalRecordings, setTotalRecordings] = useState<number>(0);
+
+
     const [filteredRecordings, setFilteredRecordings] = useState<Measurement[]>([]);
+    const [filteredMeasurementsMP, setFilteredMeasurementsMP] = useState<Measurement[]>([]);
     const [dateRange, setDateRange] = useState<{ start: Date | null; end: Date | null }>({ start: null, end: null });
     const [timeRange, setTimeRange] = useState<{ start: Date | null; end: Date | null }>({ start: null, end: null });
     const [temperatureDeviation, setTemperatureDeviation] = useState<{ min: number | null; max: number | null }>({ min: null, max: null });
@@ -68,11 +74,15 @@ const UserPage: React.FC = () => {
     const [isLoadingPageData, setIsLoadingPageData] = useState(true);
     const [isLoadingRoomData, setIsLoadingRoomData] = useState(true);
     const [isLoadingMeasurementsData, setIsLoadingMeasurementsData] = useState(true);
+    const [selectedMeasuringPointData, setSelectedMeasuringPointData] = useState([]);
+    const [choise, setChoise] = useState("")
+
 
     useEffect(() => {
         const fetchInfo = async () => {
             try {
                 const data = await fetchPublicInfo(5);
+
                 setOfficeName(data.officeName);
                 setInfo(data.thermalCircuits);
                 setIsLoadingPageData(false);
@@ -89,6 +99,8 @@ const UserPage: React.FC = () => {
             const fetchRoomData = async () => {
                 try {
                     const transformedRoomData = await fetchRoomUser(selectedRoomId);
+
+
                     setRoomDataFields(transformedRoomData);
                     setIsLoadingRoomData(false);
                 } catch (error) {
@@ -187,7 +199,16 @@ const UserPage: React.FC = () => {
         'Отклонение t°': 'deviation_temperature',
         'Отклонение h': 'deviation_humidity',
     };
-
+    const headersMP = {
+        'Дата': 'date',
+        'Время': 'time',
+        'Измеренная t°': 'measured_temperature',
+        'Калиброванная t°': 'calculated_humidity',
+        'Измеренная h': 'measured_humidity',
+        'Калиброванная h': 'calculated_humidity',
+        'Отклонение t°': 'deviation_temperature',
+        'Отклонение h': 'deviation_humidity',
+    };
     useEffect(() => {
         const fetchRecordings = async () => {
             try {
@@ -195,6 +216,7 @@ const UserPage: React.FC = () => {
                 setRecordings(selectedData);
                 setFilteredRecordings(selectedData);
                 setTotalRecordings(selectedData.length);
+
                 setIsLoadingMeasurementsData(false);
             } catch (error) {
                 console.error('Нет доступных значений', error);
@@ -205,6 +227,7 @@ const UserPage: React.FC = () => {
         if (selectedRoomId) {
             fetchRecordings();
         }
+
     }, [selectedRoomId]);
 
     const handleNextClick = useCallback(() => {
@@ -218,7 +241,34 @@ const UserPage: React.FC = () => {
     const handleRoomClick = useCallback((roomId: string) => {
         setSelectedRoomId(roomId);
         setTabIndex(0);
+        setChoise("Room")
     }, []);
+    const fetchMeasuringPointData = async (measuringPointId: number) => {
+
+        try {
+            const request = await fetchMeasuringPoint(measuringPointId);
+            const measuringPointData = transformMeasuringPointDataForUser(request);
+            console.log('measuringPointData',measuringPointData);
+            setSelectedMeasuringPointData(measuringPointData);
+
+
+
+            const measurementsData = await fetchMeasurementsMeasuringPoint(measuringPointId);
+            console.log('measurementsData',measurementsData)
+            setFilteredMeasurementsMP(measurementsData);
+            setTotalRecordings(measurementsData.length);
+
+        } catch (error) {
+            console.error('Ошибка при получении данных точки измерения', error);
+        }
+    };
+
+    const handleMeasuringPointClick = (measuringPointId: number) => {
+        setTabIndex(0);
+        setSelectedMeasuringPointId(measuringPointId);
+        fetchMeasuringPointData(measuringPointId);
+        setChoise("MP")
+    };
 
     const getRoomStyle = useCallback((tempDev: number | null, measuringPoints: MeasuringPoint[]) => {
         const statusColors = {
@@ -312,6 +362,17 @@ const UserPage: React.FC = () => {
         };
     }, []);
 
+    const tabsForRoom = [
+        { index: 0, label: 'Информация о помещении' },
+        { index: 1, label: 'Измеренные значения' },
+        { index: 2, label: 'График t° и h' },
+    ];
+    const tabsForMP = [
+        { index: 0, label: 'Информация о точке измерения' },
+        { index: 1, label: 'Измеренные значения' },
+
+    ];
+
     return (
         <div className="container mx-auto p-4 w-max">
             {isLoadingPageData ? (
@@ -336,6 +397,7 @@ const UserPage: React.FC = () => {
                         sections={currentCircuit?.S || []}
                         selectedRoomId={selectedRoomId}
                         onRoomClick={handleRoomClick}
+                        onMeasuringPointClick={handleMeasuringPointClick}
                         getRoomStyle={getRoomStyle}
                     />
                 </div>
@@ -343,13 +405,54 @@ const UserPage: React.FC = () => {
                     )
                 }
 
+            {selectedMeasuringPointId && choise == "MP" &&  (
+                <div className="mt-8">
+                    <TabsButton tabIndex={tabIndex} setTabIndex={setTabIndex} tabs={tabsForMP}/>
+                    <div>
 
+                        {tabIndex === 0 && (
 
-            {selectedRoomId && (
+                                <ObjectTable
+                                    title="Информация о точке измерения"
+                                    data={selectedMeasuringPointData}
+                                    ButtonComponent={'EditButton'}
+
+                                />
+                            )
+                        }
+                        {tabIndex === 1 && (
+
+                                <div>
+                                    <DownloadButton />
+                                    <div className="mt-4 flex items-center justify-between">
+                                        <div className="flex items-center">
+                                            <Label text="Рассчитанные значения" />
+                                            <div className="ml-4 mt-1 text-sm text-gray-600">
+                                                Всего значений: {totalRecordings}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <TableContainer>
+                                        <ItemTable
+                                            headers={headersMP}
+                                            data={filteredMeasurementsMP}
+                                        />
+                                    </TableContainer>
+                                </div>
+
+                        )}
+
+                    </div>
+                </div>
+            )}
+
+            {selectedRoomId && choise == "Room" && (
         <div className="mt-8">
-            <TabsButton tabIndex={tabIndex} setTabIndex={setTabIndex}/>
+            <TabsButton tabIndex={tabIndex} setTabIndex={setTabIndex}  tabs={tabsForRoom}/>
             <div>
-                {tabIndex === 0 && (
+
+                    {tabIndex === 0 && (
                     isLoadingRoomData ? (
                         <div className="fixed  flex items-center justify-center z-50">
                             <LoadingSpinner

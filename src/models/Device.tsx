@@ -18,6 +18,16 @@ export interface Device {
     edit?: JSX.Element | null;
     delete?: JSX.Element | null;
 }
+interface DeviceStatistic {
+    id: number;
+    deviceId: number;
+    battery: number;
+    voltage: number;
+    linkquality: number;
+    date: string;
+}
+
+
 
 export const transformDeviceData = (
     device: Device,
@@ -32,7 +42,10 @@ export const transformDeviceData = (
             <BlueLink
                 to="#"
                 text={device.label}
-                onClick={() => handleLabelClick(device.id, device.label)}  // Open modal with id and label
+                onClick={(e) => {
+                    e.preventDefault();
+                    handleLabelClick(device.id, device.label);
+                }}
             />
         ),
         active: device.active ? <span style={{ color: 'green' }}>Онлайн</span> : <span style={{ color: 'red' }}>Оффлайн</span>,
@@ -89,4 +102,31 @@ export const transformDeviceDataForMP = (device: Device): {} => {
         { id: 3, title: 'Статус', value: device.active ? <span style={{ color: 'green' }}>Онлайн</span> : <span style={{ color: 'red' }}>Оффлайн</span> },
 
     ];
+};
+
+interface TransformedDeviceStatistic {
+    date: string;
+    time: string;
+    battery: number;
+    voltage: number;
+    linkquality: number;
+}
+
+export const transformDeviceStatistics = (data: {
+    timestamp: number;
+    data: DeviceStatistic[];
+    errors: string;
+}): TransformedDeviceStatistic[] => {
+    return data.data.map(stat => {
+        const dateObj = new Date(parseInt(stat.date));
+        const formattedDate = dateObj.toLocaleDateString();
+        const formattedTime = dateObj.toLocaleTimeString()
+        return {
+            date: formattedDate,
+            time: formattedTime,
+            battery: stat.battery,
+            voltage: stat.voltage,
+            linkquality: stat.linkquality,
+        };
+    });
 };

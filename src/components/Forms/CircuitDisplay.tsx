@@ -4,6 +4,7 @@ import { Tooltip, OverlayTrigger } from 'react-bootstrap';
 interface MeasuringPoint {
     deviceActive: boolean | null;
     measuringPointLabel: string;
+    measuringPointId: number; // Добавлено поле для хранения id точки измерения
 }
 
 interface Room {
@@ -33,13 +34,14 @@ interface CircuitDisplayProps {
     sections: Section[];
     selectedRoomId: string | null;
     onRoomClick: (roomId: string) => void;
+    onMeasuringPointClick: (measuringPointId: number) => void; // Новая функция для обработки клика по точке измерения
     getRoomStyle: (tempDev: number | null, measuringPoints: MeasuringPoint[]) => {
         backgroundColor: string;
         measuringPointIndicators: React.ReactNode;
     };
 }
 
-const CircuitDisplay: React.FC<CircuitDisplayProps> = ({ sections, selectedRoomId, onRoomClick, getRoomStyle }) => {
+const CircuitDisplay: React.FC<CircuitDisplayProps> = ({ sections, selectedRoomId, onRoomClick, onMeasuringPointClick, getRoomStyle }) => {
 
     const getStatusColor = (status: boolean | null) => {
         const statusColors = {
@@ -74,13 +76,17 @@ const CircuitDisplay: React.FC<CircuitDisplayProps> = ({ sections, selectedRoomI
                         delay={{ show: 250, hide: 400 }}
                     >
                         <div style={{ display: 'inline-flex', justifyContent: 'center', alignItems: 'center', marginRight: '2px', marginTop: '2px' }}>
-                            <span style={{
-                                backgroundColor: color,
-                                borderRadius: '50%',
-                                display: 'inline-block',
-                                width: '10px',
-                                height: '10px'
-                            }}></span>
+                            <span
+                                style={{
+                                    backgroundColor: color,
+                                    borderRadius: '50%',
+                                    display: 'inline-block',
+                                    width: '10px',
+                                    height: '10px',
+                                    cursor: 'pointer'
+                                }}
+                                onClick={() => onMeasuringPointClick(point.measuringPointId)}
+                            ></span>
                         </div>
                     </OverlayTrigger>
                 );
@@ -93,7 +99,7 @@ const CircuitDisplay: React.FC<CircuitDisplayProps> = ({ sections, selectedRoomI
             {sections.map((section, sectionIndex) => (
                 <div key={sectionIndex} className="inline-block text-left p-1.5 border-2 border-black bg-gray-400">
                     <div className="p-1 text-center">
-                        <p className="text-base  text-white">
+                        <p className="text-base text-white">
                             <b>{section.label}</b>
                         </p>
                     </div>
@@ -109,7 +115,6 @@ const CircuitDisplay: React.FC<CircuitDisplayProps> = ({ sections, selectedRoomI
                                     circuit.R.map((room, roomIndex) => {
                                         const {
                                             backgroundColor,
-
                                         } = getRoomStyle(room.tempDev, room.measuringPoints);
 
                                         return (

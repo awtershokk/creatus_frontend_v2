@@ -30,12 +30,12 @@ const GraphFilter: React.FC<GraphFilterProps> = ({ onFilterChange, timeRange }) 
                     end = new Date(now.setHours(23, 59, 59, 999));
                     break;
                 case 'week':
-                    start = new Date(now.setDate(now.getDate() - now.getDay()));
-                    end = new Date(now.setDate(start.getDate() + 7));
+                    start = new Date(now.getTime() - (7 * 24 * 60 * 60 * 1000));
+                    end = new Date(); // Сегодня
                     break;
                 case 'month':
-                    start = new Date(now.getFullYear(), now.getMonth(), 1);
-                    end = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+                    start = new Date(now.getTime() - (30 * 24 * 60 * 60 * 1000));
+                    end = new Date(); // Сегодня
                     break;
                 default:
                     break;

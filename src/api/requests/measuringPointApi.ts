@@ -1,6 +1,6 @@
 import api from '../api.ts';
-import {MeasuringPoint, transformMeasuringPointData} from "../../models/MeasuringPoint.tsx";
-import {Room} from "../../models/Room.tsx";
+import {MeasuringPoint} from "../../models/MeasuringPoint.tsx";
+
 
 export const fetchMeasuringPoints = async (roomId: number) => {
     try {
