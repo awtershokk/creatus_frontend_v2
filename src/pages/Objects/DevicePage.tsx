@@ -13,6 +13,7 @@ import {setBreadcrumb} from "../../store/slices/breadcrumbSlice.ts";
 import {useDispatch} from "react-redux";
 import {toast} from "react-toastify";
 import DeviceStatisticModal from "../../components/Modal/DeviceStatisticModal.tsx";
+import TableContainer from "../../layouts/TableContainer.tsx";
 
 const DevicePage = () => {
     const dispatch = useDispatch();
@@ -154,13 +155,15 @@ const DevicePage = () => {
                             <Label text="Датчики"/>
                         </div>
                     </div>
-                    <ItemTable
-                        data={devices}
-                        headers={headers}
-                        tableStyles = 'table-auto border-collapse'
-                        onEditClick={handleEditDeviceClick}
-                        onDeleteClick={handleDeleteDeviceClick}
-                    />
+                    <TableContainer>
+                        <ItemTable
+                            data={devices}
+                            headers={headers}
+                            tableStyles = 'table-auto border-collapse'
+                            onEditClick={handleEditDeviceClick}
+                            onDeleteClick={handleDeleteDeviceClick}
+                        />
+                    </TableContainer>
                 </div>
             )}
 

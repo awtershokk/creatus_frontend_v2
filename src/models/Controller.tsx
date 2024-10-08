@@ -19,7 +19,7 @@ export const transformControllerData = (
     controller: Controller
 
 ): {} => {
-    const temporaryStatus = false; //Всё это временно
+    const temporaryStatus = true; //Всё это временно
     return {
 
         label: controller.label,
@@ -36,9 +36,9 @@ export const transformControllerData = (
          //   <BlueLink to={`/building/controllers/schedule/${controller.id}`} text={'Расписание'}/>
         //),
         status: temporaryStatus ? (
-            <span className="text-green-500 font-bold">Онлайн</span>
+            <span className="text-green-500">Онлайн</span>
         ) : (
-            <span className="text-red-500 font-bold">Оффлайн</span>
+            <span className="text-red-500">Оффлайн</span>
         ),
 
     };

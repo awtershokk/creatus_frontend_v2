@@ -82,7 +82,6 @@ const UserPage: React.FC = () => {
         const fetchInfo = async () => {
             try {
                 const data = await fetchPublicInfo(5);
-
                 setOfficeName(data.officeName);
                 setInfo(data.thermalCircuits);
                 setIsLoadingPageData(false);

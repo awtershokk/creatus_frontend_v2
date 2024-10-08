@@ -58,11 +58,11 @@ const DeviceStatisticModal: React.FC<DeviceStatisticyModalProps> = ({ deviceName
         onClose();
     };
 
-    // Extract temperature and humidity from deviceMeasuring
+
 
     const temperature = deviceMeasuring.temperature;
     const humidity = deviceMeasuring.humidity;
-    const date = deviceMeasuring.date; // Assuming date is a timestamp
+    const date = deviceMeasuring.date;
 
     return (
         <ModalTemplate
@@ -79,7 +79,7 @@ const DeviceStatisticModal: React.FC<DeviceStatisticyModalProps> = ({ deviceName
             ) : (
                 <>
                     <div>
-                        <p className="text-center mb-2 text-lg text-black">Данные от: {date ? date : 'N/A'}</p>
+                        <p className="text-center mb-2 text-lg text-black">Измерения от: {date ? date : 'N/A'}</p>
                         <div className="mb-4 flex justify-between">
 
                             {/* Temperature Square */}
