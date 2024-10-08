@@ -2,23 +2,33 @@ import React, { useEffect, useState } from 'react';
 import DefaultLayout from "../../layouts/DefaultLayout.tsx";
 import Label from "../../components/Text/Label.tsx";
 import ItemTable from '../../components/Tables/ItemTable.tsx';
-import {Controller} from "../../models/Controller.tsx";
-import { fetchControllers} from "../../api/requests/controllerApi.ts";
+import { Controller } from "../../models/Controller.tsx";
+import { fetchControllers } from "../../api/requests/controllerApi.ts";
 import LoadingSpinner from "../../components/Menu/LoadingSpinner.tsx";
-import {useDispatch} from "react-redux";
-import {setBreadcrumb} from "../../store/slices/breadcrumbSlice.ts";
+import { useDispatch } from "react-redux";
+import { setBreadcrumb } from "../../store/slices/breadcrumbSlice.ts";
+import { formatDateTime } from "../../utils/formatDateTime.ts"; // Import the function
 
 const ControllerPage = () => {
-    const [controllers, setContollers] = useState<Controller[]>([]);
+    const [controllers, setControllers] = useState<Controller[]>([]);
     const dispatch = useDispatch();
-
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         const getData = async () => {
             try {
                 const controllersData = await fetchControllers();
-                setContollers(controllersData);
+
+
+                const formattedControllers = controllersData.map(controller => {
+                    const { date, time } = formatDateTime(controller.url);
+                    return {
+                        ...controller,
+                        url: `${date} ${time}`,
+                    };
+                });
+
+                setControllers(formattedControllers);
                 setIsLoading(false);
 
             } catch (error) {
@@ -38,34 +48,34 @@ const ControllerPage = () => {
 
     const headers = {
         'Наименование': 'label',
-        'URL адрес': 'url',
-        'Порт': 'port',
+        'Последнее время записи': 'url',
         'Тепловой контур': 'thermalCircuit',
         'Тип ECL': 'ecl_type',
         'Параметры': 'settings',
-       // 'Расписание': 'schedule',
+        // 'Расписание': 'schedule',
+        'Статус': 'status',
     };
 
     return (
         <DefaultLayout>
             {isLoading ? (
-                <LoadingSpinner/>
+                <LoadingSpinner />
             ) : (
-        <div className="">
-            <div className="">
-                <div className="flex items-center mb-2">
-                    <Label text="Контроллеры"/>
+                <div className="">
+                    <div className="">
+                        <div className="flex items-center mb-2">
+                            <Label text="Контроллеры" />
+                        </div>
+                    </div>
+                    <ItemTable
+                        data={controllers}
+                        headers={headers}
+                        tableStyles='table-auto border-collapse'
+                    />
                 </div>
-            </div>
-                <ItemTable
-                    data={controllers}
-                    headers={headers}
-                    tableStyles = 'table-auto border-collapse'
-                />
-        </div>
-        )}
-    </DefaultLayout>
-);
+            )}
+        </DefaultLayout>
+    );
 };
 
 export default ControllerPage;

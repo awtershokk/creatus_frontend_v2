@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import ModalTemplate from './ModalTemplate';
 import ItemTable from "../Tables/ItemTable.tsx";
-import { fetchDevicesStatistic} from "../../api/requests/deviceApi.ts";
+import { fetchDevicesLastMeasuring, fetchDevicesStatistic } from "../../api/requests/deviceApi.ts";
 import LoadingSpinner from "../Menu/LoadingSpinner.tsx";
 import TableContainer from "../../layouts/TableContainer.tsx";
+import { RiWaterPercentFill } from "react-icons/ri";
+import { FaTemperatureFull } from "react-icons/fa6";
 
 interface DeviceStatisticyModalProps {
     deviceName: string;
@@ -13,6 +15,7 @@ interface DeviceStatisticyModalProps {
 
 const DeviceStatisticModal: React.FC<DeviceStatisticyModalProps> = ({ deviceName, deviceId, onClose }) => {
     const [deviceHistory, setDeviceHistory] = useState<any[]>([]);
+    const [deviceMeasuring, setDeviceMeasuring] = useState<any[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
 
@@ -20,50 +23,96 @@ const DeviceStatisticModal: React.FC<DeviceStatisticyModalProps> = ({ deviceName
         'Дата': 'date',
         'Время': 'time',
         'Заряд батареи': 'battery',
-        'Вольтаж': 'voltage',
         'Качество сигнала(LQI)': 'linkquality',
-
     };
 
     useEffect(() => {
-        const loadData = async () => {
-            try {
-                const data = await fetchDevicesStatistic(deviceId);
-                setDeviceHistory(data);
-            } catch (err) {
-                setError('Не удалось загрузить данные');
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        loadData();
+        loadDataForStatistic();
+        loadDataForMeasuring();
     }, [deviceId]);
 
-    const handleSubmit = () => {
+    const loadDataForStatistic = async () => {
+        try {
+            const data = await fetchDevicesStatistic(deviceId);
+            setDeviceHistory(data);
+        } catch (err) {
+            setError('Не удалось загрузить данные');
+        } finally {
+            setLoading(false);
+        }
+    };
 
+    const loadDataForMeasuring = async () => {
+        try {
+            const data = await fetchDevicesLastMeasuring(deviceId);
+            setDeviceMeasuring(data);
+            console.log('data', data);
+        } catch (err) {
+            setError('Не удалось загрузить данные');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleSubmit = () => {
         onClose();
     };
+
+    // Extract temperature and humidity from deviceMeasuring
+
+    const temperature = deviceMeasuring.temperature;
+    const humidity = deviceMeasuring.humidity;
+    const date = deviceMeasuring.date; // Assuming date is a timestamp
 
     return (
         <ModalTemplate
             headerTitle={`История изменений: ${deviceName}`}
-            wight = 'max-w-[700px]'
+            wight='max-w-[570px]'
             onClose={onClose}
             onSubmit={handleSubmit}
             loading={loading}
         >
             {loading ? (
-                <LoadingSpinner/>
+                <LoadingSpinner />
             ) : error ? (
                 <p className="text-red-500">{"Ошибка"}</p>
             ) : (
-                <TableContainer>
-                    <ItemTable
-                        headers={headers}
-                        data={deviceHistory} />
-                </TableContainer>
+                <>
+                    <div>
+                        <p className="text-center mb-2 text-lg text-black">Данные от: {date ? date : 'N/A'}</p>
+                        <div className="mb-4 flex justify-between">
 
+                            {/* Temperature Square */}
+                            <div className="flex flex-col items-center w-full mx-2">
+                                <div className="bg-yellow-200 p-4 rounded-lg shadow-lg flex items-center justify-center w-full">
+                                    <FaTemperatureFull className="text-2xl mr-2 text-gray-800" />
+                                    <div className="text-center text-gray-800">
+                                        <p className="font-bold">{temperature ? `${temperature} °C` : 'N/A'}</p>
+                                        <p className="text-sm">Температура</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Humidity Square */}
+                            <div className="flex flex-col items-center w-full mx-2">
+                                <div className="bg-teal-200 p-4 rounded-lg shadow-lg flex items-center justify-center w-full">
+                                    <RiWaterPercentFill className="text-2xl mr-2 text-gray-800" />
+                                    <div className="text-center text-gray-800">
+                                        <p className="font-bold">{humidity ? `${humidity} %` : 'N/A'}</p>
+                                        <p className="text-sm">Влажность</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <TableContainer>
+                        <ItemTable
+                            headers={headers}
+                            data={deviceHistory}/>
+                    </TableContainer>
+                </>
             )}
         </ModalTemplate>
     );

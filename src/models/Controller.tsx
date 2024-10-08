@@ -3,7 +3,6 @@ import BlueLink from "../components/Text/BlueLink.tsx";
 export interface Controller {
     label: string;
     url: string;
-    port: number;
     thermalCircuit: {
         id: number;
         label: string;
@@ -12,15 +11,20 @@ export interface Controller {
         label: string;
     };
     id: number;
+    status: boolean;
 }
+
 
 export const transformControllerData = (
     controller: Controller
+
 ): {} => {
+    const temporaryStatus = false; //Всё это временно
     return {
+
         label: controller.label,
         url: controller.url,
-        port: controller.port,
+
         thermalCircuit: controller.thermalCircuit === null ? 'Нет' : (
             <BlueLink to={`/building/thermalCircuit/${controller.thermalCircuit.id}`} text={controller.thermalCircuit.label}/>
         ),
@@ -31,6 +35,11 @@ export const transformControllerData = (
        // schedule: (
          //   <BlueLink to={`/building/controllers/schedule/${controller.id}`} text={'Расписание'}/>
         //),
+        status: temporaryStatus ? (
+            <span className="text-green-500 font-bold">Онлайн</span>
+        ) : (
+            <span className="text-red-500 font-bold">Оффлайн</span>
+        ),
 
     };
 };

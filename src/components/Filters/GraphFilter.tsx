@@ -56,7 +56,7 @@ const GraphFilter: React.FC<GraphFilterProps> = ({ onFilterChange, timeRange }) 
     const handleDateChange = (dates: [Date | null, Date | null]) => {
         const [start, end] = dates;
         setDateRange({ start, end });
-        onFilterChange({ dateRange: { start: start ? start.getTime() : null, end: end ? end.getTime() : null } });
+        onFilterChange({ dateRange: { start, end } }); // передаем start и end без изменений
     };
 
     const handleResetAllFilters = () => {
@@ -106,10 +106,10 @@ const GraphFilter: React.FC<GraphFilterProps> = ({ onFilterChange, timeRange }) 
                             />
                             <div className="mb-4"></div>
                             <DatePicker
-                                selected={dateRange.start}
+                                selected={dateRange.start ?? undefined} // используем undefined вместо null
                                 onChange={handleDateChange}
-                                startDate={dateRange.start}
-                                endDate={dateRange.end}
+                                startDate={dateRange.start ?? undefined} // используем undefined вместо null
+                                endDate={dateRange.end ?? undefined} // используем undefined вместо null
                                 selectsRange
                                 inline
                                 locale={ru}

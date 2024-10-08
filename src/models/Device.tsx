@@ -1,6 +1,8 @@
 import { FaEdit, FaRegTrashAlt } from "react-icons/fa";
 import BlueLink from "../components/Text/BlueLink.tsx";
 import {Link} from "react-router-dom";
+import {fetchDevicesLastMeasuring} from "../api/requests/deviceApi.ts";
+import {formatDateTime} from "../utils/formatDateTime.ts";
 
 export interface Device {
     id: number;
@@ -22,7 +24,7 @@ interface DeviceStatistic {
     id: number;
     deviceId: number;
     battery: number;
-    voltage: number;
+
     linkquality: number;
     date: string;
 }
@@ -108,7 +110,6 @@ interface TransformedDeviceStatistic {
     date: string;
     time: string;
     battery: number;
-    voltage: number;
     linkquality: number;
 }
 
@@ -125,8 +126,32 @@ export const transformDeviceStatistics = (data: {
             date: formattedDate,
             time: formattedTime,
             battery: stat.battery,
-            voltage: stat.voltage,
             linkquality: stat.linkquality,
         };
     });
+};
+
+
+
+interface TransformedDeviceMeasuring {
+    deviceId: number;
+    temperature: number;
+    humidity: number;
+    date: string;
+}
+
+export const transformDeviceMeasuring = (stat: {
+    deviceId: number;
+    temperature: number;
+    humidity: number;
+    date: string;
+}): TransformedDeviceMeasuring => {
+    const { date, time } = formatDateTime(stat.date);
+
+    return {
+        deviceId: stat.deviceId,
+        temperature: stat.temperature,
+        humidity: stat.humidity,
+        date: `${date} ${time}`
+    };
 };

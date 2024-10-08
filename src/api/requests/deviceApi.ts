@@ -3,7 +3,7 @@ import {
     Device,
     transformDeviceData,
     transformDeviceDataForMP,
-    transformDeviceDataForSettingMode, transformDeviceStatistics
+    transformDeviceDataForSettingMode, transformDeviceMeasuring, transformDeviceStatistics
 } from "../../models/Device.tsx";
 
 
@@ -93,6 +93,21 @@ export const fetchDevicesStatistic = async (deviceId: number) => {
         const rawData = response.data;
 
         const transformedData = transformDeviceStatistics(rawData);
+
+        return transformedData;
+
+    } catch (error) {
+        console.error('Ошибка при получении статистики устройства:', error);
+        throw error;
+    }
+};
+
+export const fetchDevicesLastMeasuring = async (deviceId: number) => {
+    try {
+        const response = await api.get(`/device/measuringLast/${deviceId}`);
+        const rawData = response.data.data;
+
+        const transformedData = transformDeviceMeasuring(rawData);
 
         return transformedData;
 
