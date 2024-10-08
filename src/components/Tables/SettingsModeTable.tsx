@@ -33,6 +33,7 @@ const SettingsModeTable = () => {
                 data={devices}
                 tableTitle="Устройства"
                 rowStyles="border-b"
+                mainTableStyles = "overflow-y-auto max-h-[600px]"
                 cellStyles="p-2 border text-white"
             />
         </div>
