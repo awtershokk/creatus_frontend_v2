@@ -243,6 +243,7 @@ const UserPage: React.FC = () => {
         setTabIndex(0);
         setChoise("Room")
     }, []);
+
     const fetchMeasuringPointData = async (measuringPointId: number) => {
 
         try {
@@ -294,7 +295,7 @@ const UserPage: React.FC = () => {
         if (tempDev !== null) {
             const deviation = parseFloat(tempDev.toString());
             if (!isNaN(deviation)) {
-                const flooredDeviation = Math.floor(Math.abs(deviation)); // Округляем отклонение
+                const flooredDeviation = Math.floor(Math.abs(deviation));
 
                 switch (true) {
                     case deviation > 0:

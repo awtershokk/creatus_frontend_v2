@@ -1,0 +1,715 @@
+
+> creatus_frontend_v2@0.0.0 build
+> tsc -b && vite build -
+
+src/api/requests/authApi.ts(26,25): error TS2339: Property 'data' does not exist on type 'AsyncThunkAction<any, void, AsyncThunkConfig>'.
+src/store/slices/breadcrumbSlice.ts(13,13): error TS7053: Element implicitly has an 'any' type because expression of type 'any' can't be used to index type 'WritableDraft<{}>'.
+src/pages/Error/NotConnectionPage.tsx(1,8): error TS6133: 'React' is declared but its value is never read.
+src/components/Tables/ItemTable.tsx(1,8): error TS6133: 'React' is declared but its value is never read.
+src/api/requests/deviceApi.ts(22,9): error TS2322: Type '{}[]' is not assignable to type 'Device[]'.
+  Type '{}' is missing the following properties from type 'Device': id, label, active, model, and 8 more.
+src/api/requests/deviceApi.ts(43,9): error TS2322: Type '{}[]' is not assignable to type 'Device[]'.
+src/components/Tables/SettingsModeTable.tsx(34,17): error TS2322: Type '{ headers: { Наименование: string; Модель: string; '\u0421\u0435\u0440. \u043D\u043E\u043C\u0435\u0440': string; }; data: Device[]; tableTitle: string; rowStyles: string; cellStyles: string; }' is not assignable to type 'IntrinsicAttributes & ItemTableProps'.
+  Property 'tableTitle' does not exist on type 'IntrinsicAttributes & ItemTableProps'.
+src/components/Menu/Header.tsx(1,8): error TS6133: 'React' is declared but its value is never read.
+src/components/Menu/Header.tsx(15,12): error TS6133: 'isUserDropdownOpen' is declared but its value is never read.
+src/components/Menu/Header.tsx(19,12): error TS6133: 'sections' is declared but its value is never read.
+src/components/Menu/Header.tsx(20,12): error TS6133: 'thermals' is declared but its value is never read.
+src/components/Menu/Header.tsx(171,67): error TS18047: 'user' is possibly 'null'.
+src/components/Menu/Header.tsx(172,37): error TS18047: 'user' is possibly 'null'.
+src/components/Menu/Header.tsx(173,45): error TS18047: 'user' is possibly 'null'.
+src/models/ThermalCircuit.ts(16,136): error TS2339: Property 'label' does not exist on type 'string'.
+src/models/ThermalCircuit.ts(19,152): error TS2339: Property 'label' does not exist on type 'string'.
+src/components/Menu/LeftMenu.tsx(8,5): error TS6133: 'FaCogs' is declared but its value is never read.
+src/components/Menu/LeftMenu.tsx(9,5): error TS6133: 'FaExclamationTriangle' is declared but its value is never read.
+src/components/Menu/LeftMenu.tsx(13,5): error TS6133: 'FaBell' is declared but its value is never read.
+src/components/Menu/LeftMenu.tsx(25,12): error TS6133: 'componentWidth' is declared but its value is never read.
+src/components/Menu/LeftMenu.tsx(25,28): error TS6133: 'setComponentWidth' is declared but its value is never read.
+src/components/Menu/LeftMenu.tsx(32,12): error TS6133: 'hasUpdates' is declared but its value is never read.
+src/components/Menu/LeftMenu.tsx(33,12): error TS6133: 'isSwinging' is declared but its value is never read.
+src/components/Menu/Breadcrumbs.tsx(8,48): error TS18046: 'state' is of type 'unknown'.
+src/components/Menu/Breadcrumbs.tsx(12,32): error TS7006: Parameter 'segment' implicitly has an 'any' type.
+src/components/Menu/Breadcrumbs.tsx(17,31): error TS7053: Element implicitly has an 'any' type because expression of type 'any' can't be used to index type 'typeof import("/Users/grishakuznetsov/WebstormProjects/creatus_frontend_v2/node_modules/react-icons/fa/index")'.
+src/components/Menu/Breadcrumbs.tsx(23,19): error TS2345: Argument of type 'string' is not assignable to parameter of type 'number'.
+src/components/Menu/Breadcrumbs.tsx(28,26): error TS2345: Argument of type '{ label: any; Icon: any; path: string; id: any; }' is not assignable to parameter of type 'never'.
+src/components/Menu/Breadcrumbs.tsx(36,33): error TS2339: Property 'path' does not exist on type 'never'.
+src/components/Menu/Breadcrumbs.tsx(51,65): error TS2339: Property 'path' does not exist on type 'never'.
+src/components/Menu/Breadcrumbs.tsx(57,35): error TS2339: Property 'Icon' does not exist on type 'never'.
+src/components/Menu/Breadcrumbs.tsx(57,55): error TS2339: Property 'Icon' does not exist on type 'never'.
+src/components/Menu/Breadcrumbs.tsx(58,57): error TS2339: Property 'label' does not exist on type 'never'.
+src/components/Menu/Breadcrumbs.tsx(61,62): error TS2339: Property 'path' does not exist on type 'never'.
+src/components/Menu/Breadcrumbs.tsx(62,57): error TS2339: Property 'Icon' does not exist on type 'never'.
+src/components/Menu/Breadcrumbs.tsx(62,77): error TS2339: Property 'Icon' does not exist on type 'never'.
+src/components/Menu/Breadcrumbs.tsx(63,57): error TS2339: Property 'label' does not exist on type 'never'.
+src/layouts/DefaultLayout.tsx(5,26): error TS7031: Binding element 'children' implicitly has an 'any' type.
+src/layouts/DefaultLayout.tsx(10,27): error TS2322: Type '{ className: string; }' is not assignable to type 'IntrinsicAttributes'.
+  Property 'className' does not exist on type 'IntrinsicAttributes'.
+src/layouts/DefaultLayout.tsx(12,34): error TS2322: Type '{ className: string; }' is not assignable to type 'IntrinsicAttributes'.
+  Property 'className' does not exist on type 'IntrinsicAttributes'.
+src/components/Buttons/EditButton.tsx(3,23): error TS7031: Binding element 'onClick' implicitly has an 'any' type.
+src/components/Buttons/AddButton.tsx(3,22): error TS7031: Binding element 'onClick' implicitly has an 'any' type.
+src/components/Tables/ObjectTable.tsx(1,1): error TS6133: 'React' is declared but its value is never read.
+src/components/Tables/ChildElementsTable.tsx(28,61): error TS2339: Property 'to' does not exist on type '{ id: number; title: string; properties: string; delete: string; }'.
+src/components/Modal/ModalTemplate.tsx(33,32): error TS2503: Cannot find namespace 'NodeJS'.
+src/components/Modal/Edit/EditBuildingModal.tsx(60,44): error TS2339: Property 'id' does not exist on type '{ label?: string | undefined; }'.
+src/components/Modal/Edit/EditBuildingModal.tsx(63,38): error TS2339: Property 'id' does not exist on type '{ label?: string | undefined; }'.
+src/components/Modal/Edit/EditBuildingModal.tsx(72,62): error TS2339: Property 'id' does not exist on type '{ label?: string | undefined; }'.
+src/components/Modal/Edit/EditBuildingModal.tsx(83,28): error TS2339: Property 'fetch' does not exist on type '{ type: string; label: string; } | { type: string; label: string; } | { type: string; label: string; fetch: () => Promise<any>; } | { type: string; label: string; } | { type: string; label: string; } | ... 10 more ... | { ...; }'.
+  Property 'fetch' does not exist on type '{ type: string; label: string; }'.
+src/components/Modal/Edit/EditBuildingModal.tsx(85,56): error TS2339: Property 'fetch' does not exist on type '{ type: string; label: string; } | { type: string; label: string; } | { type: string; label: string; fetch: () => Promise<any>; } | { type: string; label: string; } | { type: string; label: string; } | ... 10 more ... | { ...; }'.
+  Property 'fetch' does not exist on type '{ type: string; label: string; }'.
+src/components/Modal/Edit/EditBuildingModal.tsx(89,35): error TS2339: Property 'options' does not exist on type '{ type: string; label: string; } | { type: string; label: string; } | { type: string; label: string; fetch: () => Promise<any>; } | { type: string; label: string; } | { type: string; label: string; } | ... 10 more ... | { ...; }'.
+  Property 'options' does not exist on type '{ type: string; label: string; }'.
+src/components/Modal/Edit/EditBuildingModal.tsx(90,46): error TS2339: Property 'options' does not exist on type '{ type: string; label: string; } | { type: string; label: string; } | { type: string; label: string; fetch: () => Promise<any>; } | { type: string; label: string; } | { type: string; label: string; } | ... 10 more ... | { ...; }'.
+  Property 'options' does not exist on type '{ type: string; label: string; }'.
+src/components/Modal/Edit/EditBuildingModal.tsx(134,70): error TS2345: Argument of type '{ energyClass: string | number | undefined; timezone: string | number | undefined; hwsConnectionDiagram: string | number | undefined; label: string; address?: string; constructionVolume?: number; ... 9 more ...; balanceHolderLabel?: string; }' is not assignable to parameter of type 'BuildingForm'.
+  Types of property 'energyClass' are incompatible.
+    Type 'string | number | undefined' is not assignable to type 'number | undefined'.
+      Type 'string' is not assignable to type 'number'.
+src/components/Modal/Edit/EditBuildingModal.tsx(163,40): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type 'BuildingForm'.
+  No index signature with a parameter of type 'string' was found on type 'BuildingForm'.
+src/components/Modal/Edit/EditBuildingModal.tsx(184,40): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type 'BuildingForm'.
+  No index signature with a parameter of type 'string' was found on type 'BuildingForm'.
+src/components/Modal/Edit/EditBuildingModal.tsx(203,40): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type 'BuildingForm'.
+  No index signature with a parameter of type 'string' was found on type 'BuildingForm'.
+src/api/requests/buildingApi.ts(34,44): error TS2345: Argument of type '{ position: any; type: any; fio: any; phone: any; email: any; tg_username: any; }' is not assignable to parameter of type 'ResponsiblePerson'.
+  Property 'tg_id' is missing in type '{ position: any; type: any; fio: any; phone: any; email: any; tg_username: any; }' but required in type 'ResponsiblePerson'.
+src/api/requests/buildingApi.ts(57,34): error TS2339: Property 'name' does not exist on type 'ResponsiblePerson'.
+src/api/requests/buildingApi.ts(106,38): error TS2339: Property 'label' does not exist on type 'BuildingInfo'.
+src/api/requests/buildingApi.ts(107,43): error TS2339: Property 'TC' does not exist on type 'BuildingInfo'.
+src/components/Buttons/MiniAddButton.tsx(3,26): error TS7031: Binding element 'onClick' implicitly has an 'any' type.
+src/components/Buttons/CheckBox.tsx(1,1): error TS6133: 'React' is declared but its value is never read.
+src/components/Buttons/CheckBox.tsx(3,27): error TS7031: Binding element 'checked' implicitly has an 'any' type.
+src/components/Buttons/CheckBox.tsx(3,36): error TS7031: Binding element 'onChange' implicitly has an 'any' type.
+src/components/Buttons/CheckBox.tsx(3,46): error TS7031: Binding element 'label' implicitly has an 'any' type.
+src/utils/formatPhoneNumber.ts(1,1): error TS6133: 'match' is declared but its value is never read.
+src/utils/formatPhoneNumber.ts(1,21): error TS2307: Cannot find module '@headlessui/react/dist/utils/match' or its corresponding type declarations.
+src/components/Modal/Add/AddResponsiblePersonModal.tsx(2,9): error TS6133: 'FaChevronDown' is declared but its value is never read.
+src/components/Modal/Add/AddResponsiblePersonModal.tsx(4,1): error TS6133: 'CustomCheckbox' is declared but its value is never read.
+src/components/Modal/Add/AddResponsiblePersonModal.tsx(47,12): error TS6133: 'selectedThermalCircuitIds' is declared but its value is never read.
+src/components/Modal/Add/AddResponsiblePersonModal.tsx(50,12): error TS6133: 'incidentTypes' is declared but its value is never read.
+src/components/Modal/Add/AddResponsiblePersonModal.tsx(56,12): error TS6133: 'notifyStatusChange' is declared but its value is never read.
+src/components/Modal/Add/AddResponsiblePersonModal.tsx(58,12): error TS6133: 'openSections' is declared but its value is never read.
+src/components/Modal/Add/AddResponsiblePersonModal.tsx(64,12): error TS6133: 'openIncidentSubmenus' is declared but its value is never read.
+src/components/Modal/Add/AddResponsiblePersonModal.tsx(114,11): error TS6133: 'handleCheckboxChange' is declared but its value is never read.
+src/components/Modal/Add/AddResponsiblePersonModal.tsx(120,11): error TS6133: 'toggleSection' is declared but its value is never read.
+src/components/Modal/Add/AddResponsiblePersonModal.tsx(123,25): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{ thermalCircuits: boolean; incidentTypes: boolean; statusChange: boolean; }'.
+  No index signature with a parameter of type 'string' was found on type '{ thermalCircuits: boolean; incidentTypes: boolean; statusChange: boolean; }'.
+src/components/Modal/Add/AddResponsiblePersonModal.tsx(127,11): error TS6133: 'toggleIncidentSubmenu' is declared but its value is never read.
+src/components/Modal/Add/AddResponsiblePersonModal.tsx(130,22): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{ Датчик: boolean; '\u0422\u043E\u0447\u043A\u0430 \u0438\u0437\u043C\u0435\u0440\u0435\u043D\u0438\u044F': boolean; Помещение: boolean; }'.
+  No index signature with a parameter of type 'string' was found on type '{ Датчик: boolean; '\u0422\u043E\u0447\u043A\u0430 \u0438\u0437\u043C\u0435\u0440\u0435\u043D\u0438\u044F': boolean; Помещение: boolean; }'.
+src/components/Modal/Add/AddResponsiblePersonModal.tsx(134,11): error TS6133: 'handleSelectAllNotifications' is declared but its value is never read.
+src/components/Modal/Add/AddResponsiblePersonModal.tsx(157,11): error TS6133: 'handleSelectAllIncidentTypes' is declared but its value is never read.
+src/components/Modal/Add/AddResponsiblePersonModal.tsx(216,52): error TS2345: Argument of type 'ResponsiblePerson' is not assignable to parameter of type 'import("/Users/grishakuznetsov/WebstormProjects/creatus_frontend_v2/src/models/ResponsiblePerson").ResponsiblePerson'.
+  Type 'ResponsiblePerson' is missing the following properties from type 'ResponsiblePerson': fio, tg_id, tg_username
+src/components/Modal/Delete/Section/DeleteSectionWithRoomsModal.tsx(41,13): error TS2322: Type '{ children: Element[]; headerTitle: string; buttonLabel: string; onClose: () => void; onSubmit: () => Promise<void>; loading: boolean; otmenaDisabled: boolean; }' is not assignable to type 'IntrinsicAttributes & ModalTemplateProps'.
+  Property 'otmenaDisabled' does not exist on type 'IntrinsicAttributes & ModalTemplateProps'.
+src/components/Modal/Manager/DeleteSectionModalManager.tsx(30,36): error TS2345: Argument of type 'string | number' is not assignable to parameter of type 'SetStateAction<string>'.
+  Type 'number' is not assignable to type 'SetStateAction<string>'.
+src/components/Modal/Add/AddThermalCircuitModal.tsx(134,50): error TS2339: Property 'id' does not exist on type 'never'.
+src/components/Modal/Add/AddThermalCircuitModal.tsx(134,69): error TS2339: Property 'label' does not exist on type 'never'.
+src/components/Modal/Add/AddThermalCircuitModal.tsx(135,42): error TS2339: Property 'label' does not exist on type 'never'.
+src/components/Modal/Add/AddThermalCircuitModal.tsx(189,50): error TS2339: Property 'id' does not exist on type 'never'.
+src/components/Modal/Add/AddThermalCircuitModal.tsx(189,69): error TS2339: Property 'label' does not exist on type 'never'.
+src/components/Modal/Add/AddThermalCircuitModal.tsx(190,42): error TS2339: Property 'label' does not exist on type 'never'.
+src/components/Buttons/TelegramButton.tsx(3,27): error TS7031: Binding element 'onClick' implicitly has an 'any' type.
+src/pages/Objects/BuildingPage.tsx(29,1): error TS6133: 'TelegramButton' is declared but its value is never read.
+src/pages/Objects/BuildingPage.tsx(31,16): error TS6133: 'ToastContainer' is declared but its value is never read.
+src/pages/Objects/BuildingPage.tsx(62,29): error TS2345: Argument of type 'Building' is not assignable to parameter of type 'SetStateAction<Building[]>'.
+src/pages/Objects/BuildingPage.tsx(75,56): error TS7006: Parameter 'section' implicitly has an 'any' type.
+src/pages/Objects/BuildingPage.tsx(85,70): error TS7006: Parameter 'thermalCircuit' implicitly has an 'any' type.
+src/pages/Objects/BuildingPage.tsx(184,37): error TS6133: 'newSection' is declared but its value is never read.
+src/pages/Objects/BuildingPage.tsx(193,44): error TS6133: 'newThermalCircuit' is declared but its value is never read.
+src/pages/Objects/BuildingPage.tsx(228,33): error TS2322: Type '{ id: number; title: string; value: string | number; }[]' is not assignable to type '{ id: number; title: string; value: string; }[]'.
+  Type '{ id: number; title: string; value: string | number; }' is not assignable to type '{ id: number; title: string; value: string; }'.
+    Types of property 'value' are incompatible.
+      Type 'string | number' is not assignable to type 'string'.
+        Type 'number' is not assignable to type 'string'.
+src/pages/Objects/BuildingPage.tsx(234,33): error TS2322: Type '{ id: number; title: string; value: string; value2: string; }[]' is not assignable to type '{ id: number; title: string; properties: string; delete: string; }[]'.
+  Type '{ id: number; title: string; value: string; value2: string; }' is missing the following properties from type '{ id: number; title: string; properties: string; delete: string; }': properties, delete
+src/pages/Objects/BuildingPage.tsx(242,37): error TS2322: Type '{ id: number; title: string; value: string; value2: string; }[]' is not assignable to type '{ id: number; title: string; properties: string; delete: string; }[]'.
+  Type '{ id: number; title: string; value: string; value2: string; }' is missing the following properties from type '{ id: number; title: string; properties: string; delete: string; }': properties, delete
+src/pages/Objects/BuildingPage.tsx(268,29): error TS2739: Type 'Building[]' is missing the following properties from type 'Building': label, energyClass, timezone, hwsConnectionDiagram
+src/components/Modal/Add/AddRoomInSectionModal.tsx(1,8): error TS6133: 'React' is declared but its value is never read.
+src/components/Modal/Add/AddRoomInSectionModal.tsx(5,34): error TS7031: Binding element 'sectionId' implicitly has an 'any' type.
+src/components/Modal/Add/AddRoomInSectionModal.tsx(5,45): error TS7031: Binding element 'onClose' implicitly has an 'any' type.
+src/components/Modal/Add/AddRoomInSectionModal.tsx(5,54): error TS7031: Binding element 'onSubmit' implicitly has an 'any' type.
+src/components/Modal/Add/AddRoomInSectionModal.tsx(42,27): error TS7006: Parameter 'e' implicitly has an 'any' type.
+src/components/Modal/Add/AddRoomInSectionModal.tsx(58,23): error TS2339: Property 'roomName' does not exist on type '{}'.
+src/components/Modal/Add/AddRoomInSectionModal.tsx(62,23): error TS2339: Property 'thermalCircuitId' does not exist on type '{}'.
+src/components/Modal/Add/AddRoomInSectionModal.tsx(66,23): error TS2339: Property 'area' does not exist on type '{}'.
+src/components/Modal/Add/AddRoomInSectionModal.tsx(69,23): error TS2339: Property 'windowOrientation' does not exist on type '{}'.
+src/components/Modal/Add/AddRoomInSectionModal.tsx(73,23): error TS2339: Property 'corner' does not exist on type '{}'.
+src/components/Modal/Add/AddRoomInSectionModal.tsx(76,23): error TS2339: Property 'temperatureActive' does not exist on type '{}'.
+src/components/Modal/Add/AddRoomInSectionModal.tsx(79,23): error TS2339: Property 'humidityActive' does not exist on type '{}'.
+src/components/Modal/Add/AddRoomInSectionModal.tsx(83,23): error TS2339: Property 'temperatureMinimum' does not exist on type '{}'.
+src/components/Modal/Add/AddRoomInSectionModal.tsx(86,23): error TS2339: Property 'temperatureMaximum' does not exist on type '{}'.
+src/components/Modal/Add/AddRoomInSectionModal.tsx(88,68): error TS2345: Argument of type 'number' is not assignable to parameter of type 'string'.
+src/components/Modal/Add/AddRoomInSectionModal.tsx(88,101): error TS2345: Argument of type 'number' is not assignable to parameter of type 'string'.
+src/components/Modal/Add/AddRoomInSectionModal.tsx(89,23): error TS2339: Property 'temperatureMinimum' does not exist on type '{}'.
+src/components/Modal/Add/AddRoomInSectionModal.tsx(90,23): error TS2339: Property 'temperatureMaximum' does not exist on type '{}'.
+src/components/Modal/Add/AddRoomInSectionModal.tsx(94,23): error TS2339: Property 'humidityMinimum' does not exist on type '{}'.
+src/components/Modal/Add/AddRoomInSectionModal.tsx(97,23): error TS2339: Property 'humidityMaximum' does not exist on type '{}'.
+src/components/Modal/Add/AddRoomInSectionModal.tsx(99,62): error TS2345: Argument of type 'number' is not assignable to parameter of type 'string'.
+src/components/Modal/Add/AddRoomInSectionModal.tsx(99,92): error TS2345: Argument of type 'number' is not assignable to parameter of type 'string'.
+src/components/Modal/Add/AddRoomInSectionModal.tsx(100,23): error TS2339: Property 'humidityMinimum' does not exist on type '{}'.
+src/components/Modal/Add/AddRoomInSectionModal.tsx(101,23): error TS2339: Property 'humidityMaximum' does not exist on type '{}'.
+src/components/Modal/Add/AddRoomInSectionModal.tsx(129,17): error TS18046: 'error' is of type 'unknown'.
+src/components/Modal/Add/AddRoomInSectionModal.tsx(129,35): error TS18046: 'error' is of type 'unknown'.
+src/components/Modal/Add/AddRoomInSectionModal.tsx(130,39): error TS18046: 'error' is of type 'unknown'.
+src/components/Modal/Add/AddRoomInSectionModal.tsx(134,58): error TS18046: 'error' is of type 'unknown'.
+src/components/Modal/Add/AddRoomInSectionModal.tsx(165,64): error TS2339: Property 'roomName' does not exist on type '{}'.
+src/components/Modal/Add/AddRoomInSectionModal.tsx(168,29): error TS2339: Property 'roomName' does not exist on type '{}'.
+src/components/Modal/Add/AddRoomInSectionModal.tsx(168,85): error TS2339: Property 'roomName' does not exist on type '{}'.
+src/components/Modal/Add/AddRoomInSectionModal.tsx(180,64): error TS2339: Property 'thermalCircuitId' does not exist on type '{}'.
+src/components/Modal/Add/AddRoomInSectionModal.tsx(184,49): error TS2339: Property 'value' does not exist on type 'never'.
+src/components/Modal/Add/AddRoomInSectionModal.tsx(184,70): error TS2339: Property 'value' does not exist on type 'never'.
+src/components/Modal/Add/AddRoomInSectionModal.tsx(185,41): error TS2339: Property 'label' does not exist on type 'never'.
+src/components/Modal/Add/AddRoomInSectionModal.tsx(189,29): error TS2339: Property 'thermalCircuitId' does not exist on type '{}'.
+src/components/Modal/Add/AddRoomInSectionModal.tsx(189,93): error TS2339: Property 'thermalCircuitId' does not exist on type '{}'.
+src/components/Modal/Add/AddRoomInSectionModal.tsx(202,64): error TS2339: Property 'floor' does not exist on type '{}'.
+src/components/Modal/Add/AddRoomInSectionModal.tsx(205,29): error TS2339: Property 'floor' does not exist on type '{}'.
+src/components/Modal/Add/AddRoomInSectionModal.tsx(205,82): error TS2339: Property 'floor' does not exist on type '{}'.
+src/components/Modal/Add/AddRoomInSectionModal.tsx(217,64): error TS2339: Property 'windowOrientation' does not exist on type '{}'.
+src/components/Modal/Add/AddRoomInSectionModal.tsx(221,49): error TS2339: Property 'value' does not exist on type 'never'.
+src/components/Modal/Add/AddRoomInSectionModal.tsx(221,70): error TS2339: Property 'label' does not exist on type 'never'.
+src/components/Modal/Add/AddRoomInSectionModal.tsx(222,41): error TS2339: Property 'label' does not exist on type 'never'.
+src/components/Modal/Add/AddRoomInSectionModal.tsx(226,29): error TS2339: Property 'windowOrientation' does not exist on type '{}'.
+src/components/Modal/Add/AddRoomInSectionModal.tsx(226,94): error TS2339: Property 'windowOrientation' does not exist on type '{}'.
+src/components/Modal/Add/AddRoomInSectionModal.tsx(239,64): error TS2339: Property 'area' does not exist on type '{}'.
+src/components/Modal/Add/AddRoomInSectionModal.tsx(242,29): error TS2339: Property 'area' does not exist on type '{}'.
+src/components/Modal/Add/AddRoomInSectionModal.tsx(242,81): error TS2339: Property 'area' does not exist on type '{}'.
+src/components/Modal/Add/AddRoomInSectionModal.tsx(254,64): error TS2339: Property 'corner' does not exist on type '{}'.
+src/components/Modal/Add/AddRoomInSectionModal.tsx(260,29): error TS2339: Property 'corner' does not exist on type '{}'.
+src/components/Modal/Add/AddRoomInSectionModal.tsx(260,83): error TS2339: Property 'corner' does not exist on type '{}'.
+src/components/Modal/Add/AddRoomInSectionModal.tsx(276,29): error TS2339: Property 'temperatureMinimum' does not exist on type '{}'.
+src/components/Modal/Add/AddRoomInSectionModal.tsx(276,95): error TS2339: Property 'temperatureMinimum' does not exist on type '{}'.
+src/components/Modal/Add/AddRoomInSectionModal.tsx(293,29): error TS2339: Property 'temperatureMaximum' does not exist on type '{}'.
+src/components/Modal/Add/AddRoomInSectionModal.tsx(293,95): error TS2339: Property 'temperatureMaximum' does not exist on type '{}'.
+src/components/Modal/Add/AddRoomInSectionModal.tsx(312,29): error TS2339: Property 'temperatureActive' does not exist on type '{}'.
+src/components/Modal/Add/AddRoomInSectionModal.tsx(312,94): error TS2339: Property 'temperatureActive' does not exist on type '{}'.
+src/components/Modal/Add/AddRoomInSectionModal.tsx(328,29): error TS2339: Property 'humidityMinimum' does not exist on type '{}'.
+src/components/Modal/Add/AddRoomInSectionModal.tsx(328,92): error TS2339: Property 'humidityMinimum' does not exist on type '{}'.
+src/components/Modal/Add/AddRoomInSectionModal.tsx(345,29): error TS2339: Property 'humidityMaximum' does not exist on type '{}'.
+src/components/Modal/Add/AddRoomInSectionModal.tsx(345,92): error TS2339: Property 'humidityMaximum' does not exist on type '{}'.
+src/components/Modal/Add/AddRoomInSectionModal.tsx(364,29): error TS2339: Property 'humidityActive' does not exist on type '{}'.
+src/components/Modal/Add/AddRoomInSectionModal.tsx(364,91): error TS2339: Property 'humidityActive' does not exist on type '{}'.
+src/components/Modal/Add/AddRoomInSectionModal.tsx(381,29): error TS2339: Property 'priority' does not exist on type '{}'.
+src/components/Modal/Add/AddRoomInSectionModal.tsx(381,85): error TS2339: Property 'priority' does not exist on type '{}'.
+src/api/requests/measuringPointApi.ts(67,46): error TS6133: 'label' is declared but its value is never read.
+src/components/Modal/Manager/DeleteRoomModalManager.tsx(27,42): error TS2345: Argument of type 'string | number | Element' is not assignable to parameter of type 'SetStateAction<string>'.
+  Type 'number' is not assignable to type 'SetStateAction<string>'.
+src/components/Modal/Edit/EditSectionModal.tsx(22,25): error TS2554: Expected 2 arguments, but got 1.
+src/components/Modal/Edit/EditSectionModal.tsx(61,67): error TS2345: Argument of type '{ id: number; label: string; area: number | undefined; volume: number | undefined; }' is not assignable to parameter of type 'Section'.
+  Property 'buildingId' is missing in type '{ id: number; label: string; area: number | undefined; volume: number | undefined; }' but required in type 'Section'.
+src/components/Modal/Edit/EditSectionModal.tsx(62,22): error TS2345: Argument of type 'Section' is not assignable to parameter of type '{ id: string; label: string; area: number; volume: number; }'.
+  Types of property 'id' are incompatible.
+    Type 'number' is not assignable to type 'string'.
+src/pages/Objects/SectionPage.tsx(1,8): error TS6133: 'React' is declared but its value is never read.
+src/pages/Objects/SectionPage.tsx(38,59): error TS2345: Argument of type 'string | undefined' is not assignable to parameter of type 'number'.
+  Type 'undefined' is not assignable to type 'number'.
+src/pages/Objects/SectionPage.tsx(51,57): error TS2345: Argument of type 'string | undefined' is not assignable to parameter of type 'number'.
+  Type 'undefined' is not assignable to type 'number'.
+src/pages/Objects/SectionPage.tsx(52,50): error TS7006: Parameter 'room' implicitly has an 'any' type.
+src/pages/Objects/SectionPage.tsx(115,29): error TS2322: Type '{ id: number; title: string; value: string | number; }[]' is not assignable to type '{ id: number; title: string; value: string; }[]'.
+  Type '{ id: number; title: string; value: string | number; }' is not assignable to type '{ id: number; title: string; value: string; }'.
+    Types of property 'value' are incompatible.
+      Type 'string | number' is not assignable to type 'string'.
+        Type 'number' is not assignable to type 'string'.
+src/pages/Objects/SectionPage.tsx(121,29): error TS2322: Type '{ id: number; title: string; value: string; value2: string; }[]' is not assignable to type '{ id: number; title: string; properties: string; delete: string; }[]'.
+  Type '{ id: number; title: string; value: string; value2: string; }' is missing the following properties from type '{ id: number; title: string; properties: string; delete: string; }': properties, delete
+src/pages/Objects/SectionPage.tsx(152,29): error TS2322: Type 'string | undefined' is not assignable to type 'number'.
+  Type 'undefined' is not assignable to type 'number'.
+src/pages/Objects/SectionPage.tsx(153,29): error TS2739: Type '{ id: number; title: string; value: string | number; }[]' is missing the following properties from type 'Section': id, label, buildingId
+src/pages/Objects/SectionPage.tsx(155,29): error TS2322: Type '() => Promise<void>' is not assignable to type '(updatedDevice: { id: string; label: string; area: number; volume: number; }) => (updatedSection: Section) => void'.
+  Type 'Promise<void>' is not assignable to type '(updatedSection: Section) => void'.
+    Type 'Promise<void>' provides no match for the signature '(updatedSection: Section): void'.
+src/components/Filters/MeasurementsFilters.tsx(196,33): error TS2322: Type '{ message: string; isVisible: boolean; toggleVisibility: () => void; }' is not assignable to type 'IntrinsicAttributes & TooltipProps'.
+  Property 'isVisible' does not exist on type 'IntrinsicAttributes & TooltipProps'.
+src/components/Filters/MeasurementsFilters.tsx(203,33): error TS2322: Type 'Date | null' is not assignable to type 'Date | undefined'.
+  Type 'null' is not assignable to type 'Date | undefined'.
+src/components/Filters/MeasurementsFilters.tsx(204,33): error TS2322: Type 'Date | null' is not assignable to type 'Date | undefined'.
+src/components/Filters/MeasurementsFilters.tsx(228,33): error TS2322: Type '{ message: string; isVisible: boolean; toggleVisibility: () => void; }' is not assignable to type 'IntrinsicAttributes & TooltipProps'.
+  Property 'isVisible' does not exist on type 'IntrinsicAttributes & TooltipProps'.
+src/components/Filters/MeasurementsFilters.tsx(281,33): error TS2322: Type '{ message: string; isVisible: boolean; toggleVisibility: () => void; }' is not assignable to type 'IntrinsicAttributes & TooltipProps'.
+  Property 'isVisible' does not exist on type 'IntrinsicAttributes & TooltipProps'.
+src/components/Filters/MeasurementsFilters.tsx(325,33): error TS2322: Type '{ message: string; isVisible: boolean; toggleVisibility: () => void; }' is not assignable to type 'IntrinsicAttributes & TooltipProps'.
+  Property 'isVisible' does not exist on type 'IntrinsicAttributes & TooltipProps'.
+src/components/Buttons/DownloadButton.tsx(1,1): error TS6192: All imports in import declaration are unused.
+src/components/Buttons/DownloadButton.tsx(5,16): error TS6133: 'ToastContainer' is declared but its value is never read.
+src/components/Buttons/DownloadButton.tsx(7,6): error TS6196: 'DownloadButtonProps' is declared but never used.
+src/components/Buttons/DownloadButton.tsx(23,22): error TS7006: Parameter 'row' implicitly has an 'any' type.
+src/components/Buttons/DownloadButton.tsx(24,72): error TS2538: Type 'unknown' cannot be used as an index type.
+src/components/Buttons/DownloadButton.tsx(40,25): error TS7006: Parameter 'row' implicitly has an 'any' type.
+src/components/Buttons/DownloadButton.tsx(40,76): error TS2538: Type 'unknown' cannot be used as an index type.
+src/components/Modal/Add/AddRoomInThermalCircuitModal.tsx(95,68): error TS2345: Argument of type 'number' is not assignable to parameter of type 'string'.
+src/components/Modal/Add/AddRoomInThermalCircuitModal.tsx(95,101): error TS2345: Argument of type 'number' is not assignable to parameter of type 'string'.
+src/components/Modal/Add/AddRoomInThermalCircuitModal.tsx(108,62): error TS2345: Argument of type 'number' is not assignable to parameter of type 'string'.
+src/components/Modal/Add/AddRoomInThermalCircuitModal.tsx(108,92): error TS2345: Argument of type 'number' is not assignable to parameter of type 'string'.
+src/components/Modal/Add/AddRoomInThermalCircuitModal.tsx(175,64): error TS2339: Property 'roomName' does not exist on type '{}'.
+src/components/Modal/Add/AddRoomInThermalCircuitModal.tsx(178,29): error TS2339: Property 'roomName' does not exist on type '{}'.
+src/components/Modal/Add/AddRoomInThermalCircuitModal.tsx(178,85): error TS2339: Property 'roomName' does not exist on type '{}'.
+src/components/Modal/Add/AddRoomInThermalCircuitModal.tsx(190,64): error TS2339: Property 'section' does not exist on type '{}'.
+src/components/Modal/Add/AddRoomInThermalCircuitModal.tsx(194,49): error TS2339: Property 'value' does not exist on type 'never'.
+src/components/Modal/Add/AddRoomInThermalCircuitModal.tsx(194,70): error TS2339: Property 'value' does not exist on type 'never'.
+src/components/Modal/Add/AddRoomInThermalCircuitModal.tsx(195,41): error TS2339: Property 'label' does not exist on type 'never'.
+src/components/Modal/Add/AddRoomInThermalCircuitModal.tsx(199,29): error TS2339: Property 'section' does not exist on type '{}'.
+src/components/Modal/Add/AddRoomInThermalCircuitModal.tsx(199,84): error TS2339: Property 'section' does not exist on type '{}'.
+src/components/Modal/Add/AddRoomInThermalCircuitModal.tsx(212,64): error TS2339: Property 'floor' does not exist on type '{}'.
+src/components/Modal/Add/AddRoomInThermalCircuitModal.tsx(215,29): error TS2339: Property 'floor' does not exist on type '{}'.
+src/components/Modal/Add/AddRoomInThermalCircuitModal.tsx(215,82): error TS2339: Property 'floor' does not exist on type '{}'.
+src/components/Modal/Add/AddRoomInThermalCircuitModal.tsx(227,64): error TS2339: Property 'windowOrientation' does not exist on type '{}'.
+src/components/Modal/Add/AddRoomInThermalCircuitModal.tsx(231,49): error TS2339: Property 'value' does not exist on type 'never'.
+src/components/Modal/Add/AddRoomInThermalCircuitModal.tsx(231,70): error TS2339: Property 'label' does not exist on type 'never'.
+src/components/Modal/Add/AddRoomInThermalCircuitModal.tsx(232,41): error TS2339: Property 'label' does not exist on type 'never'.
+src/components/Modal/Add/AddRoomInThermalCircuitModal.tsx(236,29): error TS2339: Property 'windowOrientation' does not exist on type '{}'.
+src/components/Modal/Add/AddRoomInThermalCircuitModal.tsx(236,94): error TS2339: Property 'windowOrientation' does not exist on type '{}'.
+src/components/Modal/Add/AddRoomInThermalCircuitModal.tsx(249,64): error TS2339: Property 'area' does not exist on type '{}'.
+src/components/Modal/Add/AddRoomInThermalCircuitModal.tsx(252,29): error TS2339: Property 'area' does not exist on type '{}'.
+src/components/Modal/Add/AddRoomInThermalCircuitModal.tsx(252,81): error TS2339: Property 'area' does not exist on type '{}'.
+src/components/Modal/Add/AddRoomInThermalCircuitModal.tsx(264,64): error TS2339: Property 'corner' does not exist on type '{}'.
+src/components/Modal/Add/AddRoomInThermalCircuitModal.tsx(271,29): error TS2339: Property 'corner' does not exist on type '{}'.
+src/components/Modal/Add/AddRoomInThermalCircuitModal.tsx(271,83): error TS2339: Property 'corner' does not exist on type '{}'.
+src/components/Modal/Add/AddRoomInThermalCircuitModal.tsx(286,29): error TS2339: Property 'temperatureMinimum' does not exist on type '{}'.
+src/components/Modal/Add/AddRoomInThermalCircuitModal.tsx(286,95): error TS2339: Property 'temperatureMinimum' does not exist on type '{}'.
+src/components/Modal/Add/AddRoomInThermalCircuitModal.tsx(303,29): error TS2339: Property 'temperatureMaximum' does not exist on type '{}'.
+src/components/Modal/Add/AddRoomInThermalCircuitModal.tsx(303,95): error TS2339: Property 'temperatureMaximum' does not exist on type '{}'.
+src/components/Modal/Add/AddRoomInThermalCircuitModal.tsx(322,29): error TS2339: Property 'temperatureActive' does not exist on type '{}'.
+src/components/Modal/Add/AddRoomInThermalCircuitModal.tsx(322,94): error TS2339: Property 'temperatureActive' does not exist on type '{}'.
+src/components/Modal/Add/AddRoomInThermalCircuitModal.tsx(338,29): error TS2339: Property 'humidityMinimum' does not exist on type '{}'.
+src/components/Modal/Add/AddRoomInThermalCircuitModal.tsx(338,92): error TS2339: Property 'humidityMinimum' does not exist on type '{}'.
+src/components/Modal/Add/AddRoomInThermalCircuitModal.tsx(355,29): error TS2339: Property 'humidityMaximum' does not exist on type '{}'.
+src/components/Modal/Add/AddRoomInThermalCircuitModal.tsx(355,92): error TS2339: Property 'humidityMaximum' does not exist on type '{}'.
+src/components/Modal/Add/AddRoomInThermalCircuitModal.tsx(374,29): error TS2339: Property 'humidityActive' does not exist on type '{}'.
+src/components/Modal/Add/AddRoomInThermalCircuitModal.tsx(374,91): error TS2339: Property 'humidityActive' does not exist on type '{}'.
+src/components/Modal/Add/AddRoomInThermalCircuitModal.tsx(391,29): error TS2339: Property 'priority' does not exist on type '{}'.
+src/components/Modal/Add/AddRoomInThermalCircuitModal.tsx(391,85): error TS2339: Property 'priority' does not exist on type '{}'.
+src/components/Modal/Edit/EditThermalCircuitPageModal.tsx(23,29): error TS2554: Expected 2 arguments, but got 1.
+src/components/Modal/Edit/EditThermalCircuitPageModal.tsx(70,38): error TS2367: This comparison appears to be unintentional because the types 'string' and 'number' have no overlap.
+src/pages/Objects/ThermalCircuitPage.tsx(1,8): error TS6133: 'React' is declared but its value is never read.
+src/pages/Objects/ThermalCircuitPage.tsx(24,1): error TS6133: 'WeatherInfo' is declared but its value is never read.
+src/pages/Objects/ThermalCircuitPage.tsx(40,23): error TS6133: 'setDateRange' is declared but its value is never read.
+src/pages/Objects/ThermalCircuitPage.tsx(41,23): error TS6133: 'setTimeRange' is declared but its value is never read.
+src/pages/Objects/ThermalCircuitPage.tsx(42,34): error TS6133: 'setTemperatureDeviation' is declared but its value is never read.
+src/pages/Objects/ThermalCircuitPage.tsx(46,31): error TS6133: 'setHumidityDeviation' is declared but its value is never read.
+src/pages/Objects/ThermalCircuitPage.tsx(61,66): error TS2345: Argument of type 'string | undefined' is not assignable to parameter of type 'number'.
+  Type 'undefined' is not assignable to type 'number'.
+src/pages/Objects/ThermalCircuitPage.tsx(72,64): error TS2345: Argument of type 'string | undefined' is not assignable to parameter of type 'number'.
+  Type 'undefined' is not assignable to type 'number'.
+src/pages/Objects/ThermalCircuitPage.tsx(73,50): error TS7006: Parameter 'room' implicitly has an 'any' type.
+src/pages/Objects/ThermalCircuitPage.tsx(82,76): error TS2345: Argument of type 'string | undefined' is not assignable to parameter of type 'number'.
+  Type 'undefined' is not assignable to type 'number'.
+src/pages/Objects/ThermalCircuitPage.tsx(83,29): error TS2345: Argument of type '{ date: string; time: string; calculated_temperature: number; calculated_humidity: number; deviation_temperature: number; deviation_humidity: number; }[]' is not assignable to parameter of type 'SetStateAction<Measurement[]>'.
+  Type '{ date: string; time: string; calculated_temperature: number; calculated_humidity: number; deviation_temperature: number; deviation_humidity: number; }[]' is not assignable to type 'Measurement[]'.
+    Type '{ date: string; time: string; calculated_temperature: number; calculated_humidity: number; deviation_temperature: number; deviation_humidity: number; }' is missing the following properties from type 'Measurement': createdAt, temperature, humidity, temperatureDeviation, humidityDeviation
+src/pages/Objects/ThermalCircuitPage.tsx(84,37): error TS2345: Argument of type '{ date: string; time: string; calculated_temperature: number; calculated_humidity: number; deviation_temperature: number; deviation_humidity: number; }[]' is not assignable to parameter of type 'SetStateAction<Measurement[]>'.
+src/pages/Objects/ThermalCircuitPage.tsx(129,56): error TS2339: Property 'date' does not exist on type 'Measurement'.
+src/pages/Objects/ThermalCircuitPage.tsx(150,54): error TS2339: Property 'time' does not exist on type 'Measurement'.
+src/pages/Objects/ThermalCircuitPage.tsx(172,47): error TS2339: Property 'deviation_temperature' does not exist on type 'Measurement'.
+src/pages/Objects/ThermalCircuitPage.tsx(173,83): error TS18048: 'filters.temperatureDeviation' is possibly 'undefined'.
+src/pages/Objects/ThermalCircuitPage.tsx(174,83): error TS18048: 'filters.temperatureDeviation' is possibly 'undefined'.
+src/pages/Objects/ThermalCircuitPage.tsx(183,47): error TS2339: Property 'deviation_humidity' does not exist on type 'Measurement'.
+src/pages/Objects/ThermalCircuitPage.tsx(184,80): error TS18048: 'filters.humidityDeviation' is possibly 'undefined'.
+src/pages/Objects/ThermalCircuitPage.tsx(185,80): error TS18048: 'filters.humidityDeviation' is possibly 'undefined'.
+src/pages/Objects/ThermalCircuitPage.tsx(230,29): error TS2322: Type '{ id: number; title: string; value: string | number; }[]' is not assignable to type '{ id: number; title: string; value: string; }[]'.
+  Type '{ id: number; title: string; value: string | number; }' is not assignable to type '{ id: number; title: string; value: string; }'.
+    Types of property 'value' are incompatible.
+      Type 'string | number' is not assignable to type 'string'.
+        Type 'number' is not assignable to type 'string'.
+src/pages/Objects/ThermalCircuitPage.tsx(236,29): error TS2322: Type '{ id: number; title: string; value: string; value2: string; }[]' is not assignable to type '{ id: number; title: string; properties: string; delete: string; }[]'.
+  Type '{ id: number; title: string; value: string; value2: string; }' is missing the following properties from type '{ id: number; title: string; properties: string; delete: string; }': properties, delete
+src/pages/Objects/ThermalCircuitPage.tsx(256,18): error TS2739: Type '{}' is missing the following properties from type '{ headers: any; data: any; }': headers, data
+src/pages/Objects/ThermalCircuitPage.tsx(256,18): error TS2786: 'DownloadButton' cannot be used as a JSX component.
+  Its type '({ headers, data }: { headers: any; data: any; }) => void' is not a valid JSX element type.
+    Type '({ headers, data }: { headers: any; data: any; }) => void' is not assignable to type '(props: any, deprecatedLegacyContext?: any) => ReactNode'.
+      Type 'void' is not assignable to type 'ReactNode'.
+src/pages/Objects/ThermalCircuitPage.tsx(258,21): error TS2322: Type '{ dateRange: { start: Date | null; end: Date | null; }; timeRange: { start: Date | null; end: Date | null; }; temperatureDeviation: { min: number | null; max: number | null; }; humidityDeviation: { ...; }; onFilterChange: (filters: { ...; }) => void; }' is not assignable to type 'IntrinsicAttributes & MeasurementsFiltersProps'.
+  Property 'dateRange' does not exist on type 'IntrinsicAttributes & MeasurementsFiltersProps'.
+src/pages/Objects/ThermalCircuitPage.tsx(274,21): error TS2322: Type 'string | undefined' is not assignable to type 'number'.
+  Type 'undefined' is not assignable to type 'number'.
+src/pages/Objects/ThermalCircuitPage.tsx(295,21): error TS2322: Type 'string | undefined' is not assignable to type 'number'.
+  Type 'undefined' is not assignable to type 'number'.
+src/pages/Objects/ThermalCircuitPage.tsx(296,21): error TS2739: Type '{ id: number; title: string; value: string | number; }[]' is missing the following properties from type 'ThermalCircuit': id, label, wiringDiagram, connectionDiagram
+src/components/Buttons/UpdateButton.tsx(3,25): error TS7031: Binding element 'onClick' implicitly has an 'any' type.
+src/components/Buttons/UpdateButton.tsx(3,34): error TS7031: Binding element 'label' implicitly has an 'any' type.
+src/components/Modal/Delete/MeasuringPoint/DeleteMeasuringPointModal.tsx(22,51): error TS2339: Property 'find' does not exist on type 'MeasuringPoint'.
+src/components/Modal/Delete/MeasuringPoint/DeleteMeasuringPointModal.tsx(22,56): error TS7006: Parameter 'item' implicitly has an 'any' type.
+src/components/Modal/Edit/EditRoomModal.tsx(73,58): error TS2345: Argument of type '{ section: string; thermalCircuit: string; windowOrientation: string; id: number; label: string; floor: number; square: number; angular: boolean; temperatureMinimum: number; temperatureMaximum: number; ... 4 more ...; priority: number; }' is not assignable to parameter of type 'Room'.
+  Types of property 'section' are incompatible.
+    Type 'string' is not assignable to type '{ id: number; label: string; }'.
+src/components/Modal/Edit/EditRoomModal.tsx(77,21): error TS2339: Property 'sectionId' does not exist on type 'Room'.
+src/components/Modal/Edit/EditRoomModal.tsx(77,32): error TS2339: Property 'thermalCircuitId' does not exist on type 'Room'.
+src/components/Modal/Edit/EditRoomModal.tsx(108,24): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{ section: string; thermalCircuit: string; windowOrientation: string; id: number; label: string; floor: number; square: number; angular: boolean; temperatureMinimum: number; temperatureMaximum: number; ... 4 more ...; priority: number; }'.
+  No index signature with a parameter of type 'string' was found on type '{ section: string; thermalCircuit: string; windowOrientation: string; id: number; label: string; floor: number; square: number; angular: boolean; temperatureMinimum: number; temperatureMaximum: number; ... 4 more ...; priority: number; }'.
+src/components/Modal/Edit/EditRoomModal.tsx(122,24): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{ section: string; thermalCircuit: string; windowOrientation: string; id: number; label: string; floor: number; square: number; angular: boolean; temperatureMinimum: number; temperatureMaximum: number; ... 4 more ...; priority: number; }'.
+  No index signature with a parameter of type 'string' was found on type '{ section: string; thermalCircuit: string; windowOrientation: string; id: number; label: string; floor: number; square: number; angular: boolean; temperatureMinimum: number; temperatureMaximum: number; ... 4 more ...; priority: number; }'.
+src/components/Modal/Edit/EditRoomModal.tsx(138,24): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{ section: string; thermalCircuit: string; windowOrientation: string; id: number; label: string; floor: number; square: number; angular: boolean; temperatureMinimum: number; temperatureMaximum: number; ... 4 more ...; priority: number; }'.
+  No index signature with a parameter of type 'string' was found on type '{ section: string; thermalCircuit: string; windowOrientation: string; id: number; label: string; floor: number; square: number; angular: boolean; temperatureMinimum: number; temperatureMaximum: number; ... 4 more ...; priority: number; }'.
+src/components/Filters/GraphFilter.tsx(59,39): error TS2322: Type 'number | null' is not assignable to type 'Date | null'.
+  Type 'number' is not assignable to type 'Date'.
+src/components/Filters/GraphFilter.tsx(59,78): error TS2322: Type 'number | null' is not assignable to type 'Date | null'.
+src/components/Filters/GraphFilter.tsx(104,33): error TS2322: Type '{ message: string; isVisible: boolean; toggleVisibility: () => void; }' is not assignable to type 'IntrinsicAttributes & TooltipProps'.
+  Property 'isVisible' does not exist on type 'IntrinsicAttributes & TooltipProps'.
+src/components/Filters/GraphFilter.tsx(111,33): error TS2322: Type 'Date | null' is not assignable to type 'Date | undefined'.
+src/components/Filters/GraphFilter.tsx(112,33): error TS2322: Type 'Date | null' is not assignable to type 'Date | undefined'.
+src/components/Graph/GraphPage.tsx(1,8): error TS6133: 'React' is declared but its value is never read.
+src/components/Graph/GraphPage.tsx(13,22): error TS7031: Binding element 'selectedRoomId' implicitly has an 'any' type.
+src/components/Graph/GraphPage.tsx(29,30): error TS7006: Parameter 'data' implicitly has an 'any' type.
+src/components/Graph/GraphPage.tsx(29,36): error TS7006: Parameter 'limits' implicitly has an 'any' type.
+src/components/Graph/GraphPage.tsx(46,40): error TS7006: Parameter 'labels' implicitly has an 'any' type.
+src/components/Graph/GraphPage.tsx(46,48): error TS7006: Parameter 'data' implicitly has an 'any' type.
+src/components/Graph/GraphPage.tsx(46,54): error TS7006: Parameter 'limits' implicitly has an 'any' type.
+src/components/Graph/GraphPage.tsx(46,62): error TS7006: Parameter 'title' implicitly has an 'any' type.
+src/components/Graph/GraphPage.tsx(56,39): error TS7006: Parameter 'ctx' implicitly has an 'any' type.
+src/components/Graph/GraphPage.tsx(117,59): error TS7006: Parameter 'a' implicitly has an 'any' type.
+src/components/Graph/GraphPage.tsx(117,62): error TS7006: Parameter 'b' implicitly has an 'any' type.
+src/components/Graph/GraphPage.tsx(129,66): error TS7006: Parameter 'record' implicitly has an 'any' type.
+src/components/Graph/GraphPage.tsx(133,56): error TS7006: Parameter 'record' implicitly has an 'any' type.
+src/components/Graph/GraphPage.tsx(138,62): error TS7006: Parameter 'record' implicitly has an 'any' type.
+src/components/Graph/GraphPage.tsx(139,59): error TS7006: Parameter 'record' implicitly has an 'any' type.
+src/components/Graph/GraphPage.tsx(144,74): error TS7006: Parameter 'record' implicitly has an 'any' type.
+src/components/Graph/GraphPage.tsx(147,64): error TS7006: Parameter 'record' implicitly has an 'any' type.
+src/components/Graph/GraphPage.tsx(151,70): error TS7006: Parameter 'record' implicitly has an 'any' type.
+src/components/Graph/GraphPage.tsx(152,67): error TS7006: Parameter 'record' implicitly has an 'any' type.
+src/components/Graph/GraphPage.tsx(158,74): error TS7006: Parameter 'record' implicitly has an 'any' type.
+src/components/Graph/GraphPage.tsx(161,64): error TS7006: Parameter 'record' implicitly has an 'any' type.
+src/components/Graph/GraphPage.tsx(165,70): error TS7006: Parameter 'record' implicitly has an 'any' type.
+src/components/Graph/GraphPage.tsx(166,67): error TS7006: Parameter 'record' implicitly has an 'any' type.
+src/components/Graph/GraphPage.tsx(172,74): error TS7006: Parameter 'record' implicitly has an 'any' type.
+src/components/Graph/GraphPage.tsx(175,64): error TS7006: Parameter 'record' implicitly has an 'any' type.
+src/components/Graph/GraphPage.tsx(179,70): error TS7006: Parameter 'record' implicitly has an 'any' type.
+src/components/Graph/GraphPage.tsx(180,67): error TS7006: Parameter 'record' implicitly has an 'any' type.
+src/components/Graph/GraphPage.tsx(185,64): error TS7006: Parameter 'record' implicitly has an 'any' type.
+src/components/Graph/GraphPage.tsx(189,70): error TS7006: Parameter 'record' implicitly has an 'any' type.
+src/components/Graph/GraphPage.tsx(190,67): error TS7006: Parameter 'record' implicitly has an 'any' type.
+src/components/Graph/GraphPage.tsx(212,41): error TS2339: Property 'getContext' does not exist on type 'never'.
+src/components/Graph/GraphPage.tsx(268,34): error TS2345: Argument of type '{ type: string; data: { labels: any; datasets: ({ label: string; data: any; borderColor: string; backgroundColor: string; segment: { borderColor: (ctx: any) => "red" | "rgb(0,13,174)" | undefined; }; borderDash?: undefined; } | { ...; })[]; }; options: { ...; }; }' is not assignable to parameter of type 'ChartConfiguration<keyof ChartTypeRegistry, any, unknown> | ChartConfigurationCustomTypesPerDataset<keyof ChartTypeRegistry, any, unknown>'.
+  Type '{ type: string; data: { labels: any; datasets: ({ label: string; data: any; borderColor: string; backgroundColor: string; segment: { borderColor: (ctx: any) => "red" | "rgb(0,13,174)" | undefined; }; borderDash?: undefined; } | { ...; })[]; }; options: { ...; }; }' is not assignable to type 'ChartConfiguration<keyof ChartTypeRegistry, any, unknown>'.
+    Types of property 'type' are incompatible.
+      Type 'string' is not assignable to type 'keyof ChartTypeRegistry'.
+src/components/Graph/GraphPage.tsx(273,27): error TS2339: Property 'destroy' does not exist on type 'never'.
+src/components/Graph/GraphPage.tsx(277,26): error TS2345: Argument of type 'Chart<keyof ChartTypeRegistry, any, unknown> | undefined' is not assignable to parameter of type 'SetStateAction<null>'.
+  Type 'undefined' is not assignable to type 'SetStateAction<null>'.
+src/components/Graph/GraphPage.tsx(294,35): error TS7006: Parameter 'range' implicitly has an 'any' type.
+src/components/Graph/GraphPage.tsx(365,30): error TS2322: Type 'Dispatch<SetStateAction<{ dateRange: { start: null; end: null; }; }>>' is not assignable to type '(filters: { dateRange?: { start: Date | null; end: Date | null; } | undefined; }) => void'.
+  Types of parameters 'value' and 'filters' are incompatible.
+    Type '{ dateRange?: { start: Date | null; end: Date | null; } | undefined; }' is not assignable to type 'SetStateAction<{ dateRange: { start: null; end: null; }; }>'.
+      Type '{ dateRange?: { start: Date | null; end: Date | null; } | undefined; }' is not assignable to type '{ dateRange: { start: null; end: null; }; }'.
+        Types of property 'dateRange' are incompatible.
+          Type '{ start: Date | null; end: Date | null; } | undefined' is not assignable to type '{ start: null; end: null; }'.
+            Type 'undefined' is not assignable to type '{ start: null; end: null; }'.
+src/components/Graph/GraphPage.tsx(365,58): error TS2322: Type 'string' is not assignable to type '"month" | "week" | "day" | undefined'.
+src/pages/Objects/RoomPage.tsx(1,8): error TS6133: 'React' is declared but its value is never read.
+src/pages/Objects/RoomPage.tsx(28,1): error TS6133: 'GraphModal' is declared but its value is never read.
+src/pages/Objects/RoomPage.tsx(28,24): error TS2307: Cannot find module '../../components/Modal/GraphModal.tsx' or its corresponding type declarations.
+src/pages/Objects/RoomPage.tsx(38,23): error TS6133: 'setDateRange' is declared but its value is never read.
+src/pages/Objects/RoomPage.tsx(39,23): error TS6133: 'setTimeRange' is declared but its value is never read.
+src/pages/Objects/RoomPage.tsx(40,34): error TS6133: 'setTemperatureDeviation' is declared but its value is never read.
+src/pages/Objects/RoomPage.tsx(41,31): error TS6133: 'setHumidityDeviation' is declared but its value is never read.
+src/pages/Objects/RoomPage.tsx(49,12): error TS6133: 'roomName' is declared but its value is never read.
+src/pages/Objects/RoomPage.tsx(50,12): error TS6133: 'isGraphModalOpen' is declared but its value is never read.
+src/pages/Objects/RoomPage.tsx(59,54): error TS2345: Argument of type 'string | undefined' is not assignable to parameter of type 'number'.
+  Type 'undefined' is not assignable to type 'number'.
+src/pages/Objects/RoomPage.tsx(61,57): error TS2345: Argument of type 'string | undefined' is not assignable to parameter of type 'number'.
+  Type 'undefined' is not assignable to type 'number'.
+src/pages/Objects/RoomPage.tsx(63,21): error TS2345: Argument of type '({ id: number; title: string; value: string; } | { id: number; title: string; value: Element; } | { id: number; title: string; value: number; })[]' is not assignable to parameter of type 'SetStateAction<{ id: number; title: string; value: string | number; }[]>'.
+  Type '({ id: number; title: string; value: string; } | { id: number; title: string; value: Element; } | { id: number; title: string; value: number; })[]' is not assignable to type '{ id: number; title: string; value: string | number; }[]'.
+    Type '{ id: number; title: string; value: string; } | { id: number; title: string; value: Element; } | { id: number; title: string; value: number; }' is not assignable to type '{ id: number; title: string; value: string | number; }'.
+      Type '{ id: number; title: string; value: JSX.Element; }' is not assignable to type '{ id: number; title: string; value: string | number; }'.
+        Types of property 'value' are incompatible.
+          Type 'Element' is not assignable to type 'string | number'.
+src/pages/Objects/RoomPage.tsx(66,25): error TS18048: 'labelItem' is possibly 'undefined'.
+src/pages/Objects/RoomPage.tsx(66,25): error TS2345: Argument of type 'string | number | Element' is not assignable to parameter of type 'SetStateAction<string>'.
+src/pages/Objects/RoomPage.tsx(92,68): error TS2345: Argument of type 'string | undefined' is not assignable to parameter of type 'number'.
+  Type 'undefined' is not assignable to type 'number'.
+src/pages/Objects/RoomPage.tsx(93,70): error TS7006: Parameter 'point' implicitly has an 'any' type.
+src/pages/Objects/RoomPage.tsx(102,66): error TS2345: Argument of type 'string | undefined' is not assignable to parameter of type 'number'.
+  Type 'undefined' is not assignable to type 'number'.
+src/pages/Objects/RoomPage.tsx(103,29): error TS2345: Argument of type '{ date: string; time: string; calculated_temperature: number; calculated_humidity: number; deviation_temperature: number; deviation_humidity: number; }[]' is not assignable to parameter of type 'SetStateAction<Measurement[]>'.
+src/pages/Objects/RoomPage.tsx(104,37): error TS2345: Argument of type '{ date: string; time: string; calculated_temperature: number; calculated_humidity: number; deviation_temperature: number; deviation_humidity: number; }[]' is not assignable to parameter of type 'SetStateAction<Measurement[]>'.
+src/pages/Objects/RoomPage.tsx(135,11): error TS6133: 'handleClose' is declared but its value is never read.
+src/pages/Objects/RoomPage.tsx(150,56): error TS2339: Property 'date' does not exist on type 'Measurement'.
+src/pages/Objects/RoomPage.tsx(163,54): error TS2339: Property 'time' does not exist on type 'Measurement'.
+src/pages/Objects/RoomPage.tsx(177,47): error TS2339: Property 'deviation_temperature' does not exist on type 'Measurement'.
+src/pages/Objects/RoomPage.tsx(187,47): error TS2339: Property 'deviation_humidity' does not exist on type 'Measurement'.
+src/pages/Objects/RoomPage.tsx(229,33): error TS2322: Type '{ id: number; title: string; value: string | number; }[]' is not assignable to type '{ id: number; title: string; value: string; }[]'.
+  Type '{ id: number; title: string; value: string | number; }' is not assignable to type '{ id: number; title: string; value: string; }'.
+    Types of property 'value' are incompatible.
+      Type 'string | number' is not assignable to type 'string'.
+        Type 'number' is not assignable to type 'string'.
+src/pages/Objects/RoomPage.tsx(237,33): error TS2322: Type '{ id: number; title: string; value: string; value2: string; }[]' is not assignable to type '{ id: number; title: string; properties: string; delete: string; }[]'.
+  Type '{ id: number; title: string; value: string; value2: string; }' is missing the following properties from type '{ id: number; title: string; properties: string; delete: string; }': properties, delete
+src/pages/Objects/RoomPage.tsx(258,34): error TS2739: Type '{}' is missing the following properties from type '{ headers: any; data: any; }': headers, data
+src/pages/Objects/RoomPage.tsx(258,34): error TS2786: 'DownloadButton' cannot be used as a JSX component.
+  Its type '({ headers, data }: { headers: any; data: any; }) => void' is not a valid JSX element type.
+src/pages/Objects/RoomPage.tsx(260,37): error TS2322: Type '{ dateRange: { start: Date | null; end: Date | null; }; timeRange: { start: Date | null; end: Date | null; }; temperatureDeviation: { min: number | null; max: number | null; }; humidityDeviation: { ...; }; onFilterChange: (filters: { ...; }) => void; }' is not assignable to type 'IntrinsicAttributes & MeasurementsFiltersProps'.
+  Property 'dateRange' does not exist on type 'IntrinsicAttributes & MeasurementsFiltersProps'.
+src/pages/Objects/RoomPage.tsx(290,33): error TS2322: Type 'string | undefined' is not assignable to type 'number'.
+  Type 'undefined' is not assignable to type 'number'.
+src/pages/Objects/RoomPage.tsx(304,33): error TS2322: Type 'string | undefined' is not assignable to type 'number'.
+  Type 'undefined' is not assignable to type 'number'.
+src/components/Filters/IncidentFilter.tsx(180,33): error TS2322: Type 'Date | null' is not assignable to type 'Date | undefined'.
+src/components/Filters/IncidentFilter.tsx(181,33): error TS2322: Type 'Date | null' is not assignable to type 'Date | undefined'.
+src/pages/Incident/IncidentPage.tsx(130,66): error TS2339: Property 'status' does not exist on type 'Incident[]'.
+src/pages/Incident/IncidentPage.tsx(264,21): error TS2322: Type 'User | null' is not assignable to type '{ fullName: string; }'.
+  Type 'null' is not assignable to type '{ fullName: string; }'.
+src/pages/Incident/IncidentPage.tsx(274,21): error TS2322: Type 'Incident' is not assignable to type '{ id: number; dateI: string; time: string; description: string; object: string; status: string; history: { date: string; time: string; user: string; status: string; }[]; }'.
+  Types of property 'history' are incompatible.
+    Type '{ date: string | null; time: string | null; user: string | null; status: string | null; }[]' is not assignable to type '{ date: string; time: string; user: string; status: string; }[]'.
+      Type '{ date: string | null; time: string | null; user: string | null; status: string | null; }' is not assignable to type '{ date: string; time: string; user: string; status: string; }'.
+        Types of property 'date' are incompatible.
+          Type 'string | null' is not assignable to type 'string'.
+            Type 'null' is not assignable to type 'string'.
+src/pages/Incident/IncidentPage.tsx(279,21): error TS2322: Type 'string' is not assignable to type '{ fullName: string; }'.
+src/pages/Incident/IncidentPage.tsx(279,27): error TS18047: 'user' is possibly 'null'.
+src/components/Buttons/DefaultButton.tsx(3,26): error TS7031: Binding element 'onClick' implicitly has an 'any' type.
+src/components/Buttons/DefaultButton.tsx(3,35): error TS7031: Binding element 'deviceId' implicitly has an 'any' type.
+src/components/Modal/Edit/EditMeasuringPointModal.tsx(45,88): error TS2345: Argument of type '{ id: number; label: string; height: number; temperatureMinimum: number; temperatureMaximum: number; humidityMinimum: number; humidityMaximum: number; temperatureActive: boolean; humidityActive: boolean; temperatureLocation: number; temperatureHeight: number; temperatureCalibration: number; humidityCalibration: numb...' is not assignable to parameter of type 'MeasuringPoint'.
+  Type '{ id: number; label: string; height: number; temperatureMinimum: number; temperatureMaximum: number; humidityMinimum: number; humidityMaximum: number; temperatureActive: boolean; humidityActive: boolean; temperatureLocation: number; temperatureHeight: number; temperatureCalibration: number; humidityCalibration: numb...' is missing the following properties from type 'MeasuringPoint': room, "device"
+src/components/Modal/Edit/EditMeasuringPointModal.tsx(62,24): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{ id: number; label: string; height: number; temperatureMinimum: number; temperatureMaximum: number; humidityMinimum: number; humidityMaximum: number; temperatureActive: boolean; humidityActive: boolean; temperatureLocation: number; temperatureHeight: number; temperatureCalibration: number; humidityCalibration: numb...'.
+  No index signature with a parameter of type 'string' was found on type '{ id: number; label: string; height: number; temperatureMinimum: number; temperatureMaximum: number; humidityMinimum: number; humidityMaximum: number; temperatureActive: boolean; humidityActive: boolean; temperatureLocation: number; temperatureHeight: number; temperatureCalibration: number; humidityCalibration: numb...'.
+src/components/Modal/Edit/EditMeasuringPointModal.tsx(76,24): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{ id: number; label: string; height: number; temperatureMinimum: number; temperatureMaximum: number; humidityMinimum: number; humidityMaximum: number; temperatureActive: boolean; humidityActive: boolean; temperatureLocation: number; temperatureHeight: number; temperatureCalibration: number; humidityCalibration: numb...'.
+  No index signature with a parameter of type 'string' was found on type '{ id: number; label: string; height: number; temperatureMinimum: number; temperatureMaximum: number; humidityMinimum: number; humidityMaximum: number; temperatureActive: boolean; humidityActive: boolean; temperatureLocation: number; temperatureHeight: number; temperatureCalibration: number; humidityCalibration: numb...'.
+src/pages/Objects/MeasuringPointPage.tsx(1,8): error TS6133: 'React' is declared but its value is never read.
+src/pages/Objects/MeasuringPointPage.tsx(15,1): error TS6133: 'DefaultButton' is declared but its value is never read.
+src/pages/Objects/MeasuringPointPage.tsx(38,23): error TS6133: 'setDateRange' is declared but its value is never read.
+src/pages/Objects/MeasuringPointPage.tsx(39,23): error TS6133: 'setTimeRange' is declared but its value is never read.
+src/pages/Objects/MeasuringPointPage.tsx(40,34): error TS6133: 'setTemperatureDeviation' is declared but its value is never read.
+src/pages/Objects/MeasuringPointPage.tsx(44,31): error TS6133: 'setHumidityDeviation' is declared but its value is never read.
+src/pages/Objects/MeasuringPointPage.tsx(49,54): error TS2345: Argument of type 'null' is not assignable to parameter of type 'number | (() => number)'.
+src/pages/Objects/MeasuringPointPage.tsx(66,55): error TS2345: Argument of type 'string | undefined' is not assignable to parameter of type 'number'.
+  Type 'undefined' is not assignable to type 'number'.
+src/pages/Objects/MeasuringPointPage.tsx(69,31): error TS2345: Argument of type '({ id: number; title: string; value: string; } | { id: number; title: string; value: Element; } | { id: number; title: string; value: number; })[]' is not assignable to parameter of type 'SetStateAction<{ id: number; title: string; value: string | number; }[]>'.
+  Type '({ id: number; title: string; value: string; } | { id: number; title: string; value: Element; } | { id: number; title: string; value: number; })[]' is not assignable to type '{ id: number; title: string; value: string | number; }[]'.
+    Type '{ id: number; title: string; value: string; } | { id: number; title: string; value: Element; } | { id: number; title: string; value: number; }' is not assignable to type '{ id: number; title: string; value: string | number; }'.
+      Type '{ id: number; title: string; value: JSX.Element; }' is not assignable to type '{ id: number; title: string; value: string | number; }'.
+        Types of property 'value' are incompatible.
+          Type 'Element' is not assignable to type 'string | number'.
+src/pages/Objects/MeasuringPointPage.tsx(80,67): error TS2339: Property 'props' does not exist on type 'string | number | Element'.
+  Property 'props' does not exist on type 'string'.
+src/pages/Objects/MeasuringPointPage.tsx(88,76): error TS2345: Argument of type 'string | undefined' is not assignable to parameter of type 'number'.
+  Type 'undefined' is not assignable to type 'number'.
+src/pages/Objects/MeasuringPointPage.tsx(89,29): error TS2345: Argument of type '{ date: string; time: string; measured_temperature: number; calculated_temperature: number; measured_humidity: number; calculated_humidity: number; deviation_temperature: number; deviation_humidity: number; }[]' is not assignable to parameter of type 'SetStateAction<Measurement[]>'.
+  Type '{ date: string; time: string; measured_temperature: number; calculated_temperature: number; measured_humidity: number; calculated_humidity: number; deviation_temperature: number; deviation_humidity: number; }[]' is not assignable to type 'Measurement[]'.
+    Type '{ date: string; time: string; measured_temperature: number; calculated_temperature: number; measured_humidity: number; calculated_humidity: number; deviation_temperature: number; deviation_humidity: number; }' is missing the following properties from type 'Measurement': createdAt, temperature, humidity, temperatureDeviation, humidityDeviation
+src/pages/Objects/MeasuringPointPage.tsx(90,37): error TS2345: Argument of type '{ date: string; time: string; measured_temperature: number; calculated_temperature: number; measured_humidity: number; calculated_humidity: number; deviation_temperature: number; deviation_humidity: number; }[]' is not assignable to parameter of type 'SetStateAction<Measurement[]>'.
+src/pages/Objects/MeasuringPointPage.tsx(96,50): error TS2345: Argument of type 'string | undefined' is not assignable to parameter of type 'number'.
+  Type 'undefined' is not assignable to type 'number'.
+src/pages/Objects/MeasuringPointPage.tsx(101,27): error TS2345: Argument of type '{}' is not assignable to parameter of type 'SetStateAction<{ id: number; title: string; value: string | number; }[]>'.
+src/pages/Objects/MeasuringPointPage.tsx(145,56): error TS2339: Property 'date' does not exist on type 'Measurement'.
+src/pages/Objects/MeasuringPointPage.tsx(166,54): error TS2339: Property 'time' does not exist on type 'Measurement'.
+src/pages/Objects/MeasuringPointPage.tsx(188,47): error TS2339: Property 'deviation_temperature' does not exist on type 'Measurement'.
+src/pages/Objects/MeasuringPointPage.tsx(189,83): error TS18048: 'filters.temperatureDeviation' is possibly 'undefined'.
+src/pages/Objects/MeasuringPointPage.tsx(190,83): error TS18048: 'filters.temperatureDeviation' is possibly 'undefined'.
+src/pages/Objects/MeasuringPointPage.tsx(199,47): error TS2339: Property 'deviation_humidity' does not exist on type 'Measurement'.
+src/pages/Objects/MeasuringPointPage.tsx(200,80): error TS18048: 'filters.humidityDeviation' is possibly 'undefined'.
+src/pages/Objects/MeasuringPointPage.tsx(201,80): error TS18048: 'filters.humidityDeviation' is possibly 'undefined'.
+src/pages/Objects/MeasuringPointPage.tsx(210,11): error TS6133: 'getLabelFromData' is declared but its value is never read.
+src/pages/Objects/MeasuringPointPage.tsx(215,11): error TS6133: 'handleUnbindClick' is declared but its value is never read.
+src/pages/Objects/MeasuringPointPage.tsx(220,39): error TS2322: Type 'string | number | undefined' is not assignable to type 'string'.
+  Type 'undefined' is not assignable to type 'string'.
+src/pages/Objects/MeasuringPointPage.tsx(220,52): error TS2322: Type 'string | number | undefined' is not assignable to type 'string'.
+  Type 'undefined' is not assignable to type 'string'.
+src/pages/Objects/MeasuringPointPage.tsx(226,21): error TS2345: Argument of type 'null' is not assignable to parameter of type 'SetStateAction<number>'.
+src/pages/Objects/MeasuringPointPage.tsx(231,11): error TS6133: 'handleBindClick' is declared but its value is never read.
+src/pages/Objects/MeasuringPointPage.tsx(234,58): error TS2322: Type 'string | number | undefined' is not assignable to type 'string'.
+  Type 'undefined' is not assignable to type 'string'.
+src/pages/Objects/MeasuringPointPage.tsx(238,11): error TS6133: 'handleCloseModal' is declared but its value is never read.
+src/pages/Objects/MeasuringPointPage.tsx(264,29): error TS2322: Type '{ id: number; title: string; value: string | number; }[]' is not assignable to type '{ id: number; title: string; value: string; }[]'.
+  Type '{ id: number; title: string; value: string | number; }' is not assignable to type '{ id: number; title: string; value: string; }'.
+    Types of property 'value' are incompatible.
+      Type 'string | number' is not assignable to type 'string'.
+        Type 'number' is not assignable to type 'string'.
+src/pages/Objects/MeasuringPointPage.tsx(293,18): error TS2739: Type '{}' is missing the following properties from type '{ headers: any; data: any; }': headers, data
+src/pages/Objects/MeasuringPointPage.tsx(293,18): error TS2786: 'DownloadButton' cannot be used as a JSX component.
+  Its type '({ headers, data }: { headers: any; data: any; }) => void' is not a valid JSX element type.
+src/pages/Objects/MeasuringPointPage.tsx(295,21): error TS2322: Type '{ dateRange: { start: Date | null; end: Date | null; }; timeRange: { start: Date | null; end: Date | null; }; temperatureDeviation: { min: number | null; max: number | null; }; humidityDeviation: { ...; }; onFilterChange: (filters: { ...; }) => void; }' is not assignable to type 'IntrinsicAttributes & MeasurementsFiltersProps'.
+  Property 'dateRange' does not exist on type 'IntrinsicAttributes & MeasurementsFiltersProps'.
+src/pages/Objects/MeasuringPointPage.tsx(323,21): error TS2322: Type 'string | undefined' is not assignable to type 'number'.
+  Type 'undefined' is not assignable to type 'number'.
+src/pages/Objects/MeasuringPointPage.tsx(335,21): error TS2322: Type 'string | undefined' is not assignable to type 'number'.
+  Type 'undefined' is not assignable to type 'number'.
+src/api/requests/userApi.ts(11,9): error TS2322: Type '{}[]' is not assignable to type 'User[]'.
+  Type '{}' is missing the following properties from type 'User': id, username, fullName, role
+src/components/Modal/Add/AddUserModal.tsx(43,31): error TS18046: 'error' is of type 'unknown'.
+src/components/Modal/Add/AddUserModal.tsx(98,22): error TS2345: Argument of type 'User' is not assignable to parameter of type '{ username: string; password: string; role: string; }'.
+  Property 'password' is missing in type 'User' but required in type '{ username: string; password: string; role: string; }'.
+src/pages/Admin/UsersPage.tsx(1,8): error TS6133: 'React' is declared but its value is never read.
+src/pages/Admin/UsersPage.tsx(51,36): error TS6133: 'item' is declared but its value is never read.
+src/pages/Admin/UsersPage.tsx(55,34): error TS6133: 'item' is declared but its value is never read.
+src/components/Modal/Bind/BindMeasuringPointModal.tsx(15,91): error TS6133: 'measuringPointId' is declared but its value is never read.
+src/components/Modal/Bind/BindMeasuringPointModal.tsx(18,78): error TS2558: Expected 1 type arguments, but got 2.
+src/components/Modal/Bind/BindMeasuringPointModal.tsx(36,36): error TS2345: Argument of type 'string' is not assignable to parameter of type 'number'.
+src/components/Modal/Bind/BindMeasuringPointModal.tsx(60,62): error TS2345: Argument of type 'number' is not assignable to parameter of type 'SetStateAction<string>'.
+src/components/Modal/Edit/EditDeviceModal.tsx(50,20): error TS2345: Argument of type '{ id: number; label: string; }' is not assignable to parameter of type '{ id: string; label: string; }'.
+  Types of property 'id' are incompatible.
+    Type 'number' is not assignable to type 'string'.
+src/components/Modal/DeviceStatisticModal.tsx(48,10): error TS2741: Property 'buttonLabel' is missing in type '{ children: Element; headerTitle: string; wight: string; onClose: () => void; onSubmit: () => void; loading: boolean; }' but required in type 'ModalTemplateProps'.
+src/pages/Objects/DevicePage.tsx(85,27): error TS2345: Argument of type '{ id: number; label: string; measuringPointLabel: string; }' is not assignable to parameter of type 'SetStateAction<Device | null>'.
+  Type '{ id: number; label: string; measuringPointLabel: string; }' is missing the following properties from type 'Device': active, model, topic, roomId, and 5 more.
+src/pages/Objects/DevicePage.tsx(91,27): error TS2345: Argument of type '{ id: number; label: string; measuringPointLabel: string; }' is not assignable to parameter of type 'SetStateAction<Device | null>'.
+  Type '{ id: number; label: string; measuringPointLabel: string; }' is missing the following properties from type 'Device': active, model, topic, roomId, and 5 more.
+src/pages/Objects/DevicePage.tsx(97,27): error TS2345: Argument of type '{ id: number; label: string; }' is not assignable to parameter of type 'SetStateAction<Device | null>'.
+  Type '{ id: number; label: string; }' is missing the following properties from type 'Device': active, model, topic, roomId, and 6 more.
+src/pages/Objects/DevicePage.tsx(161,25): error TS2322: Type '{ data: Device[]; headers: { Наименование: string; Статус: string; Модель: string; '\u0421\u0435\u0440. \u043D\u043E\u043C\u0435\u0440': string; Помещение: string; ТИ: string; Заряд: string; '\u041A\u0430\u0447\u0435\u0441\u0442\u0432\u043E \u0441\u0438\u0433\u043D\u0430\u043B\u0430': string; '\u041F\u0440\u0438\u04...' is not assignable to type 'IntrinsicAttributes & ItemTableProps'.
+  Property 'onEditClick' does not exist on type 'IntrinsicAttributes & ItemTableProps'.
+src/pages/Objects/DevicePage.tsx(197,21): error TS2322: Type '(updatedDevice: Device) => void' is not assignable to type '(updatedDevice: { id: string; label: string; }) => (updatedDevice: Device) => void'.
+  Types of parameters 'updatedDevice' and 'updatedDevice' are incompatible.
+    Type '{ id: string; label: string; }' is missing the following properties from type 'Device': active, model, topic, roomId, and 6 more.
+src/pages/Objects/DevicePage.tsx(205,21): error TS2322: Type '{ deviceId: number; deviceLabel: string; measuringPointLabel: string; onClose: () => void; onSuccess: () => Promise<void>; }' is not assignable to type 'IntrinsicAttributes & BindDeviceModalProps'.
+  Property 'measuringPointLabel' does not exist on type 'IntrinsicAttributes & BindDeviceModalProps'. Did you mean 'measuringPointId'?
+src/pages/Contoller/ControllerPage.tsx(1,8): error TS6133: 'React' is declared but its value is never read.
+src/pages/Contoller/ControllerPage.tsx(21,31): error TS2345: Argument of type '{}[]' is not assignable to parameter of type 'SetStateAction<Controller[]>'.
+  Type '{}[]' is not assignable to type 'Controller[]'.
+    Type '{}' is missing the following properties from type 'Controller': label, url, port, thermalCircuit, and 2 more.
+src/components/Menu/UserHeader.tsx(65,21): error TS18047: 'user' is possibly 'null'.
+src/components/Menu/UserHeader.tsx(65,42): error TS18047: 'user' is possibly 'null'.
+src/components/Menu/UserHeader.tsx(125,67): error TS18047: 'user' is possibly 'null'.
+src/components/Menu/UserHeader.tsx(126,37): error TS18047: 'user' is possibly 'null'.
+src/components/Menu/UserHeader.tsx(127,45): error TS18047: 'user' is possibly 'null'.
+src/pages/User/UserPage.tsx(69,23): error TS6133: 'setDateRange' is declared but its value is never read.
+src/pages/User/UserPage.tsx(70,23): error TS6133: 'setTimeRange' is declared but its value is never read.
+src/pages/User/UserPage.tsx(71,34): error TS6133: 'setTemperatureDeviation' is declared but its value is never read.
+src/pages/User/UserPage.tsx(72,31): error TS6133: 'setHumidityDeviation' is declared but its value is never read.
+src/pages/User/UserPage.tsx(86,31): error TS2345: Argument of type 'string' is not assignable to parameter of type 'SetStateAction<undefined>'.
+src/pages/User/UserPage.tsx(87,25): error TS2345: Argument of type 'ThermalCircuit[]' is not assignable to parameter of type 'SetStateAction<ThermalCircuit[]>'.
+  Type 'import("/Users/grishakuznetsov/WebstormProjects/creatus_frontend_v2/src/models/Public").ThermalCircuit[]' is not assignable to type 'ThermalCircuit[]'.
+    Type 'import("/Users/grishakuznetsov/WebstormProjects/creatus_frontend_v2/src/models/Public").ThermalCircuit' is not assignable to type 'ThermalCircuit'.
+      Types of property 'S' are incompatible.
+        Type 'import("/Users/grishakuznetsov/WebstormProjects/creatus_frontend_v2/src/models/Public").Section[]' is not assignable to type 'Section[]'.
+          Type 'import("/Users/grishakuznetsov/WebstormProjects/creatus_frontend_v2/src/models/Public").Section' is not assignable to type 'Section'.
+            Types of property 'F' are incompatible.
+              Type 'import("/Users/grishakuznetsov/WebstormProjects/creatus_frontend_v2/src/models/Public").Floor[]' is not assignable to type 'Floor[]'.
+                Type 'import("/Users/grishakuznetsov/WebstormProjects/creatus_frontend_v2/src/models/Public").Floor' is not assignable to type 'Floor'.
+                  Types of property 'name' are incompatible.
+                    Type 'number' is not assignable to type 'string'.
+src/pages/User/UserPage.tsx(101,69): error TS2345: Argument of type 'string' is not assignable to parameter of type 'number'.
+src/pages/User/UserPage.tsx(104,39): error TS2345: Argument of type '({ id: number; title: string; value: string; } | { id: number; title: string; value: number; })[]' is not assignable to parameter of type 'SetStateAction<never[]>'.
+  Type '({ id: number; title: string; value: string; } | { id: number; title: string; value: number; })[]' is not assignable to type 'never[]'.
+    Type '{ id: number; title: string; value: string; } | { id: number; title: string; value: number; }' is not assignable to type 'never'.
+      Type '{ id: number; title: string; value: string; }' is not assignable to type 'never'.
+src/pages/User/UserPage.tsx(173,83): error TS18048: 'filters.temperatureDeviation' is possibly 'undefined'.
+src/pages/User/UserPage.tsx(174,83): error TS18048: 'filters.temperatureDeviation' is possibly 'undefined'.
+src/pages/User/UserPage.tsx(184,80): error TS18048: 'filters.humidityDeviation' is possibly 'undefined'.
+src/pages/User/UserPage.tsx(185,80): error TS18048: 'filters.humidityDeviation' is possibly 'undefined'.
+src/pages/User/UserPage.tsx(191,31): error TS2345: Argument of type 'Record<string, any>[]' is not assignable to parameter of type 'SetStateAction<Measurement[]>'.
+  Type 'Record<string, any>[]' is not assignable to type 'Measurement[]'.
+    Type 'Record<string, any>' is missing the following properties from type 'Measurement': createdAt, temperature, humidity, temperatureDeviation, humidityDeviation
+src/pages/User/UserPage.tsx(215,66): error TS2345: Argument of type 'string | null' is not assignable to parameter of type 'number'.
+  Type 'null' is not assignable to type 'number'.
+src/pages/User/UserPage.tsx(217,39): error TS2345: Argument of type '{ date: string; time: string; calculated_temperature: number; calculated_humidity: number; deviation_temperature: number; deviation_humidity: number; }[]' is not assignable to parameter of type 'SetStateAction<Measurement[]>'.
+src/pages/User/UserPage.tsx(252,43): error TS2345: Argument of type '({ id: number; title: string; value: string; } | { id: number; title: string; value: number; })[]' is not assignable to parameter of type 'SetStateAction<never[]>'.
+  Type '({ id: number; title: string; value: string; } | { id: number; title: string; value: number; })[]' is not assignable to type 'never[]'.
+    Type '{ id: number; title: string; value: string; } | { id: number; title: string; value: number; }' is not assignable to type 'never'.
+      Type '{ id: number; title: string; value: string; }' is not assignable to type 'never'.
+src/pages/User/UserPage.tsx(258,39): error TS2345: Argument of type '{ date: string; time: string; measured_temperature: number; calculated_temperature: number; measured_humidity: number; calculated_humidity: number; deviation_temperature: number; deviation_humidity: number; }[]' is not assignable to parameter of type 'SetStateAction<Measurement[]>'.
+src/pages/User/UserPage.tsx(268,37): error TS2345: Argument of type 'number' is not assignable to parameter of type 'SetStateAction<string | null>'.
+src/pages/User/UserPage.tsx(344,79): error TS2339: Property 'title' does not exist on type 'never'.
+src/pages/User/UserPage.tsx(389,25): error TS2322: Type 'undefined' is not assignable to type 'string'.
+src/pages/User/UserPage.tsx(397,25): error TS2719: Type 'Section[]' is not assignable to type 'Section[]'. Two different types with this name exist, but they are unrelated.
+  Type 'Section' is not assignable to type 'Section'. Two different types with this name exist, but they are unrelated.
+    Types of property 'F' are incompatible.
+      Type 'Floor[]' is not assignable to type 'Floor[]'. Two different types with this name exist, but they are unrelated.
+        Type 'Floor' is not assignable to type 'Floor'. Two different types with this name exist, but they are unrelated.
+          Types of property 'C' are incompatible.
+            Type 'Circuit[]' is not assignable to type 'Circuit[]'. Two different types with this name exist, but they are unrelated.
+              Type 'Circuit' is not assignable to type 'Circuit'. Two different types with this name exist, but they are unrelated.
+                Types of property 'R' are incompatible.
+                  Type 'Room[]' is not assignable to type 'Room[]'. Two different types with this name exist, but they are unrelated.
+                    Type 'Room' is not assignable to type 'Room'. Two different types with this name exist, but they are unrelated.
+                      Types of property 'measuringPoints' are incompatible.
+                        Type 'MeasuringPoint[]' is not assignable to type 'MeasuringPoint[]'. Two different types with this name exist, but they are unrelated.
+                          Property 'measuringPointId' is missing in type 'MeasuringPoint' but required in type 'MeasuringPoint'.
+src/pages/User/UserPage.tsx(418,33): error TS2322: Type 'string' is not assignable to type '({ onClick }: { onClick: (id: number) => void; }) => Element'.
+src/pages/User/UserPage.tsx(426,34): error TS2739: Type '{}' is missing the following properties from type '{ headers: any; data: any; }': headers, data
+src/pages/User/UserPage.tsx(426,34): error TS2786: 'DownloadButton' cannot be used as a JSX component.
+  Its type '({ headers, data }: { headers: any; data: any; }) => void' is not a valid JSX element type.
+src/pages/User/UserPage.tsx(467,37): error TS2322: Type 'string' is not assignable to type '({ onClick }: { onClick: (id: number) => void; }) => Element'.
+src/pages/User/UserPage.tsx(479,38): error TS2739: Type '{}' is missing the following properties from type '{ headers: any; data: any; }': headers, data
+src/pages/User/UserPage.tsx(479,38): error TS2786: 'DownloadButton' cannot be used as a JSX component.
+  Its type '({ headers, data }: { headers: any; data: any; }) => void' is not a valid JSX element type.
+src/pages/User/UserPage.tsx(491,41): error TS2322: Type '{ dateRange: { start: Date | null; end: Date | null; }; timeRange: { start: Date | null; end: Date | null; }; temperatureDeviation: { min: number | null; max: number | null; }; humidityDeviation: { ...; }; onFilterChange: (filters: { ...; }) => void; }' is not assignable to type 'IntrinsicAttributes & MeasurementsFiltersProps'.
+  Property 'dateRange' does not exist on type 'IntrinsicAttributes & MeasurementsFiltersProps'.
+src/components/Buttons/SaveButton.tsx(3,23): error TS7031: Binding element 'onClick' implicitly has an 'any' type.
+src/pages/Contoller/ControllerSchedulePage.tsx(104,44): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{ hotWater: Schedule; heatingSystem: Schedule; }'.
+  No index signature with a parameter of type 'string' was found on type '{ hotWater: Schedule; heatingSystem: Schedule; }'.
+src/pages/Contoller/ControllerSchedulePage.tsx(110,28): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{ hotWater: Schedule; heatingSystem: Schedule; }'.
+  No index signature with a parameter of type 'string' was found on type '{ hotWater: Schedule; heatingSystem: Schedule; }'.
+src/pages/Contoller/ControllerSchedulePage.tsx(120,13): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{ hotWater: Schedule; heatingSystem: Schedule; }'.
+  No index signature with a parameter of type 'string' was found on type '{ hotWater: Schedule; heatingSystem: Schedule; }'.
+src/pages/Contoller/ControllerSchedulePage.tsx(120,60): error TS6133: 'period' is declared but its value is never read.
+src/pages/Contoller/ControllerSchedulePage.tsx(120,60): error TS7006: Parameter 'period' implicitly has an 'any' type.
+src/pages/Contoller/ControllerSchedulePage.tsx(120,68): error TS6133: 'index' is declared but its value is never read.
+src/pages/Contoller/ControllerSchedulePage.tsx(120,68): error TS7006: Parameter 'index' implicitly has an 'any' type.
+src/pages/Contoller/ControllerSchedulePage.tsx(129,59): error TS2345: Argument of type 'string | undefined' is not assignable to parameter of type 'number'.
+  Type 'undefined' is not assignable to type 'number'.
+src/pages/Contoller/ControllerSchedulePage.tsx(189,26): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{ hotWater: Schedule; heatingSystem: Schedule; }'.
+  No index signature with a parameter of type 'string' was found on type '{ hotWater: Schedule; heatingSystem: Schedule; }'.
+src/pages/Contoller/ControllerSchedulePage.tsx(189,69): error TS7006: Parameter 'period' implicitly has an 'any' type.
+src/pages/Contoller/ControllerSchedulePage.tsx(189,77): error TS7006: Parameter 'index' implicitly has an 'any' type.
+src/components/Tables/Controller/ControllerOptionsTable.tsx(260,24): error TS7006: Parameter 'item' implicitly has an 'any' type.
+src/components/Tables/Controller/ControllerOptionsTable.tsx(260,30): error TS7006: Parameter 'index' implicitly has an 'any' type.
+src/components/Tables/Controller/ControllerOptionsTable.tsx(268,32): error TS7006: Parameter 'props' implicitly has an 'any' type.
+src/components/Tables/Controller/ControllerOptionsTable.tsx(335,40): error TS7006: Parameter 'child' implicitly has an 'any' type.
+src/components/Tables/Controller/ControllerOptionsTable.tsx(335,47): error TS7006: Parameter 'idx' implicitly has an 'any' type.
+src/components/Tables/Controller/ControllerOptionsTable.tsx(344,30): error TS7006: Parameter 'tab' implicitly has an 'any' type.
+src/components/Tables/Controller/ControllerOptionsTable.tsx(352,37): error TS7006: Parameter 'selectedIds' implicitly has an 'any' type.
+src/components/Tables/Controller/ControllerOptionsTable.tsx(374,42): error TS7006: Parameter 'selectedIds' implicitly has an 'any' type.
+src/components/Tables/Controller/ControllerOptionsTable.tsx(381,38): error TS2339: Property 'scrollIntoView' does not exist on type 'never'.
+src/components/Tables/Controller/ControllerOptionsTable.tsx(414,41): error TS2322: Type '(item: any, index: any, level?: number, context?: string) => Element | null' is not assignable to type '(item: any, index: number) => Element'.
+  Type 'Element | null' is not assignable to type 'Element'.
+    Type 'null' is not assignable to type 'ReactElement<any, any>'.
+src/components/Tables/Controller/ControllerOptionsTable.tsx(435,39): error TS2322: Type 'HistoryDataItem[]' is not assignable to type 'TableData[]'.
+  Type 'HistoryDataItem' is missing the following properties from type 'TableData': head, table
+src/components/Tables/Controller/ControllerOptionsTable.tsx(439,22): error TS2741: Property 'parameterId' is missing in type '{ onHide: () => void; parameter: string; parameterValue: string | number; parameterType: string; onSave: (newValue: string | number) => Promise<void>; }' but required in type 'EditControllerParametrModalProps'.
+src/pages/Contoller/ControllerOptionsPage.tsx(3,8): error TS6133: 'React' is declared but its value is never read.
+src/pages/Contoller/ControllerOptionsPage.tsx(20,40): error TS2344: Type 'Params' does not satisfy the constraint 'string | Record<string, string | undefined>'.
+  Type 'Params' is not assignable to type 'Record<string, string | undefined>'.
+    Index signature for type 'string' is missing in type 'Params'.
+src/pages/Contoller/ControllerOptionsPage.tsx(28,63): error TS2345: Argument of type 'string' is not assignable to parameter of type 'number'.
+src/hooks/useServerStatus.ts(5,26): error TS7006: Parameter 'onConnectionRestored' implicitly has an 'any' type.
+src/App.tsx(2,8): error TS6133: 'React' is declared but its value is never read.
+src/App.tsx(26,1): error TS6133: 'LoadingSpinner' is declared but its value is never read.
+src/App.tsx(29,22): error TS6133: 'user' is declared but its value is never read.
+src/App.tsx(30,12): error TS6133: 'loading' is declared but its value is never read.
+src/App.tsx(31,56): error TS2554: Expected 1 arguments, but got 0.
+src/App.tsx(59,53): error TS2322: Type '{ onClick: () => void; }' is not assignable to type 'IntrinsicAttributes'.
+  Property 'onClick' does not exist on type 'IntrinsicAttributes'.
+src/App.tsx(60,65): error TS2322: Type '{ onClick: () => void; }' is not assignable to type 'IntrinsicAttributes'.
+  Property 'onClick' does not exist on type 'IntrinsicAttributes'.
+src/App.tsx(63,68): error TS2322: Type '{ onClick: () => void; }' is not assignable to type 'IntrinsicAttributes'.
+  Property 'onClick' does not exist on type 'IntrinsicAttributes'.
+src/App.tsx(64,71): error TS2322: Type '{ onClick: () => void; }' is not assignable to type 'IntrinsicAttributes'.
+  Property 'onClick' does not exist on type 'IntrinsicAttributes'.
+src/App.tsx(65,74): error TS2322: Type '{ onClick: () => void; }' is not assignable to type 'IntrinsicAttributes'.
+  Property 'onClick' does not exist on type 'IntrinsicAttributes'.
+src/App.tsx(66,74): error TS2322: Type '{ onClick: () => void; }' is not assignable to type 'IntrinsicAttributes'.
+  Property 'onClick' does not exist on type 'IntrinsicAttributes'.
+src/App.tsx(67,82): error TS2322: Type '{ onClick: () => void; }' is not assignable to type 'IntrinsicAttributes'.
+  Property 'onClick' does not exist on type 'IntrinsicAttributes'.
+src/App.tsx(68,111): error TS2322: Type '{ onClick: () => void; }' is not assignable to type 'IntrinsicAttributes'.
+  Property 'onClick' does not exist on type 'IntrinsicAttributes'.
+src/App.tsx(69,113): error TS2322: Type '{ onClick: () => void; }' is not assignable to type 'IntrinsicAttributes'.
+  Property 'onClick' does not exist on type 'IntrinsicAttributes'.
+src/App.tsx(70,86): error TS2322: Type '{ onClick: () => void; }' is not assignable to type 'IntrinsicAttributes'.
+  Property 'onClick' does not exist on type 'IntrinsicAttributes'.
+src/App.tsx(71,107): error TS2322: Type '{ onClick: () => void; }' is not assignable to type 'IntrinsicAttributes'.
+  Property 'onClick' does not exist on type 'IntrinsicAttributes'.
+src/App.tsx(72,96): error TS2322: Type '{ onClick: () => void; }' is not assignable to type 'IntrinsicAttributes'.
+  Property 'onClick' does not exist on type 'IntrinsicAttributes'.
+src/App.tsx(73,78): error TS2322: Type '{ onClick: () => void; }' is not assignable to type 'IntrinsicAttributes'.
+  Property 'onClick' does not exist on type 'IntrinsicAttributes'.
+src/App.tsx(74,97): error TS2322: Type '{ onClick: () => void; }' is not assignable to type 'IntrinsicAttributes'.
+  Property 'onClick' does not exist on type 'IntrinsicAttributes'.
+src/App.tsx(75,110): error TS2322: Type '{ onClick: () => void; }' is not assignable to type 'IntrinsicAttributes'.
+  Property 'onClick' does not exist on type 'IntrinsicAttributes'.
+src/App.tsx(76,139): error TS2322: Type '{ onClick: () => void; }' is not assignable to type 'IntrinsicAttributes'.
+  Property 'onClick' does not exist on type 'IntrinsicAttributes'.
+src/App.tsx(77,153): error TS2322: Type '{ onClick: () => void; }' is not assignable to type 'IntrinsicAttributes'.
+  Property 'onClick' does not exist on type 'IntrinsicAttributes'.
+src/App.tsx(80,59): error TS2322: Type '{ onClick: () => void; }' is not assignable to type 'IntrinsicAttributes'.
+  Property 'onClick' does not exist on type 'IntrinsicAttributes'.
+src/main.tsx(16,22): error TS2345: Argument of type 'AsyncThunkAction<any, void, AsyncThunkConfig>' is not assignable to parameter of type 'UnknownAction'.
+src/components/Buttons/DeleteButton.tsx(3,25): error TS7031: Binding element 'onClick' implicitly has an 'any' type.
+vite.config.ts(3,26): error TS7016: Could not find a declaration file for module 'vite-plugin-eslint'. '/Users/grishakuznetsov/WebstormProjects/creatus_frontend_v2/node_modules/vite-plugin-eslint/dist/index.mjs' implicitly has an 'any' type.
+  There are types at '/Users/grishakuznetsov/WebstormProjects/creatus_frontend_v2/node_modules/vite-plugin-eslint/dist/index.d.ts', but this result could not be resolved when respecting package.json "exports". The 'vite-plugin-eslint' library may need to update its package.json or typings.
