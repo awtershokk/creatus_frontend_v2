@@ -3,6 +3,7 @@ import ModalTemplate from './ModalTemplate';
 import ItemTable from "../Tables/ItemTable.tsx";
 import { fetchDevicesStatistic} from "../../api/requests/deviceApi.ts";
 import LoadingSpinner from "../Menu/LoadingSpinner.tsx";
+import TableContainer from "../../layouts/TableContainer.tsx";
 
 interface DeviceStatisticyModalProps {
     deviceName: string;
@@ -57,9 +58,12 @@ const DeviceStatisticModal: React.FC<DeviceStatisticyModalProps> = ({ deviceName
             ) : error ? (
                 <p className="text-red-500">{"Ошибка"}</p>
             ) : (
-                <ItemTable
-                    headers={headers}
-                    data={deviceHistory} />
+                <TableContainer>
+                    <ItemTable
+                        headers={headers}
+                        data={deviceHistory} />
+                </TableContainer>
+
             )}
         </ModalTemplate>
     );

@@ -19,7 +19,8 @@ const ItemTable = ({
                        headers,
                        data,
                        nonSortableColumns = [],
-                       mainTableStyles = 'overflow-x-auto',
+                       mainTableStyles = 'overflow-y-auto max-h-[300px]',
+
                        tableStyles = 'table-auto border-collapse w-full',
                        headerStyles = 'bg-gray-800 text-white whitespace-nowrap',
                        rowStyles = 'border-b border-gray-200 text-black',
@@ -37,7 +38,6 @@ const ItemTable = ({
 
     const sortData = () => {
         const { key, direction } = sortConfig;
-
         const sortedData = [...data].sort((a, b) => {
             if (key === 'date' || key === 'time') {
                 const dateA = moment(`${a['date']} ${a['time']}`, 'DD.MM.YYYY HH:mm');
@@ -116,7 +116,8 @@ const ItemTable = ({
     return (
         <div className={mainTableStyles}>
             <table className={tableStyles}>
-                <thead className={headerStyles}>
+                <thead className={`${headerStyles} sticky top-0 z-10 bg-gray-800`}>
+
                 <tr>
                     {Object.keys(headers).map((header, index) => (
                         <th
