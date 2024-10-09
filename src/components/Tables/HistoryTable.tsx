@@ -1,14 +1,15 @@
 import React from 'react';
 import ItemTable from './ItemTable';
-import {HistoryTableProps} from "../../models/History.ts";
+import { HistoryTableProps } from "../../models/History.ts";
 import TableContainer from "../../layouts/TableContainer.tsx";
 import Label from "../Text/Label.tsx";
-
+import { formatDateTime} from "../../utils/formatDateTime.ts";
 
 const HistoryTable: React.FC<HistoryTableProps> = ({ data }) => {
     if (!data || !Array.isArray(data)) {
         return <div>Нет данных для отображения</div>;
     }
+
 
     const headers = {
         'Модуль': 'module',
@@ -22,13 +23,13 @@ const HistoryTable: React.FC<HistoryTableProps> = ({ data }) => {
 
     const formattedData = data.flatMap(item =>
         item.table.map(entry => {
-            const date = new Date(entry.x);
+            const { date, time } = formatDateTime(entry.x);
             return {
                 'module': item.head.module,
                 'group': item.head.group,
                 'label': item.head.label,
-                'date': date.toLocaleDateString(),
-                'time': date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                'date': date,
+                'time': time,
                 'value': entry.y
             };
         })
@@ -44,7 +45,6 @@ const HistoryTable: React.FC<HistoryTableProps> = ({ data }) => {
                     headers={headers}
                     data={formattedData}
                     nonSortableColumns={['module', 'group', 'label']}
-
                 />
             </TableContainer>
         </div>

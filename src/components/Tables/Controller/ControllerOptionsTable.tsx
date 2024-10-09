@@ -46,6 +46,9 @@ const ControllerOptionTable: React.FC = () => {
     const [historyData, setHistoryData] = useState<HistoryDataItem[]>([]);
     const [currentParameterId, setCurrentParameterId] = useState<number | null>(null);
     const [isLoading, setIsLoading] = useState(true);
+
+
+
     const handleCheckboxChange = (index: string, id: number) => {
         setCheckboxState(prevState => {
             const newState = { ...prevState, [index]: !prevState[index] };
@@ -136,7 +139,7 @@ const ControllerOptionTable: React.FC = () => {
     const transformApiData = (apiData: any[]): ParameterItem[] => {
         const transformDataRecursive = (data: any[]): ParameterItem[] => {
             return data.map(item => ({
-                id: item.modbusParameterId,
+                id: item.idByECL,
                 param: item.label,
                 value: item.value,
                 type: item.type,
@@ -147,7 +150,6 @@ const ControllerOptionTable: React.FC = () => {
                 children: item.data ? transformDataRecursive(item.data) : []
             }));
         };
-
         return transformDataRecursive(apiData);
     };
 
@@ -223,6 +225,7 @@ const ControllerOptionTable: React.FC = () => {
         setShowModal(false);
 
         const url = `${MODBUS_API_URL}/ecl/parameter/write/1/${currentParameterId}`;
+        console.log('url',url)
         const body = {
             value: newValue
         };
@@ -259,6 +262,7 @@ const ControllerOptionTable: React.FC = () => {
 
     const renderRow = (item, index, level = 0, context = '') => {
         const rowIndex = `${index}`;
+
         const newContext = `${context}-${item.param}`;
 
         if (!searchInChildren(item, searchTerm)) {
@@ -280,10 +284,10 @@ const ControllerOptionTable: React.FC = () => {
                         <OverlayTrigger
                             placement="top"
                             overlay={item.hint && !item.children.length ? renderTooltip : <span></span>}
-                            delay={{ show: 250, hide: 400 }}
+                            delay={{show: 250, hide: 400}}
                         >
                             <div
-                                className={`flex items-center pl-2 ml-${ level * 4}`}
+                                className={`flex items-center pl-2 ml-${level * 4}`}
                             >
                                 {!item.children.length && (
                                     <div className="flex items-center mr-1">
@@ -322,10 +326,12 @@ const ControllerOptionTable: React.FC = () => {
                         className={`${
                             item.editable ? 'bg-white' : 'bg-gray-300'
                         } cursor-pointer text-black border-b border-black`}
-                        onClick={() =>
-                            item.editable &&
-                            handleOpenModal(item.param, item.value, item.type, rowIndex, item.id)
-                        }
+                        onClick={() => {
+                            if (item.editable) {
+
+                                handleOpenModal(item.param, item.value, item.type, rowIndex, item.id);
+                            }
+                        }}
                     >
                         {item.value}
                     </td>
@@ -364,7 +370,6 @@ const ControllerOptionTable: React.FC = () => {
             }
 
             const result = await response.json();
-
             setHistoryData(result.data);
         } catch (error) {
             console.error('Ошибка при отправке запроса статистики:', error);
@@ -387,14 +392,16 @@ const ControllerOptionTable: React.FC = () => {
             <div className="h-full w-full md:w-[53%]">
                 <div className="table-wrapper">
 
-                    <SearchForController searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+                    <SearchForController searchTerm={searchTerm} setSearchTerm={setSearchTerm}/>
 
-                    <TabBarForController activeTab={activeTab} onTabChange={handleTabChange} />
+                    <TabBarForController activeTab={activeTab} onTabChange={handleTabChange}/>
 
-                    <ToggleSwitchForController groupParameters={groupParameters} onChange={handleGroupParametersChange} />
+
+                    <ToggleSwitchForController groupParameters={groupParameters}
+                                               onChange={handleGroupParametersChange}/>
                     {isLoading ? (
                         <div className="flex justify-center items-center h-[350px] w-[600px]">
-                            <LoadingSpinner />
+                            <LoadingSpinner/>
                         </div>
                     ) : (
                         <div className="max-h-[350px] h-auto overflow-y-auto w-[600px] noscroll">
@@ -432,11 +439,11 @@ const ControllerOptionTable: React.FC = () => {
             </div>
             {historyData.length >= 1 && (
                 <div className="w-[800px] mb-4 " ref={historyTableRef}>
-                        <HistoryTable data={historyData}/>
+                    <HistoryTable data={historyData}/>
                 </div>
             )}
             {showModal && currentParameter !== '' && (
-                    <EditControllerParametrModal
+                <EditControllerParametrModal
                     onHide={() => setShowModal(false)}
                     parameter={currentParameter}
                     parameterValue={currentParameterValue}
