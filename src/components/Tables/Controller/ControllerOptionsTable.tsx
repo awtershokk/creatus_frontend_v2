@@ -229,7 +229,7 @@ const ControllerOptionTable: React.FC = () => {
         const body = {
             value: newValue
         };
-
+        console.log('body',body)
         try {
             const response = await fetch(url, {
                 method: 'PUT',
@@ -238,6 +238,7 @@ const ControllerOptionTable: React.FC = () => {
                 },
                 body: JSON.stringify(body)
             });
+            console.log(response)
 
             if (!response.ok) {
                 throw new Error('Ошибка при сохранении параметра');
