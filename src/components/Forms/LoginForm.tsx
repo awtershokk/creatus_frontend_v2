@@ -3,7 +3,11 @@ import { useAuth } from '../../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 
-const LoginForm = () => {
+interface LoginFormProps {
+    redirectPath?: string;
+}
+
+const LoginForm: React.FC<LoginFormProps> = ({ redirectPath }) => {
     const { login, error, status, user, refresh } = useAuth();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -17,15 +21,19 @@ const LoginForm = () => {
 
     useEffect(() => {
         if (user) {
-            if (user.roleId == 1) {
-                navigate('/user');
-            }
-            else {
-                navigate('/building');
+            if (redirectPath) {
+                navigate(redirectPath);
+            } else {
+                if (user.roleId === 1) {
+                    navigate('/user');
+                } else {
+                    navigate('/building');
+                }
             }
         }
-    }, [user, navigate]);
+    }, [user, navigate, redirectPath]);
 
+    // Обновляем токен через каждые 5 минут
     useEffect(() => {
         const interval = setInterval(() => {
             refresh();

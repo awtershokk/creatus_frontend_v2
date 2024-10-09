@@ -44,6 +44,16 @@ const App = () => {
         };
 
         initializeAuth();
+
+        const tokenRefreshInterval = setInterval(() => {
+            const token = localStorage.getItem('token');
+            if (token) {
+                refresh();
+            }
+        }, 60 * 1000);
+
+
+        return () => clearInterval(tokenRefreshInterval);
     }, [refresh]);
 
 

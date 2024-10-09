@@ -34,7 +34,7 @@ export const useAuth = () => {
     const refresh = async () => {
         const token = localStorage.getItem('token');
         if (token && isTokenNearExpiration(token)) {
-            await dispatch(refreshToken());
+            await refreshToken();
         }
     };
 

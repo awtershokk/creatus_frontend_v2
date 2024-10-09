@@ -44,6 +44,7 @@ export const logout = () => {
     return api.post('/user/logout');
 };
 
-export const refresh = () => {
-    return api.get('/user/refresh');
+export const refresh = async () => {
+    const response  = await api.get('/user/refresh');
+    return response;
 };
