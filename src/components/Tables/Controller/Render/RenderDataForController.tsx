@@ -63,6 +63,7 @@ const RenderDataForController: React.FC<RenderDataForControllerProps> = ({ activ
         }
 
         return dataToRender.map((item, index) => renderRow(item, index));
+
     };
 
     return <>{renderTableData()}</>;

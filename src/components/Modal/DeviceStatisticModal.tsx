@@ -67,7 +67,7 @@ const DeviceStatisticModal: React.FC<DeviceStatisticyModalProps> = ({ deviceName
     return (
         <ModalTemplate
             headerTitle={`История изменений: ${deviceName}`}
-            wight='max-w-[570px]'
+            wight='max-w-[580px]'
             onClose={onClose}
             onSubmit={handleSubmit}
             loading={loading}

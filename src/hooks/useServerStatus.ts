@@ -36,7 +36,6 @@ const useServerStatus = (onConnectionRestored) => {
 
         if (!serverConnected) {
             const reloadInterval = setInterval(() => {
-                console.log('Перезагрузка страницы из-за потери соединения...');
                 window.location.reload();
             }, 20000);
 
