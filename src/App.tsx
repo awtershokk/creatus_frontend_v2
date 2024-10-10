@@ -24,6 +24,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from "react-toastify";
 import useServerStatus from './hooks/useServerStatus';
 import LoadingSpinner from "./components/Menu/LoadingSpinner.tsx";
+import NotAuthPage from "./pages/Error/NotAuthPage.tsx";
 
 const App = () => {
     const { refresh, user } = useAuth();
@@ -44,6 +45,16 @@ const App = () => {
         };
 
         initializeAuth();
+
+        const tokenRefreshInterval = setInterval(() => {
+            const token = localStorage.getItem('token');
+            if (token) {
+                refresh();
+            }
+        }, 60 * 1000);
+
+
+        return () => clearInterval(tokenRefreshInterval);
     }, [refresh]);
 
 
@@ -59,6 +70,7 @@ const App = () => {
                 <Route path="/" element={<LoginPage onClick={handleInteraction} />} />
                 <Route path="/no-access" element={<NoAccessPage onClick={handleInteraction} />} />
                 <Route path="/no-connection" element={<NotConnectionPage />} />
+                <Route path="/no-auth" element={<NotAuthPage onClick={handleInteraction} />} />
                 <Route element={<ProtectedRoute allowedRoles={[2, 3]} />}>
                     <Route path="/building" element={<BuildingPage onClick={handleInteraction} />} />
                     <Route path="/building/users" element={<UsersPage onClick={handleInteraction} />} />

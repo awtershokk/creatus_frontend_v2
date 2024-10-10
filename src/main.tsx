@@ -15,6 +15,7 @@ const Main = () => {
         if (token) {
             dispatch(refreshToken());
         }
+
     }, [dispatch]);
 
     return <App />;

@@ -7,28 +7,36 @@ import { fetchControllers } from "../../api/requests/controllerApi.ts";
 import LoadingSpinner from "../../components/Menu/LoadingSpinner.tsx";
 import { useDispatch } from "react-redux";
 import { setBreadcrumb } from "../../store/slices/breadcrumbSlice.ts";
-import { formatDateTime } from "../../utils/formatDateTime.ts"; // Import the function
+import {formatDateTime} from "../../utils/formatDateTime.ts";
 
 const ControllerPage = () => {
     const [controllers, setControllers] = useState<Controller[]>([]);
     const dispatch = useDispatch();
     const [isLoading, setIsLoading] = useState(true);
 
+    const checkIfOffline = (lastActive: string): boolean => {
+        const currentTime = Date.now();
+        const lastActiveTime = parseInt(lastActive, 10);
+        const timeDifferenceInMinutes = (currentTime - lastActiveTime) / 1000 / 60;
+        return timeDifferenceInMinutes > 3; // Если разница больше 3 минут, то оффлайн
+    };
+
     useEffect(() => {
         const getData = async () => {
             try {
                 const controllersData = await fetchControllers();
 
-
-                const formattedControllers = controllersData.map(controller => {
+                const updatedControllers = controllersData.map(controller => {
+                    const isOffline = checkIfOffline(controller.url);
                     const { date, time } = formatDateTime(controller.url);
                     return {
                         ...controller,
                         url: `${date} ${time}`,
+                        status: isOffline ? "Оффлайн" : "Онлайн",
                     };
                 });
 
-                setControllers(formattedControllers);
+                setControllers(updatedControllers);
                 setIsLoading(false);
 
             } catch (error) {
@@ -42,18 +50,17 @@ const ControllerPage = () => {
 
     dispatch(setBreadcrumb({
         key: 'controllers',
-        label:'Контроллеры',
+        label: 'Контроллеры',
         icon: 'FaMicrochip',
     }));
 
     const headers = {
         'Наименование': 'label',
-        'Последнее время записи': 'url',
         'Тепловой контур': 'thermalCircuit',
         'Тип ECL': 'ecl_type',
         'Параметры': 'settings',
-        // 'Расписание': 'schedule',
         'Статус': 'status',
+        'Последнее время записи': 'url',
     };
 
     return (

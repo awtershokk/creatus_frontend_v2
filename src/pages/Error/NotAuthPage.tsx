@@ -2,12 +2,12 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '../../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
-
-interface LoginFormProps {
+import {toast} from "react-toastify";
+interface NotAuthProps {
     redirectPath?: string;
 }
 
-const LoginForm: React.FC<LoginFormProps> = ({ redirectPath }) => {
+const NotAuth: React.FC<NotAuthProps> = ({ redirectPath }) => {
     const { login, error, status, user, refresh } = useAuth();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -18,6 +18,9 @@ const LoginForm: React.FC<LoginFormProps> = ({ redirectPath }) => {
         e.preventDefault();
         await login(username, password);
     };
+    useEffect(() => {
+        toast.warning("Время вашей сессии закончилось. Необходимо авторизоваться заново");
+    }, []);
 
     useEffect(() => {
         if (user) {
@@ -127,4 +130,4 @@ const LoginForm: React.FC<LoginFormProps> = ({ redirectPath }) => {
     );
 };
 
-export default LoginForm;
+export default NotAuth;

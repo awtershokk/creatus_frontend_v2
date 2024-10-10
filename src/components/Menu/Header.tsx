@@ -7,6 +7,7 @@ import { RootState } from "../../store/store";
 import { getRole } from "../../utils/getRole";
 import SettingsModeTable from "../Tables/SettingsModeTable";
 import {Link} from "react-router-dom";
+import api from "../../api/api.ts";
 
 const Header = () => {
     const { logout } = useAuth();
@@ -26,13 +27,12 @@ const Header = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const sectionsResponse = await fetch('http://localhost:5001/api/section/1');
-                const sectionsData = await sectionsResponse.json();
-                setSections(sectionsData.data);
+                const sectionsResponse = await api.get('section/1');
+                setSections(sectionsResponse.data.data);
 
-                const thermalsResponse = await fetch('http://localhost:5001/api/thermalCircuit/1');
-                const thermalsData = await thermalsResponse.json();
-                setThermals(thermalsData.data);
+                const thermalsResponse = await api.get('thermalCircuit/1');
+
+                setThermals(thermalsResponse.data.data);
             } catch (error) {
                 console.error('Ошибка при получении данных', error);
             }
@@ -43,20 +43,20 @@ const Header = () => {
     useEffect(() => {
         const sendSettingsModeRequest = async () => {
             const apiUrl = settingsMode
-                ? 'http://localhost:5001/api/device/permitJoin/true'
-                : 'http://localhost:5001/api/device/permitJoin/false';
+                ? 'device/permitJoin/true'
+                : 'device/permitJoin/false';
 
             try {
-                const response = await fetch(apiUrl, { method: 'POST' });
+                const response = await api.post(apiUrl);
 
-                if (response.ok) {
-
+                if (response.status === 200) {
                 } else {
                     console.error(`Ошибка при отправке запроса к ${apiUrl}: ${response.status} ${response.statusText}`);
                 }
             } catch (error) {
                 console.error('Ошибка при отправке запроса:', error);
             }
+
         };
 
         if (settingsMode) {

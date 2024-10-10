@@ -51,6 +51,7 @@ export const refreshToken = createAsyncThunk(
         try {
             const response = await refresh();
             localStorage.setItem('token', response.data.accessToken); // Обновляем токен
+
             return response.data;
         } catch (error) {
             return rejectWithValue('Не удалось обновить токен.');

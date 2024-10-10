@@ -44,6 +44,22 @@ export const logout = () => {
     return api.post('/user/logout');
 };
 
-export const refresh = () => {
-    return api.get('/user/refresh');
+export const refresh = async () => {
+    try {
+        // Для теста
+        //throw new Error('Simulated error for testing');
+
+        const response = await api.get('/user/refresh');
+        return response;
+    } catch (error: any) {
+
+        const expectedPath = '/no-auth';
+
+        if (window.location.pathname !== expectedPath) {
+            window.location.href = expectedPath;
+
+        }
+
+        console.error('An error occurred:', error);
+    }
 };
