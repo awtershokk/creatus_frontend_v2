@@ -173,7 +173,7 @@ const IncidentFilters: React.FC<IncidentFiltersProps> = ({ onFilterChange }) => 
                         <FaChevronDown className="ml-1"/>}
                     </button>
                     {isDateOpen && (
-                        <div className="absolute z-10 bg-white p-4 mt-2 shadow-md rounded">
+                        <div className="absolute z-20 bg-white p-4 mt-2 shadow-md rounded">
                             <DatePicker
                                 selected={dateRange.start}
                                 onChange={handleDateChange}
@@ -199,7 +199,7 @@ const IncidentFilters: React.FC<IncidentFiltersProps> = ({ onFilterChange }) => 
                         {"Тип"} {isTypeOpen ? <FaChevronUp className="ml-1"/> : <FaChevronDown className="ml-1"/>}
                     </button>
                     {isTypeOpen && (
-                        <div className="absolute z-10 bg-white p-4 mt-2 shadow-md rounded">
+                        <div className="absolute z-20 bg-white p-4 mt-2 shadow-md rounded">
                             {typeData.map((item, index) => (
                                 <React.Fragment key={item}>
                                     <button
@@ -231,7 +231,7 @@ const IncidentFilters: React.FC<IncidentFiltersProps> = ({ onFilterChange }) => 
                         {"Статус"} {isStatusOpen ? <FaChevronUp className="ml-1"/> : <FaChevronDown className="ml-1"/>}
                     </button>
                     {isStatusOpen && (
-                        <div className="absolute z-10 bg-white p-4 mt-2 shadow-md rounded">
+                        <div className="absolute z-20 bg-white p-4 mt-2 shadow-md rounded">
                             {statusData.map((item, index) => (
                                 <React.Fragment key={item}>
                                     <button
@@ -262,7 +262,7 @@ const IncidentFilters: React.FC<IncidentFiltersProps> = ({ onFilterChange }) => 
                         {"Критичность"} {isCriticalityOpen ? <FaChevronUp className="ml-1"/> : <FaChevronDown className="ml-1"/>}
                     </button>
                     {isCriticalityOpen && (
-                        <div className="absolute z-10 bg-white text-sm p-4 mt-2 shadow-md rounded">
+                        <div className="absolute z-20 bg-white text-sm p-4 mt-2 shadow-md rounded">
                             {criticalityData.map((item, index) => (
                                 <React.Fragment key={item}>
                                     <button

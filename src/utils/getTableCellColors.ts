@@ -19,14 +19,15 @@ export const applyCellColor = (value: any, columnName: string): React.CSSPropert
     } else if (columnName === 'deviation_humidity') {
         const deviation = parseFloat(value);
         if (!isNaN(deviation)) {
-            const intensity = calculateColorIntensity(deviation);
-            if (deviation > 0) {
+            const intensity = calculateColorIntensity(deviation) / 2;
+            if (deviation < 0) {
                 cellStyle.backgroundColor = `rgb(255, 255, ${255 - intensity})`;
-            } else if (deviation < 0) {
-                cellStyle.backgroundColor = `rgb(${255 - intensity}, 255, ${255 - intensity})`;
+            } else if (deviation > 0) {
+                cellStyle.backgroundColor = `rgb(${255 - intensity}, ${255 - intensity}, 255)`;
             }
         }
-    } else if (columnName === 'battery') {
+    }
+    else if (columnName === 'battery') {
         const batteryLevel = parseFloat(value);
         if (!isNaN(batteryLevel)) {
             if (batteryLevel <= 10) {

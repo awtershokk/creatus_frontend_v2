@@ -190,7 +190,7 @@ const MeasurementsFilters: React.FC<MeasurementsFiltersProps> = ({ onFilterChang
                         <FaChevronDown className="ml-1"/>}
                     </button>
                     {isDateOpen && (
-                        <div className="absolute z-10 bg-white p-4 mt-2 shadow-md rounded">
+                        <div className="absolute z-20 bg-white p-4 mt-2 shadow-md rounded">
                             <Tooltip
                                 message="Выберите диапазон дат в который хотите посмотреть значения."
                                 isVisible={showDateTooltip}
@@ -222,7 +222,7 @@ const MeasurementsFilters: React.FC<MeasurementsFiltersProps> = ({ onFilterChang
                     </button>
 
                     {isTimeOpen && (
-                        <div className="absolute z-10 bg-white p-4 mt-2 shadow-md rounded">
+                        <div className="absolute z-20 bg-white p-4 mt-2 shadow-md rounded">
                             <Tooltip
                                 message="Выберите начальное и конечное время для фильтрации данных. Возможен ручной ввод."
                                 isVisible={showTimeTooltip}
@@ -275,7 +275,7 @@ const MeasurementsFilters: React.FC<MeasurementsFiltersProps> = ({ onFilterChang
                     </button>
 
                     {isTempOpen && (
-                        <div className="absolute z-10 bg-white p-4 mt-2 shadow-md rounded">
+                        <div className="absolute z-20 bg-white p-4 mt-2 shadow-md rounded">
                             <Tooltip
                                 message="Введите минимальное и максимальное отклонение температуры в градусах Цельсия."
                                 isVisible={showTempTooltip}
@@ -319,7 +319,7 @@ const MeasurementsFilters: React.FC<MeasurementsFiltersProps> = ({ onFilterChang
                     </button>
 
                     {isHumidityOpen && (
-                        <div className="absolute z-10 bg-white p-4 mt-2 shadow-md rounded">
+                        <div className="absolute z-20 bg-white p-4 mt-2 shadow-md rounded">
                             <Tooltip
                                 message="Введите минимальное и максимальное отклонение влажности в процентах."
                                 isVisible={showHumidityTooltip}
