@@ -155,15 +155,16 @@ const DevicePage = () => {
                             <Label text="Датчики"/>
                         </div>
                     </div>
-                    <TableContainer>
+
                         <ItemTable
                             data={devices}
                             headers={headers}
+                            mainTableStyles = 'overflow-y-auto h-auto'
                             tableStyles = 'table-auto border-collapse'
                             onEditClick={handleEditDeviceClick}
                             onDeleteClick={handleDeleteDeviceClick}
                         />
-                    </TableContainer>
+
                 </div>
             )}
 

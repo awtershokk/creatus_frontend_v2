@@ -26,6 +26,7 @@ export const loginUser = createAsyncThunk(
         try {
             const response = await login(credentials);
             localStorage.setItem('token', response.data.accessToken); // Сохраняем токен
+            localStorage.setItem('userName', credentials.username)
             return response.data;
         } catch (error) {
             return rejectWithValue('Не удалось войти в систему.');

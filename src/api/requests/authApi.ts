@@ -56,8 +56,8 @@ export const refresh = async () => {
         const expectedPath = '/no-auth';
 
         if (window.location.pathname !== expectedPath) {
+            localStorage.setItem('currentPath', window.location.pathname)
             window.location.href = expectedPath;
-
         }
 
         console.error('An error occurred:', error);
