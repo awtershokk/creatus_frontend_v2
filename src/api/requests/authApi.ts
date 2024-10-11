@@ -46,8 +46,7 @@ export const logout = () => {
 
 export const refresh = async () => {
     try {
-        // Для теста
-        //throw new Error('Simulated error for testing');
+        // throw new Error('Simulated error for testing');
 
         const response = await api.get('/user/refresh');
         return response;

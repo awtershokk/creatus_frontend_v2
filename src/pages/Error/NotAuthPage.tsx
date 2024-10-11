@@ -157,7 +157,7 @@ const NotAuth: React.FC = () => {
                     loading={false}
                     cancelButtonLabel="Нет"
                 >
-                    <p className="text-black">Хотите вернуться на ту страницу, где вы были ранее?</p>
+                    <p className="text-black">Восстановить работу приложения?</p>
                 </ModalTemplate>
             )}
         </div>

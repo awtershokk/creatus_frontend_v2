@@ -19,8 +19,7 @@ const ItemTable = ({
                        headers,
                        data,
                        nonSortableColumns = [],
-                       mainTableStyles = 'overflow-y-auto max-h-[300px]',
-
+                       mainTableStyles = 'overflow-x-auto',
                        tableStyles = 'table-auto border-collapse w-full',
                        headerStyles = 'bg-gray-800 text-white whitespace-nowrap',
                        rowStyles = 'border-b border-gray-200 text-black',
@@ -117,7 +116,6 @@ const ItemTable = ({
         <div className={mainTableStyles}>
             <table className={tableStyles}>
                 <thead className={`${headerStyles} sticky top-0 z-10 bg-gray-800`}>
-
                 <tr>
                     {Object.keys(headers).map((header, index) => (
                         <th

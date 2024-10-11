@@ -11,7 +11,7 @@ interface ChildElementsTableProps {
 const ChildElementsTable: React.FC<ChildElementsTableProps> = ({ infoData, tableTitle, ButtonComponent, LinkComponent, onDelete }) => {
     return (
         <div className="flex mt-2 z-10">
-            <div className="w-auto">
+            <div className="w-auto mb-3">
                 <div className="border border-gray-300 bg-gray-100">
                     <div className="flex justify-between items-center bg-gray-200 border-b border-gray-300 p-2 text-black">
                         <span className="flex-1 text-lg font-bold">{tableTitle}</span>
@@ -22,7 +22,7 @@ const ChildElementsTable: React.FC<ChildElementsTableProps> = ({ infoData, table
                     <div className="table w-full">
                         {infoData.map((item) => (
                             <div key={item.id} className="table-row">
-                                <div className="table-cell min-w-[200px] p-2 text-black font-bold text-nowrap border-t border-gray-300">{item.title}</div>
+                                <div className="table-cell min-w-[300px] p-2 text-black font-bold text-nowrap border-t border-gray-300">{item.title}</div>
                                 <div className="table-cell border-l border-gray-300 h-auto mx-2 "></div>
                                 <div className="w-[200px] p-2 flex justify-between  border-t border-gray-300">
                                     <LinkComponent to={item.to} text={item.properties}
@@ -43,6 +43,5 @@ const ChildElementsTable: React.FC<ChildElementsTableProps> = ({ infoData, table
         </div>
     );
 };
-
 
 export default ChildElementsTable;
